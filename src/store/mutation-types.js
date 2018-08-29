@@ -1,0 +1,6 @@
+export const GET_ARTICLELIST = 'article/GET_ARTICLELIST'
+export const SHOW_MSG = 'commom/SHOW_MSG'
+export const HIDE_MSG = 'commom/HIDE_MSG'
+export const SHOW_AJAX_LOADING = 'commom/SHOW_AJAX_LOADING'
+export const HIDE_AJAX_LOADING = 'commom/HIDE_AJAX_LOADING'
+export const SWITCH_OPEN_MODAL = 'commom/SWITCH_OPEN_MODAL'

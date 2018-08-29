@@ -1,0 +1,12 @@
+// ======== 页面布局样式表 ========
+
+.g-container {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: $container-width;
+
+  @media screen and (min-width: 1400px) {
+    width: $container-width-large;
+  }
+}

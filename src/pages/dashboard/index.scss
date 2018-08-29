@@ -1,0 +1,149 @@
+#dashboard {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 100%;
+	width: calc(100% + 17px);
+	position: relative;
+	box-sizing: border-box;
+	.container {
+		display: flex;
+		flex-direction: row;
+		flex: 1;
+		-ms-flex-preferred-size: auto;
+		flex-basis: auto;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.dashboard-part-content {
+		flex-grow: 1;
+	    position: relative;
+	    border: 1px solid #ddd;
+	    box-sizing: border-box;
+	    padding: 10px;
+	}
+	.dashboard-part-right {
+		width: 200px;
+	    position: relative;
+	    margin-left: 20px;
+	    > div {
+	    	position: fixed;
+	    	width: 200px;
+	    }
+	    .header {
+	    	text-align: center;
+	    	span {
+    		    display: inline-block;
+			    line-height: 1;
+			    cursor: pointer;
+			    background: #fff;
+			    border: 1px solid #dcdfe6;
+			    border-color: #dcdfe6;
+			    color: #606266;
+			    text-align: center;
+			    box-sizing: border-box;
+			    outline: none;
+			    padding: 5px 8px;
+			    font-size: 14px;
+			    border-radius: 4px;
+			    margin-left: 10px;
+	    	}
+	    }
+	}
+	.contact-company-box {
+		border: 1px solid #ddd;
+		padding: 20px;
+		margin-bottom: 30px;
+		text-align: center;
+		h1 {
+			font-size: 20px;
+			line-height: 1;
+			margin: 0;
+			padding: 0;
+			margin-bottom: 20px;
+		}
+		p {
+			font-size: 14px;
+			line-height: 1;
+			margin: 0;
+			padding: 0;
+		}
+	}
+	.beginner-tutorial-box {
+		border: 1px solid #ddd;
+		padding: 20px;
+		ul {
+			margin-top: 20px;
+		}
+		li {
+    		height: 50px;
+    		line-height: 50px;
+    	}
+	}
+	.page-header {
+		margin: 20px 0;
+ 		span {
+ 			display: inline-block;
+		    line-height: 1;
+		    cursor: pointer;
+		    background: #fff;
+		    border: 1px solid #dcdfe6;
+		    border-color: #dcdfe6;
+		    color: #606266;
+		    text-align: center;
+		    box-sizing: border-box;
+		    outline: none;
+		    padding: 5px 8px;
+		    font-size: 14px;
+		    border-radius: 4px;
+		    margin-left: 10px;
+		    vertical-align: bottom;
+ 		}
+ 		p {
+ 			display: inline-block;
+ 			font-size: 25px;
+ 			line-height: 1;
+ 			margin: 0;
+ 		}
+ 	}
+ 	.study-status-box {
+ 		.cate-title {
+ 			font-size: 25px;
+ 			margin-bottom: 20px;
+ 			i {
+ 				margin-left: 10px;
+ 			}
+ 		}
+ 	}
+ 	.tab-box {
+ 		position: relative;
+ 		display: flex;
+ 		border: 1px solid #ddd;
+ 		> li {
+			position: relative;
+			flex-grow: 1;
+			text-align: center;
+			padding: 20px;
+			&:after {
+				position: absolute;
+				top: 10px;
+				bottom: 10px;
+				right: 0px;
+				display: block;
+				content: '';
+				background: #ddd;
+				width: 1px;
+			}
+ 		}
+ 		:last-child {
+ 			&:after {
+				display: none;
+			}
+ 		}
+ 		p {
+ 			line-height: 1;
+ 			margin: 0;
+ 			margin-bottom: 20px;
+ 			font-size: 18px;
+ 		}
+ 	}
+}

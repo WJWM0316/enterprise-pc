@@ -1,0 +1,55 @@
+// ======== 变量 ========
+
+$color-primary: #26bf81;
+$color-red: #ff3434;
+$color-white: #fff;
+$color-light-gray: #dbdbdb;
+$color-gray: #ccc;
+$color-dark: #354048;
+$color-level-two: #666; // 二级颜色
+$color-level-three: #929292; // 三级颜色
+$color-link: #516f8c; // 默认文字链接颜色
+$color-link-hover: rgba($color-link, .8);
+
+// Font
+$base-font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+$base-font-color: $color-dark;
+
+// Body
+$body-bg-color: #f3f5f5;
+
+// Topbar
+$topbar-bg-color: $color-dark;
+
+// Button
+$button-default-bg: $color-light-gray;
+$button-default-border-color: $color-light-gray;
+$button-default-hover-bg: $color-gray;
+$button-default-hover-border-color: $color-gray;
+
+$button-min-width: 120px;
+$button-large-min-width: 135px;
+$button-small-min-width: 100px;
+$button-mini-min-width: auto;
+
+// AsideNav
+$aside-nav-title-color: $color-level-three;
+$aside-nav-item-bg-hover: #f8f8f8;
+$aside-nav-item-bg-active: rgba($color-primary, .1);
+$aside-nav-item-color: $color-level-two;
+$aside-nav-item-color-hover: #44515a;
+$aside-nav-item-color-active: #44515a;
+
+// Input
+$input-placeholder-color: $color-level-three;
+
+// Container
+$container-width: 1000px;
+$container-width-large: 1200px;
+
+// Dialog
+$dialog-bg: rgba(0, 0, 0, .6);
+$dialog-header-color: $color-white;
+$dialog-title-color: $color-white;
+$dialog-close-color: $color-white;
+$dialog-close-color-hover: rgba($color-white, .6);

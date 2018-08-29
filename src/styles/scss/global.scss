@@ -1,0 +1,352 @@
+// ======== 公共样式表 ========
+
+// ====== 样式重置 ======
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: $body-bg-color;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: $base-font-family;
+  color: $base-font-color;
+}
+
+input {
+  padding: 0 10px;
+  max-width: 100%;
+  height: 36px;
+  border: solid 1px $color-light-gray;
+  border-radius: 3px;
+  color: $base-font-color;
+
+  &:-ms-input-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  &:-moz-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  &::-webkit-input-placeholder {
+    color: $input-placeholder-color;
+  }
+
+  &[type="number"],
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none
+  }
+}
+
+// 重写element-ui表格样式
+.el-table {
+  border: none;
+  font-size: 13px;
+  color: $color-dark;
+
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  th {
+    font-weight: normal;
+    color: $color-level-three;
+  }
+
+  th.is-leaf,
+  td {
+    border-bottom: none;
+  }
+
+  .el-table__header-wrapper thead div,
+  .el-table__footer-wrapper thead div {
+    color: $color-level-three;
+  }
+
+  &.el-table--striped {
+    .el-table__body tr.el-table__row--striped td {
+      background-color: #f8fafb;
+    }
+  }
+
+  .el-table__fixed,
+  .el-table__fixed-right {
+    height: 100% !important;
+  }
+
+  .cell {
+    padding: 10px 5px;
+  }
+
+  thead {
+    .cell {
+      padding: {
+        top: 0;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+// 重写element-ui分页样式
+.el-pagination {
+
+  .el-pager {
+    margin: 0 8px;
+
+    & > li {
+
+      &:not(:first-child) {
+        margin-left: 8px;
+      }
+
+      &.active  {
+        background-color: rgba($color-primary, .08);
+        border-color: $color-primary;
+        color: $color-primary;
+      }
+
+      &.active + li {
+        border-left: solid 1px $color-light-gray;
+        padding-left: 4px;
+      }
+    }
+  }
+
+  .btn-prev,
+  .btn-next,
+  .el-pager > li {
+    border: solid 1px $color-light-gray;
+
+    &:not(.disabled):hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+
+  .total {
+    margin: 0 12px;
+    font-size: 12px;
+    color: $color-level-two;
+  }
+}
+
+// 重写element-ui表单样式
+.el-form {
+
+  &.el-form--inline .el-form-item {
+    width: auto;
+  }
+
+  .el-form-item {
+    width: 500px;
+
+    &.is-required .el-form-item__label:before {
+      content: none
+    }
+
+    &.full {
+      width: auto;
+    }
+  }
+
+  .el-form-item__label {
+    color: $color-level-two;
+  }
+
+  .help-block {
+    margin: 5px 0;
+    font-size: 12px;
+    color: #bcbcbc;
+  }
+}
+
+// 重写element-ui message样式
+.el-message {
+  z-index: 2011 !important;
+}
+
+// 重写element-ui el-time-panel样式
+.el-time-panel,
+.el-time-panel * {
+  box-sizing: content-box;
+}
+
+// 重写element-ui picture-card样式
+.el-upload-list--picture-card {
+  .el-upload-list__item {
+    line-height: 146px;
+
+    & > * {
+      line-height: 1.8;
+    }
+  }
+
+  .el-upload-list__item-thumbnail {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
+}
+
+// ====== 辅助类 ======
+
+// 浮动
+.f-float-left {
+  float: left;
+}
+
+.f-float-right {
+  float: right;
+}
+
+.f-clear-float:before,
+.f-clear-float:after {
+  content: " ";
+  display: table;
+}
+
+.f-clear-float:after {
+  clear: both;
+}
+
+// flex
+.f-flex {
+  @include setFlex();
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+
+  .f-flex-fixed {
+    flex: 0 0 auto;
+  }
+
+  .f-flex-auto {
+    flex: 1 1 auto;
+  }
+}
+
+// 块级
+.f-block {
+  display: block;
+}
+
+.f-iblock {
+  display: inline-block;
+}
+
+// 字号
+.f-fz-0 {
+  font-size: 0;
+}
+
+// 定位
+.f-relative {
+  position: relative;
+}
+
+.f-absolute {
+  position: absolute;
+}
+
+// 文本
+.f-singleline {
+  @include setSingleline
+}
+
+// ====== 元件 ======
+
+// 图片容器
+.u-image {
+  display: inline-block;
+  font-size: 0;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+
+  &.round {
+    border-radius: 50%;
+  }
+
+  & > img {
+    vertical-align: middle;
+  }
+
+  &.horizontal > img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  &.auto > img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &.vertical > img {
+    width: auto;
+    max-height: 100%;
+  }
+}
+
+// 新增&编辑表单标题
+.u-title-1 {
+  line-height: 36px;
+  font-size: 24px;
+  color: $color-level-three;
+}
+
+// 单选
+[class*="u-radio"] {
+  @include setCheck(radio);
+}
+
+// 多选
+[class*="u-checkbox"] {
+  @include setCheck(checkbox);
+}
+
+// 列表搜索时间范围样式
+.u-time-range {
+  vertical-align: middle;
+
+  .el-input__inner {
+    height: 38px;
+
+    &::placeholder {
+      color: $input-placeholder-color;
+    }
+  }
+
+  .el-input__icon {
+    color: $color-primary;
+  }
+}
+
+// ====== 动画 ======
+@keyframes kf-fade-in-top {
+  from {
+    opacity: .2;
+    transform: translateY(-20px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
