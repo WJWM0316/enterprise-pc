@@ -1,6 +1,6 @@
-# webpack
+# enterprise-pc
 
-## Project setup
+## enterprise-pc setup
 ```
 yarn install
 ```
