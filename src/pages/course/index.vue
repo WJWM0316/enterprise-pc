@@ -21,8 +21,8 @@
       style="width: 100%"
       :header-row-class-name="'zikebackend-table-header'"
       :row-class-name="tableRowClassName"
+      :select-on-indeterminate="false"
       @header-click="onTableHeaderClick"
-      @sort-change="handleSortChange"
       border>
       <el-table-column
         align="center"
@@ -47,10 +47,9 @@
         label="是否上线"
         width="150"
         :filters="[{ text: '全部', value: 0 }, { text: '上线', value: 1 }, { text: '下线', value: 2 }]"
-        :filter-method="handleOnlineStatusChange"
+        :filter-method="handleColumnRangeStatusChange"
         :filter-multiple="false"
         :render-header="renderOnlineHeader"
-        :filter-change="filterChange"
         filter-placement="bottom-end">
         <template slot-scope="scope">
           {{scope.row.online === 1 ? '上线' : '下线'}}
@@ -62,9 +61,8 @@
         label="类型"
         width="100"
         :filters="[{ text: '未分类', value: 0 }, { text: '产品', value: 1 }, { text: '运营', value: 2 }, { text: '开发', value: 3 }]"
-        :filter-method="handleTypeStatusChange"
+        :filter-method="handleColumnRangeStatusChange"
         :filter-multiple="false"
-        :filter-change="filterChange"
         filter-placement="bottom-end">
         <template slot-scope="scope">
           {{scope.row.type === 1 ? '未定义' : scope.row.type === 2 ? '产品' : scope.row.type === 3 ? '设计' : scope.row.type === 4 ? '大佬' : ''}}
@@ -77,12 +75,11 @@
         width="100"
         :filters="[{ text: '升序', value: 'asc' }, { text: '降序', value: 'desc' }]"
         :filter-multiple="false"
-        :filter-method="handleRangeStatusChange"
+        :filter-method="handleColumnRangeStatusChange"
         :render-header="renderRangeHeader"
-        :filter-change="filterChange"
         filter-placement="bottom-end">
         <template slot-scope="scope">
-          {{scope.row.range | sortFilter}}
+          {{scope.row.range}}
         </template>
       </el-table-column>
       <el-table-column

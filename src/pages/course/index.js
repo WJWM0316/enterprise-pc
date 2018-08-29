@@ -18,22 +18,6 @@ import { getlighthouseList } from 'API/lighthouse'
       },
       immediate: true
     }
-  },
-  filters: {
-    moneyFilter (value) {
-      return Number(value) === 0 ? '免费' : `￥${value}`
-    },
-    sortFilter (val) {
-      let num = null
-      if (Number(val) < 10) {
-        num = `00${val}`
-      } else if (Number(val) > 9 && Number(val) < 100) {
-        num = `0${val}`
-      } else {
-        num = val
-      }
-      return num
-    }
   }
 })
 export default class CourseList extends Vue {
@@ -49,7 +33,7 @@ export default class CourseList extends Vue {
       online: 1,
       type: 1,
       range: 'desc',
-      img: 'http://img4.duitang.com/uploads/item/201408/08/20140808143427_y8P3S.jpeg',
+      img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
       isDeleted: 0,
       sort: 'desc'
     },
@@ -62,7 +46,7 @@ export default class CourseList extends Vue {
       online: 1,
       type: 2,
       range: 'desc',
-      img: 'http://img4.duitang.com/uploads/item/201408/08/20140808143427_y8P3S.jpeg',
+      img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
       isDeleted: 0,
       sort: 'desc'
     },
@@ -75,7 +59,7 @@ export default class CourseList extends Vue {
       online: 1,
       type: 3,
       range: 'desc',
-      img: 'http://img4.duitang.com/uploads/item/201408/08/20140808143427_y8P3S.jpeg',
+      img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
       isDeleted: 1,
       sort: 'arc'
     },
@@ -88,7 +72,7 @@ export default class CourseList extends Vue {
       online: 0,
       type: 4,
       range: 'desc',
-      img: 'http://img4.duitang.com/uploads/item/201408/08/20140808143427_y8P3S.jpeg',
+      img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
       isDeleted: 0,
       sort: 'desc'
     }
@@ -187,31 +171,16 @@ export default class CourseList extends Vue {
     })
   }
 
-  // 当前排序发生变化
-  handleRangeStatusChange (value, row, column) {
-    // const query = this.$route.query
-    const route = {
-      online: value
-    }
-    // if (query.page) {
-    //   route.page = query.page
-    // }
-    this.$router.push({query: {...route}})
-    return row.range === value;
-  }
-
-  // 当前是否上线变化
-  handleOnlineStatusChange (value, row, column) {
-    console.log('handleOnlineStatusChange')
-    this.$refs.table.doLayout()
-    return row.online === value;
-  }
-
-  // 当前类型变化
-  handleTypeStatusChange (value, row, column) {
-    console.log('handleTypeStatusChange')
-    this.$refs.table.doLayout()
-    return row.type === value;
+   // 当前列的排序发生变化时
+  handleColumnRangeStatusChange (value, row, column) {
+    const key = column.property
+    const query = this.$route.query
+    const route = query.page ? { page: query.page, [key]: value } : { page: 1, [key]: value }
+    this.$router.push({
+      query: {
+        ...route
+      }
+    })
   }
 
   // 对每一行表格的样式做判断
@@ -304,14 +273,10 @@ export default class CourseList extends Vue {
 
   // 点击分页按钮
   handleCurrentPageChange (page) {
-    this.$router.push({query: {page}})
+    this.setPathQuery({page: page})
   }
 
   handleSortChange ({ column, prop, order }) {
     console.log('dddddddddddddddddddddd')
-  }
-
-  filterChange () {
-    console.log(11)
   }
 }
