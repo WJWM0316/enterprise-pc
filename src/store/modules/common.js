@@ -6,6 +6,13 @@ import {
   SHOW_AJAX_LOADING
 } from '../mutation-types'
 
+// import {
+//   articleGetArticleListApi,
+//   articlePostArticleApi,
+//   articleDeleteArticleApi,
+//   articlePutArticleApi
+// } from 'API/common'
+
 const state = {
   showDialog: false,
   ajaxLoading: false,

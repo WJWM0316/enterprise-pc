@@ -1,7 +1,7 @@
 export const routes = [
   {
-    // 路由的路径
     path: '/',
+    // 默认进入控制台
     redirect: {
       name: 'dashboard'
     },
@@ -24,7 +24,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-info',
-      modules: 'dashboard'
+      module: 'dashboard'
     }
   },
   {
@@ -34,16 +34,41 @@ export const routes = [
     name: 'course',
     // 页面的标题
     title: '课程',
-    // 引用的组件
-    component: () => import(/* webpackChunkName: "course" */ '@/pages/course/index.vue'),
+    // 支架跳转列表页
+    redirect: {
+      name: 'courseList'
+    },
+    component: () => import(/* webpackChunkName: "courseDefault" */ '@/pages/course/index.vue'),
     // 元信息
     meta: {
       // 页面是否需要缓存
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-error',
-      modules: 'course'
-    }
+      module: 'course'
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'courseList',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/course/index/index.vue'),
+        meta: {
+          // 页面是否需要缓存
+          keepAlive: false,
+          module: 'course'
+        }
+      },
+      {
+        path: 'post',
+        name: 'coursePost',
+        component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/post/index.vue'),
+        meta: {
+          // 页面是否需要缓存
+          keepAlive: false,
+          module: 'course'
+        }
+      }
+    ]
   },
   {
     // 路由的路径
@@ -60,7 +85,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-success',
-      modules: 'broadcast'
+      module: 'broadcast'
     }
   },
   {
@@ -78,7 +103,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-warning',
-      modules: 'work-zone'
+      module: 'work-zone'
     }
   },
   {
@@ -96,7 +121,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-question',
-      modules: 'notice'
+      module: 'notice'
     }
   },
   {
@@ -114,7 +139,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-star-on',
-      modules: 'organization'
+      module: 'organization'
     }
   },
   {
@@ -132,7 +157,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-message',
-      modules: 'tutor'
+      module: 'tutor'
     }
   },
   {
@@ -150,7 +175,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-remove',
-      modules: 'work-book'
+      module: 'work-book'
     }
   },
   // 数据统计
@@ -169,7 +194,7 @@ export const routes = [
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-circle-close',
-      modules: 'statistics'
+      module: 'statistics'
     }
   },
   // 设置路由
@@ -188,7 +213,7 @@ export const routes = [
       keepAlive: false,
       useNav: false,
       icon: 'el-icon-circle-close',
-      modules: 'setting'
+      module: 'setting'
     }
   },
   // 系统消息路由
@@ -207,7 +232,7 @@ export const routes = [
       keepAlive: false,
       useNav: false,
       icon: 'el-icon-circle-close',
-      modules: 'system'
+      module: 'system'
     }
   },
   // 个人中心路由
@@ -226,7 +251,7 @@ export const routes = [
       keepAlive: false,
       useNav: false,
       icon: 'el-icon-circle-close',
-      modules: 'user'
+      module: 'user'
     }
   }
 ]
