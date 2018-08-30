@@ -31,7 +31,7 @@ export default class coursePost extends Vue {
   //取消上传
     cancel () {
         this.panel = false;
-        var obj = document.getElementById('change') ; 
+        var obj = document.getElementById('change');
         obj.outerHTML=obj.outerHTML; 
     }
     //创建url路径

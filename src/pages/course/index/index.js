@@ -118,30 +118,7 @@ export default class CourseList extends Vue {
   /**
    * 获取课程列表
    */
-  async getlighthouseList ({ page, pageSize } = {}) {
-    // try {
-    //   const params = {
-    //     page: page || this.pagination.page || 1,
-    //     page_count: pageSize || this.pagination.pageSize,
-    //     is_course: 3
-    //   }
-    //   const form = this.transformData(this.form)
-    //   const data = this.$util.filterParams($.extend(true, {}, params, form || {}))
-    //   const { communitys, total } = await getlighthouseList({
-    //     json_data: JSON.stringify(params),
-    //     globalLoading: true
-    //   })
-    //   this.courses = communitys
-
-    //   // 更新分页信息
-    //   this.pagination.page = params.page
-    //   this.pagination.pageSize = params.page_count
-    //   this.pagination.total = total
-    //   this.pagination.pageCount = Math.ceil(this.pagination.total / this.pagination.pageSize)
-    // } catch (e) {
-    //   this.$message.error(e.message)
-    // }
-  }
+  async getlighthouseList () {}
 
   /**
    * 将表单数据转换成提交接口的数据
@@ -176,12 +153,12 @@ export default class CourseList extends Vue {
   }
 
   // 对每一行表格的样式做判断
-  tableRowClassName({row, rowIndex}) {
+  tableRowClassName({row}) {
     return row.isDeleted === 1 ? 'deleted-row' : 'success-row'
   }
 
   // 当每一行有选择的表头发生变化时
-  onTableHeaderClick (column, event) {
+  onTableHeaderClick (column) {
     switch (column.property) {
       case 'online':
         // this.form.clearFilter()
