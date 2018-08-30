@@ -28,7 +28,7 @@
         align="center"
         prop="course"
         label="课程"
-        width="400">
+        min-width="20%">
         <template slot-scope="scope">
           <div class="flex-box">
             <div class="img-box"> <img :src="scope.row.img" alt="图片加载中..."> </div>
@@ -45,7 +45,7 @@
         align="center"
         prop="online"
         label="是否上线"
-        width="150"
+        min-width="10%"
         :filters="[{ text: '全部', value: 0 }, { text: '上线', value: 1 }, { text: '下线', value: 2 }]"
         :filter-method="handleColumnRangeStatusChange"
         :column-key="'online'"
@@ -60,7 +60,7 @@
         align="center"
         prop="type"
         label="类型"
-        width="100"
+        min-width="10%"
         :filters="[{ text: '未分类', value: 0 }, { text: '产品', value: 1 }, { text: '运营', value: 2 }, { text: '开发', value: 3 }]"
         :column-key="'type'"
         :filter-method="handleColumnRangeStatusChange"
@@ -74,7 +74,7 @@
         align="center"
         prop="range"
         label="排序"
-        width="100"
+        min-width="10%"
         :filters="[{ text: '升序', value: 'asc' }, { text: '降序', value: 'desc' }]"
         :column-key="'range'"
         :filter-multiple="false"
@@ -88,6 +88,7 @@
       <el-table-column
         align="center"
         prop="action"
+        min-width="20%"
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" :disabled="scope.row.isDeleted === 1 ? true : false">编辑</el-button>
