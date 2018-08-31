@@ -6,6 +6,9 @@
       background: #f4f4f4;
     }
   }
+  .action-zone {
+    text-align: right;
+  }
   .el-table__body {
     img {
       width: 74px;
@@ -60,30 +63,30 @@
     margin: 30px 0;
   }
   .zike-popper {
-    position: relative;
+    > .el-icon-question {
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      right: 50px;
+      transform: translateY(-50%);
+      color: #909399 !important;
+    }
+    input {
+      background: unset;
+      border: unset;
+    }
+    .el-input__suffix {
+      right: 20px;
+      padding: 0;
+    }
   }
-  .zike-popper > .el-icon-question {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: -30px;
-    color: #909399 !important;
-  }
-  .zike-poppe .el-icon-arrow-down {
-    transition: all ease .5s;
-  }
-  .zike-popper .rotate {
-    transform: rotate(180deg);
-  }
-  .action-zone {
-    text-align: right;
-  }
-}
-.el-table-filter__list {
-  li {
-    &:first-child{
-      display: none;
+  .zike-table-header-select {
+    padding: 0;
+    .el-input--suffix {
+      padding: 0;
+    }
+    input {
+      text-align: center;
     }
   }
 }

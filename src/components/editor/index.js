@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Editor from './Editor.vue'
 
 Editor.install = function (Vue) {

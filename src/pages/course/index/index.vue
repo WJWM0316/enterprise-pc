@@ -21,13 +21,11 @@
       style="width: 100%"
       :header-row-class-name="'zikebackend-table-header'"
       :row-class-name="tableRowClassName"
-      :select-on-indeterminate="false"
-      @header-click="onTableHeaderClick"
       border>
       <el-table-column
         align="center"
         prop="course"
-        label="课程"
+        label="课 程"
         min-width="20%">
         <template slot-scope="scope">
           <div class="flex-box">
@@ -46,12 +44,9 @@
         prop="online"
         label="是否上线"
         min-width="10%"
-        :filters="[{ text: '全部', value: 0 }, { text: '上线', value: 1 }, { text: '下线', value: 2 }]"
-        :filter-method="handleColumnRangeStatusChange"
-        :column-key="'online'"
-        :filter-multiple="false"
-        :render-header="renderOnlineHeader"
-        filter-placement="bottom-end">
+        :filtered-value="[{label: '全部', value: 'online-全部'}, {label: '上线', value: 'online-上线'}, {label: '下线', value: 'online-下线'}]"
+        filter-placement="上线：在员工端显示，下线：不在员工端显示"
+        :render-header="renderHeader">
         <template slot-scope="scope">
           {{scope.row.online === 1 ? '上线' : '下线'}}
         </template>
@@ -59,13 +54,11 @@
       <el-table-column
         align="center"
         prop="type"
-        label="类型"
+        label="类 型"
         min-width="10%"
-        :filters="[{ text: '未分类', value: 0 }, { text: '产品', value: 1 }, { text: '运营', value: 2 }, { text: '开发', value: 3 }]"
-        :column-key="'type'"
-        :filter-method="handleColumnRangeStatusChange"
-        :filter-multiple="false"
-        filter-placement="bottom-end">
+        :filtered-value="[{label: '全部', value: 'type-全部'}, {label: '产品', value: 'type-产品'}, {label: '技术', value: 'type-技术'}]"
+        filter-placement="类型提示"
+        :render-header="renderHeader">
         <template slot-scope="scope">
           {{scope.row.type === 1 ? '未定义' : scope.row.type === 2 ? '产品' : scope.row.type === 3 ? '设计' : scope.row.type === 4 ? '大佬' : ''}}
         </template>
@@ -73,14 +66,11 @@
       <el-table-column
         align="center"
         prop="range"
-        label="排序"
+        label="排 序"
         min-width="10%"
-        :filters="[{ text: '升序', value: 'asc' }, { text: '降序', value: 'desc' }]"
-        :column-key="'range'"
-        :filter-multiple="false"
-        :filter-method="handleColumnRangeStatusChange"
-        :render-header="renderRangeHeader"
-        filter-placement="bottom-end">
+        :filtered-value="[{label: '全部', value: 'range-全部'}, {label: '升序', value: 'range-升序'}, {label: '降序', value: 'range-降序'}]"
+        filter-placement="排序提示"
+        :render-header="renderHeader">
         <template slot-scope="scope">
           {{scope.row.range}}
         </template>
@@ -89,7 +79,7 @@
         align="center"
         prop="action"
         min-width="20%"
-        label="操作">
+        label="操 作">
         <template slot-scope="scope">
           <el-button type="primary" :disabled="scope.row.isDeleted === 1 ? true : false">编辑</el-button>
           <el-button type="primary" :disabled="scope.row.isDeleted === 1 ? true : false">课节</el-button>

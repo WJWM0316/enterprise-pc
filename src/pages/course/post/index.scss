@@ -2,4 +2,43 @@
 	.limit-width {
 		width: 100%;
 	}
+	.label-belong-tips-icon {
+		position: absolute;
+		top: 50%;
+		left: -100px;
+		transform: translateY(-50%);
+	}
+	.page-navigation {
+		margin: 30px 0;
+		font-size: 16px;
+	}
+	.walk-title {
+		font-size: 16px;
+		margin-bottom: 30px;
+	}
+	.label-qunzhong-ips-icon {
+		position: absolute;
+		top: 50%;
+		left: -75px;
+		transform: translateY(-50%);
+	}
+	.click-item {
+		color: #606266;
+		cursor: pointer;
+		font-size: 14px;
+		margin-right: 20px;
+	}
+	.tutor-box {
+		display: flex;
+	}
+	.search-box {
+		width: 400px;
+	}
+	.tutor-list {
+		flex-grow: 1;
+		overflow: hidden;
+	}
+	.el-checkbox {
+		margin: 10px !important;
+	}
 }

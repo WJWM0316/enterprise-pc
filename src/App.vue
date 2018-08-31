@@ -4,22 +4,13 @@
     <main>
       <!-- 页面需要缓存 -->
       <keep-alive v-if="$route.meta.keepAlive">
-        <transition > <router-view /> </transition>
+        <transition > <router-view class="pages" /> </transition>
       </keep-alive>
       <!-- 页面不需要缓存 -->
       <transition v-else>
-        <router-view />
+        <router-view class="pages" />
       </transition>
     </main>
-    <modal-dialog class="confirm-dialog"
-                  type="confirm"
-                  v-model="confirm.show"
-                  :title="confirm.title"
-                  :show-close="false"
-                  @confirm="confirm.confirm">
-      <h3 class="title" v-text="confirm.contentTitle"></h3>
-      <p class="content" v-text="confirm.content"></p>
-    </modal-dialog>
   </section>
 </template>
 <script>
@@ -27,12 +18,10 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
-import ModalDialog from 'COMPONENTS/dialog/index.vue'
 @Component({
   name: 'App',
   components: {
-    PageAside,
-    ModalDialog
+    PageAside
   },
   /* eslint-disable */
   computed: {
@@ -50,18 +39,7 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   /* eslint-enable */
 })
 
-export default class App extends Vue {
-  // 确认信息弹窗
-  confirm = {
-    show: false,
-    title: '提示',
-    contentTitle: '',
-    content: '',
-    confirm: () => {}
-  }
-
-  created () {}
-}
+export default class App extends Vue {}
 </script>
 <style lang="less">
 #zike-backend {
@@ -105,5 +83,13 @@ ul {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.pages {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100%;
+  width: calc(100% + 17px);
+  position: relative;
+  box-sizing: border-box;
 }
 </style>

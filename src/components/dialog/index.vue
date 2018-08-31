@@ -9,9 +9,7 @@
           <button type="button" class="dialog-close u-btn" @click="handleCloseDialog" v-if="showClose">关闭</button>
         </header>
         <div class="dialog-bd">
-          <slot>
-            <p class="dialog-content" v-text="content"></p>
-          </slot>
+          <slot name="content"></slot>
         </div>
         <footer class="dialog-ft">
             <div class="dialog-ft-btns">
@@ -21,7 +19,7 @@
                 </template>
                 <template v-else-if="type === 'confirm'">
                   <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
-                  <el-button size="large" @click="handleCancel" v-text="cancelText"></el-button>
+                  <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
                 </template>
               </slot>
             </div>
@@ -70,19 +68,21 @@ export default Dialog
     background: $color-white;
     border-radius: 2px;
     animation: kf-fade-in-top 300ms;
+    border: 15px solid rgba(255,0,0,.2)
   }
 
   .dialog-hd {
     flex: 0 0 auto;
     position: relative;
-    padding: 0 20px;
-    background: $color-dark;
+    /*background: $color-dark;*/
     line-height: 20px;
     color: $dialog-header-color;
+    text-indent: 20px;
 
     .dialog-title {
       font-size: 14px;
-      color: $dialog-title-color;
+      color: #040404;
+      font-size: 16px;
     }
 
     .dialog-close {
@@ -100,7 +100,7 @@ export default Dialog
 
   .dialog-bd {
     flex: 1 1 auto;
-    padding: 30px 20px;
+    padding: 20px;
     color: $color-level-two;
 
     .dialog-content {

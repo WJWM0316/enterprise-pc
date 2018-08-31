@@ -1,3 +1,4 @@
+/* eslint-disable */
 import E from 'wangeditor'
 // 用 createMenu 方法创建菜单
 E.createMenu(function (check) {

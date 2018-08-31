@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import WangEditor from 'wangeditor'
-
+/* eslint-disable */
 // 添加自定义按钮
 import './indent'
 import './lineheight'
@@ -9,8 +9,8 @@ import './lineheight'
 @Component({
   name: 'editor',
   props: {
-    content: '', // 编辑器初始内容
-    path: '', // 图片上传路径
+    content: '',
+    path: '',
     height: {
       type: Number,
       default: 400
@@ -35,10 +35,9 @@ export default class Editor extends Vue {
     editor.config.uploadImgFileName = 'img'
     editor.config.uploadImgUrl = this.path
     // 自定义load事件
-    editor.config.uploadImgFns.onload = function (resText, xhr) {
+    editor.config.uploadImgFns.onload = function (resText) {
       const _editor = this
       const res = JSON.parse(resText || '{}')
-      console.log(res)
       if (!res || Object.keys(res).length <= 0) {
         this.$message.error('服务器繁忙')
         return false
@@ -52,11 +51,9 @@ export default class Editor extends Vue {
         img.onload = () => {
           const html = '<img src="' + url + '" alt="' + originalName + '" style="max-width:100%;"/>'
           _editor.command(null, 'insertHtml', html)
-          console.log('已插入图片，地址 ' + url)
           img = null
         }
         img.onerror = function () {
-          console.error('使用返回的结果获取图片，发生错误。请确认以下结果是否正确：' + url)
           img = null
         }
         img.src = url
@@ -107,6 +104,5 @@ export default class Editor extends Vue {
    */
   clear () {
     this.editor.clear()
-    // this.$emit('input', this.editor.$txt.html())
   }
 }
