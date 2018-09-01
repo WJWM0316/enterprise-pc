@@ -3,10 +3,10 @@
     <input type="file" id="change" accept="image" @change="change">
     <img :src="headerImage" alt="">
     <div class="cropper-box-image" v-show="panel">
-      <!-- <div class="mask" :class="{'show-cropper-mask': panel}"></div> -->
+      <div class="mask" :class="{'show-cropper-mask': panel}"></div>
       <div class="container" v-show="panel" style="" :class="{'container-show': panel}">
         <img id="image" :src="url" alt="Picture">
-        <div class="footer">
+        <div class="cropper-footer">
           <p @click="commit">确定</p>
           <p @click="cancel">取消</p>
         </div>
@@ -25,10 +25,13 @@ export default coursePost
 .cropper-box-image {
   background: #fff;
   width: 300px;
-  height: 300px;
-  position: relative;
+  height: 360px;
   padding: 20px;
-  border: 15px solid rgba(255,0,0, .4);
+  border: 15px solid rgba(58, 58, 58, .5);
+  text-align: center;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   .mask {
     position: fixed;
     top: 0;
@@ -36,7 +39,7 @@ export default coursePost
     right: 0;
     bottom: 0;
     z-index: 90;
-    background: rgba(0,0,0,1);
+    background: rgba(0,0,0,.1);
     visibility: hidden;
     transition: all .4s ease;
     opacity: 0;
@@ -55,16 +58,18 @@ export default coursePost
     border-radius: 5px;
     text-align: center;
     display: inline-block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
   }
   .container-show {
     opacity: 1;
     visibility: visible;
+  }
+  .cropper-footer {
+    line-height: 40px;
+    p {
+      margin-bottom: 10px;
+      border-radius: 4px;
+      background: rgba(0,0,0,.1)
+    }
   }
 }
 </style>
