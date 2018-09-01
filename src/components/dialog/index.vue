@@ -9,7 +9,7 @@
           <button type="button" class="dialog-close u-btn" @click="handleCloseDialog" v-if="showClose">关闭</button>
         </header>
         <div class="dialog-bd">
-          <slot name="content"></slot>
+          <slot name="customize-html"></slot>
         </div>
         <footer class="dialog-ft">
             <div class="dialog-ft-btns">

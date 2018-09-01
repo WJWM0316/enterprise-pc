@@ -1,4 +1,9 @@
 #course-post {
+	.quanzhong-row {
+		input{
+			text-align: left;
+		}
+	}
 	.limit-width {
 		width: 100%;
 	}
@@ -6,6 +11,12 @@
 		position: absolute;
 		top: 50%;
 		left: -100px;
+		transform: translateY(-50%);
+	}
+	.label-hidden-tips-icon {
+		position: absolute;
+		top: 50%;
+		left: -155px;
 		transform: translateY(-50%);
 	}
 	.page-navigation {

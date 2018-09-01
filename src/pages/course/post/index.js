@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
+import {  editorRules } from 'CONFIGS/rules'
 
 @Component({
   components: {
@@ -26,13 +27,12 @@ export default class coursePost extends Vue {
   rules = {
     courseName: [
       { required: true, message: '请输入活动名称', trigger: 'blur' }
-      // { pattern: /^[\s　]|[ ]$/gi, message: '不能输入空白符', trigger: 'change' }
     ],
     classification: [
       { required: true, message: '请选择活动区域', trigger: 'change' }
     ],
     introduction: [
-      { required: true, message: '请填写活动形式', trigger: 'blur' }
+      { required: true, message: '请填写社区介绍', trigger: 'click', validator: editorRules.validator }
     ],
     courseType: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
@@ -47,7 +47,7 @@ export default class coursePost extends Vue {
 
   // 确认信息弹窗
   confirm = {
-    show: true,
+    show: false,
     title: '提示',
     contentTitle: '',
     content: '',
@@ -68,7 +68,7 @@ export default class coursePost extends Vue {
   timeout =  null
   checkList = []
   submitForm (formName) {
-    this.$refs[formName].validate((valid) => {
+    this.$refs['form'].validate((valid) => {
       if (valid) {
         // alert('submit!')
       } else {
@@ -151,9 +151,7 @@ export default class coursePost extends Vue {
     }
   }
 
-  handleSelect (item) {
-    console.log(item)
-  }
+  handleSelect (item) {}
 
   mounted () {
     this.restaurants = this.loadAll()

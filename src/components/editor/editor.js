@@ -1,7 +1,7 @@
+/* eslint-disable */
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import WangEditor from 'wangeditor'
-/* eslint-disable */
 // 添加自定义按钮
 import './indent'
 import './lineheight'
@@ -35,7 +35,7 @@ export default class Editor extends Vue {
     editor.config.uploadImgFileName = 'img'
     editor.config.uploadImgUrl = this.path
     // 自定义load事件
-    editor.config.uploadImgFns.onload = function (resText) {
+    editor.config.uploadImgFns.onload = (resText) => {
       const _editor = this
       const res = JSON.parse(resText || '{}')
       if (!res || Object.keys(res).length <= 0) {
@@ -65,7 +65,7 @@ export default class Editor extends Vue {
     editor.create()
 
     // 添加事件监听
-    editor.$txt.on('blur', () => {
+    editor.$txt.on('change', () => {
       this.$emit('blur')
     })
 

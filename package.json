@@ -23,7 +23,7 @@
     "vue-class-component": "^6.2.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "wangeditor": "^2.1.13"
+    "wangeditor": "^2.1.23"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-rc.7",
@@ -45,7 +45,30 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "generator-star-spacing": "off",
+      "no-mixed-spaces-and-tabs": "off",
+      "no-multi-str": "off",
+      "no-multiple-empty-lines": [
+        "off",
+        {
+          "max": 1,
+          "maxEOF": 0
+        }
+      ],
+      "no-new-func": "off",
+      "no-new-object": "off",
+      "no-new-require": "off",
+      "no-tabs": "off",
+      "no-unused-vars": [
+        "warn",
+        {
+          "vars": "all",
+          "args": "none",
+          "ignoreRestSiblings": true
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
