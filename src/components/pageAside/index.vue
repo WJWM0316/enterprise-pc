@@ -2,15 +2,13 @@
   <aside id="page-aside">
     <div>
       <div class="logo">
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <span class="mask"><i class="el-icon-upload"></i></span>
+        <div class="avatar-uploader">
           <img :src="companyLogoUrl" class="avatar">
-        </el-upload>
+          <div class="company-logo" role="button" @click="onSelectFile">
+            <i  class="el-icon-upload"></i>
+            <input type="file" id="uplaod-file" ref="hiddenFile" @change="onFileChange" style="display: none;"/>
+          </div>
+        </div>
       </div>
       <ul>
         <li

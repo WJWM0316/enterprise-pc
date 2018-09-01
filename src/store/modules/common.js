@@ -14,17 +14,22 @@ import {
 // } from 'API/common'
 
 const state = {
+  message: {
+    content: '',
+    type: 'error',
+    duration: 5000,
+  },
   showDialog: false,
   ajaxLoading: false,
   openModal: false // 是否处于打开modal层状态
 }
 
 const mutations = {
-  [SHOW_MSG](state) {
-    state.showDialog = true
+  [SHOW_MSG](state, { content, type = 'error', duration = 5000 }) {
+    state.message = { content, type, duration }
   },
   [HIDE_MSG](state) {
-    state.showDialog = false
+    state.message.content = ''
   },
   [SHOW_AJAX_LOADING] (state) {
     state.ajaxLoading = true
@@ -40,6 +45,7 @@ const mutations = {
 }
 
 const getters = {
+  message: state => state.message,
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal
@@ -60,6 +66,12 @@ const actions = {
   },
   switchOpenModal (store, open) {
     store.commit(SWITCH_OPEN_MODAL, open)
+  },
+  showMsg (store, { content, type, duration }) {
+    store.commit(SHOW_MSG, { content, type, duration })
+  },
+  hideMsg (store) {
+    store.commit(HIDE_MSG)
   }
 }
 

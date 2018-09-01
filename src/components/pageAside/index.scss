@@ -9,7 +9,7 @@
     height: 150px;
     text-align: center;
     position: relative;
-     .avatar-uploader {
+    .avatar-uploader {
       position: absolute;
       top: 0;
       left: 0;
@@ -27,7 +27,12 @@
       left: 50%;
       top: 50%;
       overflow: hidden;
-     }
+      &:hover{
+        .company-logo {
+          opacity: 1;
+        }
+      }
+    }
     img {
       width: 80px;
       height: 80px;
@@ -40,6 +45,31 @@
       position: absolute;
       left: 50%;
       top: 50%;
+    }
+    .company-logo {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+      text-align: center;
+      line-height: 80px;
+      color: #fff;
+      font-size: 20px;
+      background: rgba(0,0,0,.7);
+      opacity: 0;
+      transition: all ease .5s;
+      cursor: pointer;
+      input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   }
   ul {

@@ -1,75 +1,122 @@
 <template>  
-  <div id="demo">
-    <input type="file" id="change" accept="image" @change="change">
-    <img :src="headerImage" alt="">
-    <div class="cropper-box-image" v-show="panel">
-      <div class="mask" :class="{'show-cropper-mask': panel}"></div>
-      <div class="container" v-show="panel" style="" :class="{'container-show': panel}">
-        <img id="image" :src="url" alt="Picture">
-        <div class="cropper-footer">
-          <p @click="commit">确定</p>
-          <p @click="cancel">取消</p>
+  <section id="demo">
+    <div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
+      <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
+        <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
+        <div class="cropper">
+          <div class="cropper-box" id="cropperBox">
+            <img id="uploadPreview" style="width:100px;height:100px;"/>
+          </div>
+          <div class="cropper-res-wrap">
+            <div class="cropper-res" id="cropperRes">
+              <img style="width:100px;height:100px;"/>
+            </div>
+          </div>
+        </div>
+        <div class="cropper-btns-wrap">
+          <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
         </div>
       </div>
     </div>
-  </div>
+    <div class="head-wrap">
+      <div class="head-pic" role="button" @click="onSelectFile">
+        <i  class="el-icon-upload"></i>
+        <input type="file" id="uplaod-file" ref="hiddenFile" @change="onFileChange" style="display: none;"/>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 import coursePost from './index'
 export default coursePost
 </script> 
-<style type="text/css" scoped>
+<style lang="scss" scoped>
 @import "~cropperjs/dist/cropper.min.css"
 </style>
 <style lang="scss">
-.cropper-box-image {
-  background: #fff;
-  width: 300px;
-  height: 360px;
-  padding: 20px;
-  border: 15px solid rgba(58, 58, 58, .5);
-  text-align: center;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  .mask {
+#demo {
+  .cropper-alert-mask {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 90;
-    background: rgba(0,0,0,.1);
+    background: rgba(black, .1);
     visibility: hidden;
-    transition: all .4s ease;
-    opacity: 0;
+    height: 0;
+    transition: all .3s ease;
   }
-  .show-cropper-mask {
+  .cropper-alert-mask.show {
     visibility: visible;
-    opacity: 1;
+    height: 100%;
   }
-  .container {
-    width: 250px;
-    height:250px;
-    z-index: 1000000000000;
+  .cropper-alert {
     opacity: 0;
     transition: all .3s ease;
     visibility: hidden;
+    transform: scale(2);
+    padding: 30px;
+    position: fixed;
+    z-index: 90;
+    top: 50px;
+    left: 50%;
+    margin-left: -300px;
+    background-color: white;
+    -webkit-border-radius: 5px;
     border-radius: 5px;
-    text-align: center;
-    display: inline-block;
-  }
-  .container-show {
-    opacity: 1;
-    visibility: visible;
-  }
-  .cropper-footer {
-    line-height: 40px;
-    p {
-      margin-bottom: 10px;
-      border-radius: 4px;
-      background: rgba(0,0,0,.1)
+    overflow: hidden;
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
     }
+  }
+  .cropper {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    padding: 80px 150px;
+    background-color: #f8f8f8;
+  }
+  .cropper-box {
+    width: 300px;
+    height: 300px;
+  }
+  .cropper-res-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    box-sizing: content-box;
+  }
+  .cropper-res {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    background-color: white;
+  }
+  #cropper-btn{
+    width: 100%;
+    height: 30px;
+    background: white;
+    border: 1px solid #e1e1e1;
+    color: #646464;
+  }
+  .head-pic {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background: rgba(0,0,0,.1);
+    overflow: hidden;
+    line-height: 80px;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 20px;
   }
 }
 </style>
