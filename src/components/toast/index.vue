@@ -17,7 +17,6 @@ import Component from 'vue-class-component'
 	watch: {
     message: {
       handler(val) {
-        console.log(val)
         // 监测 message 的内容，如果非空，就五秒后隐藏
         if (val.content !== '') {
           setTimeout(() => this.hideMsg(), this.message.duration || 5000)

@@ -1,15 +1,12 @@
 <template>
-  <div id="organization">organization</div>
+  <div id="organization">
+  	<link-viewer></link-viewer>
+  </div>
 </template>
 <script>
-
-import Vue from 'vue'
-import Component from 'vue-class-component'
-@Component({})
-
-export default class PageOrganization extends Vue {
-
-}
+import pageOrganization from './index'
+export default pageOrganization
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import './index.scss'
 </style>

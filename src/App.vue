@@ -62,7 +62,6 @@ export default class App extends Vue {
     height: 100vh;
     background: rgba(0,0,0,.05);
     position: relative;
-    overflow: hidden;
   }
   > main {
     flex-grow: 1;

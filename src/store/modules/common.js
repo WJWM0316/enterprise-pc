@@ -72,7 +72,8 @@ const actions = {
   },
   hideMsg (store) {
     store.commit(HIDE_MSG)
-  }
+  },
+  getUploadToken(store) {}
 }
 
 export default {

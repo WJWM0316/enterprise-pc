@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
 import store from '@/store'
 
-Vue.use(VueAxios, axios)
+Vue.use(axios)
 
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://demo2016.thetiger.com.cn'

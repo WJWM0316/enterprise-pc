@@ -2,14 +2,9 @@
   <div id="user">user</div>
 </template>
 <script>
-
-import Vue from 'vue'
-import Component from 'vue-class-component'
-@Component({})
-
-export default class PageUser extends Vue {
-
-}
+import pageUser from './index'
+export default pageUser
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import './index.scss'
 </style>

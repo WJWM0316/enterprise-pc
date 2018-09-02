@@ -1,9 +1,14 @@
 #page-aside {
-  > div {
+  > section {
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    width: 217px;
+    overflow: hidden;
+    width: 200px;
+    > div {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      width: 217px;
+    }
   }
   .logo {
     height: 150px;

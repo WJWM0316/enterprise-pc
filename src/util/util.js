@@ -3,6 +3,7 @@
  */
 import config from '@/configs'
 import moment from 'moment'
+/* eslint-disable */
 class Util {
 
   /**

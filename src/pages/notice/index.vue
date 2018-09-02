@@ -1,15 +1,12 @@
 <template>
-  <div id="notice">notice</div>
+  <div id="notice">
+  	<video-viewer></video-viewer>
+  </div>
 </template>
 <script>
-
-import Vue from 'vue'
-import Component from 'vue-class-component'
-@Component({})
-
-export default class PageNotice extends Vue {
-
-}
+import pageNotice from './index'
+export default pageNotice
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import './index.scss'
 </style>

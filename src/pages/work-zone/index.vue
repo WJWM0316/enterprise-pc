@@ -1,15 +1,12 @@
 <template>
-  <div id="work-zone">work-zone</div>
+  <div id="work-zone">
+  	<file-viewer></file-viewer>
+  </div>
 </template>
 <script>
-
-import Vue from 'vue'
-import Component from 'vue-class-component'
-@Component({})
-
-export default class pageWorkZone extends Vue {
-
-}
+import pageWorkZone from './index'
+export default pageWorkZone
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import './index.scss'
 </style>

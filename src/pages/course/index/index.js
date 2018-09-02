@@ -100,9 +100,7 @@ export default class CourseList extends Vue {
 
     // 定义下拉的子节点
     const childNodes = column.filteredValue.map(item => {
-      return h(
-        'el-option',
-        {
+      return h('el-option', {
           props: {
             label: item.label,
             value: item.value
@@ -112,14 +110,12 @@ export default class CourseList extends Vue {
     })
 
     // 返回最终的domo节点
-    return h(
-      'span',
+    return h('span',
       {
         class: 'zike-popper'
       },
       [
-        h(
-          'el-select',
+        h('el-select',
           {
             class: 'zike-table-header-select',
             props:
@@ -133,8 +129,7 @@ export default class CourseList extends Vue {
           },
           childNodes
         ),
-        h(
-          'el-tooltip',
+        h('el-tooltip',
           {
             props:
             {
@@ -143,14 +138,12 @@ export default class CourseList extends Vue {
             }
           },
           [
-            h(
-              'i',
+            h('i',
               {
                 class: 'el-icon-question'
               }
             ),
-            h(
-              'div',
+            h('div',
               {
                 props:
                 {

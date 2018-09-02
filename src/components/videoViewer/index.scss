@@ -1,0 +1,45 @@
+#video-viewer {
+	background: #fff;
+  width: 560px;
+  position: relative;
+  border: 1px solid #ebeef5;
+  .header {
+    position: absolute;
+    height: 50px;
+    line-height: 50px;
+    text-align: right;
+    width: 100%;
+    z-index: 2;
+    .btn-close {
+      width: 30px;
+      line-height: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: transparent;
+      display: inline-block;
+      text-align: center;
+      margin-right: 10px;
+      font-size: 20px;
+      transition: all ease .4s;
+      cursor: pointer;
+      color: #666;
+      &:hover {
+        background: red;
+        color: #fff;
+      };
+    }
+  }
+  .content {
+  	video {
+  		width: 100%;
+  		display: block;
+  	}
+  }
+  .footer {
+  	text-align: center;
+  	padding: 20px;
+  	button {
+  		width: 150px;
+  	}
+  }
+}
