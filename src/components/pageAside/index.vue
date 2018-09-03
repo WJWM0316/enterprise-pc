@@ -55,6 +55,7 @@ export default PageAsise
 </style>
 <!-- 弹窗需要的样式 -->
 <style lang="scss">
+@import "~cropperjs/dist/cropper.min.css";
 #page-aside {
   .cropper-alert-mask {
     position: fixed;

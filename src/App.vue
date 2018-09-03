@@ -4,10 +4,10 @@
     <main>
       <!-- 页面需要缓存 -->
       <keep-alive v-if="$route.meta.keepAlive">
-        <transition > <router-view class="pages" /> </transition>
+        <transition name="fade" > <router-view class="pages" /> </transition>
       </keep-alive>
       <!-- 页面不需要缓存 -->
-      <transition v-else>
+      <transition name="fade" v-else>
         <router-view class="pages" />
       </transition>
     </main>
@@ -81,15 +81,16 @@ ul {
   padding: 0;
   list-style: none;
 }
-.fade-enter-active,
+/*.fade-enter-active,
 .fade-leave-active {
-  transition: opacity .4s;
+  transition: all ease .1s;
+  opacity: 1;
 }
 
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
+}*/
 .pages {
   overflow-x: hidden;
   overflow-y: scroll;

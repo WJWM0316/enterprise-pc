@@ -29,7 +29,7 @@
         prop="courseType"
         class="limit-width"
         >
-          <span class="click-item">点击选择</span>
+          <span class="click-item" @click="openModal('courseType')">点击选择</span>
           <span v-show="form.courseType">已选择：【产品-阿杰】</span>
       </el-form-item>
       
@@ -39,7 +39,7 @@
         prop="tutor"
         class="limit-width"
         >
-          <span class="click-item">点击选择</span>
+          <span class="click-item" @click="openModal('tutor')">点击选择</span>
           <span v-show="form.tutor">已选择：【产品-阿杰】</span>
       </el-form-item>
 
@@ -55,7 +55,7 @@
             placement="top-start">
             <i class="el-icon-question label-belong-tips-icon"></i>
           </el-tooltip>
-          <span class="click-item">点击选择</span>
+          <span class="click-item" @click="openModal('organization')">点击选择</span>
           <span v-show="form.organization">已选择：【产品-阿杰】</span>
       </el-form-item>
 
@@ -66,9 +66,7 @@
         label="课程封面"
         prop="classification"
         class="limit-width"
-        >
-          <span class="click-item">点击选择</span>
-          <span v-show="form.classification">已选择：【产品-阿杰】</span>
+        > <span><i class="el-icon-upload"></i> 选择封面</span>
       </el-form-item>
       
       <el-form-item
@@ -77,11 +75,11 @@
         >
           <editor
             class="editor"
-            :content="communityIntroEditor.content"
+            :content="ContentEditor.content"
             v-model="form.introduction"
-            :path="communityIntroEditor.path"
-            :height="communityIntroEditor.height"
-            @blur="handleCommunityIntroEditorBlur" />
+            :path="ContentEditor.path"
+            :height="ContentEditor.height"
+            @blur="handleContentEditorBlur" />
       </el-form-item>
       
       <!-- 选择必修学员 -->
@@ -90,8 +88,8 @@
         prop="tutor"
         class="limit-width"
         >
-          <span class="click-item">点击选择</span>
-          <span v-show="form.tutor">已选择：【产品-阿杰】</span>
+          <span class="click-item" @click="openModal('menberCompulsory')">点击选择</span>
+          <span v-show="form.menberCompulsory">已选择：【产品-阿杰】</span>
       </el-form-item>
 
       <!-- 选择不可见学员 -->
@@ -107,8 +105,8 @@
             >
               <i class="el-icon-question label-hidden-tips-icon"></i>
           </el-tooltip>
-          <span class="click-item">点击选择</span>
-          <span v-show="form.organization">已选择：【产品-阿杰】</span>
+          <span class="click-item" @click="openModal('menberInvisible')">点击选择</span>
+          <span v-show="form.menberInvisible">已选择：【产品-阿杰】</span>
       </el-form-item>
 
       <div class="walk-title">其他设置</div>
@@ -139,16 +137,15 @@
 
       <!-- 确认提交 -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm">立即创建</el-button>
+        <el-button type="primary" @click="submitForm" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
-    class="confirm-dialog"
-    v-model="confirm.show"
-    :title="confirm.title"
-    :show-close="confirm.showClose"
-    :confirm-text="confirm.confirmText"
-    @confirm="confirm.confirm"
+    v-model="models.show"
+    :title="models.title"
+    :show-close="models.showClose"
+    :confirm-text="models.confirmText"
+    @confirm="confirm"
     >
       <div slot="customize-html">
         <div class="tutor-box">
@@ -173,15 +170,9 @@
           </div>
         </div>
         <div style="margin-top: 10px;">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox
-              label="复选框 A"
-              v-for="item in 30"
-              :key="item"
-              >
-                备选项
-            </el-checkbox>
-          </el-checkbox-group>
+          <el-radio-group v-model="checkList">
+            <el-radio :label="item" v-for="item in 30" :key="item">学员</el-radio>
+          </el-radio-group>
         </div>
       </div>
   </modal-dialog>

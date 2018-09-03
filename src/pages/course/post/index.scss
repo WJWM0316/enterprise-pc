@@ -1,4 +1,7 @@
 #course-post {
+	.el-form {
+		margin-bottom: 50px;
+	}
 	.quanzhong-row {
 		input{
 			text-align: left;
@@ -49,7 +52,7 @@
 		flex-grow: 1;
 		overflow: hidden;
 	}
-	.el-checkbox {
+	.el-radio {
 		margin: 10px !important;
 	}
 }

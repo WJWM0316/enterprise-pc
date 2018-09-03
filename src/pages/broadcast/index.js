@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import ImagesViewer from 'COMPONENTS/imagesViewer'
+import ImagesViewer from 'COMPONENTS/imagesViewer/index.vue'
 
 @Component({
   components: {

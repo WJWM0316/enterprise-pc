@@ -47,7 +47,8 @@ export default class PageAside extends Vue {
   onFileChange(e) {
     const files = e.target.files
     const len = files.length
-    const FILE_NAME = files[0].name
+    const fileName = files[0].name
+    const ext = this.getFileExt(fileName)
 
     // 允许上传文件尺寸上限 1M
     const ALLOW_MAX_SIZE = 1024 * 1024
@@ -58,12 +59,10 @@ export default class PageAside extends Vue {
       'jpeg'
     ]
 
-    const EXT = this.getFileExt(FILE_NAME)
-
     // 文件数量一定要判断
     if (len > 0) {
       const file = files.item(0)
-      if (ALLOW_FILE_TYPE.indexOf(EXT) === -1) {
+      if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
         this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 10000 })
       } else if (file.size > ALLOW_MAX_SIZE) {
         this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 10000 })

@@ -8,19 +8,38 @@ import {  editorRules } from 'CONFIGS/rules'
   components: {
     ModalDialog,
     Editor
+  },
+  watch: {
+    checkList: {
+      handler(val) {
+        if (val) {
+          this.currentModelsSelected = {
+            label: '学元',
+            value: val
+          }
+        }
+      },
+      immediate: true
+    }
   }
 })
 export default class coursePost extends Vue {
 
   form = {
+    // 课程名
     courseName: '',
+    // 课程分类
     classification: '',
+    // 课程类型
     courseType: '',
-    resource: '',
     introduction: '',
+    // 课程导师
     tutor: '',
+    // 课程是否上线 1->上线 0->下线
     online: 1,
+    // 课程所属组织
     organization: '',
+    // 排序
     sort: ''
   }
 
@@ -46,28 +65,38 @@ export default class coursePost extends Vue {
   }
 
   // 确认信息弹窗
-  confirm = {
+  models = {
     show: false,
     title: '提示',
     contentTitle: '',
     content: '',
-    confirm: () => {},
-    showClose: false,
+    showClose: true,
     confirmText: '提交'
   }
 
+  // 当前模型狂选中的对象
+  currentModelsSelected = {
+    label: '',
+    value: ''
+  }
+
   // 社区介绍富文本编辑器
-  communityIntroEditor = {
+  ContentEditor = {
     content: '',
     // path: `${config.host}/admin/common/editor/uploadImg`,
     height: 350
   }
 
+  // 创建按钮默认可以点击
+  submitBtnClick = true
+  submitBtnTxt = '立即创建'
   restaurants = []
   state4 = ''
   timeout =  null
   checkList = []
-  submitForm (formName) {
+  submitForm(formName) {
+    this.submitBtnClick = !this.submitBtnClick
+    this.submitBtnTxt = '正在提交'
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // alert('submit!')
@@ -78,11 +107,11 @@ export default class coursePost extends Vue {
     })
   }
 
-  handleCommunityIntroEditorBlur () {
+  handleContentEditorBlur() {
     this.$refs.form.validateField('introduction')
   }
 
-  loadAll () {
+  loadAll() {
     return [
       { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
       { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
@@ -135,7 +164,7 @@ export default class coursePost extends Vue {
     ]
   }
 
-  querySearchAsync (queryString, cb) {
+  querySearchAsync(queryString, cb) {
     var restaurants = this.restaurants
     var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
 
@@ -145,15 +174,47 @@ export default class coursePost extends Vue {
     }, 3000 * Math.random())
   }
 
-  createStateFilter (queryString) {
+  createStateFilter(queryString) {
     return (state) => {
       return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
     }
   }
 
-  handleSelect (item) {}
+  handleSelect(item) {}
 
-  mounted () {
+  mounted() {
     this.restaurants = this.loadAll()
+    // const returnValue = 'Are you sure you want to lose unsaved changes?'
+    // window.onbeforeunload = () => {
+    //   if (!this.changedFiles.length) return undefined
+    //   return returnValue
+    // }
+  }
+
+  openModal(type) {
+    switch(type) {
+      case 'courseType':
+        this.models.title = '选择分类'
+        break
+      case 'tutor':
+        this.models.title = '选择导师'
+        break
+      case 'organization':
+        this.models.title = '选择组织'
+        break
+      case 'menberCompulsory':
+         this.models.title = '选择必修学员'
+        break
+      case 'menberInvisible':
+        this.models.title = '选择不可见成员'
+        break
+      default:
+        break
+    }
+    this.models.show = true
+  }
+
+  confirm() {
+    console.log(11111111)
   }
 }
