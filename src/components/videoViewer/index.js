@@ -22,7 +22,7 @@ import Component from 'vue-class-component'
     }
   }
 })
-export default class VideoViewer extends Vue {
+export default class ComponentVideoViewer extends Vue {
 
 	close() {
     this.show = !this.show

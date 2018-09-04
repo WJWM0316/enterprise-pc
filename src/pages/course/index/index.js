@@ -146,10 +146,8 @@ export default class CourseList extends Vue {
    */
   init () {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
-    /* eslint-disable */
-    this.form = $.extend(true, {}, this.initForm, form || {})
-    this.pagination = $.extend(true, {}, this.pagination, pagination || {})
-    /* eslint-enable */
+    this.form = Object.assign(this.initForm, form || {})
+    this.pagination = Object.assign(this.pagination, pagination || {})
     // this.getCourseList()
   }
 
@@ -169,4 +167,5 @@ export default class CourseList extends Vue {
   addCourse () {
     this.$router.push({ name: 'coursePost'})
   }
+
 }

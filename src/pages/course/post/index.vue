@@ -152,7 +152,7 @@
           <div class="search-box">
             <el-autocomplete
               v-model="state4"
-              :fetch-suggestions="querySearchAsync"
+              :fetch-suggestions="debounce"
               placeholder="请输入内容"
               @select="handleSelect"
               style="margin-top: 5px;" 

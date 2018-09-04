@@ -10,16 +10,8 @@ import Swiper from 'swiper'
       default: true
     }
   }
-  // watch: {
-  //   show: {
-  //     handler (show) {
-  //       this.visiable = show
-  //     },
-  //     immediate: true
-  //   }
-  // }
 })
-export default class imagesViewer extends Vue {
+export default class ComponentImagesViewer extends Vue {
   mounted() {
     const galleryTop = new Swiper('.gallery-top', {
       spaceBetween: 10,

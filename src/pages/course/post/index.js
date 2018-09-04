@@ -94,6 +94,7 @@ export default class coursePost extends Vue {
   state4 = ''
   timeout =  null
   checkList = []
+
   submitForm(formName) {
     this.submitBtnClick = !this.submitBtnClick
     this.submitBtnTxt = '正在提交'
@@ -164,9 +165,10 @@ export default class coursePost extends Vue {
     ]
   }
 
-  querySearchAsync(queryString, cb) {
-    var restaurants = this.restaurants
-    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
+  // 防抖函数
+  debounce(queryString, cb) {
+    const restaurants = this.restaurants
+    const results = queryString ? restaurants.filter(this.handleSearch(queryString)) : restaurants
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
@@ -174,21 +176,18 @@ export default class coursePost extends Vue {
     }, 3000 * Math.random())
   }
 
-  createStateFilter(queryString) {
+  // 获取搜索数据
+  handleSearch(queryString) {
     return (state) => {
       return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
     }
   }
 
+  // 选择搜索到的数据
   handleSelect(item) {}
 
   mounted() {
     this.restaurants = this.loadAll()
-    // const returnValue = 'Are you sure you want to lose unsaved changes?'
-    // window.onbeforeunload = () => {
-    //   if (!this.changedFiles.length) return undefined
-    //   return returnValue
-    // }
   }
 
   openModal(type) {

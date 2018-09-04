@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import Dialog from './dialog'
-export default Dialog
+import ComponentDialog from './index'
+export default ComponentDialog
 </script>
 
 <style lang="scss" scoped>
@@ -83,14 +83,15 @@ export default Dialog
   .dialog-hd {
     flex: 0 0 auto;
     position: relative;
-    line-height: 20px;
+    line-height: 60px;
     color: $dialog-header-color;
     text-indent: 20px;
-
+    background: rgba(0,0,0,.05);
     .dialog-title {
       font-size: 14px;
       color: #040404;
       font-size: 16px;
+      margin: 0;
     }
 
     .dialog-close {

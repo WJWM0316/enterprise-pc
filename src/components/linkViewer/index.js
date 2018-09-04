@@ -28,7 +28,7 @@ import Clipboard from 'clipboard'
   },
   /* eslint-enable */
 })
-export default class VideoViewer extends Vue {
+export default class ComponentLinkViewer extends Vue {
 
 	close() {
     this.show = !this.show

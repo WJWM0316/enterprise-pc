@@ -25,7 +25,7 @@ import Component from 'vue-class-component'
     }
   }
 })
-export default class TableList extends Vue {
+export default class ComponentTableList extends Vue {
 
   total = 50
 

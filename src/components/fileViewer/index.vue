@@ -13,9 +13,38 @@
   </div>
 </template>
 <script>
-import VideoViewer from './index'
-export default VideoViewer
+import ComponentVideoViewer from './index'
+export default ComponentVideoViewer
 </script>
 <style lang="scss" scoped>
-@import './index.scss'
+#file-viewer {
+  background: #fff;
+  width: 560px;
+  position: relative;
+  border: 1px solid #ebeef5;
+  .content {
+    margin: 20px 20px 0 20px;
+    .inner {
+      padding: 10px;
+      border: 1px solid #ebeef5;
+    }
+    .filename {
+      margin: 0;
+      line-height: 1;
+      color: #666;
+      font-size: 14px;
+    }
+    .filesize {
+      margin: 0;
+      line-height: 1;
+      color: #666;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+  }
+  .footer {
+    text-align: right;
+    padding: 20px;
+  }
+}
 </style>
