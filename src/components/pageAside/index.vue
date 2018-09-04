@@ -64,7 +64,7 @@ export default PageAsise
     right: 0;
     bottom: 0;
     z-index: 90;
-    background: rgba(black, .1);
+    background: rgba(black, .5);
     visibility: hidden;
     height: 0;
     transition: all .3s ease;

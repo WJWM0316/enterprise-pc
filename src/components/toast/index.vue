@@ -52,6 +52,7 @@ export default class PageToast extends Vue {}
     opacity: .7;
     text-align: center;
     line-height: 50px;
+    z-index: 10000000
   }
   .toast-enter,
   .toast-leave {

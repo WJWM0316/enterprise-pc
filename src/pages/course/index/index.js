@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import TableList from 'COMPONENTS/list/index.vue'
 
 @Component({
   name: 'lighthouse-list',
@@ -10,6 +11,9 @@ import Component from 'vue-class-component'
       },
       immediate: true
     }
+  },
+   components: {
+    TableList
   }
 })
 export default class CourseList extends Vue {
@@ -23,6 +27,82 @@ export default class CourseList extends Vue {
   select = ''
 
   total = 50
+
+  // 表格字段
+  fields = [
+    {
+      prop: 'courseName',
+      label: '课 程',
+      align: 'center'
+    },
+    {
+      prop: 'online',
+      label: '是否上线',
+      align: 'center',
+      filteredValue:
+      [
+        {
+          label: '全部',
+          value: 'online-全部'
+        },
+        {
+          label: '上线',
+          value: 'online-上线'
+        },
+        {
+          label: '下线',
+          value: 'online-下线'
+        }
+      ],
+      filterPlacement: '是否上线的提示文案'
+    },
+    {
+      prop: 'type',
+      label: '类 型',
+      align: 'center',
+      filteredValue:
+      [
+        {
+          label: '全部',
+          value: 'type-全部'
+        },
+        {
+          label: '上线',
+          value: 'type-上线'
+        },
+        {
+          label: '下线',
+          value: 'type-下线'
+        }
+      ],
+      filterPlacement: '类型的提示文案'
+    },
+    {
+      prop: 'sort',
+      label: '权 重',
+      align: 'center',
+      filteredValue:
+      [
+        {
+          label: '全部',
+          value: 'sort-全部'
+        },
+        {
+          label: '上线',
+          value: 'sort-上线'
+        },
+        {
+          label: '下线',
+          value: 'sort-下线'
+        }
+      ],
+      filterPlacement: '权重的提示文案'
+    },
+    {
+      prop: 'actions',
+      label: '操 作'
+    }
+  ]
 
   // 搜索表单
   form = {
@@ -48,7 +128,7 @@ export default class CourseList extends Vue {
     for (let i = 0; i < 20; i++) {
       this.courseList.push({
         date: '2016-05-03',
-        name: '王小虎',
+        courseName: '王小虎',
         address: '上海市普陀区金沙江路 1516 弄',
         tag: 0,
         course: '公开卡',
@@ -70,105 +150,23 @@ export default class CourseList extends Vue {
     this.form = $.extend(true, {}, this.initForm, form || {})
     this.pagination = $.extend(true, {}, this.pagination, pagination || {})
     /* eslint-enable */
-    // this.getlighthouseList()
+    // this.getCourseList()
   }
 
   /**
    * 获取课程列表
    */
-  async getlighthouseList () {}
+  async getCourseList () {}
 
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
     this.setPathQuery(this.form)
-    this.getlighthouseList()
+    this.getCourseList()
   }
 
   // 添加课程-跳转
   addCourse () {
     this.$router.push({ name: 'coursePost'})
-  }
-
-  // 对每一行表格的样式做判断
-  tableRowClassName({row}) {
-    return row.isDeleted === 1 ? 'deleted-row' : 'success-row'
-  }
-
-  // 重新定义table的标题
-  renderHeader (h, { column }) {
-
-    // 定义下拉的子节点
-    const childNodes = column.filteredValue.map(item => {
-      return h('el-option', {
-          props: {
-            label: item.label,
-            value: item.value
-          }
-        }
-      )
-    })
-
-    // 返回最终的domo节点
-    return h('span',
-      {
-        class: 'zike-popper'
-      },
-      [
-        h('el-select',
-          {
-            class: 'zike-table-header-select',
-            props:
-            {
-              value: column.label
-            },
-            on:
-            {
-              change: this.change
-            }
-          },
-          childNodes
-        ),
-        h('el-tooltip',
-          {
-            props:
-            {
-              content: column.filterPlacement,
-              placement: 'top'
-            }
-          },
-          [
-            h('i',
-              {
-                class: 'el-icon-question'
-              }
-            ),
-            h('div',
-              {
-                props:
-                {
-                  slot: 'content'
-                }
-              },
-              column.filterPlacement
-            )
-          ]
-        )
-      ]
-    )
-  }
-
-  // 点击分页按钮
-  handleCurrentPageChange (page) {
-    this.setPathQuery({page: page})
-  }
-
-  change (val) {
-    const keyValue = val.split('-')
-    this.$router.push({
-      query: {
-        [keyValue[0]]: [keyValue[1]]
-      }
-    })
   }
 }

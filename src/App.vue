@@ -20,7 +20,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
-
+import 'ICONFONT/iconfont.css'
 @Component({
   name: 'App',
   /* eslint-disable */

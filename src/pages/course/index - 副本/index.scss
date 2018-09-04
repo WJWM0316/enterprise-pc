@@ -59,4 +59,34 @@
   .header {
     margin: 30px 0;
   }
+  .el-pagination {
+    margin: 30px 0;
+  }
+  .zike-popper {
+    > .el-icon-question {
+      display: inline-block;
+      position: absolute;
+      top: 44%;
+      right: 25%;
+      transform: translateY(-50%);
+      color: #909399 !important;
+    }
+    input {
+      background: unset;
+      border: unset;
+    }
+    .el-input__suffix {
+      right: 20px;
+      padding: 0;
+    }
+  }
+  .zike-table-header-select {
+    padding: 0;
+    .el-input--suffix {
+      padding: 0;
+    }
+    input {
+      text-align: center;
+    }
+  }
 }

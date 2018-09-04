@@ -214,7 +214,5 @@ export default class coursePost extends Vue {
     this.models.show = true
   }
 
-  confirm() {
-    console.log(11111111)
-  }
+  confirm() {}
 }

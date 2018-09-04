@@ -1,31 +1,30 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import TableList from 'COMPONENTS/list/index.vue'
 
 @Component({
-  name: 'table-list',
-  props: {
-    // 列表数据
-    list: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    // 是否可多选
-    selectable: {
-      type: Boolean,
-      default: false
-    },
-    // 列表字段信息
-    fields: {
-      type: Array,
-      default () {
-        return []
-      }
+  name: 'lighthouse-list',
+  watch: {
+    '$route': {
+      handler () {
+        this.init()
+      },
+      immediate: true
     }
+  },
+   components: {
+    TableList
   }
 })
-export default class TableList extends Vue {
+export default class CourseList extends Vue {
+
+  // 表单数据
+  courseList = []
+
+  input3 = ''
+  input4 = ''
+  input5 = ''
+  select = ''
 
   total = 50
 
@@ -47,6 +46,54 @@ export default class TableList extends Vue {
     total: 0
   }
 
+  searchType = '1'
+
+  created () {
+    for (let i = 0; i < 20; i++) {
+      this.courseList.push({
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄',
+        tag: 0,
+        course: '公开卡',
+        online: 0,
+        type: 4,
+        range: 'desc',
+        img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
+        isDeleted: 0,
+        sort: 'desc'
+      })
+    }
+  }
+  /**
+   * 初始化表单、分页页面数据
+   */
+  init () {
+    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
+    /* eslint-disable */
+    this.form = $.extend(true, {}, this.initForm, form || {})
+    this.pagination = $.extend(true, {}, this.pagination, pagination || {})
+    /* eslint-enable */
+    // this.getlighthouseList()
+  }
+
+  /**
+   * 获取课程列表
+   */
+  async getlighthouseList () {}
+
+  // 点击搜索时触发
+  handleSearch () {
+    this.pagination.page = 1
+    this.setPathQuery(this.form)
+    this.getlighthouseList()
+  }
+
+  // 添加课程-跳转
+  addCourse () {
+    this.$router.push({ name: 'coursePost'})
+  }
+
   // 对每一行表格的样式做判断
   tableRowClassName({row}) {
     return row.isDeleted === 1 ? 'deleted-row' : 'success-row'
@@ -54,10 +101,6 @@ export default class TableList extends Vue {
 
   // 重新定义table的标题
   renderHeader (h, { column }) {
-
-    if (!column.filterPlacement) {
-      return h('span',column.label, {})
-    }
 
     // 定义下拉的子节点
     const childNodes = column.filteredValue.map(item => {
