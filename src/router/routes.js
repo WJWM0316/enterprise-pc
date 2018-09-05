@@ -3,7 +3,7 @@ export const routes = [
     path: '/',
     // 默认进入控制台
     redirect: {
-      name: 'dashboard'
+      name: 'login'
     },
     meta: {
       useNav: false
@@ -57,6 +57,15 @@ export const routes = [
         path: 'post',
         name: 'coursePost',
         component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'course'
+        }
+      },
+      {
+        path: 'update/:id',
+        name: 'courseUpdate',
+        component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
         meta: {
           keepAlive: false,
           module: 'course'
@@ -187,6 +196,17 @@ export const routes = [
       useNav: false,
       icon: 'el-icon-circle-close',
       module: 'user'
+    }
+  },
+  // 登陆模块
+  {
+    path: '/login',
+    name: 'login',
+    title: '登陆',
+    component: () => import(/* webpackChunkName: "login" */ '@/pages/auth/login.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: false
     }
   }
 ]

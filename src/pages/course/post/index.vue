@@ -2,7 +2,7 @@
 <div id="course-post">
   <el-breadcrumb separator=">" class="page-navigation">
     <el-breadcrumb-item :to="{ name: 'course' }">课程管理</el-breadcrumb-item>
-    <el-breadcrumb-item>新建课程</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建课程' : '更新课程'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
@@ -89,7 +89,7 @@
         class="limit-width"
         >
           <span class="click-item" @click="openModal('menberCompulsory')">点击选择</span>
-          <span v-show="form.menberCompulsory">已选择：【产品-阿杰】</span>
+          <span v-show="form.menberCompulsory && form.menberCompulsory.length > 0">已选择{{form.menberCompulsory.length}}名学员</span>
       </el-form-item>
 
       <!-- 选择不可见学员 -->
@@ -106,7 +106,7 @@
               <i class="el-icon-question label-hidden-tips-icon"></i>
           </el-tooltip>
           <span class="click-item" @click="openModal('menberInvisible')">点击选择</span>
-          <span v-show="form.menberInvisible">已选择：【产品-阿杰】</span>
+          <span v-show="form.menberInvisible && form.menberInvisible.length > 0">已选择{{form.menberInvisible.length}}名学员</span>
       </el-form-item>
 
       <div class="walk-title">其他设置</div>
@@ -137,7 +137,7 @@
 
       <!-- 确认提交 -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -151,10 +151,9 @@
         <div class="tutor-box">
           <div class="search-box">
             <el-autocomplete
-              v-model="state4"
               :fetch-suggestions="debounce"
               placeholder="请输入内容"
-              @select="handleSelect"
+              @select="handleSelect(models.currentModalName)"
               style="margin-top: 5px;" 
               />
           </div>
@@ -170,9 +169,26 @@
           </div>
         </div>
         <div style="margin-top: 10px;">
-          <el-radio-group v-model="checkList">
-            <el-radio :label="item" v-for="item in 30" :key="item">学员</el-radio>
+          <!-- 课程类型 -->
+          <el-radio-group v-model="selectedModal.courseType" v-show="models.currentModalName==='courseType'">
+            <el-radio :label="courseItem" v-for="(courseItem, courseIndex) in courseTypeList" :key="courseIndex">{{courseItem.label}}</el-radio>
           </el-radio-group>
+          <!-- 导师 -->
+          <el-radio-group v-model="selectedModal.tutor" v-show="models.currentModalName==='tutor'">
+            <el-radio :label="tutorItem" v-for="(tutorItem, tutorIndex) in tutorList" :key="tutorIndex">{{tutorItem.label}}</el-radio>
+          </el-radio-group>
+          <!-- 组织 -->
+          <el-checkbox-group v-model="selectedModal.organization" v-show="models.currentModalName==='organization'">
+            <el-checkbox :label="organizationItem.label" v-for="(organizationItem, organizationIndex) in organizationList" :key="organizationIndex"></el-checkbox>
+          </el-checkbox-group>
+          <!-- 必修学员 -->
+          <el-checkbox-group v-model="selectedModal.menberCompulsory" v-show="models.currentModalName==='menberCompulsory'">
+            <el-checkbox :label="menberCompulsoryItem.label" v-for="(menberCompulsoryItem, menberCompulsoryIndex) in menberCompulsoryList" :key="menberCompulsoryIndex"></el-checkbox>
+          </el-checkbox-group>
+          <!-- 不可见成员 -->
+          <el-checkbox-group v-model="selectedModal.menberInvisible" v-show="models.currentModalName==='menberInvisible'">
+            <el-checkbox :label="menberInvisibleItem.label" v-for="(menberInvisibleItem, menberInvisibleIndex) in menberInvisibleList" :key="menberInvisibleIndex"></el-checkbox>
+          </el-checkbox-group>
         </div>
       </div>
   </modal-dialog>

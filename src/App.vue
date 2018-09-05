@@ -1,6 +1,6 @@
 <template>
   <section id="zike-backend">
-    <page-aside v-if="shouldFloatingBoxBeShown" />
+    <page-aside v-if="!shouldFloatingBoxShown()" />
     <main>
       <!-- 页面需要缓存 -->
       <keep-alive v-if="$route.meta.keepAlive">
@@ -23,11 +23,6 @@ import ZikeToast from 'COMPONENTS/toast'
 import 'ICONFONT/iconfont.css'
 @Component({
   name: 'App',
-  /* eslint-disable */
-  methods: {
-    ...mapActions(['showMsg'])
-  },
-  /* eslint-enable */
   components: {
     PageAside,
     ZikeToast
@@ -36,15 +31,11 @@ import 'ICONFONT/iconfont.css'
 
 export default class App extends Vue {
 
-  shouldFloatingBoxBeShown() {
-    // 白名单模式，下面路由不显示管理页面的侧边栏
+  // 白名单模式，下面路由不显示管理页面的侧边栏
+  shouldFloatingBoxShown() {
     return [
-      'demo'
-    ].indexOf(this.$route.flag) !== -1
-  }
-
-  created() {
-    this.showMsg({ content: '自定义toast弹窗哦~', type: 'success', duration: 10000 })
+      '/login'
+    ].includes(this.$route.path)
   }
 }
 </script>

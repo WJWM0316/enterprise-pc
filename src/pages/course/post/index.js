@@ -8,19 +8,6 @@ import {  editorRules } from 'CONFIGS/rules'
   components: {
     ModalDialog,
     Editor
-  },
-  watch: {
-    checkList: {
-      handler(val) {
-        if (val) {
-          this.currentModelsSelected = {
-            label: '学元',
-            value: val
-          }
-        }
-      },
-      immediate: true
-    }
   }
 })
 export default class coursePost extends Vue {
@@ -39,6 +26,10 @@ export default class coursePost extends Vue {
     online: 1,
     // 课程所属组织
     organization: '',
+    // 必修学员
+    menberCompulsory: '',
+    // 不可见成员
+    menberInvisible: '',
     // 排序
     sort: ''
   }
@@ -71,13 +62,8 @@ export default class coursePost extends Vue {
     contentTitle: '',
     content: '',
     showClose: true,
-    confirmText: '提交'
-  }
-
-  // 当前模型狂选中的对象
-  currentModelsSelected = {
-    label: '',
-    value: ''
+    confirmText: '提交',
+    currentModalName: ''
   }
 
   // 社区介绍富文本编辑器
@@ -87,26 +73,56 @@ export default class coursePost extends Vue {
     height: 350
   }
 
-  // 创建按钮默认可以点击
+  selectedModal = {
+    courseType: '',
+    tutor: '',
+    organization: [],
+    menberCompulsory: [],
+    menberInvisible: []
+  }
+
+  // 默认提交表单按钮可以点击
   submitBtnClick = true
+  // 默认提交按钮的文案
   submitBtnTxt = '立即创建'
   restaurants = []
-  state4 = ''
   timeout =  null
   checkList = []
 
-  submitForm(formName) {
-    this.submitBtnClick = !this.submitBtnClick
-    this.submitBtnTxt = '正在提交'
+  // 课程列表
+  courseTypeList = []
+  // 导师列表
+  tutorList = []
+  // 组织列表
+  organizationList = []
+  // 必修成员列表
+  menberCompulsoryList = []
+  // 不可见成员列表
+  menberInvisibleList = []
+
+  // 检测是否可以提交
+  checkSubmit() {
     this.$refs['form'].validate((valid) => {
       if (valid) {
-        // alert('submit!')
-      } else {
-        // console.log('error submit!!')
-        // return false
+        // 给提交按钮加loading
+        this.submitBtnClick = !this.submitBtnClick
+        // 修改提交时按钮的文案
+        this.submitBtnTxt = '正在提交'
+        // 需要提交的参数的key值
+        const required = []
+        // 过滤不需要提交的参数
+        const params = Object.keys(this.form).map(field => {
+          if (required.includes(field)) {
+            params[field] = this.form[field]
+          }
+        })
+        this.submit(params)
       }
     })
   }
+
+  // 提交表单数据
+  submit() {}
 
   handleContentEditorBlur() {
     this.$refs.form.validateField('introduction')
@@ -184,28 +200,56 @@ export default class coursePost extends Vue {
   }
 
   // 选择搜索到的数据
-  handleSelect(item) {}
+  handleSelect(type) {}
 
   mounted() {
     this.restaurants = this.loadAll()
+    for(let i = 0; i < 30; i++) {
+      this.courseTypeList.push({
+        label: `课程`,
+        value: i
+      })
+      this.tutorList.push({
+        label: `导师`,
+        value: i
+      })
+      this.organizationList.push({
+        label: `组织`,
+        value: i
+      })
+      this.menberCompulsoryList.push({
+        label: `成员`,
+        value: i
+      })
+      this.menberInvisibleList.push({
+        label: `成员`,
+        value: i
+      })
+    }
   }
 
+  //  打开弹窗model
   openModal(type) {
     switch(type) {
       case 'courseType':
-        this.models.title = '选择分类'
+        this.models.title = '选择课程分类'
+        this.models.currentModalName = 'courseType'
         break
       case 'tutor':
         this.models.title = '选择导师'
+        this.models.currentModalName = 'tutor'
         break
       case 'organization':
         this.models.title = '选择组织'
+        this.models.currentModalName = 'organization'
         break
       case 'menberCompulsory':
          this.models.title = '选择必修学员'
+         this.models.currentModalName = 'menberCompulsory'
         break
       case 'menberInvisible':
         this.models.title = '选择不可见成员'
+        this.models.currentModalName = 'menberInvisible'
         break
       default:
         break
@@ -213,5 +257,27 @@ export default class coursePost extends Vue {
     this.models.show = true
   }
 
-  confirm() {}
+  // 出发弹窗按钮
+  confirm() {
+    switch(this.models.currentModalName) {
+      case 'courseType':
+        this.form.courseType = this.selectedModal.courseType
+        break
+      case 'tutor':
+        this.form.tutor = this.selectedModal.tutor
+        break
+      case 'organization':
+        this.form.organization = this.selectedModal.organization
+        break
+      case 'menberCompulsory':
+        this.form.menberCompulsory = this.selectedModal.menberCompulsory
+        break
+      case 'menberInvisible':
+        this.form.menberInvisible = this.selectedModal.menberInvisible
+        break
+      default:
+        break
+    }
+    this.models.show = false
+  }
 }
