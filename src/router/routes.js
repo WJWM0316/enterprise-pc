@@ -3,7 +3,7 @@ export const routes = [
     path: '/',
     // 默认进入控制台
     redirect: {
-      name: 'login'
+      name: 'dashboard'
     },
     meta: {
       useNav: false

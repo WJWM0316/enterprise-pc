@@ -3,9 +3,12 @@ import {
   HIDE_MSG,
   SWITCH_OPEN_MODAL,
   HIDE_AJAX_LOADING,
-  SHOW_AJAX_LOADING
+  SHOW_AJAX_LOADING,
+  LOGIN,
+  LOGOUT
 } from '../mutation-types'
 
+import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 // import {
 //   articleGetArticleListApi,
 //   articlePostArticleApi,
@@ -14,6 +17,8 @@ import {
 // } from 'API/common'
 
 const state = {
+  token: getAccessToken(),
+  userInfos: {},
   message: {
     content: '',
     type: 'error',
@@ -41,6 +46,14 @@ const mutations = {
 
   [SWITCH_OPEN_MODAL] (state, open) {
     state.openModal = !!open
+  },
+
+  [LOGIN] (state, data) {
+    state.userInfos = data
+  },
+
+  [LOGOUT] (state) {
+    state.userInfos = data
   }
 }
 
@@ -48,7 +61,9 @@ const getters = {
   message: state => state.message,
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
-  openModal: state => state.openModal
+  openModal: state => state.openModal,
+  token: state => state.token,
+  userInfos: state => state.userInfos
 }
 
 const actions = {
@@ -73,7 +88,18 @@ const actions = {
   hideMsg (store) {
     store.commit(HIDE_MSG)
   },
-  getUploadToken(store) {}
+  getUploadToken(store) {},
+  // 登录接口
+  login (store, params) {
+    login(params)
+      .then(res => {
+        store.commit(LOGIN, res.data.info)
+        return res
+      })
+      .catch(error => {
+        return error
+      })
+  }
 }
 
 export default {

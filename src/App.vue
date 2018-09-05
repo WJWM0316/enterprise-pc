@@ -1,13 +1,8 @@
 <template>
   <section id="zike-backend">
-    <page-aside v-if="!shouldFloatingBoxShown()" />
+    <page-aside v-if="!shouldFloatingBoxShown() && token" />
     <main>
-      <!-- 页面需要缓存 -->
-      <keep-alive v-if="$route.meta.keepAlive">
-        <transition name="fade" > <router-view class="pages" /> </transition>
-      </keep-alive>
-      <!-- 页面不需要缓存 -->
-      <transition name="fade" v-else>
+      <transition name="fade">
         <router-view class="pages" />
       </transition>
     </main>
@@ -26,6 +21,11 @@ import 'ICONFONT/iconfont.css'
   components: {
     PageAside,
     ZikeToast
+  },
+  computed: {
+    /* eslint-disable */
+    ...mapGetters(['token']),
+    /* eslint-enable */
   }
 })
 
@@ -36,6 +36,14 @@ export default class App extends Vue {
     return [
       '/login'
     ].includes(this.$route.path)
+  }
+
+  created() {
+    if(!this.token) {
+      this.$router.push({name: 'login'})
+    } else {
+      this.$router.push({name: 'dashboard'})
+    }
   }
 }
 </script>

@@ -4,13 +4,13 @@
   	<div class="login-box">
   		<el-form :model="form" ref="form" label-width="80px" :rules="rules">
 			  <el-form-item label="用户名" prop="userName">
-			    <el-input v-model="form.userName" />
+			    <el-input type="text" v-model="form.userName" />
 			  </el-form-item>
 			  <el-form-item  label="密码" prop="password">
-			    <el-input v-model="form.password" />
+			    <el-input type="password" v-model="form.password" />
 			  </el-form-item>
 			  <el-form-item>
-			    <el-button type="primary" @click="submit">提交</el-button>
+			    <el-button type="primary" @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
 			  </el-form-item>
 			</el-form>
   	</div>
@@ -20,7 +20,13 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-@Component({})
+@Component({
+	/* eslint-disable */
+  methods: {
+    ...mapActions(['showMsg', 'login'])
+  },
+  /* eslint-enable */
+})
 export default class pageLogin extends Vue {
 	form = {
 		userName: '',
@@ -36,20 +42,17 @@ export default class pageLogin extends Vue {
       { required: true, message: '请输入密码', trigger: 'blur' }
     ]
 	}
+	// 默认提交表单按钮可以点击
+  submitBtnClick = true
+  // 默认提交按钮的文案
+  submitBtnTxt = '登录'
 	submit() {
-		const userNameField = new Promise((resolve, reject) => {
-			// this.$refs.form.validateField('userName')
-		  reject('成功了')
-		})
-		const passwordField = new Promise((resolve, reject) => {
-			// this.$refs['form'].validateField('password')
-		  reject('成功了')
-		})
-		Promise.all([userNameField, passwordField]).then((result) => {
-		  console.log(result)
-		}).catch((error) => {
-		  console.log(error)
-		})
+		this.$refs['form'].validate((valid) => {
+      if(valid) {
+        this.submitBtnClick = !this.submitBtnClick
+        this.submitBtnTxt = '正在登录'
+      }
+    })
 	}
 }
 </script>
@@ -61,7 +64,7 @@ export default class pageLogin extends Vue {
 		top: 0;
 		right: 0;
 		bottom: 0;
-		background: pink;
+		background: rgb(20, 26, 72);
 	}
 	.login-box {
 		width: 400px;

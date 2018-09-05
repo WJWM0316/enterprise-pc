@@ -27,6 +27,8 @@ import user from './modules/user'
 import workBook from './modules/workBook'
 // 工作圈模块
 import workZone from './modules/workZone'
+// 权限模块
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
@@ -44,7 +46,8 @@ const store = new Vuex.Store({
     tutor,
     user,
     workBook,
-    workZone
+    workZone,
+    auth
   }
 })
 
