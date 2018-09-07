@@ -1,9 +1,7 @@
 /**
- * 所有课程对应的接口请求
+ * 权限模块api
  */
-import { post } from './api'
+import { request } from './index.js'
 
-export const demo = data => post({
-  url: '/article/lists',
-  data
-})
+// 登陆接口
+export const login = data => request('/auth/login', 'post', data)

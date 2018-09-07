@@ -30,8 +30,8 @@ export const routes = [
   {
     path: '/course',
     name: 'course',
-    title: '课程管理',
-    // 支架跳转列表页
+    title: '课程',
+    // 直接跳转列表页
     redirect: {
       name: 'courseList'
     },
@@ -76,7 +76,7 @@ export const routes = [
   {
     path: '/broadcast',
     name: 'broadcast',
-    title: '直播管理',
+    title: '直播',
     // 引用的组件
     component: () => import(/* webpackChunkName: "broadcast" */ '@/pages/broadcast/index.vue'),
     meta: {
@@ -89,19 +89,52 @@ export const routes = [
   {
     path: '/work-zone',
     name: 'work-zone',
-    title: '工作圈管理',
+    title: '工作圈',
     component: () => import(/* webpackChunkName: "work-zone" */ '@/pages/work-zone/index.vue'),
     meta: {
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-warning',
       module: 'work-zone'
-    }
+    },
+    // 直接跳转列表页
+    redirect: {
+      name: 'workZoneList'
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'workZoneList',
+        component: () => import(/* webpackChunkName: "workZoneList" */ '@/pages/work-zone/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
+      {
+        path: 'post',
+        name: 'workZonePost',
+        component: () => import(/* webpackChunkName: "workZonePost" */ '@/pages/work-zone/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
+      {
+        path: 'update/:id',
+        name: 'workZoneUpdate',
+        component: () => import(/* webpackChunkName: "workZoneUpdata" */ '@/pages/work-zone/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      }
+    ]
   },
   {
     path: '/notice',
     name: 'notice',
-    title: '通知管理',
+    title: '通知',
     component: () => import(/* webpackChunkName: "notice" */ '@/pages/notice/index.vue'),
     meta: {
       keepAlive: false,
@@ -113,7 +146,7 @@ export const routes = [
   {
     path: '/organization',
     name: 'organization',
-    title: '组织管理',
+    title: '组织',
     component: () => import(/* webpackChunkName: "organization" */ '@/pages/organization/index.vue'),
     meta: {
       keepAlive: false,
@@ -125,7 +158,7 @@ export const routes = [
   {
     path: '/tutor',
     name: 'tutor',
-    title: '导师管理',
+    title: '导师',
     component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
     meta: {
       keepAlive: false,
@@ -150,7 +183,7 @@ export const routes = [
   {
     path: '/statistics',
     name: 'statistics',
-    title: '数据统计',
+    title: '统计',
     component: () => import(/* webpackChunkName: "statistics" */ '@/pages/statistics/index.vue'),
     meta: {
       keepAlive: false,

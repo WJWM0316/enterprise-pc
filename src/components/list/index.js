@@ -22,101 +22,19 @@ import Component from 'vue-class-component'
       default () {
         return []
       }
+    },
+    // 记录总数
+    total: {
+      type: Number,
+      default: 0
     }
   }
 })
 export default class ComponentTableList extends Vue {
 
-  total = 50
-
-  // 搜索表单
-  form = {
-    searchWord: ''
-  }
-
-  // 初始化的搜索表单
-  initForm = {
-    searchWord: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
   // 对每一行表格的样式做判断
   tableRowClassName({row}) {
     return row.isDeleted === 1 ? 'deleted-row' : 'success-row'
-  }
-
-  // 重新定义table的标题
-  renderHeader (h, { column }) {
-
-    if (!column.filterPlacement) {
-      return h('span',column.label, {})
-    }
-
-    // 定义下拉的子节点
-    const childNodes = column.filteredValue.map(item => {
-      return h('el-option', {
-          props: {
-            label: item.label,
-            value: item.value
-          }
-        }
-      )
-    })
-
-    // 返回最终的domo节点
-    return h('span',
-      {
-        class: 'zike-popper'
-      },
-      [
-        h('el-select',
-          {
-            class: 'zike-table-header-select',
-            props:
-            {
-              value: column.label
-            },
-            on:
-            {
-              change: this.change
-            }
-          },
-          childNodes
-        ),
-        h('el-tooltip',
-          {
-            props:
-            {
-              content: column.filterPlacement,
-              placement: 'top'
-            }
-          },
-          [
-            h('i',
-              {
-                class: 'el-icon-question'
-              }
-            ),
-            h('div',
-              {
-                props:
-                {
-                  slot: 'content'
-                }
-              },
-              column.filterPlacement
-            )
-          ]
-        )
-      ]
-    )
   }
 
   // 点击分页按钮
@@ -124,12 +42,68 @@ export default class ComponentTableList extends Vue {
     this.setPathQuery({page: page})
   }
 
-  change (val) {
+  handleCommand(val) {
     const keyValue = val.split('-')
     this.$router.push({
       query: {
-        [keyValue[0]]: [keyValue[1]]
+        [keyValue[0]]: keyValue[1]
       }
     })
+  }
+
+  // 重新定义table的标题
+  renderHeader (h, { column }) {
+
+    console.log(column)
+    const showTips = () => {
+      if (column.className === 'yes') {
+        return (
+          <el-dropdown trigger="click" class="zike-dropdown" onCommand={ this.handleCommand.bind(this) }>
+            <span class="el-dropdown-link">
+              {column.label}<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              {
+                column.filteredValue.map(item => {
+                  return <el-dropdown-item command={item.value}> {item.label} </el-dropdown-item>
+                })
+              }
+            </el-dropdown-menu>
+          </el-dropdown>
+        )
+      } else {
+        return (<span style="color: #909399;margin-right: 15px">{ column.label }</span>)
+      }
+    }
+    if (!column.filterPlacement)
+    {
+      return column.className === 'yes'
+      ?
+        (
+          <div>
+            <span style="margin-right: 10px;">{ column.label }</span>
+            <el-tooltip placement="top-start">
+              <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
+              <i class="el-icon-question" style="color: #909399;"></i>
+            </el-tooltip>
+          </div>
+        )
+      :
+        (
+          <span>{ column.label }</span>
+        )
+    }
+    else
+    {
+      return (
+        <div>
+          { showTips() }
+          <el-tooltip placement="top-start">
+            <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
+            <i class="el-icon-question" style="color: #909399;"></i>
+          </el-tooltip>
+        </div>
+      )
+    }
   }
 }

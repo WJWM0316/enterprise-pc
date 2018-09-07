@@ -5,7 +5,7 @@ import store from '@/store'
 Vue.use(axios)
 
 // 动态设置本地和线上接口域名
-Vue.axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://demo2016.thetiger.com.cn'
+Vue.axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://web.xplus.ziwork.com/tiger'
 
 const minLoadingTime = 1000 // 最小loading时长
 let requestCount = 0 // 当前请求数

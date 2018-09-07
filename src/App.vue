@@ -1,10 +1,13 @@
 <template>
   <section id="zike-backend">
-    <page-aside v-if="!shouldFloatingBoxShown() && token" />
+    <page-aside v-if="!shouldFloatingBoxShown()" />
     <main>
-      <transition name="fade">
-        <router-view class="pages" />
-      </transition>
+      <page-header />
+      <section class="container">
+        <transition name="fade">
+          <router-view />
+        </transition>
+      </section>
     </main>
     <zike-toast />
   </section>
@@ -14,13 +17,15 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
+import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
 import 'ICONFONT/iconfont.css'
 @Component({
   name: 'App',
   components: {
     PageAside,
-    ZikeToast
+    ZikeToast,
+    PageHeader
   },
   computed: {
     /* eslint-disable */
@@ -37,42 +42,33 @@ export default class App extends Vue {
       '/login'
     ].includes(this.$route.path)
   }
-
-  created() {
-    if(!this.token) {
-      this.$router.push({name: 'login'})
-    } else {
-      this.$router.push({name: 'dashboard'})
-    }
-  }
 }
 </script>
 <style lang="less">
 #zike-backend {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  -ms-flex-preferred-size: auto;
-  flex-basis: auto;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   > aside {
     width: 200px;
     height: 100vh;
-    background: rgba(0,0,0,.05);
+    background: #354048;
     position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
   }
   > main {
-    flex-grow: 1;
-    height: 100vh;
-    overflow: hidden;
     position: relative;
-    margin: 20px;
+    margin-left: 200px;
+    overflow: hidden;
   }
 }
-
-body {
-  overflow: hidden;
+.container {
+  margin: 20px;
+  padding: 20px;
+  position: relative;
+  background: #fff;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 ul {
@@ -91,11 +87,10 @@ ul {
   opacity: 0;
 }*/
 .pages {
-  overflow-x: hidden;
-  overflow-y: scroll;
   height: 100%;
-  width: calc(100% + 17px);
+  width: 100%;
   position: relative;
   box-sizing: border-box;
+  overflow: hidden;
 }
 </style>

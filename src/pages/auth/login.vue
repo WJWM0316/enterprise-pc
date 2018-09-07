@@ -3,8 +3,8 @@
   	<div class="mask"></div>
   	<div class="login-box">
   		<el-form :model="form" ref="form" label-width="80px" :rules="rules">
-			  <el-form-item label="用户名" prop="userName">
-			    <el-input type="text" v-model="form.userName" />
+			  <el-form-item label="用户名" prop="email">
+			    <el-input type="text" v-model="form.email" />
 			  </el-form-item>
 			  <el-form-item  label="密码" prop="password">
 			    <el-input type="password" v-model="form.password" />
@@ -21,19 +21,22 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-	/* eslint-disable */
+  /* eslint-disable */
   methods: {
-    ...mapActions(['showMsg', 'login'])
+    ...mapActions(['showMsg', 'loginApi'])
+  },
+  computed: {
+    ...mapGetters(['userInfos'])
   },
   /* eslint-enable */
 })
 export default class pageLogin extends Vue {
 	form = {
-		userName: '',
-		password: ''
+		email: '15999972494',
+		password: '123456'
 	}
 	rules = {
-		userName:
+		email:
 		[
       { required: true, message: '请输入用户名', trigger: 'blur' }
     ],
@@ -46,14 +49,31 @@ export default class pageLogin extends Vue {
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '登录'
-	submit() {
-		this.$refs['form'].validate((valid) => {
-      if(valid) {
-        this.submitBtnClick = !this.submitBtnClick
-        this.submitBtnTxt = '正在登录'
-      }
-    })
-	}
+
+  submit() {
+  	this.$refs['form'].validate((valid) => {
+  		this.submitBtnClick = !this.submitBtnClick
+  		this.submitBtnTxt = '正在登录'
+  		this.loginApi(this.form)
+      	.then(res => {
+      		this.showMsg({ content: res.data.msg, type: 'success', duration: 5000 })
+      		setTimeout(() => {
+      			this.$router.push({name: 'dashboard'})
+      		}, 3000)
+      	})
+      	.catch(error => {
+      		setTimeout(() => {
+      			this.submitBtnClick = !this.submitBtnClick
+      			this.submitBtnTxt = '登陆'
+      		}, 5000)
+      		this.showMsg({ content: error.msg, type: 'error', duration: 5000 })
+      	})
+  	})
+  }
+
+  created() {
+  	console.log(this.userInfos)
+  }
 }
 </script>
 <style lang="scss">

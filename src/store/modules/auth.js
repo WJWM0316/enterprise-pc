@@ -1,41 +1,41 @@
 import {
-  GET_COURSE_LIST
+  LOGIN
 } from '../mutation-types'
 
-// import {
-//   articleGetArticleListApi,
-//   articlePostArticleApi,
-//   articleDeleteArticleApi,
-//   articlePutArticleApi
-// } from 'API/course'
+import {
+  login
+} from 'API/auth'
+
+import { saveAccessToken } from '@/store/cacheService'
 
 const state = {
-  courseList1: {}
+  userInfos: {}
 }
 
 const mutations = {
-  [GET_COURSE_LIST] (status, data) {
-    state.courseList1 = data
+  [LOGIN] (status, data) {
+    state.userInfos = data
   }
 }
 
 const getters = {
-  courseList1: state => state.courseList1
+  userInfos: state => state.userInfos
 }
 
 const actions = {
-
-  // 获取文章列表
-  // articleGetArticleListApi (store, params) {
-  //   articleGetArticleListApi(params)
-  //     .then(res => {
-  //       store.commit(GET_COURSE_LIST, res.data.info)
-  //       return res
-  //     })
-  //     .catch(error => {
-  //       return error
-  //     })
-  // }
+  loginApi(store, data) {
+    return login(data)
+      .then(res => {
+        // 有效期一天周
+        const ValidityPeriod = 60 * 60 * 24 * 7 * 1000
+        saveAccessToken(res.data.data.token, ValidityPeriod)
+        store.commit(LOGIN, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

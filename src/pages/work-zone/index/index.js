@@ -3,7 +3,15 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 
 @Component({
-  name: 'course-list',
+  name: 'lighthouse-list',
+  /* eslint-disable */
+  methods: {
+    ...mapActions(['getJobCircleLists'])
+  },
+  computed: {
+    ...mapGetters(['jobCircleLists'])
+  },
+  /* eslint-enable */
   watch: {
     '$route': {
       handler () {
@@ -18,20 +26,16 @@ import TableList from 'COMPONENTS/list/index.vue'
 })
 export default class CourseList extends Vue {
 
-  // 表单数据
-  courseList = []
-  input5 = ''
-  total = 50
-
   // 表格字段
   fields = [
     {
-      prop: 'courseName',
+      prop: 'name',
       label: '课 程',
-      align: 'center'
+      align: 'center',
+      showTips: 'no'
     },
     {
-      prop: 'online',
+      prop: 'status',
       label: '是否上线',
       align: 'center',
       showTips: 'yes',
@@ -49,48 +53,42 @@ export default class CourseList extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'type',
-      label: '类 型',
+      prop: 'sort',
+      label: '权 重',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       filteredValue:
       [
         {
           label: '全部',
-          value: 'type-全部'
+          value: 'sort-全部'
         },
         {
-          label: '产品',
-          value: 'type-产品'
+          label: '升序',
+          value: 'sort-升序'
         },
         {
-          label: '运营',
-          value: 'type-运营'
+          label: '降序',
+          value: 'sort-降序'
         }
       ],
-      filterPlacement: '类型的提示文案'
-    },
-    {
-      prop: 'sort',
-      label: '权 重',
-      align: 'center',
-      showTips: 'no'
+      filterPlacement: '权重的提示文案'
     },
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'yes'
+      showTips: 'no'
     }
   ]
 
   // 搜索表单
   form = {
-    searchWord: ''
+    name: ''
   }
 
   // 初始化的搜索表单
   initForm = {
-    searchWord: ''
+    name: ''
   }
 
   // 分页信息
@@ -103,48 +101,54 @@ export default class CourseList extends Vue {
 
   searchType = '1'
 
-  created () {
-    for (let i = 0; i < 20; i++) {
-      this.courseList.push({
-        date: '2016-05-03',
-        courseName: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-        tag: 0,
-        course: '公开卡',
-        online: 0,
-        type: '产品',
-        range: 'desc',
-        img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
-        isDeleted: 0,
-        sort: 'desc'
-      })
-    }
-  }
   /**
    * 初始化表单、分页页面数据
    */
   init () {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
+    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
-    // this.getCourseList()
+    this.getWorkZoneListApi()
   }
 
   /**
    * 获取课程列表
    */
-  async getCourseList () {}
+  getWorkZoneListApi () {
+    const params = {page: 1, count: 20, ...this.$route.query}
+    if (this.form.name) {
+      params.name = this.form.name
+    }
+    this.getJobCircleLists(params)
+  }
 
   // 点击搜索时触发
   handleSearch () {
-    this.pagination.page = 1
     this.setPathQuery(this.form)
-    this.getCourseList()
+    this.getWorkZoneListApi()
   }
 
   // 添加课程-跳转
-  addCourse () {
-    this.$router.push({ name: 'coursePost'})
+  addWorkZone () {
+    this.$router.push({ name: 'workZonePost'})
   }
 
+  todoAction(type, item) {
+    switch(type) {
+      case 'edit':
+        this.$router.push({
+          name: 'workZoneUpdate',
+          params: {
+            id: item.id
+          }
+        })
+        break
+      case 'note':
+        break
+      case 'menber':
+        break
+      default:
+        break
+    }
+  }
 }

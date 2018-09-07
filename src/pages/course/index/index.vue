@@ -3,11 +3,6 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-select v-model="select" slot="prepend" placeholder="请选择">
-            <el-option label="餐厅名" value="1"></el-option>
-            <el-option label="订单号" value="2"></el-option>
-            <el-option label="用户电话" value="3"></el-option>
-          </el-select>
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
@@ -47,6 +42,9 @@
                 <div>导师名称-组织架构</div>
             </div>
           </div>
+        </div>
+        <div v-else-if="props.scope.column.property === 'online'">
+          {{ props.scope.row.online == 0 ? '下线' : '上线' }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

@@ -3,9 +3,7 @@ import {
   HIDE_MSG,
   SWITCH_OPEN_MODAL,
   HIDE_AJAX_LOADING,
-  SHOW_AJAX_LOADING,
-  LOGIN,
-  LOGOUT
+  SHOW_AJAX_LOADING
 } from '../mutation-types'
 
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
@@ -18,7 +16,6 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 const state = {
   token: getAccessToken(),
-  userInfos: {},
   message: {
     content: '',
     type: 'error',
@@ -46,14 +43,6 @@ const mutations = {
 
   [SWITCH_OPEN_MODAL] (state, open) {
     state.openModal = !!open
-  },
-
-  [LOGIN] (state, data) {
-    state.userInfos = data
-  },
-
-  [LOGOUT] (state) {
-    state.userInfos = data
   }
 }
 
@@ -62,8 +51,7 @@ const getters = {
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal,
-  token: state => state.token,
-  userInfos: state => state.userInfos
+  token: state => state.token
 }
 
 const actions = {
@@ -88,18 +76,7 @@ const actions = {
   hideMsg (store) {
     store.commit(HIDE_MSG)
   },
-  getUploadToken(store) {},
-  // 登录接口
-  login (store, params) {
-    login(params)
-      .then(res => {
-        store.commit(LOGIN, res.data.info)
-        return res
-      })
-      .catch(error => {
-        return error
-      })
-  }
+  getUploadToken(store) {}
 }
 
 export default {
