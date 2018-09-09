@@ -45,7 +45,7 @@ export default class pageDashboard extends Vue {
       tag: '公司'
     }
   ]
-  indexMethod (index) {
+  indexMethod(index) {
     return index * 2
   }
 }

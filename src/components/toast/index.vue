@@ -11,11 +11,9 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-	/* eslint-disable */
-	watch: {
+	 watch: {
     message: {
       handler(val) {
-        // 监测 message 的内容，如果非空，就五秒后隐藏
         if (val.content !== '') {
           setTimeout(() => this.hideMsg(), this.message.duration || 5000)
         }
@@ -29,7 +27,6 @@ import Component from 'vue-class-component'
   methods: {
   	...mapActions(['showMsg', 'hideMsg'])
   }
-  /* eslint-enable */
 })
 
 export default class PageToast extends Vue {}
@@ -49,7 +46,7 @@ export default class PageToast extends Vue {}
   opacity: .7;
   text-align: center;
   line-height: 50px;
-  z-index: 10000000
+  z-index: 10000000000000000000000000
 }
 .toast-enter,
 .toast-leave {

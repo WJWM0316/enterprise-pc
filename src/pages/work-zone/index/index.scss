@@ -1,5 +1,4 @@
-@import "~SCSS/variables";
-@import "~SCSS/mixins";
+@import "~COLORS/variables";
 .page-course-list {
   .zikebackend-table-header {
     th {
@@ -58,5 +57,8 @@
   }
   .header {
     margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
   }
 }

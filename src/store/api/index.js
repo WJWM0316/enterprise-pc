@@ -4,24 +4,13 @@
 import axios from 'axios'
 import QS from 'qs'
 import { Loading } from 'element-ui'
+import router from '@/router/index'
 let loadingInstance = null
-import store from '@/store'
-import { getAccessToken } from '@/store/cacheService'
+// import store from '@/store'
+// import { getAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
-let API_ROOT = null
-
-// 环境的切换
-switch (process.env.NODE_ENV) {
-  case 'development':
-    API_ROOT = 'http://web.xplus.ziwork.com/tiger'
-    break
-  case 'production':
-    API_ROOT = 'http://www.test2.com'
-    break
-  default:
-    break
-}
+export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
 
 // 请求超时时间
 axios.defaults.timeout = 10000
@@ -31,7 +20,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    // config.headers['Authorization'] = getAccessToken()
+    // config.params.token = getAccessToken()
     return config
   },
   error => {
@@ -49,7 +38,11 @@ axios.interceptors.response.use(response => {
   if (loadingInstance) {
     loadingInstance.close()
   }
-  return Promise.reject(error.response)
+  if(error.response.data.httpStatus === 401) {
+    router.push({name: 'login'})
+  } else {
+    return Promise.reject(error.response)
+  }
 })
 
 export const request = (url, method, params) => {

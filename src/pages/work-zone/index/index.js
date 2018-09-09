@@ -4,14 +4,12 @@ import TableList from 'COMPONENTS/list/index.vue'
 
 @Component({
   name: 'lighthouse-list',
-  /* eslint-disable */
   methods: {
     ...mapActions(['getJobCircleLists'])
   },
   computed: {
     ...mapGetters(['jobCircleLists'])
   },
-  /* eslint-enable */
   watch: {
     '$route': {
       handler () {

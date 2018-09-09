@@ -25,7 +25,9 @@ module.exports = {
 	      'CONFIGS' : resolve('src/configs'),
 	      'STYLES' : resolve('src/styles'),
 	      'SCSS' : resolve('src/styles/scss'),
-	      'ICONFONT' : resolve('src/assets/iconfont')
+	      'ICONFONT' : resolve('src/assets/iconfont'),
+	      'FILTERS' : resolve('src/filters'),
+	      'COLORS' : resolve('src/eleui/colors')
 	    }
 	  },
     plugins: [
@@ -35,21 +37,8 @@ module.exports = {
 	      mapGetters: ['vuex', 'mapGetters'],
 	      mapState: ['vuex', 'mapState'],
 	      $: 'jquery',
-      	  jQuery: 'jquery'
+      	jQuery: 'jquery'
 	    })
     ]
   }
-  // devServer: {
-  // 	port: '8081'
-  //   proxy: {
-  //     '/zike_admin': {
-  //       target: 'http://demo2016.thetiger.com.cn/zikeserver',
-  //       changeOrigin: true,
-  //       pathRewrite: {
-  //         '^/zike_admin': ''
-  //       },
-  //       logLevel: 'debug',
-  //     }
-  //   }
-  // }
 }

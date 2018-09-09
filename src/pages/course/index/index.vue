@@ -1,13 +1,15 @@
 <template>
   <section class="page-course-list">
+    <div class="page-position">课程管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+        <div class="search-bar">
+          <input type="text" name="" class="search" placeholder="请输入关键词">
+          <span><i class="el-icon-search"></i></span>
+        </div>
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addCourse">添加课程</el-button>
+        <el-button type="primary" @click="addCourse" class="click-item">添加课程</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -38,8 +40,8 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num"> {{ props.scope.row.courseName}} </div>
-                <div>导师名称-组织架构</div>
+                <div class="limit-row-num-2"> {{ props.scope.row.courseName}} </div>
+                <div class="tutor-name">导师名称-组织架构</div>
             </div>
           </div>
         </div>
@@ -59,5 +61,76 @@ export default CourseList
 </script>
 
 <style lang="scss">
-@import "./index.scss"
+@import "~COLORS/variables";
+.page-course-list {
+  .action-zone {
+    text-align: right;
+  }
+  .page-position {
+    font-size: 16px;
+    color: #000;
+    line-height: 1;
+    position: relative;
+    margin: 16px 0;
+    &:before{
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 8px;
+      float: left;
+    };
+  }
+  .header {
+    margin: 20px 0;
+  }
+  .search-zone {
+    display: flex;
+  }
+  .search-bar {
+    border-radius: 4px;
+    border: 1px solid rgba(220,223,230,1);
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    input {
+      width: 100%;
+      height: calc(100% - 2px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      outline: none;
+      border: none;
+      display: block;
+      box-sizing: border-box;
+      padding: 0 10px;
+    }
+    span {
+      width: 40px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      outline: none;
+      border: none;
+      display: block;
+      box-sizing: border-box;
+      padding: 0 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+  .tutor-name {
+    color: #929292;
+  }
+}
 </style>

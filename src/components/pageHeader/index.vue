@@ -3,16 +3,17 @@
 		<section>
 			<ul class="navigation">
 				<li><i class="el-icon-warning"></i></li>
-				<li><img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg" alt=""></li>
-				<li>欢迎登陆,
+				<li>
+					<img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg" alt="">
+					<span style="color:#354048;margin-left: 16px;">欢迎登陆，</span>
 					<el-dropdown trigger="click">
-					  <span class="el-dropdown-link">
-					    管理员<i class="el-icon-caret-bottom el-icon--right"></i>
+					  <span class="el-dropdown-link" style="color:#354048">
+					    七芊<i class="el-icon-caret-bottom el-icon--right"></i>
 					  </span>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item>黄金糕</el-dropdown-item>
-					    <el-dropdown-item>狮子头</el-dropdown-item>
-					    <el-dropdown-item>螺蛳粉</el-dropdown-item>
+					    <el-dropdown-item>个人中心</el-dropdown-item>
+					    <el-dropdown-item>导师空间</el-dropdown-item>
+					    <el-dropdown-item>设置</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>
@@ -43,7 +44,7 @@
 		li{
 			display: inline-block;
 			line-height: 60px;
-			margin-left: 16px;
+			margin-left: 35px;
 		}
 		img {
 			width: 34px;
@@ -57,3 +58,4 @@
 	}
 }
 </style>
+<script type="text/javascript"></script>

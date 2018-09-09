@@ -22,11 +22,9 @@ import Clipboard from 'clipboard'
       immediate: true
     }
   },
-  /* eslint-disable */
   methods: {
     ...mapActions(['showMsg'])
-  },
-  /* eslint-enable */
+  }
 })
 export default class ComponentLinkViewer extends Vue {
 

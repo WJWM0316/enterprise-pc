@@ -2,7 +2,7 @@
   <section id="zike-backend">
     <page-aside v-if="!shouldFloatingBoxShown()" />
     <main>
-      <page-header />
+      <page-header v-if="!shouldFloatingBoxShown()" />
       <section class="container">
         <transition name="fade">
           <router-view />
@@ -20,6 +20,7 @@ import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
 import 'ICONFONT/iconfont.css'
+
 @Component({
   name: 'App',
   components: {
@@ -28,15 +29,13 @@ import 'ICONFONT/iconfont.css'
     PageHeader
   },
   computed: {
-    /* eslint-disable */
-    ...mapGetters(['token']),
-    /* eslint-enable */
+    ...mapGetters(['token'])
   }
 })
 
 export default class App extends Vue {
 
-  // 白名单模式，下面路由不显示管理页面的侧边栏
+  // 白名单模式，下面路由不显示管理页面的侧边栏,和顶部的导航栏
   shouldFloatingBoxShown() {
     return [
       '/login'

@@ -21,14 +21,12 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  /* eslint-disable */
   methods: {
     ...mapActions(['showMsg', 'loginApi'])
   },
   computed: {
     ...mapGetters(['userInfos'])
-  },
-  /* eslint-enable */
+  }
 })
 export default class pageLogin extends Vue {
 	form = {
@@ -56,7 +54,7 @@ export default class pageLogin extends Vue {
   		this.submitBtnTxt = '正在登录'
   		this.loginApi(this.form)
       	.then(res => {
-      		this.showMsg({ content: res.data.msg, type: 'success', duration: 5000 })
+      		this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
       		setTimeout(() => {
       			this.$router.push({name: 'dashboard'})
       		}, 3000)
@@ -66,13 +64,9 @@ export default class pageLogin extends Vue {
       			this.submitBtnClick = !this.submitBtnClick
       			this.submitBtnTxt = '登陆'
       		}, 5000)
-      		this.showMsg({ content: error.msg, type: 'error', duration: 5000 })
+      		this.showMsg({ content: error.msg, type: 'error', duration: 3000 })
       	})
   	})
-  }
-
-  created() {
-  	console.log(this.userInfos)
   }
 }
 </script>

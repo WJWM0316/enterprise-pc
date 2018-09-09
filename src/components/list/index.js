@@ -54,7 +54,6 @@ export default class ComponentTableList extends Vue {
   // 重新定义table的标题
   renderHeader (h, { column }) {
 
-    console.log(column)
     const showTips = () => {
       if (column.className === 'yes') {
         return (

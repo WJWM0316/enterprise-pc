@@ -1,7 +1,6 @@
 /**
  * 工具函数类
  */
-import config from '@/configs'
 import moment from 'moment'
 /* eslint-disable */
 class Util {
@@ -221,18 +220,6 @@ class Util {
     document.body.appendChild(downloadLink)
     downloadLink.click()
     document.body.removeChild(downloadLink)
-  }
-
-  /**
-   * 跳转自客详情
-   * @param {*} id
-   */
-  toUserDetail (id) {
-    if (!id) {
-      return
-    }
-
-    location.href = `${config.origin}/Audit/UserExamine/showUser/uid/${id}`
   }
 }
 

@@ -1,5 +1,6 @@
 @import "~cropperjs/dist/cropper.min.css";
 #work-zone-post {
+  padding: 0 38px;
 	.el-form {
 		margin-bottom: 50px;
 	}
@@ -11,73 +12,147 @@
 	.limit-width {
 		width: 100%;
 	}
-	.label-belong-tips-icon {
-		position: absolute;
-		top: 50%;
-		left: -100px;
-		transform: translateY(-50%);
-	}
-	.label-hidden-tips-icon {
-		position: absolute;
-		top: 50%;
-		left: -155px;
-		transform: translateY(-50%);
-	}
 	.page-navigation {
 		margin: 30px 0;
 		font-size: 16px;
 	}
 	.walk-title {
-		font-size: 16px;
-		margin-bottom: 30px;
-	}
-	.label-qunzhong-ips-icon {
-		position: absolute;
-		top: 50%;
-		left: -75px;
-		transform: translateY(-50%);
-	}
-	.click-item {
-		/*color: #606266;*/
-		cursor: pointer;
-		font-size: 14px;
-		margin-right: 20px;
-	}
-	.tutor-box {
-		display: flex;
-	}
-	.search-box {
-		width: 400px;
-	}
-	.tutor-list {
-		flex-grow: 1;
-		overflow: hidden;
-	}
-	.el-radio {
-		margin: 10px !important;
-	}
-	.el-checkbox {
-		margin: 10px !important;
-	}
-	.upload-image {
-	    display: inline-block;
-	    line-height: 1;
-	    cursor: pointer;
-	    border: 1px solid #dcdfe6;
-	    color: #606266;
-	    -webkit-appearance: none;
-	    text-align: center;
-	    box-sizing: border-box;
-	    -webkit-transition: .1s;
-	    transition: .1s;
-	    font-weight: 500;
-	    padding: 12px 20px;
-	    font-size: 14px;
-	    border-radius: 4px;
-		color: #fff;
-		background-color: #e6a23c;
-		border-color: #e6a23c;
-	}
+    font-size: 16px;
+    line-height: 1;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(220,223,230,1);
+    font-size: 20px;
+    margin: 40px 44px 30px 0px;
+  }
+  .customize-html-content {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  .course-type-list {
+    margin-top: 20px;
+    .tips {
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0 0 16px;
+    }
+    .set{
+      cursor: pointer;
+      color: #4080AD;
+    }
+    .add-type {
+      cursor: pointer;
+      color: #4080AD;
+      font-size: 14px;
+    }
+  }
+  .organizations-type-list {
+    margin: 20px 0px 18px 16px;
+    .tips {
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0 0 0;
+    }
+    .set{
+      cursor: pointer;
+      color: #4080AD;
+    }
+  }
+  .menber-compulsory-type-list {
+    margin: 20px 18px 18px;
+    .search-bar {
+      border-radius: 4px;
+      border: 1px solid rgba(220,223,230,1);
+      box-sizing: border-box;
+      color: #606266;
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      width: 465px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 25px;
+      input {
+        width: 100%;
+        height: calc(100% - 2px);
+        position: absolute;
+        left: 0;
+        top: 0;
+        outline: none;
+        border: none;
+        display: block;
+        box-sizing: border-box;
+        padding: 0 10px;
+      }
+      span {
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        outline: none;
+        border: none;
+        display: block;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
+    .el-button {
+      width: 128px;
+      padding: 10px 20px;
+      margin: 0px 16px 16px 0px;
+    }
+  }
+  .el-radio {
+    margin: 10px 40px 10px 14px;
+  }
+  .el-checkbox {
+    margin-top: 10px !important;
+    margin-left: 0px !important;
+    margin-bottom: 10px !important;
+    margin-right: 10px !important;
+  }
+  .el-icon-question {
+    color: rgba(214,214,214,1);
+  }
+  .el-breadcrumb {
+    position: relative;
+    &:before {
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 8px;
+      float: left;
+    };
+  }
+  .selected-item {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(146,146,146,1);
+    line-height: 40px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    span {
+      background:rgba(248,248,248,1);
+      border-radius:4px;
+      border:1px solid rgba(220,220,220,1);
+      display: inline-block;
+      line-height: 1;
+      padding: 4px 8px;
+      font-size: 12px;
+      color:rgba(0,0,0,0.65);
+      margin-right: 8px;
+      i{
+        margin-left: 5px;
+      }
+    }
+  }
 }
 
 #work-zone-post {

@@ -103,7 +103,7 @@ export default class CourseList extends Vue {
 
   searchType = '1'
 
-  created () {
+  created() {
     for (let i = 0; i < 20; i++) {
       this.courseList.push({
         date: '2016-05-03',
@@ -123,7 +123,7 @@ export default class CourseList extends Vue {
   /**
    * 初始化表单、分页页面数据
    */
-  init () {
+  init() {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
@@ -133,7 +133,7 @@ export default class CourseList extends Vue {
   /**
    * 获取课程列表
    */
-  async getCourseList () {}
+  async getCourseList() {}
 
   // 点击搜索时触发
   handleSearch () {
@@ -143,7 +143,7 @@ export default class CourseList extends Vue {
   }
 
   // 添加课程-跳转
-  addCourse () {
+  addCourse() {
     this.$router.push({ name: 'coursePost'})
   }
 

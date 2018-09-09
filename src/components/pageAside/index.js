@@ -4,11 +4,9 @@ import { routes } from '@/router/routes'
 
 @Component({
   name: 'page-asise',
-  /* eslint-disable */
   methods: {
     ...mapActions(['showMsg'])
-  },
-  /* eslint-enable */
+  }
 })
 export default class PageAside extends Vue {
 

@@ -1,34 +1,33 @@
 <template>
-  <div id="zike-dialog" transition="toast" keep-alive="keep-alive">
+  <section id="zike-dialog" transition="toast" keep-alive="keep-alive">
     <div class="mask" :class="{'show-mask': visiable}"></div>
-    <div class="box" :style="{ width: dialogWidth, minHeight: dialogMinHeight }" :class="{'show-box': visiable}">
+    <section class="box" :style="{ width: dialogWidth }" :class="{'show-box': visiable}">
       <header class="dialog-hd">
         <slot name="title">
           <h3 class="dialog-title" v-html="title"></h3>
         </slot>
-        <!-- <button type="button" class="dialog-close u-btn" @click="handleCloseDialog" v-if="showClose">关闭</button> -->
         <span @click="handleCloseDialog" v-if="showClose" class="dialog-close">
           <i class="el-icon-close"></i>
         </span>
       </header>
-      <div class="dialog-bd">
+      <main class="dialog-bd" :style="{ minHeight: dialogMinHeight }">
         <slot name="customize-html"></slot>
-      </div>
+      </main>
       <footer class="dialog-ft">
-          <div class="dialog-ft-btns">
-            <slot name="footer">
-              <template v-if="type === 'alert'">
-                <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
-              </template>
-              <template v-else-if="type === 'confirm'">
-                <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
-                <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
-              </template>
-            </slot>
-          </div>
+        <div class="dialog-ft-btns">
+          <slot name="footer">
+            <template v-if="type === 'alert'">
+              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
+            </template>
+            <template v-else-if="type === 'confirm'">
+              <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
+              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
+            </template>
+          </slot>
+        </div>
       </footer>
-    </div>
-  </div>
+    </section>
+  </section>
 </template>
 
 <script>
@@ -37,8 +36,7 @@ export default ComponentDialog
 </script>
 
 <style lang="scss" scoped>
-@import '~SCSS/variables';
-@import '~SCSS/mixins';
+@import '~COLORS/variables.scss';
 
 #zike-dialog {
   .mask {
@@ -63,7 +61,6 @@ export default ComponentDialog
   .box {
     background: white;
     border-radius: 2px;
-    border: 15px solid rgba(58, 142, 230,.8);
     transition: all ease-in-out .4s;
     position: fixed;
     left: 50%;
@@ -72,6 +69,8 @@ export default ComponentDialog
     opacity: 0;
     visibility: hidden;
     transform: translate(-50%, -50%) scale(3);
+    padding: 30px;
+    box-sizing: border-box;
   }
 
   .box.show-box {
@@ -80,13 +79,22 @@ export default ComponentDialog
     transform: translate(-50%, -50%) scale(1);
   }
 
-  .dialog-hd {
+  header {
     flex: 0 0 auto;
     position: relative;
-    line-height: 60px;
     color: $dialog-header-color;
-    text-indent: 20px;
-    background: rgba(0,0,0,.05);
+    line-height: 1;
+    margin-left: 18px;
+    &:before{
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 8px;
+      float: left;
+    };
     .dialog-title {
       font-size: 14px;
       color: #040404;
@@ -96,11 +104,11 @@ export default ComponentDialog
 
     .dialog-close {
       position: absolute;
-      right: 10px;
-      top: 0;
-      padding: 0 10px;
+      right: -20px;
+      top: -20px;
       color: #606266;
       transition: all ease .4s;
+      cursor: pointer;
       &:hover {
         color: red;
       }
@@ -109,26 +117,28 @@ export default ComponentDialog
 
   .dialog-bd {
     flex: 1 1 auto;
-    padding: 20px;
     color: $color-level-two;
-
     .dialog-content {
       text-align: center;
     }
   }
 
-  .dialog-ft {
+  footer {
     flex: 0 0 auto;
-
     .dialog-ft-btns {
-      padding: 20px;
-      border-top: solid 1px #e2e3e5;
-      text-align: center;
+      text-align: right;
       button {
-        width: 135px;
-        margin: 0 15px;
+        width: 124px;
+        margin: 0 16px 0 8px;
+        color: #354048;
+      }
+      .el-button--default{
+        border: 1px solid rgba(220,223,230,1);
       }
     }
+  }
+  .el-icon-close {
+    display: inline-block;
   }
 }
 </style>
