@@ -6,7 +6,7 @@ import {
   SHOW_AJAX_LOADING
 } from '../mutation-types'
 
-import { getAccessToken, removeAccessToken } from '@/store/cacheService'
+import { getAccessToken } from '@/store/cacheService'
 // import {
 //   articleGetArticleListApi,
 //   articlePostArticleApi,

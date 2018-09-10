@@ -5,14 +5,14 @@ import TableList from 'COMPONENTS/list/index.vue'
 @Component({
   name: 'lighthouse-list',
   methods: {
-    ...mapActions(['getJobCircleLists'])
+    ...mapActions(['getJobCircleListsApi'])
   },
   computed: {
     ...mapGetters(['jobCircleLists'])
   },
   watch: {
     '$route': {
-      handler () {
+      handler() {
         this.init()
       },
       immediate: true
@@ -102,32 +102,32 @@ export default class CourseList extends Vue {
   /**
    * 初始化表单、分页页面数据
    */
-  init () {
+  init() {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
-    this.getWorkZoneListApi()
+    this.getWorkZoneLists()
   }
 
   /**
    * 获取课程列表
    */
-  getWorkZoneListApi () {
+  getWorkZoneLists() {
     const params = {page: 1, count: 20, ...this.$route.query}
     if (this.form.name) {
       params.name = this.form.name
     }
-    this.getJobCircleLists(params)
+    this.getJobCircleListsApi(params)
   }
 
   // 点击搜索时触发
-  handleSearch () {
+  handleSearch() {
     this.setPathQuery(this.form)
-    this.getWorkZoneListApi()
+    this.getWorkZoneLists()
   }
 
   // 添加课程-跳转
-  addWorkZone () {
+  addWorkZone() {
     this.$router.push({ name: 'workZonePost'})
   }
 

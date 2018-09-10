@@ -1,5 +1,7 @@
 <template>
-  <div id="notice"> </div>
+  <div id="notice">
+  	<video-viewer></video-viewer>
+  </div>
 </template>
 <script>
 import pageNotice from './index'

@@ -54,20 +54,12 @@
         "as-needed"
       ],
       "no-console": "off",
-      "indent": [
-        "error",
-        2
-      ],
       "quotes": [
         "error",
         "single"
       ],
       "generator-star-spacing": "off",
       "no-mixed-spaces-and-tabs": "off",
-      "space-before-function-paren": [
-        "error",
-        "never"
-      ],
       "no-param-reassign": 0,
       "no-multi-str": "off",
       "no-multiple-empty-lines": [

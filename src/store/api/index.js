@@ -7,7 +7,7 @@ import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
 // import store from '@/store'
-// import { getAccessToken } from '@/store/cacheService'
+import { getAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
@@ -45,10 +45,10 @@ axios.interceptors.response.use(response => {
   }
 })
 
-export const request = (url, method, params) => {
+export const request = (url, method, params = {}) => {
   if (params.globalLoading) {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  return axios[method](url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params))
+  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params))
 }

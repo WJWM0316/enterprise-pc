@@ -161,48 +161,77 @@
     :type="models.type"
     @confirm="confirm"
     >
-      <div slot="title">
-        <h3 class="dialog-title">{{models.title}}</h3>
+      <div slot="title" style="margin-left: 10px;">
+        <h3 class="dialog-title">
+          {{models.title}} 
+        </h3>
+        <div class="header-seleted-item" v-if="selectItem.label">
+          已选择：<span @click="removeCheck">{{ selectItem.label }}<i class="el-icon-close"></i></span>
+        </div>
       </div>
       <div slot="customize-html">
         <div class="customize-html-content">
-          <!-- 选择分类 -start -->
-          <div class="course-type-list" v-if="models.currentModalName === 'courseType'">
-            <el-radio
-              v-model="selectedModal.courseType"
-              :label="courseItem.value"
-              v-for="(courseItem, courseIndex) in courseTypeList"
-              :key="courseIndex">
-                {{courseItem.label}}
+          <!-- 选择圈主-start -->
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'owner_uid'">
+            <div class="search-bar">
+              <input type="text" name="" class="search" placeholder="请输入搜索名称">
+              <span><i class="el-icon-search"></i></span>
+            </div>
+            <div class="group-list">
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @click="filterWorkZoneMenber(groupItem)">
+                  {{groupItem.groupName}}
+              </el-button>
+            </div>
+            <div class="menber-list">
+              <el-radio v-model="form.owner_uid.value"
+                :label="menberItem.uid"
+                :key="menberIndex"
+                @change="singleSelection('owner_uid', menberItem)"
+                v-for="(menberItem, menberIndex) in temMenberLists">
+                  {{menberItem.realname}}
               </el-radio>
-            <el-popover
-              placement="bottom"
-              width="280"
-              trigger="click"
-              :popper-class="'course-popper'"
-              v-model="showCreateCourseTypeBox">
-              <div id="create-box">
-                <header class="create-type-header">新建分类</header>
-                <main class="create-type-main">
-                  <el-input v-model="courseType" placeholder="分类名称最多10个字"></el-input>
-                </main>
-                <footer class="create-type-footer">
-                  <el-button @click="showCreateCourseTypeBox = false">取消</el-button>
-                  <el-button type="primary" @click="addCourseType">确定</el-button>
-                </footer>
-              </div>
-              <span slot="reference" class="add-type"><i class="el-icon-plus"></i> 新建分类</span>
-            </el-popover>
-            <p class="tips">如果需要对分类进行修改，请点击<a class="set" @click="setType">【分类设置】</a>中进行修改；如无权限，请联系管理员修改。</p>
+            </div>
           </div>
-          <!-- 选择分类 -end -->
+          <!-- 选择圈主-end -->
+          <!-- 选择工作圈成员-start -->
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
+            <div class="search-bar">
+              <input type="text" name="" class="search" placeholder="请输入搜索名称">
+              <span><i class="el-icon-search"></i></span>
+            </div>
+            <div class="group-list">
+              <el-button size="large">所有人</el-button>
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @click="selectWorkZoneMenber(groupItem)">
+                  {{groupItem.groupName}}
+              </el-button>
+            </div>
+            <div class="menber-list">
+              <el-checkbox-group v-model="form.members">
+                <el-checkbox
+                  :label="menberItem.realname"
+                  :key="menberIndex"
+                  @change="multipleSelection('members', menberItem)"
+                  v-for="(menberItem, menberIndex) in temMenberLists" />
+              </el-checkbox-group>
+            </div>
+          </div>
+          <!-- 选择工作圈成员-end -->
           <!-- 组织-start -->
           <div class="organizations-type-list" v-if="models.currentModalName === 'organizations'">
-            <el-checkbox-group v-model="selectedModal.organizations">
+            <el-checkbox-group v-model="form.organizations">
               <el-checkbox
                 :label="organizationsItem.label"
-                v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                :key="organizationsIndex" />
+                :key="organizationsIndex"
+                @change="multipleSelection('organizations', organizationsItem)"
+                v-for="(organizationsItem, organizationsIndex) in organizationsList" />
             </el-checkbox-group>
             <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set" @click="setType">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
           </div>

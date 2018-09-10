@@ -11,35 +11,50 @@ import {  editorRules } from 'FILTERS/rules'
     Editor
   },
   methods: {
-    ...mapActions(['getJobCircleMemberLists', 'postJobCircle', 'showMsg'])
+    ...mapActions([
+      'getJobCircleMemberListsApi',
+      'postJobCircleApi',
+      'showMsg',
+      'getGroupListsApi',
+      'getMenberListsApi'
+    ])
   },
   computed: {
-    ...mapGetters(['userInfos'])
+    ...mapGetters([
+      'groupLists',
+      'jobCircleMemberLists',
+      'menberLists'
+    ])
   }
 })
 export default class WorkZonePost extends Vue {
 
-  // form = {
-  //   // 工作圈名
-  //   name: '',
-  //   // 工作圈主用户ID
-  //   owner_uid: '',
-  //   // 课程所属组织
-  //   organizations: '',
-  //   // 工作圈封面的id
-  //   cover_img_id: '',
-  //   // 工作圈成员
-  //   members: '',
-  //   // 请填写工作圈介绍
-  //   content: '',
-  //   // 不可见工作圈成员
-  //   hits: '',
-  //   // 课程是否上线 1->上线 0->下线
-  //   status: 1,
-  //   // 权重
-  //   sort: ''
-  // }
-
+  form = {
+    // 工作圈名
+    name: '',
+    // 工作圈主用户ID
+    owner_uid: {
+      value: '',
+      tem: {}
+    },
+    // 课程所属组织
+    organizations: [],
+    // 工作圈封面的id
+    cover_img_id: '',
+    // 工作圈成员
+    members: {
+      value: '',
+      tem: {}
+    },
+    // 请填写工作圈介绍
+    content: '',
+    // 不可见工作圈成员
+    hits: '',
+    // 课程是否上线 1->上线 0->下线
+    status: 1,
+    // 权重
+    sort: ''
+  }
   cropper = null
 
   flag = {
@@ -52,27 +67,6 @@ export default class WorkZonePost extends Vue {
   }
 
   companyLogoUrl = 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg'
-
-  form = {
-    // 工作圈名
-    name: '测试' + parseInt(Math.random() * 10 + 1),
-    // 工作圈主用户ID
-    owner_uid: '1',
-    // 课程所属组织
-    organizations: '2',
-    // 工作圈封面的id
-    cover_img_id: '3',
-    // 工作圈成员
-    members: '4',
-    // 请填写工作圈介绍
-    content: '你好啊',
-    // 不可见工作圈成员
-    hits: '5',
-    // 课程是否上线 1->上线 0->下线
-    status: 1,
-    // 权重
-    sort: '10'
-  }
 
   rules = {
     name: [
@@ -127,6 +121,7 @@ export default class WorkZonePost extends Vue {
   restaurants = []
   timeout =  null
   checkList = []
+  temMenberLists = []
 
   // 课程列表
   courseTypeList = []
@@ -138,6 +133,10 @@ export default class WorkZonePost extends Vue {
   menberCompulsoryList = []
   // 不可见成员列表
   hitsList = []
+  selectItem = {
+    value: '',
+    label: ''
+  }
   // 组织列表
   organizationsList = [
   	{
@@ -184,7 +183,7 @@ export default class WorkZonePost extends Vue {
 
   // 提交表单数据
   submit(params) {
-    this.postJobCircle(params)
+    this.postJobCircleApi(params)
       .then(res => {
         this.showMsg({ content: '创建直播成功~', type: 'success', duration: 3000 })
         setTimeout(() => {
@@ -211,28 +210,29 @@ export default class WorkZonePost extends Vue {
     ]
   }
 
-  // 防抖函数
-  debounce(queryString, cb) {
-    const restaurants = this.restaurants
-    const results = queryString ? restaurants.filter(this.handleSearch(queryString)) : restaurants
-    clearTimeout(this.timeout)
-    this.timeout = setTimeout(() => {
-      cb(results)
-    }, 3000 * Math.random())
-  }
-
-  // 获取搜索数据
-  handleSearch(queryString) {
-    return (state) => {
-      return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+  debounce1(func, wait) {
+    var timeout
+    return () => {
+      var context = this
+      var args = arguments
+      if (timeout) clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        func.apply(context, args)
+      }, wait)
     }
   }
 
   // 选择搜索到的数据
-  handleSelect(type) {}
+  search(type) {}
 
-  mounted() {
+  created() {
     this.restaurants = this.loadAll()
+    this.getGroupListsApi()
+    // 获取所有成员列表
+    this.getMenberListsApi({selectAll: 1})
+      .then(() => {
+        this.temMenberLists = [...this.menberLists]
+      })
   }
 
   // 打开弹窗model
@@ -286,6 +286,61 @@ export default class WorkZonePost extends Vue {
 
   setType() {}
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail  刷选组员数据
+   * @return   {[type]}      [description]
+   */
+  filterWorkZoneMenber(item) {
+    let menberLists = [...this.menberLists]
+    menberLists = menberLists.filter(field => {
+      return field.selfGroup.includes(item.id)
+    })
+    this.temMenberLists = menberLists
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail   选择工作圈成员
+   * @return   {[type]}        [description]
+   */
+  selectWorkZoneMenber(item) {
+    console.log(item)
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail   单选
+   * @return   {[type]}        [description]
+   */
+  singleSelection(type, item) {
+    this.form[type].tem = item
+    console.log(this.form[type])
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail   多选
+   */
+  multipleSelection(type, item) {
+    // this.form[type].tem = item
+    console.log(this.form[type])
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail   获取工作圈成员
+   * @return   {[type]}   [description]
+   */
+  getJobCircleMemberLists(id) {
+    this.getJobCircleMemberListsApi({id})
+      .then(res => {
+        console.log(this.jobCircleMemberLists, 'jobCircleMemberLists')
+      })
+  }
   // 添加课程分类
   addCourseType() {
     const courseTypeList = this.courseTypeList

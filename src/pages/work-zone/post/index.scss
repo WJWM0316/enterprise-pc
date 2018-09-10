@@ -107,7 +107,7 @@
     }
   }
   .el-radio {
-    margin: 10px 40px 10px 14px;
+    margin: 10px 40px 10px 0px;
   }
   .el-checkbox {
     margin-top: 10px !important;
@@ -151,6 +151,30 @@
       i{
         margin-left: 5px;
       }
+    }
+  }
+  .zike-btn-active {
+    color: rgb(230, 203, 92);
+    border-color: rgb(230, 203, 92); 
+    outline: 0;
+    background-color: rgb(255, 252, 240);
+  }
+  .header-seleted-item {
+    font-size: 12px;
+    font-weight: 400;
+    color: #000000;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+    span {
+      background: #f8f8f8;
+      border-radius: 4px;
+      border: 1px solid gainsboro;
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 12px;
+      color:rgba(0,0,0,0.65);
+      display: inline-block;
     }
   }
 }

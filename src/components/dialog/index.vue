@@ -87,21 +87,22 @@ export default ComponentDialog
     margin-left: 18px;
     &:before{
       content: '';
-      height: 100%;
       width:6px;
-      height:16px;
       background:rgba(255,226,102,1);
       display: inline-block;
-      margin-right: 8px;
-      float: left;
+      position: absolute;
+      height: 80%;
+      top: 50%;
+      transform: translateY(-50%);
     };
     .dialog-title {
       font-size: 14px;
       color: #040404;
       font-size: 16px;
       margin: 0;
+      display: inline-block;
+      vertical-align: middle;
     }
-
     .dialog-close {
       position: absolute;
       right: -20px;

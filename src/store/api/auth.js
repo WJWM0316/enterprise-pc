@@ -4,4 +4,6 @@
 import { request } from './index.js'
 
 // 登陆接口
-export const login = data => request('/auth/login', 'post', data)
+export const loginApi = data => request('/auth/login', 'post', data)
+// 退出接口
+export const logoutApi = data => request('/auth/logout', 'get')

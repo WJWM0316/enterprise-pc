@@ -14,7 +14,7 @@ import './util'
 Vue.config.productionTip = false
 
 new Vue({
-	store,
-	router,
-	render: h => h(App)
+  store,
+  router,
+  render: h => h(App)
 }).$mount('#zike-backend')

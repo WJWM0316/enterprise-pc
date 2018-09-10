@@ -7,7 +7,7 @@ import Component from 'vue-class-component'
     // 列表数据
     list: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -19,7 +19,7 @@ import Component from 'vue-class-component'
     // 列表字段信息
     fields: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -38,7 +38,7 @@ export default class ComponentTableList extends Vue {
   }
 
   // 点击分页按钮
-  handleCurrentPageChange (page) {
+  handleCurrentPageChange(page) {
     this.setPathQuery({page: page})
   }
 
@@ -52,7 +52,7 @@ export default class ComponentTableList extends Vue {
   }
 
   // 重新定义table的标题
-  renderHeader (h, { column }) {
+  renderHeader(h, { column }) {
 
     const showTips = () => {
       if (column.className === 'yes') {

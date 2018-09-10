@@ -34,12 +34,10 @@ export default class pageLogin extends Vue {
 		password: '123456'
 	}
 	rules = {
-		email:
-		[
+		email: [
       { required: true, message: '请输入用户名', trigger: 'blur' }
     ],
-    password:
-		[
+    password: [
       { required: true, message: '请输入密码', trigger: 'blur' }
     ]
 	}
