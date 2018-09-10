@@ -1,7 +1,5 @@
 <template>
-  <div id="organization">
-  	<link-viewer></link-viewer>
-  </div>
+  <div id="organization"> </div>
 </template>
 <script>
 import pageOrganization from './index'

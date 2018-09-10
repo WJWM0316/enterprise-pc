@@ -1,7 +1,5 @@
 <template>  
-  <section id="broadcast">
-  	<images-viewer></images-viewer>
-  </section>
+  <section id="broadcast"> </section>
 </template>
 <script>
 import pageBroadcast from './index'
