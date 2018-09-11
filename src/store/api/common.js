@@ -1,10 +1,9 @@
 /**
- * 跨模块调用的接口
+ * 权限模块api
  */
-import { post } from './api'
+import { request } from './index.js'
 
-export const demo = data => post({
-  url: '/article/lists',
-  data
-})
-
+// 上传问价文件
+export const uploadApi = data => request('/attaches', 'post', data)
+// 获取上传配置
+export const getUploadConfigApi = data => request('/attaches/config', 'post', data)

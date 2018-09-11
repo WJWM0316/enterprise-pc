@@ -1,8 +1,4 @@
 export const GET_ARTICLELIST = 'article/GET_ARTICLELIST'
-export const SHOW_MSG = 'commom/SHOW_MSG'
-export const HIDE_MSG = 'commom/HIDE_MSG'
-export const LOGIN = 'commom/LOGIN'
-export const LOGOUT = 'commom/LOGOUT'
 export const SHOW_AJAX_LOADING = 'commom/SHOW_AJAX_LOADING'
 export const HIDE_AJAX_LOADING = 'commom/HIDE_AJAX_LOADING'
 export const SWITCH_OPEN_MODAL = 'commom/SWITCH_OPEN_MODAL'
@@ -26,3 +22,10 @@ export const GET_JOB_CIRCLE_MENBER_LISTS = 'workZone/GET_JOB_CIRCLE_MENBER_LISTS
 export const GET_GROUP_LISTS = 'workZone/GET_GROUP_LISTS'
 export const GET_MENBER_LISTS = 'workZone/GET_MENBER_LISTS'
 // export const GET_JOB_CIRCLE_MENBER_DETAILS = 'workZone/GET_JOB_CIRCLE_MENBER_DETAILS'
+
+//公共宫模块接口
+export const SHOW_MSG = 'commom/SHOW_MSG'
+export const HIDE_MSG = 'commom/HIDE_MSG'
+export const LOGIN = 'commom/LOGIN'
+export const LOGOUT = 'commom/LOGOUT'
+export const GET_UPLOAD_CONFIG = 'commom/GET_UPLOAD_CONFIG'

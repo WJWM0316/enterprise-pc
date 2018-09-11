@@ -1,5 +1,6 @@
 <template>
   <section class="page-course-list">
+    <div class="page-position">工作圈管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <el-input placeholder="请输入内容" v-model="form.name" class="input-with-select">
@@ -34,7 +35,7 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('menber', props.scope.row)">
-              成员
+              成员管理
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
@@ -56,7 +57,7 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
                 <div class="lalel">
-                  <span class="group-name">{{props.scope.row.realname}}</span>
+                  <span class="group-name">{{props.scope.row.groupName}}</span>
                   <span class="name">{{props.scope.row.realname}}</span>
                 </div>
             </div>

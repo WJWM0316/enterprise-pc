@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { routes } from './routes.js'
-import { saveAccessToken } from '@/store/cacheService'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -15,8 +15,6 @@ const router = new Router({
     }
   }
 })
-
-saveAccessToken('lphva', 10000)
 
 router.beforeEach((to, from, next) => {
   next()

@@ -107,13 +107,19 @@
     }
   }
   .el-radio {
-    margin: 10px 40px 10px 0px;
+    margin: 10px 30px 10px 0px;
   }
   .el-checkbox {
     margin-top: 10px !important;
     margin-left: 0px !important;
     margin-bottom: 10px !important;
     margin-right: 10px !important;
+  }
+  .el-radio__label {
+    box-sizing: border-box;
+    width: 70px;
+    padding-left: 5px;
+    display: inline-block; 
   }
   .el-icon-question {
     color: rgba(214,214,214,1);
@@ -158,6 +164,15 @@
     border-color: rgb(230, 203, 92); 
     outline: 0;
     background-color: rgb(255, 252, 240);
+  }
+  .zike-btn-selected {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
   }
   .header-seleted-item {
     font-size: 12px;

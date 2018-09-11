@@ -16,14 +16,17 @@ import {  editorRules } from 'FILTERS/rules'
       'postJobCircleApi',
       'showMsg',
       'getGroupListsApi',
-      'getMenberListsApi'
+      'getMenberListsApi',
+      'getUploadConfigApi',
+      'uploadApi'
     ])
   },
   computed: {
     ...mapGetters([
       'groupLists',
       'jobCircleMemberLists',
-      'menberLists'
+      'menberLists',
+      'uploadConfig'
     ])
   }
 })
@@ -35,28 +38,40 @@ export default class WorkZonePost extends Vue {
     // 工作圈主用户ID
     owner_uid: {
       value: '',
-      tem: {}
+      tem: {},
+      show: false
     },
     // 课程所属组织
-    organizations: [],
+    organizations: {
+      tem: [],
+      value: '',
+      show: false
+    },
     // 工作圈封面的id
     cover_img_id: '',
     // 工作圈成员
     members: {
       value: '',
-      tem: []
+      tem: [],
+      show: false
     },
     // 请填写工作圈介绍
     content: '',
     // 不可见工作圈成员
-    hits: '',
+    hits: {
+      value: '',
+      tem: [],
+      show: false
+    },
     // 课程是否上线 1->上线 0->下线
     status: 1,
     // 权重
     sort: ''
   }
-  cropper = null
 
+  // 初始化裁剪对象
+  cropper = null
+  // 裁剪设置
   flag = {
     imgHasLoad: false,
     cropperHasInit: false,
@@ -106,73 +121,19 @@ export default class WorkZonePost extends Vue {
     height: 350
   }
 
-  selectedModal = {
-    name: '',
-    tutor: '',
-    organizations: [],
-    menberCompulsory: [],
-    hits: []
-  }
-
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
   restaurants = []
   timeout =  null
-  checkList = []
   temMenberLists = []
-
-  // 课程列表
-  courseTypeList = []
-  // 导师列表
-  tutorList = []
-  // 组织列表
-  organizationsList = []
-  // 必修成员列表
-  menberCompulsoryList = []
-  // 不可见成员列表
-  hitsList = []
-  selectItem = {
-    value: '',
-    label: ''
-  }
-  // 组织列表
-  organizationsList = [
-  	{
-  		value: '1',
-  		label: '产品组'
-  	},
-  	{
-  		value: '2',
-  		label: '运营组'
-  	},
-  	{
-  		value: '3',
-  		label: '开发组'
-  	},
-  	{
-  		value: '4',
-  		label: '设计组'
-  	},
-  	{
-  		value: '5',
-  		label: '人力资源组'
-  	},
-  	{
-  		value: '6',
-  		label: '技术组'
-  	},
-  	{
-  		value: '7',
-  		label: '商务BD组'
-  	}
-  ]
 
   // 检测是否可以提交
   checkSubmit() {
     this.$refs['form'].validate((valid) => {
       if (valid) {
+        // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
@@ -235,56 +196,86 @@ export default class WorkZonePost extends Vue {
       })
   }
 
-  // 打开弹窗model
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   打开弹窗model
+   * @return   {[type]}        [description]
+   */
   openModal(type) {
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择工作圈圈主'
-  			this.models.currentModalName = 'owner_uid'
-  			this.models.width = '670px'
-  			this.models.minHeight = '284px'
   			break
   		case 'members':
   			this.models.title = '选择工作圈成员'
-  			this.models.currentModalName = 'members'
-  			this.models.width = '670px'
-  			this.models.minHeight = '284px'
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
-  			this.models.currentModalName = 'organizations'
-  			this.models.width = '670px'
-  			this.models.minHeight = '284px'
-  			break
-  		case 'menberCompulsory':
-  			this.models.title = '选择必修学员'
-  			this.models.currentModalName = 'menberCompulsory'
-  			this.models.width = '670px'
-  			this.models.minHeight = '284px'
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
-  			this.models.currentModalName = 'hits'
-  			this.models.width = '860px'
-  			this.models.minHeight = '635px'
   			break
   		default:
   			break
   	}
+    this.models.currentModalName = type
+    this.models.width = '860px'
+    this.models.minHeight = '284px'
   	this.models.show = true
   }
 
-  // 出发弹窗按钮
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   弹窗确定按钮
+   * @return   {[type]}   [description]
+   */
   confirm() {
+    const type = this.models.currentModalName
+    this.form[type].show = this.form[type].value ? true : false
+    this.models.show = false
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   弹窗关闭按钮
+   * @return   {[type]}        [description]
+   */
+  cancel() {
+    const type = this.models.currentModalName
+    this.form[type].value = ''
+    this.form[type].tem = []
     this.models.show = false
   }
 
   todoAction(type) {}
 
-  // 移除选中
-  removeCheck() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   移除选中的radio对象
+   * @return   {[type]}   [description]
+   */
+  removeSingleChecked(type) {
+    this.form[type].value = ''
+    this.form[type].tem = []
+    this.form[type].show = false
+  }
 
-  setType() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   移除多选
+   * @return   {[type]}        [description]
+   */
+  removeMultipleCheck(type, index) {
+    const value = this.form[type].value.split(',').splice(index, 1)
+    this.form[type].tem.splice(index, 1)
+    this.form[type].value = value.join(',')
+    this.form[type].show = this.form[type].tem <= 0 ? false : true
+  }
 
   /**
    * @Author   小书包
@@ -308,7 +299,6 @@ export default class WorkZonePost extends Vue {
    */
   singleSelection(type, item) {
     this.form[type].tem = item
-    console.log(this.form[type])
   }
 
   /**
@@ -318,13 +308,30 @@ export default class WorkZonePost extends Vue {
    */
   multipleSelection(type, item) {
     const menberLists = [...this.menberLists]
-    const selectedValue = []
+    const value = []
     menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
-        selectedValue.push(field.uid)
+        value.push(field.uid)
       }
     })
-    this.form[type].value = selectedValue.join(',')
+    this.form[type].value = value.join(',')
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   选择工作圈组织
+   * @return   {[type]}   [description]
+   */
+  seleteGroup(type, item) {
+    const groupLists = [...this.groupLists]
+    const value = []
+    groupLists.map(field => {
+      if(this.form[type].tem.includes(field.groupName)) {
+        value.push(field.id)
+      }
+    })
+    this.form[type].value = value.join(',')
   }
   /**
    * @Author   小书包
@@ -333,10 +340,25 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   memberClassification(type, groupId) {
+    const tem = []
+    const value = []
     const menberLists = [...this.menberLists]
     menberLists.map(field => {
-      console.log(field)
+      if(field.selfGroup.includes(groupId)) {
+        tem.push(field.realname)
+        value.push(field.uid)
+      }
     })
+    if(groupId === 'all') {
+      menberLists.map(field => {
+        tem.push(field.realname)
+        value.push(field.uid)
+      })
+    }
+    this.form[type] = {
+      value: value.join(','),
+      tem: tem
+    }
   }
 
   /**
@@ -376,7 +398,6 @@ export default class WorkZonePost extends Vue {
    * 用户选择好文件了
    * @param  {Event} e  文件改变事件
    */
-  /* eslint-disable */
   onFileChange(e) {
     const files = e.target.files
     const len = files.length
@@ -397,15 +418,14 @@ export default class WorkZonePost extends Vue {
     if (len > 0) {
       const file = files.item(0)
       if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
-        this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 10000 })
+        this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 3000 })
       } else if (file.size > ALLOW_MAX_SIZE) {
-        this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 10000 })
+        this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 3000 })
       } else {
         let inputImage = document.querySelector('#uplaod-file')
         let URL = window.URL || window.webkitURL
         let blobURL
         blobURL = URL.createObjectURL(file)
-
         this.flag.imgHasLoad = true
 
         if (!this.flag.cropperHasInit) {
@@ -418,8 +438,13 @@ export default class WorkZonePost extends Vue {
       }
     }
   }
-
-  loadCropper() { //加载裁剪工具
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   加载裁剪工具
+   * @return   {[type]}   [description]
+   */
+  loadCropper() {
     const image = document.querySelector('#cropperBox > img')
     const preview = document.querySelector('#cropperRes')
     const previewImage = preview.getElementsByTagName('img').item(0)
@@ -430,46 +455,39 @@ export default class WorkZonePost extends Vue {
     this.cropper = new Cropper(image, options)
     this.flag.cropperHasInit = true
   }
-
-  finishCropImage() {//完成裁剪，并输出裁剪结果，然后传到七牛
-    this.flag.btnTips.value = '正在上传，请稍等'
-    this.flag.btnTips.disable = true
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   完成裁剪，并输出裁剪结果，然后上传
+   * @return   {[type]}   [description]
+   */
+  finishCropImage() {
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
-
     const blob = this.dataURLtoBlob(croppedDataUrl)
-
-    // 每次更新头像都要获取一次 token
-    this.getUploadToken()
+    const formData = new FormData()
+    formData.append('img1', blob)
+    formData.append('attach_type', 'img')
+    console.log(blob)
+    this.flag.btnTips.value = '正在上传，请稍等'
+    this.flag.btnTips.disable = true
+    this.uploadApi(formData)
       .then(() => {
-        const formData = new FormData()
-        formData.append('token', this.qiniu.token)
-        formData.append('key', this.qiniu.key)
-        formData.append('file', blob)
-        return this.uploadAvatar(formData)
-      })
-      .then(uploadResponse => {
-        return this.updateAvatar({
-          avatar: uploadResponse.data.url,
-        })
-      })
-      .then(updateResponse => {
         this.cropper.destroy()
         this.flag.imgHasLoad = false
         this.flag.imgHasLoad = false
         this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
-        return updateResponse
       })
       .catch(err => {
-        this.showMsg({ content: '更换头像失败~', type: 'error', duration: 10000 })
+        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
       })
   }
 
   // dataUrl 转 blob
   dataURLtoBlob(dataurl) {
-    const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1]
-    const bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n)
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1]
+    let bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n)
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n)
     }

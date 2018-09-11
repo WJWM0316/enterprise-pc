@@ -6,7 +6,7 @@
         <slot name="title">
           <h3 class="dialog-title" v-html="title"></h3>
         </slot>
-        <span @click="handleCloseDialog" v-if="showClose" class="dialog-close">
+        <span @click="handleCancel" v-if="showClose" class="dialog-close">
           <i class="el-icon-close"></i>
         </span>
       </header>

@@ -29,10 +29,16 @@
         prop="owner_uid"
         class="limit-width"
         >
-          <div class="selected-item">
-            已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
+          <div class="selected-item" v-show="form.owner_uid.show">
+            已选择：<span @click="removeSingleChecked('owner_uid')">{{form.owner_uid.tem.realname}}<i class="el-icon-close"></i></span>
           </div>
-          <el-button class="click-item" type="primary" @click="openModal('owner_uid')">点击选择</el-button>
+          <el-button
+            class="click-item"
+            type="primary"
+            @click="openModal('owner_uid')"
+            :class="{'zike-btn-selected': form.owner_uid.show}">
+              点击选择
+          </el-button>
       </el-form-item>
       
       <!-- 选择成员 -->
@@ -41,10 +47,22 @@
         prop="members"
         class="limit-width"
         > 
-          <div class="selected-item">
-            已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
+          <div class="selected-item" v-show="form.members.show">
+            已选择：
+            <span
+              @click="removeMultipleCheck('members', mIndex)"
+              :key="mIndex"
+              v-for="(mItem, mIndex) in form.members.tem">
+                {{ mItem }}<i class="el-icon-close"></i>
+            </span>
           </div>
-          <el-button class="click-item" type="primary" @click="openModal('members')">点击选择</el-button>
+          <el-button
+            class="click-item"
+            type="primary"
+            @click="openModal('members')"
+            :class="{'zike-btn-selected': form.members.show}">
+              点击选择
+          </el-button>
       </el-form-item>
 
       <!-- 所属组织 -->
@@ -53,10 +71,22 @@
         prop="organizations"
         class="limit-width"
         >
-          <div class="selected-item">
-            已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
+          <div class="selected-item" v-show="form.organizations.show">
+            已选择：
+            <span
+              @click="removeMultipleCheck('organizations', oIndex)"
+              :key="oIndex"
+              v-for="(oItem, oIndex) in form.organizations.tem">
+                {{oItem}}<i class="el-icon-close"></i>
+            </span>
           </div>
-          <el-button class="click-item" type="primary" @click="openModal('organizations')">点击选择</el-button>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.organizations.show}"
+            @click="openModal('organizations')">
+              点击选择
+          </el-button>
           <el-tooltip
             effect="dark"
             content="这是所属组织的提示文案哦~"
@@ -109,10 +139,21 @@
         prop="organizations"
         class="limit-width"
         >
-          <div class="selected-item">
-            <span @click="removeCheck" v-for="item in 4" :key="item">学员{{item}}<i class="el-icon-close"></i></span>
+          <div class="selected-item" v-show="form.hits.show">
+            <span
+              @click="removeMultipleCheck('hits', hIndex)"
+              v-for="(hItem, hIndex) in form.hits.tem"
+              :key="hIndex">
+                {{hItem}}<i class="el-icon-close"></i>
+            </span>
           </div>
-          <el-button class="click-item" type="primary" @click="openModal('hits')">点击选择</el-button>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.hits.show}"
+            @click="openModal('hits')">
+              点击选择
+          </el-button>
           <el-tooltip
             effect="dark"
             content="这是选择不可见学员的提示文案哦~"
@@ -159,15 +200,15 @@
     :show-close="models.showClose"
     :confirm-text="models.confirmText"
     :type="models.type"
+    :width="models.width"
+    :min-height="models.minHeight"
     @confirm="confirm"
+    @cancel="cancel"
     >
       <div slot="title" style="margin-left: 10px;">
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>
-        <div class="header-seleted-item" v-if="selectItem.label">
-          已选择：<span @click="removeCheck">{{ selectItem.label }}<i class="el-icon-close"></i></span>
-        </div>
       </div>
       <div slot="customize-html">
         <div class="customize-html-content">
@@ -204,7 +245,7 @@
               <span><i class="el-icon-search"></i></span>
             </div>
             <div class="group-list">
-              <el-button size="large">所有人</el-button>
+              <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
@@ -226,58 +267,16 @@
           <!-- 选择工作圈成员-end -->
           <!-- 组织-start -->
           <div class="organizations-type-list" v-if="models.currentModalName === 'organizations'">
-            <el-checkbox-group v-model="form.organizations">
+            <el-checkbox-group v-model="form.organizations.tem">
               <el-checkbox
-                :label="organizationsItem.label"
-                :key="organizationsIndex"
-                @change="multipleSelection('organizations', organizationsItem)"
-                v-for="(organizationsItem, organizationsIndex) in organizationsList" />
+                :label="groupItem.groupName"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @change="seleteGroup('organizations', groupItem)" />
             </el-checkbox-group>
-            <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set" @click="setType">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
+            <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
           </div>
           <!-- 组织-end -->
-          <!-- 必修学员-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'menberCompulsory'">
-            <div class="search-bar">
-              <input type="text" name="" class="search" placeholder="请输入搜索名称">
-              <span><i class="el-icon-search"></i></span>
-            </div>
-            <div class="group-list">
-              <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                {{organizationsItem.label}}
-              </el-button>
-            </div>
-            <div class="menber-list">
-              <el-checkbox-group v-model="selectedModal.organizations">
-                <el-checkbox
-                  :label="organizationsItem.label"
-                  v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                  :key="organizationsIndex" />
-              </el-checkbox-group>
-            </div>
-          </div>
-          <!-- 必修学员-end -->
-          <!-- 选择导师-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'tutor'">
-            <div class="search-bar">
-              <input type="text" name="" class="search" placeholder="请输入搜索名称">
-              <span><i class="el-icon-search"></i></span>
-            </div>
-            <div class="group-list">
-              <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                {{organizationsItem.label}}
-              </el-button>
-            </div>
-            <div class="menber-list">
-              <el-checkbox-group v-model="selectedModal.organizations">
-                <el-checkbox
-                  :label="organizationsItem.label"
-                  v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                  :key="organizationsIndex" />
-              </el-checkbox-group>
-            </div>
-          </div>
-          <!-- 选择导师-end -->
           <!-- 选择不可见学员-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'hits'">
             <div class="search-bar">
@@ -285,16 +284,22 @@
               <span><i class="el-icon-search"></i></span>
             </div>
             <div class="group-list">
-              <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                {{organizationsItem.label}}
+              <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @click="memberClassification('organizations', groupItem.id)">
+                  {{groupItem.groupName}}
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="selectedModal.organizations">
+              <el-checkbox-group v-model="form.hits.tem">
                 <el-checkbox
-                  :label="organizationsItem.label"
-                  v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                  :key="organizationsIndex" />
+                  :label="menberItem.realname"
+                  :key="menberIndex"
+                  @change="multipleSelection('hits', menberItem)"
+                  v-for="(menberItem, menberIndex) in temMenberLists" />
               </el-checkbox-group>
             </div>
           </div>
