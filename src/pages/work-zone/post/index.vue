@@ -209,12 +209,12 @@
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="selectWorkZoneMenber(groupItem)">
+                @click="memberClassification('members', groupItem.id)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.members">
+              <el-checkbox-group v-model="form.members.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"

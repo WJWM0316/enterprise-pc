@@ -44,7 +44,7 @@ export default class WorkZonePost extends Vue {
     // 工作圈成员
     members: {
       value: '',
-      tem: {}
+      tem: []
     },
     // 请填写工作圈介绍
     content: '',
@@ -239,13 +239,13 @@ export default class WorkZonePost extends Vue {
   openModal(type) {
   	switch(type) {
   		case 'owner_uid':
-  			this.models.title = '选择圈主'
+  			this.models.title = '选择工作圈圈主'
   			this.models.currentModalName = 'owner_uid'
   			this.models.width = '670px'
   			this.models.minHeight = '284px'
   			break
   		case 'members':
-  			this.models.title = '选择成员'
+  			this.models.title = '选择工作圈成员'
   			this.models.currentModalName = 'members'
   			this.models.width = '670px'
   			this.models.minHeight = '284px'
@@ -303,15 +303,6 @@ export default class WorkZonePost extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
-   * @detail   选择工作圈成员
-   * @return   {[type]}        [description]
-   */
-  selectWorkZoneMenber(item) {
-    console.log(item)
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-10
    * @detail   单选
    * @return   {[type]}        [description]
    */
@@ -326,9 +317,28 @@ export default class WorkZonePost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    // this.form[type].tem = item
-    console.log(this.form[type])
+    const menberLists = [...this.menberLists]
+    const selectedValue = []
+    menberLists.map(field => {
+      if(this.form[type].tem.includes(field.realname)) {
+        selectedValue.push(field.uid)
+      }
+    })
+    this.form[type].value = selectedValue.join(',')
   }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   成员分类
+   * @return   {[type]}   [description]
+   */
+  memberClassification(type, groupId) {
+    const menberLists = [...this.menberLists]
+    menberLists.map(field => {
+      console.log(field)
+    })
+  }
+
   /**
    * @Author   小书包
    * @DateTime 2018-09-10

@@ -55,7 +55,10 @@
           <div class="content">
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
-                <div>{{props.scope.row.realname}}-组织架构</div>
+                <div class="lalel">
+                  <span class="group-name">{{props.scope.row.realname}}</span>
+                  <span class="name">{{props.scope.row.realname}}</span>
+                </div>
             </div>
           </div>
         </div>
