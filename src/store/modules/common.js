@@ -8,7 +8,7 @@ import {
 } from '../mutation-types'
 
 import {
-  getUploadConfigApi,
+  postUploadConfigApi,
   uploadApi
 } from 'API/common'
 
@@ -83,8 +83,8 @@ const actions = {
     store.commit(HIDE_MSG)
   },
   // 获取上传的配置
-  getUploadConfigApi(store, params) {
-    return getUploadConfigApi(params)
+  postUploadConfigApi(store, params) {
+    return postUploadConfigApi(params)
       .then(res => {
         store.commit(GET_UPLOAD_CONFIG, res.data.data)
         return res
@@ -95,7 +95,6 @@ const actions = {
   },
   // 上传文件
   uploadApi(store, params) {
-    console.log(params)
     return uploadApi(params)
       .then(res => {
         return res
