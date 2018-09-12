@@ -14,15 +14,11 @@ import {  editorRules } from 'FILTERS/rules'
     ...mapActions([
       'getJobCircleMemberListsApi',
       'postJobCircleApi',
-      'putJobCircleApi',
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
-      'postUploadConfigApi',
-      'uploadApi',
-      'getJobCircleDetailsApi',
-      'getJobCircleHitListsApi',
-      'getJobCircleOrganizationListsApi'
+      'getUploadConfigApi',
+      'uploadApi'
     ])
   },
   computed: {
@@ -30,10 +26,7 @@ import {  editorRules } from 'FILTERS/rules'
       'groupLists',
       'jobCircleMemberLists',
       'menberLists',
-      'uploadConfig',
-      'jobCircleDetails',
-      'jobCircleOrganizationLists',
-      'jobCircleHitLists'
+      'uploadConfig'
     ])
   }
 })
@@ -123,7 +116,7 @@ export default class WorkZonePost extends Vue {
 
   // 社区介绍富文本编辑器
   ContentEditor = {
-    content: '',
+    content: '你好啊',
     // path: `${config.host}/admin/common/editor/uploadImg`,
     height: 350
   }
@@ -144,33 +137,14 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'owner_uid', 'organizations', 'cover_img_id', 'members', 'content', 'hits', 'status', 'sort', 'id']
-        const action = this.$route.name === 'workZonePost' ? 'postJobCircleApi' : 'putJobCircleApi'
-        const params = this.transformData(this.form, need)
-        this.submit(params, action)
+        this.submit(this.form)
       }
     })
   }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-12
-   * @detail   获取提交参数
-   * @return   {[type]}   [description]
-   */
-  transformData(data, params) {
-    const formData = {}
-    params.map(field => {
-      if(typeof data[field] != 'object') {
-        formData[field] = data[field]
-      } else {
-        formData[field] = data[field].value
-      }
-    })
-    return formData
-  }
+
   // 提交表单数据
-  submit(params, action) {
-    this[action](params)
+  submit(params) {
+    this.postJobCircleApi(params)
       .then(res => {
         this.showMsg({ content: '创建直播成功~', type: 'success', duration: 3000 })
         setTimeout(() => {
@@ -214,8 +188,12 @@ export default class WorkZonePost extends Vue {
 
   created() {
     this.restaurants = this.loadAll()
-    this.initPageByPost()
-    this.initPageByUpdate()
+    this.getGroupListsApi()
+    // 获取所有成员列表
+    this.getMenberListsApi({selectAll: 1})
+      .then(() => {
+        this.temMenberLists = [...this.menberLists]
+      })
   }
 
   /**
@@ -246,91 +224,7 @@ export default class WorkZonePost extends Vue {
     this.models.minHeight = '284px'
   	this.models.show = true
   }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-12
-   * @detail   初始化新增页面数据
-   * @return   {[type]}   [description]
-   */
-  initPageByPost() {
-    if(this.$route.name !== 'workZonePost') return
-    // 获取组列表
-    this.getGroupListsApi()
-    // 获取成员列表
-    this.getMenberListsApi({selectAll: 1})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-12
-   * @detail   编辑时初始化页面
-   * @return   {[type]}   [description]
-   */
-  initPageByUpdate() {
-    const params = {id: this.$route.params.id}
-    if(this.$route.name !== 'workZoneUpdate') return
-    Promise.all(
-      [
-        this.getJobCircleDetailsApi(params),
-        this.getJobCircleHitListsApi(params),
-        this.getJobCircleOrganizationListsApi(params),
-        this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
-        this.getJobCircleMemberListsApi(params)
-      ]
-    )
-    .then((res) => {
-      const jobCircleDetails = {...this.jobCircleDetails}
-      const jobCircleOrganizationLists = [...this.jobCircleOrganizationLists]
-      const jobCircleHitLists = [...this.jobCircleHitLists]
-      const groupLists = this.groupLists
-      const temMenberLists = [...this.menberLists]
-      const jobCircleMemberLists = [...this.jobCircleMemberLists]
-      this.temMenberLists = [...this.menberLists]
-      this.form.name = jobCircleDetails.name
-      this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
-      this.form.sort = jobCircleDetails.sort
-      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.owner_uid.value = jobCircleDetails.owner_uid
-      this.form.cover_img_id = jobCircleDetails.coverImgId
-      this.form.id = jobCircleDetails.id
-      // 成员列表的遍历
-      temMenberLists.map(field => {
-        // 导师的筛选
-        if(field.uid === jobCircleDetails.ownerUid) {
-          this.form.owner_uid.tem = field
-          this.form.owner_uid.show = true
-        }
-        // 工作圈成员
-        if(jobCircleMemberLists.includes(field.uid)) {
-          this.form.members.value += '' + field.uid
-          this.form.members.tem.push(field.realname)
-          this.form.members.show = true
-        }
-        // 不可见学员
-        if(jobCircleHitLists.includes(field.uid)) {
-          this.form.hits.value += '' + field.uid
-          this.form.hits.tem.push(field.realname)
-          this.form.hits.show = true
-        }
-      })
-      // 组织的遍历
-      groupLists.map(field => {
-        // 工作圈组织
-        if(jobCircleOrganizationLists.includes(field.id)) {
-          this.form.organizations.value += '' + field.id
-          this.form.organizations.tem.push(field.groupName)
-          this.form.organizations.show = true
-        }
-      })
-    })
-    .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
-    })
-  }
+
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
@@ -341,7 +235,6 @@ export default class WorkZonePost extends Vue {
     const type = this.models.currentModalName
     this.form[type].show = this.form[type].value ? true : false
     this.models.show = false
-    console.log(this.form)
   }
 
   /**
@@ -553,8 +446,8 @@ export default class WorkZonePost extends Vue {
    */
   loadCropper() {
     const image = document.querySelector('#cropperBox > img')
-    // const preview = document.querySelector('#cropperRes')
-    // const previewImage = preview.getElementsByTagName('img').item(0)
+    const preview = document.querySelector('#cropperRes')
+    const previewImage = preview.getElementsByTagName('img').item(0)
     const options = {
       aspectRatio: 1 / 1,
       preview: '#cropperRes'
@@ -569,14 +462,15 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   finishCropImage() {
-    this.flag.btnTips.value = '正在上传，请稍等'
-    this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
     const blob = this.dataURLtoBlob(croppedDataUrl)
     const formData = new FormData()
+    formData.append('img1', blob)
     formData.append('attach_type', 'img')
-    formData.append('file', blob)
+    console.log(blob)
+    this.flag.btnTips.value = '正在上传，请稍等'
+    this.flag.btnTips.disable = true
     this.uploadApi(formData)
       .then(() => {
         this.cropper.destroy()

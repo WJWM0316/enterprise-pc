@@ -1,11 +1,11 @@
 import {
   GET_WORK_ZONE_LISTS,
-  GET_JOB_CIRCLE_ORGANIZATION_LISTS,
-  GET_JOB_CIRCLE_HIT_LISTS,
+  // GET_JOB_CIRCLE_ORGANIZATION_LISTS,
+  // GET_JOB_CIRCLE_HIT_LISTS,
   GET_JOB_CIRCLE_MENBER_LISTS,
   GET_GROUP_LISTS,
-  GET_MENBER_LISTS,
-  GET_JOB_CIRCLE_MENBER_DETAILS
+  GET_MENBER_LISTS
+  // GET_JOB_CIRCLE_MENBER_DETAILS
 } from '../mutation-types'
 
 import {
@@ -28,10 +28,7 @@ const state = {
   },
   jobCircleMemberLists: [],
   groupLists: [],
-  menberLists: [],
-  jobCircleDetails: {},
-  jobCircleOrganizationLists: [],
-  jobCircleHitLists: []
+  menberLists: []
 }
 
 const mutations = {
@@ -56,15 +53,6 @@ const mutations = {
       })
     })
     state.menberLists = data
-  },
-  [GET_JOB_CIRCLE_MENBER_DETAILS] (status, data) {
-    state.jobCircleDetails = data
-  },
-  [GET_JOB_CIRCLE_ORGANIZATION_LISTS] (status, data) {
-    state.jobCircleOrganizationLists = data
-  },
-  [GET_JOB_CIRCLE_HIT_LISTS] (status, data) {
-    state.jobCircleHitLists = data
   }
 }
 
@@ -72,10 +60,7 @@ const getters = {
   jobCircleLists: state => state.jobCircleLists,
   jobCircleMemberLists: state => state.jobCircleMemberLists,
   groupLists: state => state.groupLists,
-  menberLists: state => state.menberLists,
-  jobCircleDetails: state => state.jobCircleDetails,
-  jobCircleOrganizationLists: state => state.jobCircleOrganizationLists,
-  jobCircleHitLists: state => state.jobCircleHitLists
+  menberLists: state => state.menberLists
 }
 
 const actions = {
@@ -91,11 +76,12 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
-  // 获取获取工作圈组织
+  // 获取获取工作圈成员
   getJobCircleOrganizationListsApi(store, params) {
     return getJobCircleOrganizationListsApi(params)
       .then(res => {
-        store.commit(GET_JOB_CIRCLE_ORGANIZATION_LISTS, res.data.data)
+        console.log(res)
+        // store.commit(GET_WORK_ZONE_LISTS, res.data.info)
         return res
       })
       .catch(error => {
@@ -106,7 +92,8 @@ const actions = {
   getJobCircleHitListsApi(store, params) {
     return getJobCircleHitListsApi(params)
       .then(res => {
-        store.commit(GET_JOB_CIRCLE_HIT_LISTS, res.data.data)
+        console.log(res)
+        // store.commit(GET_WORK_ZONE_LISTS, res.data.info)
         return res
       })
       .catch(error => {
@@ -128,6 +115,8 @@ const actions = {
   putJobCircleApi(store, params) {
     return putJobCircleApi(params)
       .then(res => {
+        console.log(res)
+        // store.commit(GET_WORK_ZONE_LISTS, res.data.info)
         return res
       })
       .catch(error => {
@@ -138,7 +127,8 @@ const actions = {
   getJobCircleDetailsApi(store, params) {
     return getJobCircleDetailsApi(params)
       .then(res => {
-        store.commit(GET_JOB_CIRCLE_MENBER_DETAILS, res.data.data)
+        console.log(res)
+        // store.commit(GET_WORK_ZONE_LISTS, res.data.info)
         return res
       })
       .catch(error => {
@@ -149,6 +139,8 @@ const actions = {
   postJobCircleApi(store, params) {
     return postJobCircleApi(params)
       .then(res => {
+        console.log(res)
+        // store.commit(GET_WORK_ZONE_LISTS, res.data.info)
         return res
       })
       .catch(error => {

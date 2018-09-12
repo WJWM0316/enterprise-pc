@@ -68,7 +68,7 @@ export default ComponentDialog
     z-index: 2012;
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(3);
     padding: 30px;
     box-sizing: border-box;
   }
@@ -76,7 +76,7 @@ export default ComponentDialog
   .box.show-box {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
   }
 
   header {

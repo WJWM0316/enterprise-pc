@@ -7,7 +7,7 @@
       :total="total"
       :header-row-class-name="'zikebackend-table-header'"
       :row-class-name="tableRowClassName"
-      >
+      border>
       <el-table-column type="selection" width="49" align="center" v-if="selectable"></el-table-column>
       <el-table-column
         :key="field.prop"

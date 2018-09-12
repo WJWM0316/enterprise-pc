@@ -5,7 +5,7 @@ import { request } from './index.js'
 
 // 获取工作圈列表
 export const getJobCircleListsApi = params => request('/job/circle', 'get', params)
-// 获取获取工作圈组织列表
+// 获取获取工作圈成员
 export const getJobCircleOrganizationListsApi = params => request(`/job/circleorganization/${params.id}`, 'get')
 // 获取工作圈不可见成员
 export const getJobCircleHitListsApi = params => request(`/job/circlehit/${params.id}`, 'get')
