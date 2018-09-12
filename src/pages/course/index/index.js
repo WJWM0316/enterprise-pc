@@ -147,9 +147,4 @@ export default class CourseList extends Vue {
     this.$router.push({ name: 'coursePost'})
   }
 
-  // 添加课程-跳转
-  toLesson() {
-    this.$router.push({ name: 'courseLesson'})
-  }
-
 }

@@ -63,33 +63,6 @@ export const routes = [
         }
       },
       {
-        path: 'lesson',
-        name: 'courseLesson',
-        component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/lesson/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: 'lessonPost',
-        name: 'courseLessonPost',
-        component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/lessonPost/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: 'punchCard',
-        name: 'courseCard',
-        component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/punchCard/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
         path: 'update/:id',
         name: 'courseUpdate',
         component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
@@ -186,37 +159,13 @@ export const routes = [
     path: '/tutor',
     name: 'tutor',
     title: '导师',
-    // 直接跳转列表页
-    redirect: {
-      name: 'tutorList'
-    },
     component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
     meta: {
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-message',
       module: 'tutor'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'tutorList',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/index/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: 'post',
-        name: 'tutorPost',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      }
-    ]
+    }
   },
   {
     path: '/work-book',

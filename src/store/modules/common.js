@@ -77,7 +77,6 @@ const actions = {
     store.commit(SWITCH_OPEN_MODAL, open)
   },
   showMsg (store, { content, type, duration }) {
-    console.log(SHOW_MSG)
     store.commit(SHOW_MSG, { content, type, duration })
   },
   hideMsg (store) {

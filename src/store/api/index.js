@@ -10,7 +10,7 @@ let loadingInstance = null
 import { getAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
-export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/tiger` : ''
+export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
 
 // 请求超时时间
 axios.defaults.timeout = 10000
@@ -20,6 +20,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
+    // config.params.token = getAccessToken()
     return config
   },
   error => {
@@ -49,5 +50,5 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params))
+  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params), {withCredentials: true})
 }
