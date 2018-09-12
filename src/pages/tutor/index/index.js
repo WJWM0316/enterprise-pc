@@ -17,6 +17,8 @@ import TableList from 'COMPONENTS/list/index.vue'
   }
 })
 export default class CourseList extends Vue {
+  teaType = 'primary'
+  teaType2 = ''
 
   // 表单数据
   courseList = []
@@ -26,55 +28,24 @@ export default class CourseList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'courseName',
-      label: '课 程',
+      prop: 'teacherMsg',
+      label: '导师资料',
       align: 'center'
     },
     {
-      prop: 'online',
-      label: '是否上线',
-      align: 'center',
-      showTips: 'yes',
-      filteredValue:
-      [
-        {
-          label: '上线',
-          value: 'status-1'
-        },
-        {
-          label: '下线',
-          value: 'status-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      prop: 'mobile',
+      label: '手机号',
+      align: 'center'
     },
     {
-      prop: 'type',
-      label: '类 型',
+      prop: 'inviteNum',
+      label: 'TA的邀请',
       align: 'center',
-      showTips: 'yes',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'type-全部'
-        },
-        {
-          label: '产品',
-          value: 'type-产品'
-        },
-        {
-          label: '运营',
-          value: 'type-运营'
-        }
-      ],
-      filterPlacement: '类型的提示文案'
     },
     {
-      prop: 'sort',
-      label: '权 重',
+      prop: 'liveNum',
+      label: 'TA的直播',
       align: 'center',
-      showTips: 'no'
     },
     {
       prop: 'actions',
@@ -106,16 +77,10 @@ export default class CourseList extends Vue {
   created() {
     for (let i = 0; i < 20; i++) {
       this.courseList.push({
-        date: '2016-05-03',
-        courseName: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-        tag: 0,
-        course: '公开卡',
-        online: 0,
-        type: '产品',
-        range: 'desc',
-        img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
-        isDeleted: 0,
+        mobile: '2016-05-03',
+        teacherMsg: '王小虎',
+        inviteNum: '（1）',
+        liveNum: '（1）',
         sort: 'desc'
       })
     }
@@ -131,25 +96,34 @@ export default class CourseList extends Vue {
   }
 
   /**
-   * 获取课程列表
+   * 获取列表
    */
-  async getCourseList() {}
+  async getList() {}
 
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
     this.setPathQuery(this.form)
-    this.getCourseList()
+    this.getList()
   }
 
   // 添加课程-跳转
-  addCourse() {
-    this.$router.push({ name: 'coursePost'})
+  addTea() {
+    this.$router.push({ name: 'tutorPost'})
   }
 
-  // 添加课程-跳转
-  toLesson() {
-    this.$router.push({ name: 'courseLesson'})
+  selectTea(type){
+    if(type===1){
+      this.teaType = 'primary'
+      this.teaType2 = ''
+
+    }else {
+      this.teaType = ''
+      this.teaType2 = 'primary'
+    }
   }
 
+  removeTea(){
+
+  }
 }

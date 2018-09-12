@@ -26,13 +26,18 @@ export default class CourseList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'courseName',
-      label: '课 程',
+      prop: 'cardCont',
+      label: '打卡内容',
       align: 'center'
     },
     {
-      prop: 'online',
-      label: '是否上线',
+      prop: 'author',
+      label: '发布者',
+      align: 'center'
+    },
+    {
+      prop: 'state',
+      label: '状态',
       align: 'center',
       showTips: 'yes',
       filteredValue:
@@ -49,30 +54,8 @@ export default class CourseList extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'type',
-      label: '类 型',
-      align: 'center',
-      showTips: 'yes',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'type-全部'
-        },
-        {
-          label: '产品',
-          value: 'type-产品'
-        },
-        {
-          label: '运营',
-          value: 'type-运营'
-        }
-      ],
-      filterPlacement: '类型的提示文案'
-    },
-    {
-      prop: 'sort',
-      label: '权 重',
+      prop: 'createdTime',
+      label: '建立时间',
       align: 'center',
       showTips: 'no'
     },
@@ -145,11 +128,6 @@ export default class CourseList extends Vue {
   // 添加课程-跳转
   addCourse() {
     this.$router.push({ name: 'coursePost'})
-  }
-
-  // 添加课程-跳转
-  toLesson() {
-    this.$router.push({ name: 'courseLesson'})
   }
 
 }

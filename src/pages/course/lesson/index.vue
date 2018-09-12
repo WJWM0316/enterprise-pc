@@ -1,6 +1,6 @@
 <template>
   <section class="page-course-list">
-    <div class="page-position">课程管理</div>
+    <div class="page-position">课节管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <div class="search-bar">
@@ -9,7 +9,7 @@
         </div>
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addCourse" class="click-item">添加课程</el-button>
+        <el-button type="primary" @click="addCourse" class="click-item">新建课程</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -20,8 +20,7 @@
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">编辑</el-button>
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="toLesson">课节</el-button>
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">成员交流</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">打卡管理</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
