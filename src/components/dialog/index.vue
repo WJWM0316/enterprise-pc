@@ -6,7 +6,7 @@
         <slot name="title">
           <h3 class="dialog-title" v-html="title"></h3>
         </slot>
-        <span @click="handleCloseDialog" v-if="showClose" class="dialog-close">
+        <span @click="handleCancel" v-if="showClose" class="dialog-close">
           <i class="el-icon-close"></i>
         </span>
       </header>
@@ -68,7 +68,7 @@ export default ComponentDialog
     z-index: 2012;
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, -50%) scale(3);
+    transform: translate(-50%, -50%);
     padding: 30px;
     box-sizing: border-box;
   }
@@ -76,7 +76,7 @@ export default ComponentDialog
   .box.show-box {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%);
   }
 
   header {

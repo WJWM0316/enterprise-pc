@@ -3,19 +3,17 @@ import {
   HIDE_MSG,
   SWITCH_OPEN_MODAL,
   HIDE_AJAX_LOADING,
-  SHOW_AJAX_LOADING
+  SHOW_AJAX_LOADING,
+  GET_UPLOAD_CONFIG
 } from '../mutation-types'
 
-import { getAccessToken } from '@/store/cacheService'
-// import {
-//   articleGetArticleListApi,
-//   articlePostArticleApi,
-//   articleDeleteArticleApi,
-//   articlePutArticleApi
-// } from 'API/common'
+import {
+  postUploadConfigApi,
+  uploadApi
+} from 'API/common'
 
 const state = {
-  token: getAccessToken(),
+  uploadConfig: {},
   message: {
     content: '',
     type: 'error',
@@ -27,22 +25,29 @@ const state = {
 }
 
 const mutations = {
+  // 显示自定义信息
   [SHOW_MSG](state, { content, type = 'error', duration = 5000 }) {
     state.message = { content, type, duration }
   },
+  // 隐藏自定义信息
   [HIDE_MSG](state) {
     state.message.content = ''
   },
+  // 显示加载图
   [SHOW_AJAX_LOADING] (state) {
     state.ajaxLoading = true
   },
-
+  // 关闭加载图
   [HIDE_AJAX_LOADING] (state) {
     state.ajaxLoading = false
   },
-
+  // 切换限制弹窗
   [SWITCH_OPEN_MODAL] (state, open) {
     state.openModal = !!open
+  },
+  // 获取上传文件的配置
+  [GET_UPLOAD_CONFIG] (state, data) {
+    state.uploadConfig = data
   }
 }
 
@@ -51,7 +56,8 @@ const getters = {
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal,
-  token: state => state.token
+  token: state => state.token,
+  uploadConfig: state => state.uploadConfig
 }
 
 const actions = {
@@ -77,7 +83,27 @@ const actions = {
   hideMsg (store) {
     store.commit(HIDE_MSG)
   },
-  getUploadToken(store) {}
+  // 获取上传的配置
+  postUploadConfigApi(store, params) {
+    return postUploadConfigApi(params)
+      .then(res => {
+        store.commit(GET_UPLOAD_CONFIG, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  // 上传文件
+  uploadApi(store, params) {
+    return uploadApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

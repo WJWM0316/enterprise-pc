@@ -50,5 +50,5 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params))
+  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params), {withCredentials: true})
 }
