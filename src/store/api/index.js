@@ -49,5 +49,6 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, params, {withCredentials: true})
+  const newParams = getAccessToken() ? Object.assign(params, {token: getAccessToken()}) : params
+  return axios[method](url, method === 'get' ? { newParams } : newParams, {withCredentials: true})
 }

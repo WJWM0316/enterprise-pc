@@ -63,25 +63,9 @@ export default CourseList
 <style lang="scss">
 @import "~COLORS/variables";
 .page-course-list {
+  background: white;
   .action-zone {
     text-align: right;
-  }
-  .page-position {
-    font-size: 16px;
-    color: #000;
-    line-height: 1;
-    position: relative;
-    margin: 16px 0;
-    &:before{
-      content: '';
-      height: 100%;
-      width:6px;
-      height:16px;
-      background:rgba(255,226,102,1);
-      display: inline-block;
-      margin-right: 8px;
-      float: left;
-    };
   }
   .header {
     margin: 20px 0;

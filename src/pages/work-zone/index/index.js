@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
   name: 'lighthouse-list',
@@ -19,7 +20,8 @@ import TableList from 'COMPONENTS/list/index.vue'
     }
   },
    components: {
-    TableList
+    TableList,
+    SearchBar
   }
 })
 export default class CourseList extends Vue {
@@ -101,8 +103,6 @@ export default class CourseList extends Vue {
     total: 0
   }
 
-  searchType = '1'
-
   /**
    * 初始化表单、分页页面数据
    */
@@ -118,7 +118,7 @@ export default class CourseList extends Vue {
    */
   getWorkZoneLists() {
     const params = {page: 1, count: 20, ...this.$route.query}
-    if (this.form.name) {
+    if(this.form.name) {
       params.name = this.form.name
     }
     this.getJobCircleListsApi(params)
@@ -146,8 +146,10 @@ export default class CourseList extends Vue {
         })
         break
       case 'note':
+        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       case 'menber':
+        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       default:
         break

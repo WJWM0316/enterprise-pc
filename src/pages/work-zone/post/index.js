@@ -298,6 +298,7 @@ export default class WorkZonePost extends Vue {
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = jobCircleDetails.owner_uid
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
+      this.form.cover_img_id.tem = jobCircleDetails.coverImg
       this.form.id = jobCircleDetails.id
       // 成员列表的遍历
       temMenberLists.map(field => {

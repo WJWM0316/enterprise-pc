@@ -3,9 +3,11 @@
     <div class="page-position">工作圈管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <el-input placeholder="请输入内容" v-model="form.name" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
-        </el-input>
+        <search-bar
+          width="500px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="请输入工作圈名称" />
       </el-col>
       <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addWorkZone" class="click-item">新建工作圈</el-button>

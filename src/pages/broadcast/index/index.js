@@ -22,7 +22,7 @@ import TableList from 'COMPONENTS/list/index.vue'
     TableList
   }
 })
-export default class BroadcastList extends Vue {
+export default class CourseList extends Vue {
 
   // 表格字段
   fields = [
@@ -31,26 +31,7 @@ export default class BroadcastList extends Vue {
       label: '课 程',
       align: 'center',
       showTips: 'no',
-      width: '45%'
-    },
-    {
-      prop: 'zhuangtai',
-      label: '状态',
-      align: 'center',
-      showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '上线',
-          value: 'zhuangtai-1'
-        },
-        {
-          label: '下线',
-          value: 'zhuangtai-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      width: '55%'
     },
     {
       prop: 'status',
@@ -70,31 +51,6 @@ export default class BroadcastList extends Vue {
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
-    },
-    {
-      prop: 'fenlei',
-      label: '分类',
-      align: 'center',
-      showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '上线',
-          value: 'status-1'
-        },
-        {
-          label: '下线',
-          value: 'status-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
-    },
-    {
-      prop: 'time',
-      label: '开始时间',
-      showTips: 'no',
-      width: '15%'
     },
     {
       prop: 'sort',
@@ -122,8 +78,8 @@ export default class BroadcastList extends Vue {
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'yes',
-      width: '25%'
+      showTips: 'no',
+      width: '15%'
     }
   ]
 
@@ -162,23 +118,21 @@ export default class BroadcastList extends Vue {
    */
   getWorkZoneLists() {
     const params = {page: 1, count: 20, ...this.$route.query}
-    if (this.form.name) {
+    if(this.form.name) {
       params.name = this.form.name
     }
     this.getJobCircleListsApi(params)
+    console.log(params)
   }
 
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
     this.getWorkZoneLists()
+    console.log(this.form)
   }
 
-  /**
-   * @Author   小书包
-   * @DateTime 新增直播跳转
-   * @detail   detail
-   */
+  // 添加课程-跳转
   addBroadcast() {
     this.$router.push({ name: 'broadcastPost'})
   }
@@ -187,7 +141,7 @@ export default class BroadcastList extends Vue {
     switch(type) {
       case 'edit':
         this.$router.push({
-          name: 'broadcastUpdate',
+          name: 'workZoneUpdate',
           params: {
             id: item.id
           }

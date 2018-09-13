@@ -3,7 +3,7 @@
     <div class="page-position">直播管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <el-input placeholder="请输入内容" v-model="form.name" class="input-with-select">
+        <el-input placeholder="请输入直播名称或关键词" v-model="form.name" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
       </el-col>
@@ -29,13 +29,13 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('note', props.scope.row)">
-              问答区
+              帖子管理
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('menber', props.scope.row)">
-              直播回顾
+              成员管理
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
@@ -66,9 +66,6 @@
         <div v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.status }}
         </div>
-        <div v-else-if="props.scope.column.property === 'zhuangtai'">
-          不知道
-        </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
@@ -77,8 +74,8 @@
 </template>
 
 <script>
-import BroadcastList from './index'
-export default BroadcastList
+import CourseList from './index'
+export default CourseList
 </script>
 
 <style lang="scss">

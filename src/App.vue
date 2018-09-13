@@ -17,7 +17,6 @@ import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
-import 'ICONFONT/iconfont.css'
 
 @Component({
   name: 'App',
@@ -41,56 +40,7 @@ export default class App extends Vue {
   }
 }
 </script>
-<style lang="less">
-#zike-backend {
-  > aside {
-    width: 200px;
-    height: 100vh;
-    background: #354048;
-    position: relative;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-  }
-  > main {
-    position: relative;
-    margin-left: 200px;
-    overflow: hidden;
-  }
-}
-.container {
-  margin: 20px;
-  padding: 20px;
-  position: relative;
-  background: #fff;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-/*.fade-enter-active,
-.fade-leave-active {
-  transition: all ease .1s;
-  opacity: 1;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}*/
-.pages {
-  overflow: hidden;
-  margin: 20px;
-  padding: 20px;
-  position: relative;
-  background: #fff;
-  border-radius: 4px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+<style lang="scss">
+@import "./App.scss";
+@import '~ICONFONT/iconfont.css';
 </style>

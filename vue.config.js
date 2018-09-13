@@ -41,4 +41,17 @@ module.exports = {
 	    })
     ]
   }
+  // devServer: {
+  //   proxy: {
+  //     '/tiger': {
+  //       target: 'http://web.xplus.ziwork.com/tiger',
+  //       ws: true,
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         '^/zike_admin': ''
+  //       },
+  //       logLevel: 'debug'
+  //     }
+  //   }
+  // }
 }
