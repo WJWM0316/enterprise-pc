@@ -157,6 +157,7 @@ export default ComponentTableList
   }
   .el-button--text {
     color: #4080AD;
+    margin: 0 8px;
   }
 }
 </style>

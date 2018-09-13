@@ -2,7 +2,9 @@
   <section id="dashboard">
   	<div class="container">
   		<div class="dashboard-part-content">
-        <p v-for="(item, index) in 20" :key="index">11111</p>  
+        <section class="header">
+          <h1>深圳市有限元公司</h1>
+        </section>
       </div>
   		<div class="dashboard-part-right">
   			<div class="contact-company-box"> <h1>客服电话</h1> <p>15999972494</p> </div>

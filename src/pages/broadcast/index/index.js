@@ -22,7 +22,7 @@ import TableList from 'COMPONENTS/list/index.vue'
     TableList
   }
 })
-export default class CourseList extends Vue {
+export default class BroadcastList extends Vue {
 
   // 表格字段
   fields = [
@@ -31,7 +31,26 @@ export default class CourseList extends Vue {
       label: '课 程',
       align: 'center',
       showTips: 'no',
-      width: '55%'
+      width: '45%'
+    },
+    {
+      prop: 'zhuangtai',
+      label: '状态',
+      align: 'center',
+      showTips: 'no',
+      width: '10%',
+      filteredValue:
+      [
+        {
+          label: '上线',
+          value: 'zhuangtai-1'
+        },
+        {
+          label: '下线',
+          value: 'zhuangtai-0'
+        }
+      ],
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'status',
@@ -51,6 +70,31 @@ export default class CourseList extends Vue {
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+    },
+    {
+      prop: 'fenlei',
+      label: '分类',
+      align: 'center',
+      showTips: 'no',
+      width: '10%',
+      filteredValue:
+      [
+        {
+          label: '上线',
+          value: 'status-1'
+        },
+        {
+          label: '下线',
+          value: 'status-0'
+        }
+      ],
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+    },
+    {
+      prop: 'time',
+      label: '开始时间',
+      showTips: 'no',
+      width: '15%'
     },
     {
       prop: 'sort',
@@ -78,8 +122,8 @@ export default class CourseList extends Vue {
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'no',
-      width: '15%'
+      showTips: 'yes',
+      width: '25%'
     }
   ]
 
@@ -130,16 +174,20 @@ export default class CourseList extends Vue {
     this.getWorkZoneLists()
   }
 
-  // 添加课程-跳转
-  addWorkZone() {
-    this.$router.push({ name: 'workZonePost'})
+  /**
+   * @Author   小书包
+   * @DateTime 新增直播跳转
+   * @detail   detail
+   */
+  addBroadcast() {
+    this.$router.push({ name: 'broadcastPost'})
   }
 
   todoAction(type, item) {
     switch(type) {
       case 'edit':
         this.$router.push({
-          name: 'workZoneUpdate',
+          name: 'broadcastUpdate',
           params: {
             id: item.id
           }

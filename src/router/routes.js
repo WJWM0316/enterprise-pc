@@ -79,12 +79,45 @@ export const routes = [
     title: '直播',
     // 引用的组件
     component: () => import(/* webpackChunkName: "broadcast" */ '@/pages/broadcast/index.vue'),
+    // 直接跳转列表页
+    redirect: {
+      name: 'broadcastList'
+    },
     meta: {
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-success',
       module: 'broadcast'
-    }
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'broadcastList',
+        component: () => import(/* webpackChunkName: "broadcastList" */ '@/pages/broadcast/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'broadcast'
+        }
+      },
+      {
+        path: 'post',
+        name: 'broadcastPost',
+        component: () => import(/* webpackChunkName: "broadcastPost" */ '@/pages/broadcast/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'broadcast'
+        }
+      },
+      {
+        path: 'update/:id',
+        name: 'broadcastUpdate',
+        component: () => import(/* webpackChunkName: "broadcastPost" */ '@/pages/broadcast/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'broadcast'
+        }
+      }
+    ]
   },
   {
     path: '/work-zone',

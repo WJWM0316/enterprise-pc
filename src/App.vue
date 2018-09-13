@@ -3,11 +3,9 @@
     <page-aside v-if="!shouldFloatingBoxShown()" />
     <main>
       <page-header v-if="!shouldFloatingBoxShown()" />
-      <section class="container">
-        <transition name="fade">
-          <router-view />
-        </transition>
-      </section>
+      <transition name="fade">
+        <router-view class="pages" />
+      </transition>
     </main>
     <zike-toast />
   </section>
@@ -86,10 +84,13 @@ ul {
   opacity: 0;
 }*/
 .pages {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
   overflow: hidden;
+  margin: 20px;
+  padding: 20px;
+  position: relative;
+  background: #fff;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>

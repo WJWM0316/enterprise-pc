@@ -1,0 +1,54 @@
+@import "~COLORS/variables";
+.broadcast-list {
+  .page-position {
+    font-size: 16px;
+    color: #000;
+    line-height: 1;
+    position: relative;
+    margin: 16px 0;
+    &:before{
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 8px;
+      float: left;
+    };
+  }
+  .action-zone {
+    text-align: right;
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .header {
+    margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
+  }
+  .content {
+    .lalel{
+      font-size: 12px;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    .group-name{
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      background:rgba(53,64,72,1);
+      padding: 2px 5px;
+    }
+    .name {
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      padding: 2px 5px;
+      background:rgba(255,249,217,1);
+      color:rgba(215,171,112,1);
+    }
+  }
+}
