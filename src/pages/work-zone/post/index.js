@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
 import Cropper from 'cropperjs'
-import {  editorRules } from 'FILTERS/rules'
+import { editorRules } from 'FILTERS/rules'
 
 @Component({
   components: {
@@ -55,7 +55,11 @@ export default class WorkZonePost extends Vue {
       show: false
     },
     // 工作圈封面的id
-    cover_img_id: '',
+    cover_img_id: {
+      value: '',
+      tem: '',
+      showError: false
+    },
     // 工作圈成员
     members: {
       value: '',
@@ -87,8 +91,6 @@ export default class WorkZonePost extends Vue {
       value: '裁剪完成，立即上传'
     }
   }
-
-  companyLogoUrl = 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg'
 
   rules = {
     name: [
@@ -295,7 +297,7 @@ export default class WorkZonePost extends Vue {
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = jobCircleDetails.owner_uid
-      this.form.cover_img_id = jobCircleDetails.coverImgId
+      this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.id = jobCircleDetails.id
       // 成员列表的遍历
       temMenberLists.map(field => {
@@ -467,18 +469,6 @@ export default class WorkZonePost extends Vue {
     }
   }
 
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-10
-   * @detail   获取工作圈成员
-   * @return   {[type]}   [description]
-   */
-  getJobCircleMemberLists(id) {
-    this.getJobCircleMemberListsApi({id})
-      .then(res => {
-        console.log(this.jobCircleMemberLists, 'jobCircleMemberLists')
-      })
-  }
   // 添加课程分类
   addCourseType() {
     const courseTypeList = this.courseTypeList
@@ -509,6 +499,7 @@ export default class WorkZonePost extends Vue {
     const len = files.length
     const fileName = files[0].name
     const ext = this.getFileExt(fileName)
+    this.flag.file = files[0]
 
     // 允许上传文件尺寸上限 1M
     const ALLOW_MAX_SIZE = 1024 * 1024
@@ -572,17 +563,20 @@ export default class WorkZonePost extends Vue {
     this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
-    const blob = this.dataURLtoBlob(croppedDataUrl)
+    const blob = this.dataURLtoFile(croppedDataUrl)
     const formData = new FormData()
     formData.append('attach_type', 'img')
-    formData.append('file', blob)
+    formData.append('img1', blob)
     this.uploadApi(formData)
-      .then(() => {
+      .then((res) => {
+        const infos = res.data.data[0]
         this.cropper.destroy()
         this.flag.imgHasLoad = false
         this.flag.imgHasLoad = false
         this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
+        this.form.cover_img_id.value = infos.id
+        this.form.cover_img_id.tem = infos.url
       })
       .catch(err => {
         this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
@@ -597,6 +591,25 @@ export default class WorkZonePost extends Vue {
       u8arr[n] = bstr.charCodeAt(n)
     }
     return new Blob([u8arr], { type: mime })
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-13
+   * @detail   将base64转换成file对象
+   * @return   {[type]}            [description]
+   */
+  dataURLtoFile (dataurl, filename = 'file') {
+    let arr = dataurl.split(',')
+    let mime = arr[0].match(/:(.*?);/)[1]
+    let suffix = mime.split('/')[1]
+    let bstr = atob(arr[1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new File([u8arr], `${filename}.${suffix}`, {type: mime})
   }
 
   // 获取文件后缀名

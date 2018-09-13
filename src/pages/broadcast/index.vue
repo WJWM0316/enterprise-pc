@@ -1,8 +1,11 @@
 <template>
   <router-view />
 </template>
+<script>
+export default{}
+</script>
 <style lang="scss">
-#work-zone-post {
+#broadcast-post {
   .upload-image {
     display: inline-block;
     line-height: 1;

@@ -2,7 +2,7 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios'
-import QS from 'qs'
+// import QS from 'qs'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
@@ -20,7 +20,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    // config.params.token = getAccessToken()
     return config
   },
   error => {
@@ -50,5 +49,5 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, method === 'get' || method === 'delete' ? { params } : QS.stringify(params), {withCredentials: true})
+  return axios[method](getAccessToken() ? `${url}?token=${getAccessToken()}` : url, params, {withCredentials: true})
 }

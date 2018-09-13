@@ -37,7 +37,7 @@
             type="primary"
             @click="openModal('owner_uid')"
             :class="{'zike-btn-selected': form.owner_uid.show}">
-              点击选择
+              {{form.owner_uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
       
@@ -61,7 +61,7 @@
             type="primary"
             @click="openModal('members')"
             :class="{'zike-btn-selected': form.members.show}">
-              点击选择
+              {{form.members.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
 
@@ -85,7 +85,7 @@
             type="primary"
             :class="{'zike-btn-selected': form.organizations.show}"
             @click="openModal('organizations')">
-              点击选择
+              {{form.organizations.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-tooltip
             effect="dark"
@@ -103,18 +103,18 @@
         prop="classification"
         class="limit-width"
         >
-        <div class="upload-error-tips upload-error-tips-show">
+        <div class="upload-error-tips upload-error-tips-show" v-if="form.cover_img_id.showError">
           <div class="tips">
             <p><i class="el-icon-error"></i></p>
             <p>上传失败</p>
           </div>
         </div>
-        <div class="upload-image click-item" role="button" @click="onSelectFile">
-          <i  class="el-icon-upload"></i> 上传封面
-          <input type="file" id="uplaod-file" ref="hiddenFile" @change="onFileChange" style="display: none;" />
+        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.cover_img_id.tem}">
+          <i  class="el-icon-upload"></i> {{form.cover_img_id.tem ? '重新上传' : '上传封面'}}
+          <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
         </div>
-        <div class="img-box">
-          <img :src="companyLogoUrl" class="upload-cover">
+        <div class="img-box" v-if="form.cover_img_id.tem">
+          <img :src="form.cover_img_id.tem" class="upload-cover">
         </div>
         <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
       </el-form-item>
@@ -152,7 +152,7 @@
             type="primary"
             :class="{'zike-btn-selected': form.hits.show}"
             @click="openModal('hits')">
-              点击选择
+              {{form.hits.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-tooltip
             effect="dark"
