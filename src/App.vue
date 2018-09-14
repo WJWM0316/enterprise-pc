@@ -17,6 +17,7 @@ import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
   name: 'App',
@@ -24,6 +25,16 @@ import ZikeToast from 'COMPONENTS/toast'
     PageAside,
     ZikeToast,
     PageHeader
+  },
+  watch: {
+    '$route': {
+      handler() {
+        if(!getAccessToken()) {
+          this.$router.push({name: 'login'})
+        }
+      },
+      immediate: true
+    }
   }
 })
 
@@ -34,6 +45,9 @@ export default class App extends Vue {
     return [
       '/login'
     ].includes(this.$route.path)
+  }
+  created() {
+    console.log(this.token)
   }
 }
 </script>

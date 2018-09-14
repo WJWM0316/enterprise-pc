@@ -7,7 +7,7 @@
 		<section class="using-help-box">
 			<header class="using-help-box-header">使用帮助<button class="view">查看更多</button></header>
 			<ul>
-				<li v-for="item in 10" :key="item">如何新建课程</li>
+				<li v-for="item in 8" :key="item">如何新建课程</li>
 			</ul>
 		</section>
 	</div>

@@ -11,9 +11,7 @@
 					    七芊<i class="el-icon-caret-bottom el-icon--right"></i>
 					  </span>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="user">个人中心</el-dropdown-item>
-					    <el-dropdown-item command="tutor">导师空间</el-dropdown-item>
-					    <el-dropdown-item command="out">退出</el-dropdown-item>
+					    <el-dropdown-item command="out">退 出</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>

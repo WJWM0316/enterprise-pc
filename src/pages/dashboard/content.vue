@@ -12,10 +12,9 @@
 					<p>昨日学习人数</p>
 					<el-popover
 			    placement="top-start"
-			    title="标题"
 			    width="200"
 			    trigger="hover"
-			    content="昨日0时-24时有访问【员工移动端】的用户总数">
+			    content="定义：昨日0时-24时有访问【小灯塔PLUS员工移动端】的用户数">
 			    <i class="el-icon-question" slot="reference"></i>
 			  </el-popover>
 				</div>
@@ -24,46 +23,42 @@
 					<p>昨日学习时长</p>
 					<el-popover
 			    placement="top-start"
-			    title="标题"
 			    width="200"
 			    trigger="hover"
-			    content="昨日0时-24时有访问【员工移动端】的用户总数">
+			    content="定义：昨日有访问【员工移动端】用户的昨日访问时长总和">
 			    <i class="el-icon-question" slot="reference"></i>
 			  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
-					<p>昨日学习人数</p>
+					<p>在线课程数</p>
 					<el-popover
 			    placement="top-start"
-			    title="标题"
 			    width="200"
 			    trigger="hover"
-			    content="昨日0时-24时有访问【员工移动端】的用户总数">
+			    content="定义：状态为上线的课程总数">
 			    <i class="el-icon-question" slot="reference"></i>
 			  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
-					<p>昨日学习人数</p>
+					<p>在线直播数</p>
 					<el-popover
 			    placement="top-start"
-			    title="标题"
 			    width="200"
 			    trigger="hover"
-			    content="昨日0时-24时有访问【员工移动端】的用户总数">
+			    content="定义：状态为上线的直播总数">
 			    <i class="el-icon-question" slot="reference"></i>
 			  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
-					<p>昨日学习人数</p>
+					<p>在线工作圈</p>
 					<el-popover
 			    placement="top-start"
-			    title="标题"
 			    width="200"
 			    trigger="hover"
-			    content="昨日0时-24时有访问【员工移动端】的用户总数">
+			    content="定义：状态为上线的工作圈总数">
 			    <i class="el-icon-question" slot="reference"></i>
 			  </el-popover>
 				</div>
@@ -72,19 +67,19 @@
 		<section class="actions-flex-box">
 			<div>
 				<i class="icon-zike"></i>
-				<p>昨日学习人数</p>
+				<p>添加成员</p>
 			</div>
 			<div>
 				<i class="icon-zike"></i>
-				<p>昨日学习人数</p>
+				<p>新建通知</p>
 			</div>
 			<div>
 				<i class="icon-zike"></i>
-				<p>昨日学习人数</p>
+				<p>新建课程</p>
 			</div>
 			<div>
 				<i class="icon-zike"></i>
-				<p>昨日学习人数</p>
+				<p>新建直播</p>
 			</div>
 			<div>
 				<i class="icon-zike"></i>
@@ -216,6 +211,7 @@ export default class pageDashboard extends Vue {}
 			margin: 0;
 			padding: 0;
 			display: block;
+			font-weight: 500;
 		}
 		p{
 			font-size:14px;
@@ -264,7 +260,7 @@ export default class pageDashboard extends Vue {}
 		}
 		p{
 			font-size:16px;
-			font-weight:300;
+			font-weight:400;
 			color:#354048;
 			line-height: 1;
 			margin: 0;

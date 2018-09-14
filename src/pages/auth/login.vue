@@ -23,9 +23,6 @@ import Component from 'vue-class-component'
 @Component({
   methods: {
     ...mapActions(['showMsg', 'loginApi'])
-  },
-  computed: {
-    ...mapGetters(['userInfos'])
   }
 })
 export default class pageLogin extends Vue {
