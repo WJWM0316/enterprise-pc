@@ -3,10 +3,11 @@
     <div class="page-position">课程管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <div class="search-bar">
-          <input type="text" name="" class="search" placeholder="请输入关键词">
-          <span><i class="el-icon-search"></i></span>
-        </div>
+        <search-bar
+          width="500px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="请输入关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addCourse" class="click-item">添加课程</el-button>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
   name: 'lighthouse-list',
@@ -19,7 +20,8 @@ import TableList from 'COMPONENTS/list/index.vue'
     }
   },
    components: {
-    TableList
+    TableList,
+    SearchBar
   }
 })
 export default class CourseList extends Vue {
@@ -122,14 +124,12 @@ export default class CourseList extends Vue {
       params.name = this.form.name
     }
     this.getJobCircleListsApi(params)
-    console.log(params)
   }
 
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
     this.getWorkZoneLists()
-    console.log(this.form)
   }
 
   // 添加课程-跳转

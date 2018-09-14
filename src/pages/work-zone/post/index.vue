@@ -87,12 +87,15 @@
             @click="openModal('organizations')">
               {{form.organizations.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-tooltip
-            effect="dark"
-            content="这是所属组织的提示文案哦~"
-            placement="top-start">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
+          <el-popover
+            placement="top-start"
+            ref="organizations"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:organizations></i>
       </el-form-item>
 
       <div class="walk-title">工作圈详细信息</div>
@@ -154,13 +157,15 @@
             @click="openModal('hits')">
               {{form.hits.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-tooltip
-            effect="dark"
-            content="这是选择不可见学员的提示文案哦~"
+          <el-popover
             placement="top-start"
-            >
-              <i class="el-icon-question"></i>
-          </el-tooltip>
+            ref="hits"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:hits></i>
       </el-form-item>
 
       <!-- 权重 -->
@@ -175,12 +180,15 @@
             class="click-item quanzhong"
             style="width: 240px"
             :controls="false" />
-          <el-tooltip
-            effect="dark"
-            content="这是权重的提示文案哦~"
-            placement="top-start">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
+          <el-popover
+            placement="top-start"
+            ref="sort"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:sort></i>
       </el-form-item>
 
       <!-- 是否上线 -->

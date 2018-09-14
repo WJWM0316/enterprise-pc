@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
   name: 'course-list',
@@ -13,7 +14,8 @@ import TableList from 'COMPONENTS/list/index.vue'
     }
   },
    components: {
-    TableList
+    TableList,
+    SearchBar
   }
 })
 export default class CourseList extends Vue {
