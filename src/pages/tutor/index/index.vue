@@ -25,7 +25,7 @@
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">移除导师</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="removeTea">移除导师</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">

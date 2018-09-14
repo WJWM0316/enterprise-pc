@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
+import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
 
 @Component({
   name: 'course-list',
@@ -98,7 +99,17 @@ export default class CourseList extends Vue {
   /**
    * 获取列表
    */
-  async getList() {}
+  async getList() {
+    let params = {
+      type: this.teaType === 'primary' ? 1 : 2,
+      name: '',
+      page: 1,
+      pageCount: 20
+    }
+    this.getTutorListApi(params).then(res=>{
+      console.log(res)
+    })
+  }
 
   // 点击搜索时触发
   handleSearch () {

@@ -133,7 +133,9 @@ export default class CourseList extends Vue {
   /**
    * 获取课程列表
    */
-  async getCourseList() {}
+  async getCourseList() {
+    
+  }
 
   // 点击搜索时触发
   handleSearch () {
