@@ -20,7 +20,7 @@
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">编辑</el-button>
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="toLesson">课节</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">课节</el-button>
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">成员交流</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
@@ -63,25 +63,9 @@ export default CourseList
 <style lang="scss">
 @import "~COLORS/variables";
 .page-course-list {
+  background: white;
   .action-zone {
     text-align: right;
-  }
-  .page-position {
-    font-size: 16px;
-    color: #000;
-    line-height: 1;
-    position: relative;
-    margin: 16px 0;
-    &:before{
-      content: '';
-      height: 100%;
-      width:6px;
-      height:16px;
-      background:rgba(255,226,102,1);
-      display: inline-block;
-      margin-right: 8px;
-      float: left;
-    };
   }
   .header {
     margin: 20px 0;

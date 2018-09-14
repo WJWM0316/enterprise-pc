@@ -55,7 +55,7 @@ export default class ComponentTableList extends Vue {
   renderHeader(h, { column }) {
 
     const showTips = () => {
-      if (column.className === 'yes') {
+      if (column.className === 'yes' || column.filterPlacement) {
         return (
           <el-dropdown trigger="click" class="zike-dropdown" onCommand={ this.handleCommand.bind(this) }>
             <span class="el-dropdown-link">
@@ -71,7 +71,7 @@ export default class ComponentTableList extends Vue {
           </el-dropdown>
         )
       } else {
-        return (<span style="color: #909399;margin-right: 15px">{ column.label }</span>)
+        return (<span style="color: rgba(188,188,188,1);margin-right: 15px">{ column.label }</span>)
       }
     }
     if (!column.filterPlacement)
@@ -83,7 +83,7 @@ export default class ComponentTableList extends Vue {
             <span style="margin-right: 10px;">{ column.label }</span>
             <el-tooltip placement="top-start">
               <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-              <i class="el-icon-question" style="color: #909399;"></i>
+              <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
             </el-tooltip>
           </div>
         )
@@ -97,10 +97,18 @@ export default class ComponentTableList extends Vue {
       return (
         <div>
           { showTips() }
-          <el-tooltip placement="top-start">
-            <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-            <i class="el-icon-question" style="color: #909399;"></i>
-          </el-tooltip>
+          {
+            (() => {
+              if (column.className === 'yes') {
+                return (
+                  <el-tooltip placement="top-start">
+                    <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
+                    <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
+                  </el-tooltip>
+                )
+              }
+            })()
+          }
         </div>
       )
     }

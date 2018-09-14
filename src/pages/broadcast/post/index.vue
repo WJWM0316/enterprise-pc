@@ -1,8 +1,8 @@
 <template>
-<div id="work-zone-post">
+<div id="broadcast-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
-    <el-breadcrumb-item :to="{ name: 'course' }">工作圈管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建工作圈' : '更新工作圈'}}</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ name: 'course' }">直播管理</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建直播' : '编辑直播'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
@@ -16,7 +16,7 @@
 
       <!-- 请填写工作圈名 -->
       <el-form-item
-        label="工作圈名"
+        label="直播名称"
         prop="name"
         class="limit-width"
         >

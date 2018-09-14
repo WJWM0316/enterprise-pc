@@ -2,7 +2,7 @@
 	<header id="page-header">
 		<section>
 			<ul class="navigation">
-				<li><i class="el-icon-warning"></i></li>
+				<li><i class="el-icon-bell"></i></li>
 				<li>
 					<img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg" alt="">
 					<span style="color:#354048;margin-left: 16px;">欢迎登陆，</span>
@@ -11,9 +11,7 @@
 					    七芊<i class="el-icon-caret-bottom el-icon--right"></i>
 					  </span>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="user">个人中心</el-dropdown-item>
-					    <el-dropdown-item command="tutor">导师空间</el-dropdown-item>
-					    <el-dropdown-item command="out">退出</el-dropdown-item>
+					    <el-dropdown-item command="out">退 出</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>
@@ -61,18 +59,20 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { removeAccessToken } from '@/store/cacheService'
 
 @Component({
 	methods: {
-    ...mapActions(['logout'])
+    ...mapActions(['logoutApi'])
   }
 })
 export default class ComponentHeader extends Vue {
 	todoAction(command) {
 		switch(command) {
 			case 'out':
-				this.logout()
+				this.logoutApi()
 					.then(() => {
+						removeAccessToken()
 						this.$router.push({name: 'login'})
 					})
 				break

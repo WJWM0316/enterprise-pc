@@ -16,20 +16,24 @@ import {
 import { saveAccessToken, removeAccessToken } from '@/store/cacheService'
 
 const state = {
-  userInfos: {}
+  userInfos: {},
+  token: ''
 }
 
 const mutations = {
   [LOGIN] (status, data) {
     state.userInfos = data
+    state.token = data.token
   },
   [LOGOUT] (status, data) {
     state.userInfos = {}
+    state.token = ''
   }
 }
 
 const getters = {
-  userInfos: state => state.userInfos
+  userInfos: state => state.userInfos,
+  token: state => state.token
 }
 
 const actions = {

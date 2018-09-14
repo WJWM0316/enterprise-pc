@@ -1,6 +1,6 @@
 <template>
   <div id="course-post">
-    <el-breadcrumb separator=">" class="page-navigation">
+    <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'course' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建课程' : '更新课程'}}</el-breadcrumb-item>
     </el-breadcrumb>

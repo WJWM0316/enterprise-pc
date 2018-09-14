@@ -1,6 +1,6 @@
 @import "~cropperjs/dist/cropper.min.css";
 #course-post {
-	padding: 0 38px;
+  background: white;
 	.el-form {
 		margin-bottom: 50px;
 	}
@@ -14,10 +14,6 @@
 	}
 	.el-icon-question {
 		color: rgba(214,214,214,1);
-	}
-	.page-navigation {
-		margin: 16px 0;
-		font-size: 16px;
 	}
 	.walk-title {
 		font-size: 16px;
@@ -117,19 +113,6 @@
     margin-left: 0px !important;
     margin-bottom: 10px !important;
     margin-right: 10px !important;
-	}
-	.el-breadcrumb {
-		position: relative;
-		&:before {
-      content: '';
-      height: 100%;
-      width:6px;
-      height:16px;
-      background:rgba(255,226,102,1);
-      display: inline-block;
-      margin-right: 8px;
-      float: left;
-		};
 	}
   .selected-item {
     font-size: 12px;

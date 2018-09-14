@@ -174,7 +174,7 @@ export default class WorkZonePost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: this.$route.name === 'workZonePost' ? '创建直播成功~' : '更新直播成功~', type: 'success', duration: 3000 })
+        this.showMsg({ content: '创建直播成功~', type: 'success', duration: 3000 })
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -296,7 +296,7 @@ export default class WorkZonePost extends Vue {
       this.ContentEditor.content = jobCircleDetails.content
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.owner_uid.value = jobCircleDetails.ownerUid
+      this.form.owner_uid.value = jobCircleDetails.owner_uid
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.cover_img_id.tem = jobCircleDetails.coverImg
       this.form.id = jobCircleDetails.id

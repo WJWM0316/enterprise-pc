@@ -1,0 +1,79 @@
+#zike-backend {
+  > aside {
+    width: 200px;
+    height: 100vh;
+    background: #354048;
+    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+  > main {
+    position: relative;
+    margin-left: 200px;
+    overflow: hidden;
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pages {
+  overflow: hidden;
+  margin: 22px;
+  padding: 20px 56px;
+  position: relative;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.zike-breadcrumb {
+  margin: 16px 0;
+  font-size: 16px;
+  position: relative;
+  .el-breadcrumb__item {
+    float: unset;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+  &:before {
+    content: '';
+    height: 100%;
+    width:6px;
+    height:16px;
+    background:rgba(255,226,102,1);
+    display: inline-block;
+    margin-right: 10px;
+    float: left;
+  };
+  .el-breadcrumb__inner {
+    color: #000000 !important;
+  }
+  .el-breadcrumb__inner.is-link {
+    color: #BCBCBC !important;
+    &:hover {
+      color: #BCBCBC !important;
+    };
+  }
+}
+.page-position {
+  font-size: 16px;
+  color: #000;
+  line-height: 1;
+  position: relative;
+  margin: 16px 0;
+  &:before{
+    content: '';
+    height: 100%;
+    width:6px;
+    height:16px;
+    background:rgba(255,226,102,1);
+    display: inline-block;
+    margin-right: 10px;
+    float: left;
+  };
+}

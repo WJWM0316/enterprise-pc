@@ -40,5 +40,17 @@ module.exports = {
       	jQuery: 'jquery'
 	    })
     ]
+  },
+  devServer: {
+    proxy: {
+      '': {
+        target: 'http://web.xplus.ziwork.com/tiger',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/tiger': ''
+        },
+        logLevel: 'debug'
+      }
+    }
   }
 }

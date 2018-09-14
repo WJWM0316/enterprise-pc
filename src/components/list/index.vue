@@ -48,6 +48,7 @@ export default ComponentTableList
 @import "~COLORS/variables.scss";
 .zike-table-list {
   .zikebackend-table-header {
+    color:#909399;
     th {
       background: #f4f4f4;
       font-size: 14px;
@@ -157,6 +158,7 @@ export default ComponentTableList
   }
   .el-button--text {
     color: #4080AD;
+    margin: 0 8px;
   }
 }
 </style>

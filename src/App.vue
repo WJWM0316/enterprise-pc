@@ -3,11 +3,9 @@
     <page-aside v-if="!shouldFloatingBoxShown()" />
     <main>
       <page-header v-if="!shouldFloatingBoxShown()" />
-      <section class="container">
-        <transition name="fade">
-          <router-view />
-        </transition>
-      </section>
+      <transition name="fade">
+        <router-view class="pages" />
+      </transition>
     </main>
     <zike-toast />
   </section>
@@ -19,7 +17,7 @@ import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
-import 'ICONFONT/iconfont.css'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
   name: 'App',
@@ -28,8 +26,15 @@ import 'ICONFONT/iconfont.css'
     ZikeToast,
     PageHeader
   },
-  computed: {
-    ...mapGetters(['token'])
+  watch: {
+    '$route': {
+      handler() {
+        if(!getAccessToken()) {
+          this.$router.push({name: 'login'})
+        }
+      },
+      immediate: true
+    }
   }
 })
 
@@ -41,55 +46,12 @@ export default class App extends Vue {
       '/login'
     ].includes(this.$route.path)
   }
+  created() {
+    console.log(this.token)
+  }
 }
 </script>
-<style lang="less">
-#zike-backend {
-  > aside {
-    width: 200px;
-    height: 100vh;
-    background: #354048;
-    position: relative;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-  }
-  > main {
-    position: relative;
-    margin-left: 200px;
-    overflow: hidden;
-  }
-}
-.container {
-  margin: 20px;
-  padding: 20px;
-  position: relative;
-  background: #fff;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-/*.fade-enter-active,
-.fade-leave-active {
-  transition: all ease .1s;
-  opacity: 1;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}*/
-.pages {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+<style lang="scss">
+@import "./App.scss";
+@import '~ICONFONT/iconfont.css';
 </style>
