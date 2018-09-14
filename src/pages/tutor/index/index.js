@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
 import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
+import TableList from 'COMPONENTS/list/index.vue'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
 @Component({
   name: 'course-list',
@@ -14,13 +16,17 @@ import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 
     }
   },
    components: {
-    TableList
+    TableList,
+    SearchBar,
+    ModalDialog
   }
 })
 export default class CourseList extends Vue {
+
   teaType = 'primary'
   teaType2 = ''
-
+  // 导师类型
+  tutorType = 'inner'
   // 表单数据
   courseList = []
   input5 = ''
@@ -40,7 +46,7 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'inviteNum',
-      label: 'TA的邀请',
+      label: 'TA的课程',
       align: 'center',
     },
     {
@@ -51,7 +57,8 @@ export default class CourseList extends Vue {
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'yes'
+      showTips: 'yes',
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     }
   ]
 
@@ -75,6 +82,17 @@ export default class CourseList extends Vue {
 
   searchType = '1'
 
+   // 确认信息弹窗
+  models = {
+    show: true,
+    title: '提示',
+    showClose: true,
+    confirmText: '提交',
+    type: 'confirm',
+    width: '670px',
+    height: '400px'
+  }
+
   created() {
     for (let i = 0; i < 20; i++) {
       this.courseList.push({
@@ -96,21 +114,6 @@ export default class CourseList extends Vue {
     // this.getCourseList()
   }
 
-  /**
-   * 获取列表
-   */
-  async getList() {
-    let params = {
-      type: this.teaType === 'primary' ? 1 : 2,
-      name: '',
-      page: 1,
-      pageCount: 20
-    }
-    this.getTutorListApi(params).then(res=>{
-      console.log(res)
-    })
-  }
-
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
@@ -123,18 +126,11 @@ export default class CourseList extends Vue {
     this.$router.push({ name: 'tutorPost'})
   }
 
-  selectTea(type){
-    if(type===1){
-      this.teaType = 'primary'
-      this.teaType2 = ''
-
-    }else {
-      this.teaType = ''
-      this.teaType2 = 'primary'
-    }
+  select(type){
+    this.tutorType = type
   }
 
-  removeTea(){
+  confirm() {}
 
-  }
+  cancel() {}
 }

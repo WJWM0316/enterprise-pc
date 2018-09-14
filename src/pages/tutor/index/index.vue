@@ -1,21 +1,23 @@
 <template>
-  <section class="page-course-list">
+  <section id="tutor">
     <div class="page-position">导师管理</div>
 
-    <el-button-group>
-      <el-button :type=teaType @click="selectTea(1)">内部导师</el-button>
-      <el-button :type=teaType2 @click="selectTea(2)">外部导师</el-button>
-    </el-button-group>
-
+    <div class="tutor-tab-box">
+      <div :class="{active: tutorType === 'inner'}" @click="select('inner')">内部导师</div>
+      <div :class="{active: tutorType === 'outer'}" @click="select('outer')">外部导师</div>
+    </div>
+    
+    <div class="banner"></div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <div class="search-bar">
-          <input type="text" name="" class="search" placeholder="请输入关键词">
-          <span><i class="el-icon-search"></i></span>
-        </div>
+        <search-bar
+          width="500px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addCourse" class="click-item">添加外部导师</el-button>
+        <el-button type="primary" class="click-item">添加外部导师</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -25,7 +27,7 @@
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="removeTea">移除导师</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">移除导师</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
@@ -56,6 +58,32 @@
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
+    <modal-dialog
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :min-height="models.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="margin-left: 10px;">
+          <h3 class="dialog-title">
+            {{models.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html">
+          <div class="customize-html-content">
+            <search-bar
+              width="464px"
+              @search="handleSearch"
+              v-model="form.name"
+              placeholder="请输入手机号搜索" />
+          </div>
+        </div>
+    </modal-dialog>
   </section>
 </template>
 
@@ -66,26 +94,10 @@ export default CourseList
 
 <style lang="scss">
 @import "~COLORS/variables";
-.page-course-list {
+#tutor {
+  background: #fff;
   .action-zone {
     text-align: right;
-  }
-  .page-position {
-    font-size: 16px;
-    color: #000;
-    line-height: 1;
-    position: relative;
-    margin: 16px 0;
-    &:before{
-      content: '';
-      height: 100%;
-      width:6px;
-      height:16px;
-      background:rgba(255,226,102,1);
-      display: inline-block;
-      margin-right: 8px;
-      float: left;
-    };
   }
   .header {
     margin: 20px 0;
@@ -93,48 +105,55 @@ export default CourseList
   .search-zone {
     display: flex;
   }
-  .search-bar {
-    border-radius: 4px;
-    border: 1px solid rgba(220,223,230,1);
-    box-sizing: border-box;
-    color: #606266;
-    display: inline-block;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 15px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    input {
-      width: 100%;
-      height: calc(100% - 2px);
-      position: absolute;
-      left: 0;
-      top: 0;
-      outline: none;
-      border: none;
-      display: block;
-      box-sizing: border-box;
-      padding: 0 10px;
-    }
-    span {
-      width: 40px;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      outline: none;
-      border: none;
-      display: block;
-      box-sizing: border-box;
-      padding: 0 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-  }
   .tutor-name {
     color: #929292;
+  }
+  .click-item {
+    color: #354048;
+    margin-right: 8px;
+  }
+  .tutor-tab-box {
+    border-bottom: 1px solid #f8f8f8;
+    position: relative;
+    > div {
+      transition: all ease .4s;
+      color: #929292;
+      position: relative;
+      height: 46px;
+      line-height: 46px;
+      display: inline-block;
+      margin-right: 50px;
+      cursor: pointer;
+      padding: 0 15px;
+      font-size: 14px;
+      &:before{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        background: #D7AB70;
+        content: '';
+        display: block;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+      };
+    }
+    .active {
+      color: #354048;
+      &:before{
+        opacity: 1;
+        visibility: visible;
+      };
+    }
+  }
+  .banner {
+    height:136px;
+    background: rgba(0,0,0,.1);
+    margin: 30px 0;
+  }
+  .zike-common-search-bar {
+    margin-top: 30px;
   }
 }
 </style>

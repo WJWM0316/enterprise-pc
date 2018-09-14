@@ -205,7 +205,7 @@ export const routes = [
     path: '/tutor',
     name: 'tutor',
     title: '导师',
-    component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
+    component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index/index.vue'),
     meta: {
       keepAlive: false,
       useNav: true,

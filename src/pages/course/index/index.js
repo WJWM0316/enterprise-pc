@@ -13,7 +13,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       immediate: true
     }
   },
-   components: {
+  components: {
     TableList,
     SearchBar
   }
