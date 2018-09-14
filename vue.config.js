@@ -40,18 +40,17 @@ module.exports = {
       	jQuery: 'jquery'
 	    })
     ]
+  },
+  devServer: {
+    proxy: {
+      '': {
+        target: 'http://web.xplus.ziwork.com/tiger',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/tiger': ''
+        },
+        logLevel: 'debug'
+      }
+    }
   }
-  // devServer: {
-  //   proxy: {
-  //     '/tiger': {
-  //       target: 'http://web.xplus.ziwork.com/tiger',
-  //       ws: true,
-  //       changeOrigin: true,
-  //       pathRewrite: {
-  //         '^/zike_admin': ''
-  //       },
-  //       logLevel: 'debug'
-  //     }
-  //   }
-  // }
 }

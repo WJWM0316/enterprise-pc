@@ -2,19 +2,19 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios'
-// import QS from 'qs'
+// import Qs from 'qs'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
 // import store from '@/store'
-import { getAccessToken } from '@/store/cacheService'
+import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
-export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
+// export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
 
 // 请求超时时间
 axios.defaults.timeout = 10000
-axios.defaults.baseURL = API_ROOT
+// axios.defaults.baseURL = API_ROOT
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 // 请求拦截器
@@ -38,17 +38,32 @@ axios.interceptors.response.use(response => {
     loadingInstance.close()
   }
   if(error.response.data.httpStatus === 401) {
+    // 跳转登陆页面
     router.push({name: 'login'})
+    // 移除本地缓存的token
+    removeAccessToken()
   } else {
     return Promise.reject(error.response)
   }
 })
+
 
 export const request = (url, method, params = {}) => {
   if (params.globalLoading) {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  const newParams = getAccessToken() ? Object.assign(params, {token: getAccessToken()}) : params
-  return axios[method](url, method === 'get' ? { newParams } : newParams, {withCredentials: true})
+  const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
+  switch(method) {
+    case 'get':
+      return axios.get(url, {params: {...params, token: getAccessToken()}})
+    case 'post':
+      return axios.post(realurl, params)
+    case 'put':
+      return axios.put(realurl, params)
+    case 'delete':
+      return axios.delete(realurl, params)
+    default:
+      break
+  }
 }

@@ -24,9 +24,6 @@ import ZikeToast from 'COMPONENTS/toast'
     PageAside,
     ZikeToast,
     PageHeader
-  },
-  computed: {
-    ...mapGetters(['token'])
   }
 })
 
