@@ -6,7 +6,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
 @Component({
   name: 'lighthouse-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi', 'showMsg'])
+    ...mapActions(['getJobCircleListsApi'])
   },
   computed: {
     ...mapGetters(['jobCircleLists'])
@@ -82,7 +82,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '吊炸天的操作~'
+      filterPlacement: '类型的提示文案'
     }
   ]
 
@@ -147,12 +147,7 @@ export default class CourseList extends Vue {
         })
         break
       case 'note':
-        this.$router.push({
-          name: 'notesList',
-          params: {
-            id: item.id
-          }
-        })
+        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       case 'menber':
         this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })

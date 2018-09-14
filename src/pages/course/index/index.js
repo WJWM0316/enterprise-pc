@@ -151,4 +151,34 @@ export default class CourseList extends Vue {
     this.$router.push({ name: 'coursePost'})
   }
 
+  todoAction(type, item) {
+    switch(type) {
+      case 'edit':
+        this.$router.push({
+          name: 'courseUpdate',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      case 'communicate':
+        this.$router.push({
+          name: 'lessonList',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      case 'lesson':
+        this.$router.push({
+          name: 'lessonList',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      default:
+        break
+    }
+  }
 }
