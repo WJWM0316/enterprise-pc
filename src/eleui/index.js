@@ -1,5 +1,6 @@
 import Vue from 'vue';
-
+import 'element-ui/lib/theme-chalk/base.css';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 import './theme/index.css'
 
 import {
@@ -71,6 +72,8 @@ import {
   Notification,
   Scrollbar
 } from 'element-ui';
+
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use(Pagination)
 Vue.use(Dialog)

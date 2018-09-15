@@ -138,24 +138,17 @@ export default class CourseList extends Vue {
 
   todoAction(type, item) {
     switch(type) {
-      case 'edit':
-        this.$router.push({
-          name: 'workZoneUpdate',
-          params: {
-            id: item.id
-          }
-        })
+      case 'comment':
+        this.showMsg({ content: '评论操作~', type: 'error', duration: 3000 })
         break
-      case 'note':
-        this.$router.push({
-          name: 'notesList',
-          params: {
-            id: item.id
-          }
-        })
+      case 'delete':
+        this.showMsg({ content: '删除操作~', type: 'error', duration: 3000 })
         break
-      case 'menber':
-        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
+      case 'hide':
+        this.showMsg({ content: '隐藏操作~', type: 'error', duration: 3000 })
+        break
+      case 'top':
+        this.showMsg({ content: '置顶操作~', type: 'error', duration: 3000 })
         break
       default:
         break

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
   name: 'course-list',
@@ -12,8 +13,9 @@ import TableList from 'COMPONENTS/list/index.vue'
       immediate: true
     }
   },
-   components: {
-    TableList
+  components: {
+    TableList,
+    SearchBar
   }
 })
 export default class CourseList extends Vue {
@@ -149,4 +151,34 @@ export default class CourseList extends Vue {
     this.$router.push({ name: 'coursePost'})
   }
 
+  todoAction(type, item) {
+    switch(type) {
+      case 'edit':
+        this.$router.push({
+          name: 'courseUpdate',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      case 'communicate':
+        this.$router.push({
+          name: 'lessonList',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      case 'lesson':
+        this.$router.push({
+          name: 'lessonList',
+          params: {
+            id: item.id ? item.id : 0
+          }
+        })
+        break
+      default:
+        break
+    }
+  }
 }

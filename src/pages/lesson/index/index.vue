@@ -1,13 +1,16 @@
 <template>
   <section class="page-course-list">
-    <div class="page-position">工作圈管理</div>
+    <el-breadcrumb separator=">" class="zike-breadcrumb">
+      <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
+      <el-breadcrumb-item>课节管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
           width="500px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入工作圈名称" />
+          placeholder="课节名称" />
       </el-col>
       <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addWorkZone" class="click-item">新建工作圈</el-button>
@@ -26,19 +29,19 @@
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('edit', props.scope.row)">
               编辑
-          </el-button>
+            </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('note', props.scope.row)">
               帖子管理
-          </el-button>
-          <!-- <el-button
+            </el-button>
+          <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('menber', props.scope.row)">
               成员管理
-          </el-button> -->
+            </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">

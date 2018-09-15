@@ -46,9 +46,6 @@ export default class App extends Vue {
       '/login'
     ].includes(this.$route.path)
   }
-  created() {
-    console.log(this.token)
-  }
 }
 </script>
 <style lang="scss">

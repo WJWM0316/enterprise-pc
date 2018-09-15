@@ -49,6 +49,8 @@ export default ComponentTableList
 .zike-table-list {
   .zikebackend-table-header {
     color:#909399;
+    height: 48px;
+    line-height: 48px;
     th {
       background: #f4f4f4;
       font-size: 14px;

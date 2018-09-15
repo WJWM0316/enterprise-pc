@@ -135,6 +135,7 @@ export const routes = [
       name: 'workZoneList'
     },
     children: [
+      // 工作圈入口
       {
         path: 'index',
         name: 'workZoneList',
@@ -144,6 +145,17 @@ export const routes = [
           module: 'work-zone'
         }
       },
+      // 帖子的入口
+      {
+        path: 'notes/:id',
+        name: 'notesList',
+        component: () => import(/* webpackChunkName: "notesList" */ '@/pages/work-zone/notes/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
+      // 新增工作圈
       {
         path: 'post',
         name: 'workZonePost',
@@ -153,6 +165,7 @@ export const routes = [
           module: 'work-zone'
         }
       },
+      // 更新工作圈
       {
         path: 'update/:id',
         name: 'workZoneUpdate',
@@ -192,11 +205,15 @@ export const routes = [
     path: '/tutor',
     name: 'tutor',
     title: '导师',
+<<<<<<< HEAD
     // 直接跳转列表页
     redirect: {
       name: 'tutorList'
     },
     component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
+=======
+    component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index/index.vue'),
+>>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
     meta: {
       keepAlive: false,
       useNav: true,
@@ -286,6 +303,53 @@ export const routes = [
       icon: 'el-icon-circle-close',
       module: 'user'
     }
+  },
+  // 课节模块
+  {
+    path: '/lesson',
+    name: 'lesson',
+    title: '课节',
+    // 引用的组件
+    component: () => import(/* webpackChunkName: "lesson" */ '@/pages/lesson/index.vue'),
+    // 直接跳转列表页
+    redirect: {
+      name: 'lessonList'
+    },
+    meta: {
+      keepAlive: false,
+      useNav: false,
+      icon: 'el-icon-success',
+      module: 'course'
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'lessonList',
+        component: () => import(/* webpackChunkName: "lessonList" */ '@/pages/lesson/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'course'
+        }
+      },
+      {
+        path: 'post',
+        name: 'lessonPost',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'course'
+        }
+      },
+      {
+        path: 'update/:id',
+        name: 'lessonUpdate',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'course'
+        }
+      }
+    ]
   },
   // 登陆模块
   {

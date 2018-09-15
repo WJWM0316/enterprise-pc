@@ -2,7 +2,7 @@
 <div id="broadcast-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'course' }">直播管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建直播' : '编辑直播'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'broadcastPost' ? '新建直播' : '编辑直播'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
@@ -12,9 +12,9 @@
     label-suffix="："
     >
 
-      <div class="walk-title">工作圈基础信息</div>
+      <div class="walk-title">直播基础信息</div>
 
-      <!-- 请填写工作圈名 -->
+      <!-- 直播名称 -->
       <el-form-item
         label="直播名称"
         prop="name"
@@ -23,9 +23,9 @@
           <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
       </el-form-item>
       
-      <!-- 选择圈主 -->
+      <!-- 直播分类 -->
       <el-form-item
-        label="选择圈主"
+        label="直播分类"
         prop="owner_uid"
         class="limit-width"
         >
@@ -41,9 +41,9 @@
           </el-button>
       </el-form-item>
       
-      <!-- 选择成员 -->
+      <!-- 直播导师 -->
       <el-form-item
-        label="选择成员"
+        label="直播导师"
         prop="members"
         class="limit-width"
         > 
@@ -62,6 +62,24 @@
             @click="openModal('members')"
             :class="{'zike-btn-selected': form.members.show}">
               {{form.members.show ? '重新选择' : '点击选择'}}
+          </el-button>
+      </el-form-item>
+      
+      <!-- 直播管理员 -->
+      <el-form-item
+        label="直播管理员"
+        prop="owner_uid"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.owner_uid.show">
+            已选择：<span @click="removeSingleChecked('owner_uid')">{{form.owner_uid.tem.realname}}<i class="el-icon-close"></i></span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            @click="openModal('owner_uid')"
+            :class="{'zike-btn-selected': form.owner_uid.show}">
+              {{form.owner_uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
 
@@ -87,19 +105,22 @@
             @click="openModal('organizations')">
               {{form.organizations.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-tooltip
-            effect="dark"
-            content="这是所属组织的提示文案哦~"
-            placement="top-start">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
+          <el-popover
+            placement="top-start"
+            ref="organizations"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:organizations></i>
       </el-form-item>
 
-      <div class="walk-title">工作圈详细信息</div>
+      <div class="walk-title">直播详细信息</div>
 
-      <!-- 工作圈封面 -->
+      <!-- 直播封面 -->
       <el-form-item
-        label="工作圈封面"
+        label="直播封面"
         prop="classification"
         class="limit-width"
         >
@@ -120,7 +141,7 @@
       </el-form-item>
       
       <el-form-item
-        label="工作圈介绍"
+        label="直播简介"
         prop="content"
         >
           <editor
@@ -132,10 +153,9 @@
             @blur="handleContentEditorBlur" />
       </el-form-item>
       
-      <div class="walk-title">其他设置</div>
-      <!-- 选择不可见学员 -->
+      <!-- 参与直播学员 -->
       <el-form-item
-        label="选择不可见学员"
+        label="参与直播学员"
         prop="organizations"
         class="limit-width"
         >
@@ -154,18 +174,53 @@
             @click="openModal('hits')">
               {{form.hits.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-tooltip
-            effect="dark"
-            content="这是选择不可见学员的提示文案哦~"
+          <el-popover
             placement="top-start"
-            >
-              <i class="el-icon-question"></i>
-          </el-tooltip>
+            ref="hits"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:hits></i>
       </el-form-item>
 
-      <!-- 权重 -->
+      <!-- 对这些人不可见 -->
       <el-form-item
-        label="权重"
+        label="对这些人不可见"
+        prop="organizations"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.hits.show">
+            <span
+              @click="removeMultipleCheck('hits', hIndex)"
+              v-for="(hItem, hIndex) in form.hits.tem"
+              :key="hIndex">
+                {{hItem}}<i class="el-icon-close"></i>
+            </span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.hits.show}"
+            @click="openModal('hits')">
+              {{form.hits.show ? '重新选择' : '点击选择'}}
+          </el-button>
+          <el-popover
+            placement="top-start"
+            ref="hits1"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:hits1></i>
+      </el-form-item>
+      <div class="walk-title">其他设置</div>
+
+      <!-- 设置权重 -->
+      <el-form-item
+        label="设置权重"
         class="limit-width"
         >
           <el-input-number
@@ -175,12 +230,15 @@
             class="click-item quanzhong"
             style="width: 240px"
             :controls="false" />
-          <el-tooltip
-            effect="dark"
-            content="这是权重的提示文案哦~"
-            placement="top-start">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
+           <el-popover
+            placement="top-start"
+            ref="sort"
+            title="标题"
+            width="200"
+            trigger="hover"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          </el-popover>
+          <i class="el-icon-question" v-popover:sort></i>
       </el-form-item>
 
       <!-- 是否上线 -->

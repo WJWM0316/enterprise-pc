@@ -3,10 +3,11 @@
     <div class="page-position">课程管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
-        <div class="search-bar">
-          <input type="text" name="" class="search" placeholder="请输入关键词">
-          <span><i class="el-icon-search"></i></span>
-        </div>
+        <search-bar
+          width="500px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="请输入关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addCourse" class="click-item">添加课程</el-button>
@@ -19,9 +20,27 @@
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">编辑</el-button>
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">课节</el-button>
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">成员交流</el-button>
+          <el-button
+            type="text"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            @click="todoAction('edit', props.scope.row)"
+            >
+              编辑
+          </el-button>
+          <el-button
+            type="text"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            @click="todoAction('lesson', props.scope.row)"
+            >
+              课节
+          </el-button>
+          <!-- <el-button
+            type="text"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            @click="todoAction('communicate', props.scope.row)"
+            >
+              成员交流
+          </el-button> -->
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
