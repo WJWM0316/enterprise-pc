@@ -17,7 +17,7 @@
           placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" class="click-item">添加外部导师</el-button>
+        <el-button type="primary" class="click-item" @click="openMadal">添加外部导师</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -78,9 +78,26 @@
           <div class="customize-html-content">
             <search-bar
               width="464px"
-              @search="handleSearch"
-              v-model="form.name"
+              @search="getTutorLists"
+              v-model="value"
               placeholder="请输入手机号搜索" />
+            <div class="fetch-result">
+              <el-collapse-transition>
+                <div class="transition-flex-box" v-if="items.length > 0">
+                  <div class="img-box"></div>
+                  <div class="text-inner-content">
+                    <p class="user-name">魏圣</p>
+                    <p class="user-degree">创始人兼CEO</p>
+                  </div>
+                  <div class="phone-box">
+                    159-9997-2494
+                  </div>
+                </div>
+                <div class="transition-flex-box tutor-nodata" v-else>
+                  Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+                </div>
+              </el-collapse-transition>
+            </div>
           </div>
         </div>
     </modal-dialog>
@@ -154,6 +171,90 @@ export default CourseList
   }
   .zike-common-search-bar {
     margin-top: 30px;
+  }
+  .transition-flex-box {
+    height: 48px;
+    border-radius: 4px;
+    display: flex;
+    line-height: 48px;
+    width: 464px;
+    font-size:14px;
+    font-weight:400;
+    color:rgba(90,94,102,1);
+    .img-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.1);
+      margin-right: 16px;
+    }
+    .text-inner-content{
+      flex-grow: 1;
+    }
+    .phone-box {
+      font-size:14px;
+      color:rgba(53,64,72,1);
+    }
+    p {
+      margin: 0;
+      line-height: 1;
+    }
+    .user-name {
+      font-size:14px;
+      font-weight:400;
+      color:rgba(53,64,72,1);
+      margin-top: 8px;
+    }
+    .user-degree {
+      font-size:12px;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      margin-top: 5px;
+    }
+  }
+  .fetch-result {
+    margin-top: 24px;
+  }
+  .tutor-nodata {
+    background: #fff;
+    min-width: 150px;
+    border-radius: 4px;
+    border: 1px solid #ebeef5;
+    padding: 12px;
+    z-index: 2000;
+    color: #606266;
+    text-align: justify;
+    font-size: 14px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    height: 24px;
+    line-height: 24px;
+    position: relative;
+    &:before{
+      width: 0;
+      height: 0;
+      border-color: red;
+      position: absolute;
+      top: -16px;
+      left: 40px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent #ebeef5 transparent;
+      display: block;
+      content: '';
+    };
+    &:after{
+      width: 0;
+      height: 0;
+      border-color: red;
+      position: absolute;
+      top: -15px;
+      left: 40px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent #fff transparent;
+      display: block;
+      content: '';
+    };
   }
 }
 </style>

@@ -81,10 +81,10 @@ export default class CourseList extends Vue {
   }
 
   searchType = '1'
-
+  value = ''
    // 确认信息弹窗
   models = {
-    show: true,
+    show: false,
     title: '提示',
     showClose: true,
     confirmText: '提交',
@@ -93,6 +93,8 @@ export default class CourseList extends Vue {
     height: '400px'
   }
 
+  items = []
+  visible = true
   created() {
     for (let i = 0; i < 20; i++) {
       this.courseList.push({
@@ -118,7 +120,6 @@ export default class CourseList extends Vue {
   handleSearch () {
     this.pagination.page = 1
     this.setPathQuery(this.form)
-    this.getList()
   }
 
   // 添加课程-跳转
@@ -133,4 +134,21 @@ export default class CourseList extends Vue {
   confirm() {}
 
   cancel() {}
+
+  openMadal() {
+    this.models.show = !this.models.show
+    this.models.title = '添加外部导师'
+  }
+
+  getTutorLists() {
+    setTimeout(() => {
+      for (var i = 5 - 1; i >= 0; i--) {
+        this.items.push({
+          id: i,
+          text: 'ddd'
+        })
+      }
+    },3000)
+    console.log(11)
+  }
 }
