@@ -3,64 +3,51 @@
 		<section class="company-infos">
 			<h1>深圳市腾旭科技有限公司</h1>
 			<div class="menber-zone">
-				<button class="time-button">有限期 7 天</button>
-				<button class="">前往开通正式版</button>
+				<!-- 试用中的状态 -->
+				<button class="click-item time-button">有限期 7 天</button>
+				<button class="click-item todo-action" @click="openModal">前往开通正式版</button>
+
+				<!-- 已付费，显示对应版本标识，目前有VIP和SVIP -->
+				<!-- <button class="time-button">VIP</button> -->
+
+				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
+				<!-- <button class="time-button">VIP,60天后过期</button> -->
+				<!-- <button class="">续费</button> -->
 			</div>
 			<div class="statistics-flex-box">
 				<div>
 					<strong>55</strong>
 					<p>昨日学习人数</p>
 					<el-popover
-			    placement="top-start"
-			    width="200"
-			    trigger="hover"
-			    content="定义：昨日0时-24时有访问【小灯塔PLUS员工移动端】的用户数">
-			    <i class="el-icon-question" slot="reference"></i>
-			  </el-popover>
+				    placement="top-start"
+				    width="200"
+				    trigger="hover"
+				    content="昨日0时-24时有访问【小灯塔PLUS员工移动端】的用户数">
+				    <i class="el-icon-question" slot="reference"></i>
+				  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
 					<p>昨日学习时长</p>
 					<el-popover
-			    placement="top-start"
-			    width="200"
-			    trigger="hover"
-			    content="定义：昨日有访问【员工移动端】用户的昨日访问时长总和">
-			    <i class="el-icon-question" slot="reference"></i>
-			  </el-popover>
+				    placement="top-start"
+				    width="200"
+				    trigger="hover"
+				    content="昨日有访问【员工移动端】用户的昨日访问时长总和">
+				    <i class="el-icon-question" slot="reference"></i>
+				  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
 					<p>在线课程数</p>
-					<el-popover
-			    placement="top-start"
-			    width="200"
-			    trigger="hover"
-			    content="定义：状态为上线的课程总数">
-			    <i class="el-icon-question" slot="reference"></i>
-			  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
 					<p>在线直播数</p>
-					<el-popover
-			    placement="top-start"
-			    width="200"
-			    trigger="hover"
-			    content="定义：状态为上线的直播总数">
-			    <i class="el-icon-question" slot="reference"></i>
-			  </el-popover>
 				</div>
 				<div>
 					<strong>55</strong>
 					<p>在线工作圈</p>
-					<el-popover
-			    placement="top-start"
-			    width="200"
-			    trigger="hover"
-			    content="定义：状态为上线的工作圈总数">
-			    <i class="el-icon-question" slot="reference"></i>
-			  </el-popover>
 				</div>
 			</div>
 		</section>
@@ -117,7 +104,7 @@
 		<section class="member-dynamics">
 			<header class="member-dynamics-header">
 				成员动态
-				<button>
+				<button class="click-item">
 					<i class="el-icon-refresh" style="color: #4080AD;"></i>
 					有新的动态，点击刷新
 				</button>
@@ -138,14 +125,68 @@
 				</li>
 			</ul>
 		</section>
+		<modal-dialog
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :min-height="models.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="margin-left: 10px;">
+          <h3 class="dialog-title" v-if="models.title"></h3>
+        </div>
+        <div slot="customize-html">
+          <div class="customize-html-content">
+          	<h2 class="dashboard-open-business">开通、续费请联系客服开通</h2>
+          	<p class="dashboard-open-business-phone">客服电话：020-2816-3063</p>
+          </div>
+        </div>
+    </modal-dialog>
 	</div>
 </template>
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
-@Component({})
-export default class pageDashboard extends Vue {}
+@Component({
+	components: {
+		ModalDialog
+	}
+})
+export default class pageDashboard extends Vue {
+	// 确认信息弹窗
+  models = {
+    show: false,
+    title: '',
+    showClose: true,
+    confirmText: '提交',
+    type: 'confirm',
+    width: '432px',
+    minHeight: '90px'
+  }
+
+  confirm() {
+  	this.models.show = !this.models.show
+  }
+
+  cancel() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   调起【联系客服弹窗】
+   * @return   {[type]}   [description]
+   */
+  openModal() {
+  	this.models.show = !this.models.show
+  	this.models.type = 'alert'
+  	this.models.confirmText = '我知道了'
+  }
+}
 </script>
 <style lang="scss">
 #dashboard {
@@ -164,7 +205,7 @@ export default class pageDashboard extends Vue {}
 			margin-bottom: 12px;
 		}
 	}
-	button {
+	.click-item {
 		display: inline-block;
     line-height: 1;
     white-space: nowrap;
@@ -196,6 +237,9 @@ export default class pageDashboard extends Vue {}
 		font-weight:400;
 		color:rgba(255,255,255,1);
 		line-height:20px;
+	}
+	.todo-action{
+		color: #4080AD;
 	}
 	.statistics-flex-box{
 		display: flex;
@@ -435,6 +479,19 @@ export default class pageDashboard extends Vue {}
 			color:rgba(102,102,102,1);
 			font-size: 12px;
 		}
+	}
+	.dashboard-open-business {
+		font-size:16px;
+		color:#354048;
+		margin: 0;
+		line-height: 1;
+		margin-bottom: 15px;
+	}
+	.dashboard-open-business-phone {
+		font-size:14px;
+		color:rgba(102,102,102,1);
+		margin: 0;
+		line-height: 1;
 	}
 }
 </style>

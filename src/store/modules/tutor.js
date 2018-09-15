@@ -2,12 +2,9 @@ import {
   GET_TUTOR_LIST
 } from '../mutation-types'
 
-// import {
-//   articleGetArticleListApi,
-//   articlePostArticleApi,
-//   articleDeleteArticleApi,
-//   articlePutArticleApi
-// } from 'API/tutor'
+import {
+  getTutorListApi
+} from 'API/tutor'
 
 const state = {
   tutorLists: {}
@@ -25,17 +22,17 @@ const getters = {
 
 const actions = {
 
-  // 获取文章列表
-  // articleGetArticleListApi (store, params) {
-  //   articleGetArticleListApi(params)
-  //     .then(res => {
-  //       store.commit(GET_TUTOR_LIST, res.data.info)
-  //       return res
-  //     })
-  //     .catch(error => {
-  //       return error
-  //     })
-  // }
+  // 获取导师列表
+  getTutorListApi (store, params) {
+    return getTutorListApi(params)
+      .then(res => {
+        store.commit(GET_TUTOR_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

@@ -10,7 +10,6 @@ export const GET_ORGANIZATION_LIST = 'organization/GET_ORGANIZATION_LIST'
 export const GET_SETTING_LIST = 'setting/GET_SETTING_LIST'
 export const GET_STATISTICS_LIST = 'statistics/GET_STATISTICS_LIST'
 export const GET_SYSTEM_LIST = 'system/GET_SYSTEM_LIST'
-export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
 export const GET_USER_LIST = 'user/GET_USER_LIST'
 export const GET_WORK_BOOK_LIST = 'workBook/GET_WORK_BOOK_LIST'
 
@@ -29,3 +28,6 @@ export const HIDE_MSG = 'commom/HIDE_MSG'
 export const LOGIN = 'commom/LOGIN'
 export const LOGOUT = 'commom/LOGOUT'
 export const GET_UPLOAD_CONFIG = 'commom/GET_UPLOAD_CONFIG'
+
+// 导师模块
+export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'

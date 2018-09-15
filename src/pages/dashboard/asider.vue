@@ -5,7 +5,7 @@
 			<section class="company-phone-box"><i class="el-icon-phone"></i>020-2816-3063 </section>
 		</section>
 		<section class="using-help-box">
-			<header class="using-help-box-header">使用帮助<button class="view">查看更多</button></header>
+			<header class="using-help-box-header">使用帮助<button class="view click-item">查看更多</button></header>
 			<ul>
 				<li v-for="item in 8" :key="item">如何新建课程</li>
 			</ul>

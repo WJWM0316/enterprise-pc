@@ -19,6 +19,11 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
     TableList,
     SearchBar,
     ModalDialog
+  },
+  methods: {
+    ...mapActions([
+      'getTutorListApi'
+    ])
   }
 })
 export default class CourseList extends Vue {
@@ -82,7 +87,7 @@ export default class CourseList extends Vue {
 
   searchType = '1'
   value = ''
-   // 确认信息弹窗
+  // 确认信息弹窗
   models = {
     show: false,
     title: '提示',
@@ -105,6 +110,7 @@ export default class CourseList extends Vue {
         sort: 'desc'
       })
     }
+    this.getTutorListApi({type: 1, pageCount: 20, page: 1})
   }
   /**
    * 初始化表单、分页页面数据

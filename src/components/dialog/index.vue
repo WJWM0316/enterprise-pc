@@ -17,7 +17,7 @@
         <div class="dialog-ft-btns">
           <slot name="footer">
             <template v-if="type === 'alert'">
-              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText"></el-button>
+              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" style="margin-right: 0;"></el-button>
             </template>
             <template v-else-if="type === 'confirm'">
               <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
