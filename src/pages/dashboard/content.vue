@@ -12,7 +12,7 @@
 
 				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
 				<!-- <button class="time-button">VIP,60天后过期</button> -->
-				<!-- <button class="">续费</button> -->
+				<!-- <button class="todo-action" @click="openModal">续费</button> -->
 			</div>
 			<div class="statistics-flex-box">
 				<div>
@@ -60,17 +60,13 @@
 				<i class="icon-zike"></i>
 				<p>新建通知</p>
 			</div>
-			<div>
+			<div @click="routeJump('coursePost')">
 				<i class="icon-zike"></i>
 				<p>新建课程</p>
 			</div>
-			<div>
+			<div @click="routeJump('broadcastPost')">
 				<i class="icon-zike"></i>
 				<p>新建直播</p>
-			</div>
-			<div>
-				<i class="icon-zike"></i>
-				<p>昨日学习人数</p>
 			</div>
 		</section>
 		<section class="notice-flex-box">
@@ -89,14 +85,16 @@
 			</div>
 			<div>
 				<div class="card-header">
-					最新课程
+					最新直播
 				</div>
 				<div class="card-content">
 					<div class="img-box"></div>
 					<div class="text-content">
 						<h2>金牌主持人亲带：公众演说时训营...</h2>
 						<p>学习人数：188</p>
-						<p>完成打卡：188</p>
+						<!-- <p class="punch">完成打卡：188</p> -->
+						<p class="doing">正在直播</p>
+						<!-- <p class="end">直播已结束</p> -->
 					</div>
 				</div>
 			</div>
@@ -104,18 +102,20 @@
 		<section class="member-dynamics">
 			<header class="member-dynamics-header">
 				成员动态
-				<button class="click-item">
+				<button class="click-item" @click="reflesh">
 					<i class="el-icon-refresh" style="color: #4080AD;"></i>
 					有新的动态，点击刷新
 				</button>
 			</header>
 			<ul>
-				<li v-for="item in 10" :key="item">
-					<div class="img-box"></div>
+				<li v-for="(userItem, userIndex) in dashboardUserLists" :key="userIndex">
+					<div class="img-box">
+						<img :src="userItem.avatarInfo.smallUrl" alt="">
+					</div>
 					<div class="content">
 						<div class="ceil">
-							<span class="username">吊炸天</span>
-							<span class="degree">产品组|产品经理</span>
+							<span class="username">{{userItem.realname}}</span>
+							<span class="degree">产品组 | 产品经理</span>
 							<time>2018-08-02 18:00</time>
 						</div>
 						<div class="floor">
@@ -154,9 +154,20 @@ import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
 @Component({
+	methods: {
+		...mapActions([
+			'showMsg',
+			'getUserListsApi'
+		])
+	},
 	components: {
 		ModalDialog
-	}
+	},
+	 computed: {
+    ...mapGetters([
+      'dashboardUserLists'
+    ])
+  }
 })
 export default class pageDashboard extends Vue {
 	// 确认信息弹窗
@@ -170,10 +181,22 @@ export default class pageDashboard extends Vue {
     minHeight: '90px'
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   modal中的确认按钮
+   * @return   {[type]}   [description]
+   */
   confirm() {
   	this.models.show = !this.models.show
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   modal中的取消按钮
+   * @return   {[type]}   [description]
+   */
   cancel() {}
   /**
    * @Author   小书包
@@ -185,6 +208,39 @@ export default class pageDashboard extends Vue {
   	this.models.show = !this.models.show
   	this.models.type = 'alert'
   	this.models.confirmText = '我知道了'
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   刷新成员动态
+   * @return   {[type]}   [description]
+   */
+  reflesh() {
+  	console.log(111)
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   页面跳转
+   * @return   {[type]}        [description]
+   */
+  routeJump(name) {
+  	this.$router.push({name})
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   测试一下
+   * @return   {[type]}   [description]
+   */
+  created() {
+  	this.getUserListsApi({count: 5})
+  		.then(() => {
+  			console.log(this.dashboardUserLists)
+  		})
   }
 }
 </script>
@@ -353,7 +409,7 @@ export default class pageDashboard extends Vue {
 			&:before {
 		    content: '';
 		    height: 100%;
-		    width:6px;
+		    width:5px;
 		    height:16px;
 		    background:rgba(255,226,102,1);
 		    display: inline-block;
@@ -366,23 +422,44 @@ export default class pageDashboard extends Vue {
 		.card-content{
 			overflow: hidden;
 			display: flex;
+			.end {
+				color: #666;
+			}
+			.doing{
+				color: #D7AB70;
+			}
+			.punch{
+				color: #666;
+			}
 		}
 		.img-box {
 			width: 64px;
 			height: 64px;
 			background: pink;
 			margin-right: 16px;
+			position: relative;
+			img{
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.text-content {
 			flex-grow: 1;
+			position: relative;
 		}
 		h2 {
 			font-size:16px;
 			font-weight:400;
 			color:rgba(53,64,72,1);
 			margin: 0;
-			line-height: 1;
+			line-height: 1.2;
 			margin-bottom: 12px;
+			overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #354048;
+      font-size: 14px;
+      width: 100%;
 		}
 		p {
 			line-height: 1;
@@ -435,9 +512,14 @@ export default class pageDashboard extends Vue {
 		.img-box {
 			width: 50px;
 			height: 50px;
-			background: pink;
+			background: rgba(0,0,0,.05);
 			margin-right: 16px;
 			border-radius: 50%;
+			position: relative;
+			overflow: hidden;
+			img{
+				width: 100%;
+			}
 		}
 		.content {
 			flex-grow: 1;

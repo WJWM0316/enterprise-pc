@@ -13,7 +13,7 @@ const KEYS = {
   userInfo: 'currentUser'
 };
 
-const namespace = 'ZIKE_WEB';
+const namespace = 'zike';
 
 /* eslint-disable */
 // 为存储键增加命名空间

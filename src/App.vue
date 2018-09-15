@@ -17,7 +17,6 @@ import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import ZikeToast from 'COMPONENTS/toast'
-import { getAccessToken } from '@/store/cacheService'
 
 @Component({
   name: 'App',
@@ -29,12 +28,17 @@ import { getAccessToken } from '@/store/cacheService'
   watch: {
     '$route': {
       handler() {
-        if(!getAccessToken()) {
+        if(!this.token) {
           this.$router.push({name: 'login'})
         }
       },
       immediate: true
     }
+  },
+  computed: {
+    ...mapGetters([
+      'token'
+    ])
   }
 })
 

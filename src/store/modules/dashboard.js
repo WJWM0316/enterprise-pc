@@ -1,41 +1,43 @@
 import {
-  GET_DASHBOARD_LIST
+  GET_USERS_LISTS
 } from '../mutation-types'
 
-// import {
-//   articleGetArticleListApi,
-//   articlePostArticleApi,
-//   articleDeleteArticleApi,
-//   articlePutArticleApi
-// } from 'API/dashboard'
+import {
+  getUserListsApi
+} from 'API/dashboard'
 
 const state = {
-  dashboardLists: {}
+  dashboardUserLists: {}
 }
 
 const mutations = {
-  [GET_DASHBOARD_LIST] (status, data) {
-    state.dashboardLists = data
+  [GET_USERS_LISTS] (status, data) {
+    state.dashboardUserLists = data
   }
 }
 
 const getters = {
-  dashboardLists: state => state.dashboardLists
+  dashboardUserLists: state => state.dashboardUserLists
 }
 
 const actions = {
 
-  // 获取文章列表
-  // articleGetArticleListApi (store, params) {
-  //   articleGetArticleListApi(params)
-  //     .then(res => {
-  //       store.commit(GET_DASHBOARD_LIST, res.data.info)
-  //       return res
-  //     })
-  //     .catch(error => {
-  //       return error
-  //     })
-  // }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   获取获取首页用户列表
+   * @return   {[type]}          [description]
+   */
+  getUserListsApi (store, params) {
+    return getUserListsApi(params)
+      .then(res => {
+        store.commit(GET_USERS_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

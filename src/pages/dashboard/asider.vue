@@ -38,13 +38,13 @@ export default class pageDashboard extends Vue {}
 		position: relative;
 		text-indent: 15px;
 		height: 60px;
-		line-height: 60px;
+		line-height: 58px;
 		border-bottom:1px solid rgba(237,237,237,1);
 		&:before {
 	    content: '';
 	    height: 100%;
 	    width:6px;
-	    height:16px;
+	    height:24px;
 	    background:rgba(255,226,102,1);
 	    display: inline-block;
 	    position: absolute;

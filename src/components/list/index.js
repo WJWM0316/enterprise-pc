@@ -81,10 +81,13 @@ export default class ComponentTableList extends Vue {
         (
           <div>
             <span style="margin-right: 10px;">{ column.label }</span>
-            <el-tooltip placement="top-start">
-              <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-              <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
-            </el-tooltip>
+            <el-popover
+              placement="top"
+              width="144"
+              trigger="hover">
+              <div domPropsInnerHTML={column.filterPlacement}></div>
+              <i class="el-icon-question" style="color: rgba(188,188,188,1);" slot="reference"></i>
+            </el-popover>
           </div>
         )
       :
@@ -101,10 +104,13 @@ export default class ComponentTableList extends Vue {
             (() => {
               if (column.className === 'yes') {
                 return (
-                  <el-tooltip placement="top-start">
-                    <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-                    <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
-                  </el-tooltip>
+                  <el-popover
+                    placement="top"
+                    width="144"
+                    trigger="hover">
+                    <div domPropsInnerHTML={column.filterPlacement}></div>
+                    <i class="el-icon-question" style="color: rgba(188,188,188,1);" slot="reference"></i>
+                  </el-popover>
                 )
               }
             })()

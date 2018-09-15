@@ -1,9 +1,11 @@
 /**
  * 所有控制台对应的接口请求
  */
-import { post } from './api'
+/**
+ * 权限模块api
+ */
+import { request } from './index.js'
+import Qs from 'qs'
 
-export const demo = data => post({
-  url: '/article/lists',
-  data
-})
+// 获取首页成员列表
+export const getUserListsApi = params => request('/users', 'get', params)

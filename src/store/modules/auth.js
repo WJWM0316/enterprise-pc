@@ -13,11 +13,11 @@ import {
   logoutApi
 } from 'API/auth'
 
-import { saveAccessToken, removeAccessToken } from '@/store/cacheService'
+import { saveAccessToken, removeAccessToken, cachedUserInfo, getAccessToken } from '@/store/cacheService'
 
 const state = {
-  userInfos: {},
-  token: ''
+  userInfos: cachedUserInfo.load() || null,
+  token: getAccessToken()
 }
 
 const mutations = {
@@ -43,6 +43,7 @@ const actions = {
         // 有效期一天周
         const ValidityPeriod = 60 * 60 * 24 * 7 * 1000
         saveAccessToken(res.data.data.token, ValidityPeriod)
+        cachedUserInfo.save(res.data.data)
         store.commit(LOGIN, res.data.data)
         return res
       })

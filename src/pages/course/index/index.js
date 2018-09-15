@@ -30,13 +30,15 @@ export default class CourseList extends Vue {
     {
       prop: 'courseName',
       label: '课 程',
-      align: 'center'
+      align: 'center',
+      width: '60%'
     },
     {
       prop: 'online',
       label: '是否上线',
       align: 'center',
       showTips: 'yes',
+      width: '10%',
       filteredValue:
       [
         {
@@ -55,6 +57,7 @@ export default class CourseList extends Vue {
       label: '类 型',
       align: 'center',
       showTips: 'yes',
+      width: '10%',
       filteredValue:
       [
         {
@@ -76,12 +79,15 @@ export default class CourseList extends Vue {
       prop: 'sort',
       label: '权 重',
       align: 'center',
-      showTips: 'no'
+      showTips: 'no',
+      width: '10%'
     },
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'yes'
+      showTips: 'yes',
+      width: '10%',
+      filterPlacement: '操作的提示'
     }
   ]
 
@@ -106,7 +112,7 @@ export default class CourseList extends Vue {
   searchType = '1'
 
   created() {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
       this.courseList.push({
         date: '2016-05-03',
         courseName: '王小虎',
