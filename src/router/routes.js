@@ -205,15 +205,11 @@ export const routes = [
     path: '/tutor',
     name: 'tutor',
     title: '导师',
-<<<<<<< HEAD
     // 直接跳转列表页
     redirect: {
       name: 'tutorList'
     },
     component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
-=======
-    component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index/index.vue'),
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
     meta: {
       keepAlive: false,
       useNav: true,

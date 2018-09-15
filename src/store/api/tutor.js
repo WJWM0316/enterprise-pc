@@ -4,15 +4,7 @@
 import { request } from './index.js'
 
 //获取导师列表
-<<<<<<< HEAD
-export const getTutorListApi = data => request(
-	'/tutor', 
-	'get',
-	data
-)
-=======
 export const getTutorListApi = params => request('/tutor', 'get', params)
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
 
 // 删除外部导师
 export const deletetTutorApi = params => request(`/tutor/${params.id}`, 'delete', params)

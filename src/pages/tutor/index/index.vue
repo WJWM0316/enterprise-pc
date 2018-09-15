@@ -17,11 +17,8 @@
           placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
-<<<<<<< HEAD
         <el-button type="primary" @click="addTea" class="click-item">添加外部导师</el-button>
-=======
         <el-button type="primary" class="click-item" @click="openMadal">添加外部导师</el-button>
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
       </el-col>
     </el-row>
     <table-list
@@ -30,11 +27,7 @@
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
-<<<<<<< HEAD
-        <!-- <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="removeTea">移除导师</el-button>
-        </div> -->
-=======
+
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">移除导师</el-button>
         </div>
@@ -65,7 +58,6 @@
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
       </template>
     </table-list>
     <modal-dialog

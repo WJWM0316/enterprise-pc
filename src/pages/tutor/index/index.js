@@ -1,15 +1,10 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-<<<<<<< HEAD
 import TableList from 'COMPONENTS/list/index.vue'
-//import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
 import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor.js'
-=======
-import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
 
 @Component({
   name: 'tutor-list',
