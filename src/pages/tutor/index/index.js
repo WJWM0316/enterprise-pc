@@ -56,13 +56,8 @@ export default class CourseList extends Vue {
       align: 'center'
     },
     {
-<<<<<<< HEAD
       prop: 'communityCount',
       label: 'TA的邀请',
-=======
-      prop: 'inviteNum',
-      label: 'TA的课程',
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
       align: 'center',
     },
     {
@@ -112,20 +107,7 @@ export default class CourseList extends Vue {
   items = []
   visible = true
   created() {
-<<<<<<< HEAD
     this.init()
-=======
-    for (let i = 0; i < 20; i++) {
-      this.courseList.push({
-        mobile: '2016-05-03',
-        teacherMsg: '王小虎',
-        inviteNum: '（1）',
-        liveNum: '（1）',
-        sort: 'desc'
-      })
-    }
-    this.getTutorListApi({type: 1, pageCount: 20, page: 1})
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
   }
   /**
    * 初始化表单、分页页面数据
@@ -134,7 +116,6 @@ export default class CourseList extends Vue {
     this.getList()
   }
 
-<<<<<<< HEAD
   /**
    * 获取列表
    */
@@ -151,9 +132,7 @@ export default class CourseList extends Vue {
       console.log( this.tutorList)
     })
   }
-
-=======
->>>>>>> 51429bd02382e1f17469bed4400b1dc823412b67
+  
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
@@ -178,15 +157,4 @@ export default class CourseList extends Vue {
     this.models.title = '添加外部导师'
   }
 
-  getTutorLists() {
-    setTimeout(() => {
-      for (var i = 5 - 1; i >= 0; i--) {
-        this.items.push({
-          id: i,
-          text: 'ddd'
-        })
-      }
-    },3000)
-    console.log(11)
-  }
 }
