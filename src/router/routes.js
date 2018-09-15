@@ -192,13 +192,36 @@ export const routes = [
     path: '/tutor',
     name: 'tutor',
     title: '导师',
+    // 直接跳转列表页
+    redirect: {
+      name: 'tutorList'
+    },
     component: () => import(/* webpackChunkName: "tutor" */ '@/pages/tutor/index.vue'),
     meta: {
       keepAlive: false,
       useNav: true,
       icon: 'el-icon-message',
       module: 'tutor'
-    }
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'tutorList',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'tutor'
+        }
+      },{
+        path: 'post',
+        name: 'tutorPost',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'tutor'
+        }
+      }
+    ]
   },
   {
     path: '/work-book',

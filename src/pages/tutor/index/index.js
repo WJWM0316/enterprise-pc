@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
-import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
+//import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor'
+import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor.js'
 
 @Component({
-  name: 'course-list',
+  name: 'tutor-list',
   watch: {
     '$route': {
       handler () {
@@ -22,14 +23,14 @@ export default class CourseList extends Vue {
   teaType2 = ''
 
   // 表单数据
-  courseList = []
+  tutorList = []
   input5 = ''
   total = 50
 
   // 表格字段
   fields = [
     {
-      prop: 'teacherMsg',
+      prop: 'realname',
       label: '导师资料',
       align: 'center'
     },
@@ -39,12 +40,12 @@ export default class CourseList extends Vue {
       align: 'center'
     },
     {
-      prop: 'inviteNum',
+      prop: 'communityCount',
       label: 'TA的邀请',
       align: 'center',
     },
     {
-      prop: 'liveNum',
+      prop: 'liveCount',
       label: 'TA的直播',
       align: 'center',
     },
@@ -76,24 +77,13 @@ export default class CourseList extends Vue {
   searchType = '1'
 
   created() {
-    for (let i = 0; i < 20; i++) {
-      this.courseList.push({
-        mobile: '2016-05-03',
-        teacherMsg: '王小虎',
-        inviteNum: '（1）',
-        liveNum: '（1）',
-        sort: 'desc'
-      })
-    }
+    this.init()
   }
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
-    // this.getCourseList()
+    this.getList()
   }
 
   /**
@@ -102,12 +92,14 @@ export default class CourseList extends Vue {
   async getList() {
     let params = {
       type: this.teaType === 'primary' ? 1 : 2,
-      name: '',
       page: 1,
       pageCount: 20
     }
-    this.getTutorListApi(params).then(res=>{
-      console.log(res)
+    getTutorListApi(params).then(res=>{
+      console.log(typeof res.data,res.data.data)
+      this.tutorList = res.data.data
+
+      console.log( this.tutorList)
     })
   }
 

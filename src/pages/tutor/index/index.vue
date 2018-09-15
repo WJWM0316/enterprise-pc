@@ -15,45 +15,18 @@
         </div>
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addCourse" class="click-item">添加外部导师</el-button>
+        <el-button type="primary" @click="addTea" class="click-item">添加外部导师</el-button>
       </el-col>
     </el-row>
     <table-list
-    :list="courseList"
+    :list="tutorList"
     :fields="fields"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
-        <div class="btn-container" v-if="props.scope.column.property === 'actions'">
+        <!-- <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="removeTea">移除导师</el-button>
-        </div>
-        <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
-          <div class="img-box">
-            <el-popover
-              ref="popoverCover"
-              placement="right"
-              width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
-            </el-popover>
-            <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img :src="props.scope.row.img">
-              </i>
-            </div>
-          </div>
-          <div class="content">
-            <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.courseName}} </div>
-                <div class="tutor-name">导师名称-组织架构</div>
-            </div>
-          </div>
-        </div>
-        <div v-else-if="props.scope.column.property === 'online'">
-          {{ props.scope.row.online == 0 ? '下线' : '上线' }}
-        </div>
-        <!-- 其他列按后端给回的字段显示 -->
-        <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
+        </div> -->
       </template>
     </table-list>
   </section>

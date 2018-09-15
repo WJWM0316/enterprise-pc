@@ -4,9 +4,10 @@
 import { request } from './index.js'
 
 //获取导师列表
-export const getTutorListApi = params => request(
+export const getTutorListApi = data => request(
 	'/tutor', 
-	'get'
+	'get',
+	data
 )
 
 // 删除外部导师
