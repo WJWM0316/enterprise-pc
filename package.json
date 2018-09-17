@@ -5,7 +5,6 @@
   "ahthor": "lphva",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "build": "cross-env NODE_ENV=production webpack --quiet --hide-modules",
     "lint": "vue-cli-service lint",
     "theme-init": "et -i src/styles/element-variables.css",

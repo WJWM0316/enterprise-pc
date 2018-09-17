@@ -67,7 +67,7 @@ export default class WorkZonePost extends Vue {
     },
     // 工作圈成员
     check_menbers: '',
-    members: {
+    menbers: {
       value: '',
       tem: [],
       show: false
@@ -160,7 +160,7 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'owner_uid', 'organizations', 'cover_img_id', 'members', 'content', 'hits', 'status', 'sort', 'id']
+        const need = ['name', 'owner_uid', 'organizations', 'cover_img_id', 'menbers', 'content', 'hits', 'status', 'sort', 'id']
         const action = this.$route.name === 'workZonePost' ? 'postJobCircleApi' : 'putJobCircleApi'
         const params = this.transformData(this.form, need)
         this.submit(params, action)
@@ -229,7 +229,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    console.log(11)
     // 获取成员列表
     this.getMenberListsApi({name: this.ownerUidName})
       .then(() => {
@@ -253,7 +252,7 @@ export default class WorkZonePost extends Vue {
   		case 'owner_uid':
   			this.models.title = '选择工作圈圈主'
   			break
-  		case 'members':
+  		case 'menbers':
   			this.models.title = '选择工作圈成员'
   			break
   		case 'organizations':
@@ -335,13 +334,13 @@ export default class WorkZonePost extends Vue {
         if(field.uid === jobCircleDetails.ownerUid) {
           this.form.owner_uid.tem = field
           this.form.owner_uid.show = true
-          this.form.check_owner_uid = field
+          this.form.check_owner_uid = field.uid
         }
         // 工作圈成员
         if(jobCircleMemberLists.includes(field.uid)) {
-          this.form.members.value += '' + field.uid
-          this.form.members.tem.push(field.realname)
-          this.form.members.show = true
+          this.form.menbers.value += '' + field.uid
+          this.form.menbers.tem.push(field.realname)
+          this.form.menbers.show = true
           this.form.check_menbers += '' + field.uid
         }
         // 不可见学员
@@ -361,7 +360,6 @@ export default class WorkZonePost extends Vue {
           this.form.check_organizations += '' + field.groupId
         }
       })
-      console.log(this.form)
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -378,7 +376,6 @@ export default class WorkZonePost extends Vue {
     this.form[type].show = this.form[type].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
-    console.log(this.form[type])
   }
 
   /**
@@ -426,7 +423,6 @@ export default class WorkZonePost extends Vue {
    */
   filterWorkZoneMenber(item) {
     let menberLists = [...this.menberLists]
-    console.log(item, menberLists)
     menberLists = menberLists.filter(field => {
       return field.selfGroup.includes(item.id)
     })
@@ -440,6 +436,8 @@ export default class WorkZonePost extends Vue {
    */
   singleSelection(type, item) {
     this.form[type].tem = item
+    this.form[`check_${type}`] = item.uid
+    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
@@ -455,7 +453,10 @@ export default class WorkZonePost extends Vue {
         value.push(field.uid)
       }
     })
+
     this.form[type].value = value.join(',')
+    this.form['check_menbers'] = value.join(',')
+    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
@@ -473,7 +474,8 @@ export default class WorkZonePost extends Vue {
       }
     })
     this.form[type].value = value.join(',')
-    console.log(this.form[type])
+    this.form[`check_${type}`] = value.join(',')
+    this.$refs.form.validateField(`check_${type}`)
   }
   /**
    * @Author   小书包
