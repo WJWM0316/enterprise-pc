@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
-  name: 'lighthouse-list',
+  name: 'note-list',
   methods: {
     ...mapActions(['getJobCircleListsApi', 'showMsg'])
   },
@@ -24,7 +24,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     SearchBar
   }
 })
-export default class CourseList extends Vue {
+export default class NoteList extends Vue {
 
   // 表格字段
   fields = [

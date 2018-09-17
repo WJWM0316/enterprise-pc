@@ -155,6 +155,16 @@ export const routes = [
           module: 'work-zone'
         }
       },
+      // 成员区的入口
+      {
+        path: 'menber/:id',
+        name: 'menbersList',
+        component: () => import(/* webpackChunkName: "menbersList" */ '@/pages/work-zone/menber/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
       // 新增工作圈
       {
         path: 'post',
