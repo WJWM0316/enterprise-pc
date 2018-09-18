@@ -23,20 +23,24 @@
       <!-- 请填写课节名 end-->
       
       <!-- 上传视频或者音频 start-->
-     <!--  <el-form-item
+      <el-form-item
         label="音频/视频"
         class="limit-width">
         <el-upload
           ref="file"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
+          name="file"
+          :accept="fileUpload.accept"
+          :data="fileUpload.params"
+          :action="fileUpload.action"
+          :before-upload="beforeFileUpload"
+          :on-success="handleFileSuccess"
           :show-file-list="false"
-          :multiple="false"
-          :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-          <div slot="tip" class="el-upload__tip">格式支持mp3、mp4</div>
+          :limit="fileUpload.limit"
+          :on-progress="uploadFileProcess">
+          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
-      </el-form-item> -->
+      </el-form-item>
       <!-- 上传视频或者音频 start-->
 
       <!-- 图文编辑 start-->
@@ -61,19 +65,22 @@
       <!-- 上传图片 start-->
       <el-form-item>
         <ul class="img-list">
-          <li v-for="(imgItem, imgIndex) in fileList" :key="imgIndex" @click="handlePreview">
+          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex">
             <img :src="imgItem.url" alt="">
           </li>
         </ul>
         <el-upload
           ref="image"
           name="image"
-          :data="imageUploadParams"
-          action="http://192.168.5.67:8080/attaches"
-          :on-preview="handlePreview"
-          :multiple="true">
-          <el-button slot="trigger" size="small" type="primary">选择图片</el-button>
-          <div slot="tip" class="el-upload__tip">JPG、PNG格式，最多可上传9张</div>
+          :accept="imageUpload.accept"
+          :data="imageUpload.params"
+          :action="imageUpload.action"
+          :before-upload="beforeImageUpload"
+          :on-success="handleImageSuccess"
+          :show-file-list="false"
+          :limit="imageUpload.limit">
+          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
       </el-form-item>
       <!-- 上传图片 start-->

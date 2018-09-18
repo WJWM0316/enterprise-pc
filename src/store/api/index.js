@@ -10,7 +10,7 @@ let loadingInstance = null
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
-// export const API_ROOT = process.env.NODE_ENV === 'development' ? 'http://web.xplus.ziwork.com/tiger' : ''
+export const upload_api = `${window.location.origin}/attaches`
 
 // 请求超时时间
 axios.defaults.timeout = 10000
