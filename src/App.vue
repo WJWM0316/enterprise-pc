@@ -56,3 +56,8 @@ export default class App extends Vue {
 @import "./App.scss";
 @import '~ICONFONT/iconfont.css';
 </style>
+<style lang="less">
+  body{
+    background: @var;
+  }
+</style>
