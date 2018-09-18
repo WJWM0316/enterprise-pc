@@ -30,7 +30,6 @@
         <el-upload
           class="upload-demo"
           ref="file"
-          multiple="false"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="handlePreview"
           show-file-list="false"
