@@ -7,7 +7,7 @@
       <div :class="{active: tutorType === 'outer'}" @click="select('outer')">外部导师</div>
     </div>
     
-    <div class="banner"></div>
+    <div class="banner" v-if="tutorType === 'outer'"></div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
@@ -17,19 +17,18 @@
           placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addTea" class="click-item">添加外部导师</el-button>
         <el-button type="primary" class="click-item" @click="openMadal">添加外部导师</el-button>
       </el-col>
     </el-row>
     <table-list
     :list="tutorList"
-    :fields="fields"
+    :fields="tutorType === 'inner'?innerFields:outerFields"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
 
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false">移除导师</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="deleteTea(props.scope.row)">移除导师</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
@@ -76,16 +75,16 @@
             {{models.title}} 
           </h3>
         </div>
-        <div slot="customize-html">
+        <div slot="customize-html" style="margin-left: 20px;margin-top: 20px;">
           <div class="customize-html-content">
             <search-bar
               width="464px"
-              @search="getTutorLists"
-              v-model="value"
+              @search="searchTea"
+              v-model="searchValue"
               placeholder="请输入手机号搜索" />
-            <div class="fetch-result">
+            <div class="fetch-result" v-if="searchType">
               <el-collapse-transition>
-                <div class="transition-flex-box" v-if="items.length > 0">
+                <div class="transition-flex-box" v-if="searchList.length > 0">
                   <div class="img-box"></div>
                   <div class="text-inner-content">
                     <p class="user-name">魏圣</p>
@@ -172,7 +171,7 @@ export default CourseList
     margin: 30px 0;
   }
   .zike-common-search-bar {
-    margin-top: 30px;
+    //margin-top: 30px;
   }
   .transition-flex-box {
     height: 48px;

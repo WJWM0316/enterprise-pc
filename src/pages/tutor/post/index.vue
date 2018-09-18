@@ -11,48 +11,46 @@
     label-width="160px"
     label-suffix="："
     >
-      <!-- 请填写导师名称-->
-      <el-form-item
-        label="导师名称"
-        prop="name"
-        class="limit-width"
-        >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
-      </el-form-item>
-      
-      <!-- 导师头衔 -->
-      <el-form-item
-        label="导师头衔"
-        prop="name"
-        class="limit-width"
-        >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
-      </el-form-item>
-      
-      <!-- 手机号 -->
-      <el-form-item
-        label="手机号"
-        prop="name"
-        class="limit-width"
-        >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
-      </el-form-item>
+    <!-- 请填写导师名称-->
+    <el-form-item
+      label="导师名称"
+      prop="name"
+      class="limit-width"
+      >
+        <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
+    </el-form-item>
+    
+    <!-- 导师头衔 -->
+    <el-form-item
+      label="导师头衔"
+      prop="title"
+      class="limit-width"
+      >
+        <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
+    </el-form-item>
+    
+    <!-- 手机号 -->
+    <el-form-item
+      label="手机号"
+      prop="mobile"
+      class="limit-width"
+      >
+        <el-input v-model="form.mobile" :maxlength="30" style="width: 380px;" />
+    </el-form-item>
 
-      <!-- 设置密码 -->
-      <el-form-item
-        label="设置密码"
-        prop="name"
-        class="limit-width"
-        >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
-      </el-form-item>
-      
-      <div class="walk-title">其他设置</div>
+    <!-- 设置密码 -->
+    <el-form-item
+      label="设置密码"
+      prop="password"
+      class="limit-width"
+      >
+        <el-input v-model="form.password" :maxlength="30" style="width: 380px;" />
+    </el-form-item>
 
-      <!-- 确认提交 -->
-      <el-form-item>
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
-      </el-form-item>
+    <!-- 确认提交 -->
+    <el-form-item>
+      <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+    </el-form-item>
   </el-form>
   <modal-dialog
     v-model="models.show"
@@ -167,24 +165,6 @@
         </div>
       </div>
   </modal-dialog>
-  <div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
-    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
-      <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
-      <div class="cropper">
-        <div class="cropper-box" id="cropperBox">
-          <img id="uploadPreview" style="width:100px;height:100px;"/>
-        </div>
-        <div class="cropper-res-wrap">
-          <div class="cropper-res" id="cropperRes">
-            <img style="width:100px;height:100px;"/>
-          </div>
-        </div>
-      </div>
-      <div class="cropper-btns-wrap">
-        <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
-      </div>
-    </div>
-  </div>
 </div>
 </template>
 <script>

@@ -27,9 +27,6 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   }
 })
 export default class CourseList extends Vue {
-
-  teaType = 'primary'
-  teaType2 = ''
   // 导师类型
   tutorType = 'inner'
   // 表单数据
@@ -38,7 +35,30 @@ export default class CourseList extends Vue {
   total = 50
 
   // 表格字段
-  fields = [
+  innerFields = [
+    {
+      prop: 'realname',
+      label: '导师资料',
+      align: 'center'
+    },
+    {
+      prop: 'mobile',
+      label: '手机号',
+      align: 'center'
+    },
+    {
+      prop: 'communityCount',
+      label: 'TA的邀请',
+      align: 'center',
+    },
+    {
+      prop: 'liveCount',
+      label: 'TA的直播',
+      align: 'center',
+    }
+  ]
+
+  outerFields = [
     {
       prop: 'realname',
       label: '导师资料',
@@ -63,7 +83,6 @@ export default class CourseList extends Vue {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     }
   ]
 
@@ -85,20 +104,21 @@ export default class CourseList extends Vue {
     total: 0
   }
 
-  searchType = '1'
-  value = ''
+  searchType = false
+  searchValue = ''
+  searchList = []
+
   // 确认信息弹窗
   models = {
     show: false,
     title: '提示',
     showClose: true,
-    confirmText: '提交',
+    confirmText: '添加新外部老师',
     type: 'confirm',
     width: '670px',
     height: '400px'
   }
 
-  items = []
   visible = true
   created() {
     this.init()
@@ -107,44 +127,78 @@ export default class CourseList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
-    this.getList()
+    this.getTutorList()
   }
 
   /**
    * 获取列表
    */
-  async getList() {
+  async getTutorList() {
     let params = {
-      type: this.teaType === 'primary' ? 1 : 2,
+      type: this.tutorType === 'inner' ? 1 : 2,
       page: 1,
       pageCount: 20
     }
-    getTutorListApi(params).then(res=>{
-      console.log(typeof res.data,res.data.data)
-      this.tutorList = res.data.data
 
-      console.log( this.tutorList)
+    getTutorListApi(params).then(res=>{
+      this.tutorList = res.data.data
     })
   }
-  
+
+
+
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
     this.setPathQuery(this.form)
   }
 
-  // 添加课程-跳转
-  addTea() {
+  // 添加导师-跳转
+  toTea() {
     this.$router.push({ name: 'tutorPost'})
   }
 
-  select(type){
-    this.tutorType = type
+  //移除老师
+  deleteTea(item) {
+    deletetTutorApi({id: item.uid}).then(res=>{
+      this.$message(res.data.msg);
+      this.getTutorList()
+    },res=>{
+      this.$message(res.data.msg);
+    })
   }
 
-  confirm() {}
+  //搜索老师
+  searchTea(mobile) {
+    let that = this;
+    if(this.searchValue.length===0){
+      return
+    }
+    this.searchType = true
+    searchTutorApi({mobile: this.searchValue}).then(res=>{
+      that.$message(res.data.msg);
+      if(res.data.data.length===0){
+        this.searchList = res.data.data
+      }
+    },res=>{
+      that.$message(res.data.msg);
+    })
+  }
 
-  cancel() {}
+  select(type){
+    if(type !== this.tutorType){
+      this.tutorType = type
+      this.getTutorList()
+    }
+  }
+
+  cancel(){
+    this.searchType = false
+  }
+  confirm(){
+    this.searchType = false
+    this.toTea()
+  }
 
   openMadal() {
     this.models.show = !this.models.show
