@@ -239,7 +239,7 @@ export default class pageDashboard extends Vue {
   created() {
   	this.getUserListsApi({count: 5})
   		.then(() => {
-  			console.log(this.dashboardUserLists)
+  			// console.log(this.dashboardUserLists)
   		})
   }
 }

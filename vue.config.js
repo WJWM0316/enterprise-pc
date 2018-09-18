@@ -42,7 +42,6 @@ module.exports = {
 	    })
     ]
   },
-
   devServer: {
     proxy: {
       '': {
@@ -55,7 +54,6 @@ module.exports = {
       }
     }
   },
-
   css: {
     loaderOptions: {
       // 给 sass-loader 传递选项
@@ -64,15 +62,6 @@ module.exports = {
         // 所以这里假设你有 `src/variables.scss` 这个文件
         data: `@import "@/variables.scss";`
       }
-    }
-  },
-
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: [
-        resolve('src/less.less')
-      ]
     }
   }
 }

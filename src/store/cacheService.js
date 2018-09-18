@@ -10,7 +10,7 @@ const ssCache = new Cache({ storage: 'sessionStorage' });
 // 所有存储键
 const KEYS = {
   token: 'ak',
-  userInfo: 'currentUser'
+  userInfo: {}
 };
 
 const namespace = 'zike';

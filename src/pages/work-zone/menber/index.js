@@ -10,7 +10,10 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getGroupListsApi',
       'getMenberListsApi',
       'getJobCircleMemberListsApi',
-      'getJobCircleDetailsApi'
+      'getJobCircleDetailsApi',
+      'putJobCircleApi',
+      'getJobCircleHitListsApi',
+      'getJobCircleOrganizationListsApi'
     ])
   },
   computed: {
@@ -19,7 +22,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'groupLists',
       'menberLists',
       'jobCircleMemberLists',
-      'jobCircleDetails'
+      'jobCircleDetails',
+      'jobCircleHitLists',
+      'jobCircleOrganizationLists'
     ])
   },
   watch: {
@@ -39,7 +44,16 @@ export default class MenberList extends Vue {
 
   // 搜索表单
   form = {
-    name: ''
+    id: '',
+    name: '',
+    owner_uid: '',
+    organizations: '',
+    cover_img_id: '',
+    members: '',
+    content: '',
+    hits: '',
+    status: '',
+    sort: ''
   }
 
   checkList = {
@@ -69,18 +83,33 @@ export default class MenberList extends Vue {
         this.getGroupListsApi(),
         this.getMenberListsApi({selectAll: 1}),
         this.getJobCircleMemberListsApi(params),
-        this.getJobCircleDetailsApi(params)
+        this.getJobCircleDetailsApi(params),
+        this.getJobCircleHitListsApi(params),
+        this.getJobCircleOrganizationListsApi(params)
       ]
     )
     .then((res) => {
       this.temMenberLists = [...this.menberLists]
-      this.temMenberLists.map(field => {
+      const jobCircleDetails = this.jobCircleDetails
+      this.form = {
+        id: jobCircleDetails.id,
+        name: jobCircleDetails.name,
+        owner_uid: jobCircleDetails.ownerUid,
+        cover_img_id: jobCircleDetails.coverImgId,
+        content: jobCircleDetails.content,
+        status: jobCircleDetails.status === '上线' ? 1 : 0,
+        sort: jobCircleDetails.sort
+      }
+      this.form.hits = this.jobCircleHitLists.join(',')
+      this.form.organizations = this.jobCircleOrganizationLists.join(',')
+      this.menberLists.map(field => {
         if(this.jobCircleMemberLists.includes(field.uid)) {
           data.tem.push(field.realname)
           data.value.push(field.uid)
         }
       })
       this.checkList = data
+      this.form.members = data.value.join(',')
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -128,6 +157,7 @@ export default class MenberList extends Vue {
       }
     })
     this.checkList.value = value
+    this.form.members = value.join(',')
   }
 
   /**
@@ -164,5 +194,22 @@ export default class MenberList extends Vue {
    * @detail   修改表单
    * @return   {[type]}   [description]
    */
-  submit() {}
+  submit() {
+    this.submitBtnClick = !this.submitBtnClick
+    this.putJobCircleApi(this.form)
+      .then(res => {
+        this.showMsg({ content: `${res.data.msg}~`, type: 'success', duration: 3000 })
+        setTimeout(() => {
+          this.submitBtnClick = !this.submitBtnClick
+          this.submitBtnTxt = '提交'
+        }, 3000)
+      })
+      .catch(err => {
+        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        setTimeout(() => {
+          this.submitBtnClick = !this.submitBtnClick
+          this.submitBtnTxt = '提交'
+        }, 3000)
+      })
+  }
 }
