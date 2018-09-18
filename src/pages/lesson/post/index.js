@@ -74,7 +74,7 @@ export default class WorkZonePost extends Vue {
     height: 350
   }
 
-  
+
   // 默认提交表单按钮可以点击
   submitBtnClick = true
 
@@ -178,8 +178,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   uploadFileProcess(event, file, fileList){
-    this.videoFlag = true
-    this.videoUploadPercent = file.percentage.toFixed(0)
+    this.fileUpload.progress = file.percentage.toFixed(0)
+    console.log(file.percentage.toFixed(0))
   }
 
 }

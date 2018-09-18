@@ -26,6 +26,17 @@
       <el-form-item
         label="音频/视频"
         class="limit-width">
+        <div class="zike-progress">
+          <div class="mask" :style="{ width: fileUpload.progress + '%' }"></div>
+          <div  class="file-infos">
+            <i class="el-icon-info"></i>
+            <span>原音频文件名.m4a</span>
+          </div>
+          <div class="file-status">
+            <span>{{fileUpload.progress === 99 ? '上传成功' : '上传中'}}</span>
+            <i class="el-icon-circle-close"></i>
+          </div>
+        </div>
         <el-upload
           ref="file"
           name="file"
@@ -124,6 +135,34 @@ export default WorkZonePost
       width: 100%;
       height: 100%;
       border-radius: 4px;
+    }
+  }
+  .zike-progress {
+    width:380px;
+    height:38px;
+    padding: 0 16px;
+    border-radius:2px;
+    border:1px solid rgba(220,220,220,1);
+    position: relative;
+    .file-infos{
+      float: left;
+      position: relative;
+      z-index: 2;
+    }
+    .file-status{
+      float: right;
+      position: relative;
+      z-index: 2;
+    }
+    .mask{
+      width:0%;
+      height:38px;
+      background:rgba(255,249,217,1);
+      border-radius:1px 0px 0px 1px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
     }
   }
 }
