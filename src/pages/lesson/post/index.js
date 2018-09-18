@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import Editor from 'COMPONENTS/editor'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
   components: {
@@ -8,7 +9,8 @@ import Editor from 'COMPONENTS/editor'
   },
   methods: {
     ...mapActions([
-      'showMsg'
+      'showMsg',
+      'uploadApi'
     ])
   },
   computed: {
@@ -27,6 +29,11 @@ export default class WorkZonePost extends Vue {
     status: 1 // 状态：0下线，1上线
   }
 
+  imageUploadParams = {
+    token: getAccessToken(),
+    attach_type: 'img'
+  }
+  
   rules = {
     title: [
       { required: true, message: '请输入活动名称', trigger: 'blur' }
@@ -114,7 +121,7 @@ export default class WorkZonePost extends Vue {
   initPageByUpdate() {}
 
   submitUpload() {
-    this.$refs.upload.submit();
+    this.$refs.image.submit();
   }
 
   handleRemove(file, fileList) {

@@ -15,42 +15,38 @@
       <!-- 请填写课节名 start-->
       <el-form-item
         label="课节标题"
-        prop="name"
+        prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
+          <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
       </el-form-item>
       <!-- 请填写课节名 end-->
       
       <!-- 上传视频或者音频 start-->
-      <el-form-item
+     <!--  <el-form-item
         label="音频/视频"
-        prop="name"
         class="limit-width">
         <el-upload
-          class="upload-demo"
           ref="file"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="handlePreview"
-          show-file-list="false"
-          list-type="['mp3']"
+          :show-file-list="false"
           :multiple="false"
           :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
           <div slot="tip" class="el-upload__tip">格式支持mp3、mp4</div>
         </el-upload>
-      </el-form-item>
+      </el-form-item> -->
       <!-- 上传视频或者音频 start-->
 
       <!-- 图文编辑 start-->
       <el-form-item
         label="图文编辑"
-        prop="content"
         >
           <editor
             class="editor"
             :content="ContentEditor.content"
-            v-model="form.content"
+            v-model="form.datails"
             :path="ContentEditor.path"
             :height="ContentEditor.height" />
       </el-form-item>
@@ -58,7 +54,7 @@
 
       <!-- 设置打卡标题 start-->
       <el-form-item label="设置打卡标题">
-        <el-input type="textarea" v-model="form.desc" :rows="10"></el-input>
+        <el-input type="textarea" v-model="form.punjch_card_title" :rows="10"></el-input>
       </el-form-item>
       <!-- 设置打卡标题 end-->
 
@@ -70,13 +66,12 @@
           </li>
         </ul>
         <el-upload
-          class="upload-demo"
           ref="image"
-          show-file-list="false"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          name="image"
+          :data="imageUploadParams"
+          action="http://192.168.5.67:8080/attaches"
           :on-preview="handlePreview"
-          :multiple="true"
-          :auto-upload="false">
+          :multiple="true">
           <el-button slot="trigger" size="small" type="primary">选择图片</el-button>
           <div slot="tip" class="el-upload__tip">JPG、PNG格式，最多可上传9张</div>
         </el-upload>
