@@ -53,6 +53,9 @@ export default class MenberList extends Vue {
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
 
+  // 搜索成员
+  searchName = ''
+
   init() {
     const params = {
       id: this.$route.params.id
@@ -92,7 +95,7 @@ export default class MenberList extends Vue {
    */
   handleSearch() {
     // 获取成员列表
-    this.getMenberListsApi({name: this.form.name})
+    this.getMenberListsApi({name: this.searchName})
       .then(() => {
         this.temMenberLists = [...this.menberLists]
       })
@@ -155,5 +158,11 @@ export default class MenberList extends Vue {
     this.checkList = data
   }
 
-  checkSubmit() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-18
+   * @detail   修改表单
+   * @return   {[type]}   [description]
+   */
+  submit() {}
 }

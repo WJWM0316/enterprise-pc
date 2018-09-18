@@ -9,7 +9,7 @@
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="searchName"
           placeholder="输入搜索名称" />
       </el-col>
     </el-row>
@@ -34,7 +34,7 @@
       </el-checkbox-group>
     </div>
     <div class="footer-button">
-      <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+      <el-button type="primary" @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
     </div>
   </section>
 </template>

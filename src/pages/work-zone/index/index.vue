@@ -24,21 +24,21 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('edit', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'workZoneUpdate')">
               编辑
           </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('note', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'notesList')">
               帖子管理
           </el-button>
-          <!-- <el-button
+          <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'menbersList')">
               成员管理
-          </el-button> -->
+          </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">

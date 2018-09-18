@@ -43,24 +43,24 @@
       <!-- 选择成员 -->
       <el-form-item
         label="选择成员"
-        prop="check_menbers"
+        prop="check_members"
         class="limit-width"
         > 
-          <div class="selected-item" v-show="form.menbers.show">
+          <div class="selected-item" v-show="form.members.show">
             已选择：
             <span
-              @click="removeMultipleCheck('menbers', mIndex)"
+              @click="removeMultipleCheck('members', mIndex)"
               :key="mIndex"
-              v-for="(mItem, mIndex) in form.menbers.tem">
+              v-for="(mItem, mIndex) in form.members.tem">
                 {{ mItem }}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
-            @click="openModal('menbers')"
-            :class="{'zike-btn-selected': form.menbers.show}">
-              {{form.menbers.show ? '重新选择' : '点击选择'}}
+            @click="openModal('members')"
+            :class="{'zike-btn-selected': form.members.show}">
+              {{form.members.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
 
@@ -249,7 +249,7 @@
           </div>
           <!-- 选择圈主-end -->
           <!-- 选择工作圈成员-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'menbers'">
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
@@ -258,21 +258,21 @@
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="memberClassification('menbers', 'all')">所有人</el-button>
+              <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="memberClassification('menbers', groupItem.id)">
+                @click="memberClassification('members', groupItem.id)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.menbers.tem">
+              <el-checkbox-group v-model="form.members.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
-                  @change="multipleSelection('menbers', menberItem)"
+                  @change="multipleSelection('members', menberItem)"
                   v-for="(menberItem, menberIndex) in temMenberLists" />
               </el-checkbox-group>
             </div>
@@ -300,7 +300,7 @@
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="memberClassification('menbers', 'all')">所有人</el-button>
+              <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"

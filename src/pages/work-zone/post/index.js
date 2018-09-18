@@ -66,8 +66,8 @@ export default class WorkZonePost extends Vue {
       showError: false
     },
     // 工作圈成员
-    check_menbers: '',
-    menbers: {
+    check_members: '',
+    members: {
       value: '',
       tem: [],
       show: false
@@ -112,7 +112,7 @@ export default class WorkZonePost extends Vue {
     check_cover_img_id: [
       { required: true, message: '请上传工作圈封面图片', trigger: 'blur' }
     ],
-    check_menbers: [
+    check_members: [
       { required: true, message: '请选择工作圈成员ID', trigger: 'blur' }
     ],
     content: [
@@ -160,7 +160,7 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'owner_uid', 'organizations', 'cover_img_id', 'menbers', 'content', 'hits', 'status', 'sort', 'id']
+        const need = ['name', 'owner_uid', 'organizations', 'cover_img_id', 'members', 'content', 'hits', 'status', 'sort', 'id']
         const action = this.$route.name === 'workZonePost' ? 'postJobCircleApi' : 'putJobCircleApi'
         const params = this.transformData(this.form, need)
         this.submit(params, action)
@@ -252,7 +252,7 @@ export default class WorkZonePost extends Vue {
   		case 'owner_uid':
   			this.models.title = '选择工作圈圈主'
   			break
-  		case 'menbers':
+  		case 'members':
   			this.models.title = '选择工作圈成员'
   			break
   		case 'organizations':
@@ -311,12 +311,6 @@ export default class WorkZonePost extends Vue {
     )
     .then((res) => {
       const jobCircleDetails = {...this.jobCircleDetails}
-      const jobCircleOrganizationLists = [...this.jobCircleOrganizationLists]
-      const jobCircleHitLists = [...this.jobCircleHitLists]
-      const groupLists = this.groupLists
-      const temMenberLists = [...this.menberLists]
-      const jobCircleMemberLists = [...this.jobCircleMemberLists]
-      this.temMenberLists = [...this.menberLists]
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
       this.ContentEditor.content = jobCircleDetails.content
@@ -329,7 +323,7 @@ export default class WorkZonePost extends Vue {
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
 
       // 成员列表的遍历
-      temMenberLists.map(field => {
+      this.menberLists.map(field => {
         // 导师的筛选
         if(field.uid === jobCircleDetails.ownerUid) {
           this.form.owner_uid.tem = field
@@ -337,23 +331,24 @@ export default class WorkZonePost extends Vue {
           this.form.check_owner_uid = field.uid
         }
         // 工作圈成员
-        if(jobCircleMemberLists.includes(field.uid)) {
-          this.form.menbers.value += '' + field.uid
-          this.form.menbers.tem.push(field.realname)
-          this.form.menbers.show = true
-          this.form.check_menbers += '' + field.uid
+        if(this.jobCircleMemberLists.includes(field.uid)) {
+          this.form.members.value += '' + field.uid
+          this.form.members.tem.push(field.realname)
+          this.form.members.show = true
+          this.form.check_members += '' + field.uid
         }
         // 不可见学员
-        if(jobCircleHitLists.includes(field.uid)) {
+        if(this.jobCircleHitLists.includes(field.uid)) {
           this.form.hits.value += '' + field.uid
           this.form.hits.tem.push(field.realname)
           this.form.hits.show = true
         }
       })
+
       // 组织的遍历
-      groupLists.map(field => {
+      this.groupLists.map(field => {
         // 工作圈组织
-        if(jobCircleOrganizationLists.includes(field.groupId)) {
+        if(this.jobCircleOrganizationLists.includes(field.groupId)) {
           this.form.organizations.value += '' + field.groupId
           this.form.organizations.tem.push(field.groupName)
           this.form.organizations.show = true
@@ -376,6 +371,8 @@ export default class WorkZonePost extends Vue {
     this.form[type].show = this.form[type].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
+    this.form[`check_${type}`] = this.form[type].value
+    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
@@ -436,8 +433,6 @@ export default class WorkZonePost extends Vue {
    */
   singleSelection(type, item) {
     this.form[type].tem = item
-    this.form[`check_${type}`] = item.uid
-    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
@@ -455,8 +450,6 @@ export default class WorkZonePost extends Vue {
     })
 
     this.form[type].value = value.join(',')
-    this.form['check_menbers'] = value.join(',')
-    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
@@ -474,8 +467,6 @@ export default class WorkZonePost extends Vue {
       }
     })
     this.form[type].value = value.join(',')
-    this.form[`check_${type}`] = value.join(',')
-    this.$refs.form.validateField(`check_${type}`)
   }
   /**
    * @Author   小书包
@@ -613,6 +604,8 @@ export default class WorkZonePost extends Vue {
         this.flag.btnTips.disable = false
         this.form.cover_img_id.value = infos.id
         this.form.cover_img_id.tem = infos.url
+        this.form.check_cover_img_id = infos.id
+        this.$refs.form.validateField('check_cover_img_id')
       })
       .catch(err => {
         this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })

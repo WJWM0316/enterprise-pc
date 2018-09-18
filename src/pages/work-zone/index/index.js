@@ -136,29 +136,8 @@ export default class CourseList extends Vue {
     this.$router.push({ name: 'workZonePost'})
   }
 
-  todoAction(type, item) {
-    switch(type) {
-      case 'edit':
-        this.$router.push({
-          name: 'workZoneUpdate',
-          params: {
-            id: item.id
-          }
-        })
-        break
-      case 'note':
-        this.$router.push({
-          name: 'notesList',
-          params: {
-            id: item.id
-          }
-        })
-        break
-      case 'menber':
-        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
-        break
-      default:
-        break
-    }
+  routeJump(id, routeName) {
+    // console.log(id)
+    this.$router.push({ name: routeName, params: { id } })
   }
 }
