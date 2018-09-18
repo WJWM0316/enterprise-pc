@@ -2,10 +2,8 @@
   "name": "zike-backend",
   "version": "0.1.0",
   "private": true,
-  "ahthor": "lphva",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "build": "cross-env NODE_ENV=production webpack --quiet --hide-modules",
     "lint": "vue-cli-service lint",
     "theme-init": "et -i src/styles/element-variables.css",
@@ -102,5 +100,6 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "ahthor": "lphva"
 }

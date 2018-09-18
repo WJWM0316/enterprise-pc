@@ -1,5 +1,5 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
       <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
@@ -45,6 +45,12 @@
             @click="todoAction('top', props.scope.row)">
               置顶
           </el-button>
+          <el-button
+            type="text"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            @click="todoAction('top', props.scope.row)">
+              恢复
+          </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
@@ -82,10 +88,50 @@
 </template>
 
 <script>
-import CourseList from './index'
-export default CourseList
+import NoteList from './index'
+export default NoteList
 </script>
 
 <style lang="scss">
-@import "./index.scss"
+@import "~COLORS/variables";
+.page-note-list {
+  background: white;
+  .input-with-select {
+    width: 400px;
+  }
+  .action-zone {
+    text-align: right;
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .header {
+    margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
+  }
+  .content {
+    .lalel{
+      font-size: 12px;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    .group-name{
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      background:rgba(53,64,72,1);
+      padding: 2px 5px;
+    }
+    .name {
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      padding: 2px 5px;
+      background:rgba(255,249,217,1);
+      color:rgba(215,171,112,1);
+    }
+  }
+}
 </style>

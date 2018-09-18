@@ -4,11 +4,13 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
 import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
+import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
   components: {
     ModalDialog,
-    Editor
+    Editor,
+    SearchBar
   },
   methods: {
     ...mapActions([
@@ -43,24 +45,28 @@ export default class WorkZonePost extends Vue {
     // 工作圈名
     name: '',
     // 工作圈主用户ID
+    check_owner_uid: '',
     owner_uid: {
       value: '',
       tem: {},
       show: false
     },
     // 课程所属组织
+    check_organizations: '',
     organizations: {
       tem: [],
       value: '',
       show: false
     },
     // 工作圈封面的id
+    check_cover_img_id: '',
     cover_img_id: {
       value: '',
       tem: '',
       showError: false
     },
     // 工作圈成员
+    check_members: '',
     members: {
       value: '',
       tem: [],
@@ -69,6 +75,7 @@ export default class WorkZonePost extends Vue {
     // 请填写工作圈介绍
     content: '',
     // 不可见工作圈成员
+    check_hits: '',
     hits: {
       value: '',
       tem: [],
@@ -94,18 +101,18 @@ export default class WorkZonePost extends Vue {
 
   rules = {
     name: [
-      { required: true, message: '请输入活动名称', trigger: 'blur' }
+      { required: true, message: '请输入工作圈名称', trigger: 'blur' }
     ],
-    owner_uid: [
+    check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
     ],
-    organizations: [
+    check_organizations: [
       { required: true, message: '请选择组织', trigger: 'blur' }
     ],
-    cover_img_id: [
+    check_cover_img_id: [
       { required: true, message: '请上传工作圈封面图片', trigger: 'blur' }
     ],
-    members: [
+    check_members: [
       { required: true, message: '请选择工作圈成员ID', trigger: 'blur' }
     ],
     content: [
@@ -138,7 +145,14 @@ export default class WorkZonePost extends Vue {
   timeout =  null
   temMenberLists = []
 
-  // 检测是否可以提交
+  // 导师名称
+  ownerUidName = ''
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   检测提交的参数
+   */
   checkSubmit() {
     this.$refs['form'].validate((valid) => {
       if (valid) {
@@ -170,7 +184,11 @@ export default class WorkZonePost extends Vue {
     })
     return formData
   }
-  // 提交表单数据
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   提交表单数据
+   */
   submit(params, action) {
     this[action](params)
       .then(res => {
@@ -189,6 +207,11 @@ export default class WorkZonePost extends Vue {
       })
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   编辑器
+   */
   handleContentEditorBlur() {
     this.$refs.form.validateField('content')
   }
@@ -199,20 +222,19 @@ export default class WorkZonePost extends Vue {
     ]
   }
 
-  debounce1(func, wait) {
-    var timeout
-    return () => {
-      var context = this
-      var args = arguments
-      if (timeout) clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        func.apply(context, args)
-      }, wait)
-    }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   搜索成员
+   * @return   {[type]}   [description]
+   */
+  handleSearch() {
+    // 获取成员列表
+    this.getMenberListsApi({name: this.ownerUidName})
+      .then(() => {
+        this.temMenberLists = [...this.menberLists]
+      })
   }
-
-  // 选择搜索到的数据
-  search(type) {}
 
   created() {
     this.restaurants = this.loadAll()
@@ -224,7 +246,6 @@ export default class WorkZonePost extends Vue {
    * @Author   小书包
    * @DateTime 2018-09-11
    * @detail   打开弹窗model
-   * @return   {[type]}        [description]
    */
   openModal(type) {
   	switch(type) {
@@ -246,7 +267,12 @@ export default class WorkZonePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-  	this.models.show = true
+     // 获取成员列表
+    this.getMenberListsApi({selectAll: 1})
+      .then(() => {
+        this.temMenberLists = [...this.menberLists]
+        this.models.show = true
+      })
   }
   /**
    * @Author   小书包
@@ -285,12 +311,6 @@ export default class WorkZonePost extends Vue {
     )
     .then((res) => {
       const jobCircleDetails = {...this.jobCircleDetails}
-      const jobCircleOrganizationLists = [...this.jobCircleOrganizationLists]
-      const jobCircleHitLists = [...this.jobCircleHitLists]
-      const groupLists = this.groupLists
-      const temMenberLists = [...this.menberLists]
-      const jobCircleMemberLists = [...this.jobCircleMemberLists]
-      this.temMenberLists = [...this.menberLists]
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
       this.ContentEditor.content = jobCircleDetails.content
@@ -300,33 +320,39 @@ export default class WorkZonePost extends Vue {
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.cover_img_id.tem = jobCircleDetails.coverImg
       this.form.id = jobCircleDetails.id
+      this.form.check_cover_img_id = jobCircleDetails.coverImgId
+
       // 成员列表的遍历
-      temMenberLists.map(field => {
+      this.menberLists.map(field => {
         // 导师的筛选
         if(field.uid === jobCircleDetails.ownerUid) {
           this.form.owner_uid.tem = field
           this.form.owner_uid.show = true
+          this.form.check_owner_uid = field.uid
         }
         // 工作圈成员
-        if(jobCircleMemberLists.includes(field.uid)) {
+        if(this.jobCircleMemberLists.includes(field.uid)) {
           this.form.members.value += '' + field.uid
           this.form.members.tem.push(field.realname)
           this.form.members.show = true
+          this.form.check_members += '' + field.uid
         }
         // 不可见学员
-        if(jobCircleHitLists.includes(field.uid)) {
+        if(this.jobCircleHitLists.includes(field.uid)) {
           this.form.hits.value += '' + field.uid
           this.form.hits.tem.push(field.realname)
           this.form.hits.show = true
         }
       })
+
       // 组织的遍历
-      groupLists.map(field => {
+      this.groupLists.map(field => {
         // 工作圈组织
-        if(jobCircleOrganizationLists.includes(field.id)) {
-          this.form.organizations.value += '' + field.id
+        if(this.jobCircleOrganizationLists.includes(field.groupId)) {
+          this.form.organizations.value += '' + field.groupId
           this.form.organizations.tem.push(field.groupName)
           this.form.organizations.show = true
+          this.form.check_organizations += '' + field.groupId
         }
       })
     })
@@ -344,22 +370,23 @@ export default class WorkZonePost extends Vue {
     const type = this.models.currentModalName
     this.form[type].show = this.form[type].value ? true : false
     this.models.show = false
+    this.ownerUidName = ''
+    this.form[`check_${type}`] = this.form[type].value
+    this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
    * @detail   弹窗关闭按钮
-   * @return   {[type]}        [description]
    */
   cancel() {
     const type = this.models.currentModalName
     this.form[type].value = ''
     this.form[type].tem = []
     this.models.show = false
+    this.ownerUidName = ''
   }
-
-  todoAction(type) {}
 
   /**
    * @Author   小书包
@@ -377,7 +404,6 @@ export default class WorkZonePost extends Vue {
    * @Author   小书包
    * @DateTime 2018-09-11
    * @detail   移除多选
-   * @return   {[type]}        [description]
    */
   removeMultipleCheck(type, index) {
     const value = this.form[type].value.split(',').splice(index, 1)
@@ -404,7 +430,6 @@ export default class WorkZonePost extends Vue {
    * @Author   小书包
    * @DateTime 2018-09-10
    * @detail   单选
-   * @return   {[type]}        [description]
    */
   singleSelection(type, item) {
     this.form[type].tem = item
@@ -423,6 +448,7 @@ export default class WorkZonePost extends Vue {
         value.push(field.uid)
       }
     })
+
     this.form[type].value = value.join(',')
   }
 
@@ -437,7 +463,7 @@ export default class WorkZonePost extends Vue {
     const value = []
     groupLists.map(field => {
       if(this.form[type].tem.includes(field.groupName)) {
-        value.push(field.id)
+        value.push(field.groupId)
       }
     })
     this.form[type].value = value.join(',')
@@ -578,6 +604,8 @@ export default class WorkZonePost extends Vue {
         this.flag.btnTips.disable = false
         this.form.cover_img_id.value = infos.id
         this.form.cover_img_id.tem = infos.url
+        this.form.check_cover_img_id = infos.id
+        this.$refs.form.validateField('check_cover_img_id')
       })
       .catch(err => {
         this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })

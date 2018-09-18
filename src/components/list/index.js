@@ -53,9 +53,8 @@ export default class ComponentTableList extends Vue {
 
   // 重新定义table的标题
   renderHeader(h, { column }) {
-
     const showTips = () => {
-      if (column.className === 'yes' || column.filterPlacement) {
+      if (column.className === 'yes' && column.filterPlacement && column.filteredValue.length > 0) {
         return (
           <el-dropdown trigger="click" class="zike-dropdown" onCommand={ this.handleCommand.bind(this) }>
             <span class="el-dropdown-link">
@@ -71,9 +70,10 @@ export default class ComponentTableList extends Vue {
           </el-dropdown>
         )
       } else {
-        return (<span style="color: rgba(188,188,188,1);margin-right: 15px">{ column.label }</span>)
+        return (<span style="color: #909399;margin-right: 15px">{ column.label }</span>)
       }
     }
+
     if (!column.filterPlacement)
     {
       return column.className === 'yes'
@@ -81,10 +81,13 @@ export default class ComponentTableList extends Vue {
         (
           <div>
             <span style="margin-right: 10px;">{ column.label }</span>
-            <el-tooltip placement="top-start">
-              <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-              <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
-            </el-tooltip>
+            <el-popover
+              placement="top"
+              width="144"
+              trigger="hover">
+              <div domPropsInnerHTML={column.filterPlacement}></div>
+              <i class="el-icon-question" style="color: rgba(188,188,188,1);" slot="reference"></i>
+            </el-popover>
           </div>
         )
       :
@@ -101,10 +104,13 @@ export default class ComponentTableList extends Vue {
             (() => {
               if (column.className === 'yes') {
                 return (
-                  <el-tooltip placement="top-start">
-                    <div slot="content" domPropsInnerHTML={column.filterPlacement} style="line-height: 1.5;"></div>
-                    <i class="el-icon-question" style="color: rgba(188,188,188,1);"></i>
-                  </el-tooltip>
+                  <el-popover
+                    placement="top"
+                    width="144"
+                    trigger="hover">
+                    <div domPropsInnerHTML={column.filterPlacement}></div>
+                    <i class="el-icon-question" style="color: rgba(188,188,188,1);" slot="reference"></i>
+                  </el-popover>
                 )
               }
             })()

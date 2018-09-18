@@ -9,7 +9,6 @@
     :rules="rules"
     ref="form"
     label-width="160px"
-    label-suffix="："
     >
 
       <div class="walk-title">工作圈基础信息</div>
@@ -26,7 +25,7 @@
       <!-- 选择圈主 -->
       <el-form-item
         label="选择圈主"
-        prop="owner_uid"
+        prop="check_owner_uid"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.owner_uid.show">
@@ -44,7 +43,7 @@
       <!-- 选择成员 -->
       <el-form-item
         label="选择成员"
-        prop="members"
+        prop="check_members"
         class="limit-width"
         > 
           <div class="selected-item" v-show="form.members.show">
@@ -68,7 +67,7 @@
       <!-- 所属组织 -->
       <el-form-item
         label="所属组织"
-        prop="organizations"
+        prop="check_organizations"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.organizations.show">
@@ -103,7 +102,7 @@
       <!-- 工作圈封面 -->
       <el-form-item
         label="工作圈封面"
-        prop="classification"
+        prop="check_cover_img_id"
         class="limit-width"
         >
         <div class="upload-error-tips upload-error-tips-show" v-if="form.cover_img_id.showError">
@@ -139,7 +138,7 @@
       <!-- 选择不可见学员 -->
       <el-form-item
         label="选择不可见学员"
-        prop="organizations"
+        prop="check_hits"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.hits.show">
@@ -222,9 +221,12 @@
         <div class="customize-html-content">
           <!-- 选择圈主-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'owner_uid'">
-            <div class="search-bar">
-              <input type="text" name="" class="search" placeholder="请输入搜索名称">
-              <span><i class="el-icon-search"></i></span>
+            <div style="margin: 30px 0;">
+              <search-bar
+                width="464px"
+                @search="handleSearch"
+                v-model="ownerUidName"
+                placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
               <el-button
@@ -248,9 +250,12 @@
           <!-- 选择圈主-end -->
           <!-- 选择工作圈成员-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
-            <div class="search-bar">
-              <input type="text" name="" class="search" placeholder="请输入搜索名称">
-              <span><i class="el-icon-search"></i></span>
+            <div style="margin: 30px 0;">
+              <search-bar
+                width="464px"
+                @search="handleSearch"
+                v-model="ownerUidName"
+                placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
               <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
@@ -287,9 +292,12 @@
           <!-- 组织-end -->
           <!-- 选择不可见学员-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'hits'">
-            <div class="search-bar">
-              <input type="text" name="" class="search" placeholder="请输入搜索名称">
-              <span><i class="el-icon-search"></i></span>
+            <div style="margin: 30px 0;">
+              <search-bar
+                width="464px"
+                @search="handleSearch"
+                v-model="ownerUidName"
+                placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
               <el-button size="large" @click="memberClassification('members', 'all')">所有人</el-button>
@@ -340,5 +348,268 @@ import WorkZonePost from './index'
 export default WorkZonePost
 </script>
 <style lang="scss">
-@import './index.scss'
+@import "~cropperjs/dist/cropper.min.css";
+#work-zone-post {
+  background: white;
+  .el-form {
+    margin-bottom: 50px;
+  }
+  .quanzhong-row {
+    input{
+      text-align: left;
+    }
+  }
+  .limit-width {
+    width: 100%;
+  }
+  .walk-title {
+    font-size: 16px;
+    line-height: 1;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(220,223,230,1);
+    font-size: 20px;
+    margin: 40px 44px 30px 0px;
+  }
+  .customize-html-content {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  .course-type-list {
+    margin-top: 20px;
+    .tips {
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0 0 16px;
+    }
+    .set{
+      cursor: pointer;
+      color: #4080AD;
+    }
+    .add-type {
+      cursor: pointer;
+      color: #4080AD;
+      font-size: 14px;
+    }
+  }
+  .organizations-type-list {
+    margin: 20px 0px 18px 16px;
+    .tips {
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0 0 0;
+    }
+    .set{
+      cursor: pointer;
+      color: #4080AD;
+    }
+  }
+  .menber-compulsory-type-list {
+    margin: 20px 18px 18px;
+    .search-bar {
+      border-radius: 4px;
+      border: 1px solid rgba(220,223,230,1);
+      box-sizing: border-box;
+      color: #606266;
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      width: 465px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 25px;
+      input {
+        width: 100%;
+        height: calc(100% - 2px);
+        position: absolute;
+        left: 0;
+        top: 0;
+        outline: none;
+        border: none;
+        display: block;
+        box-sizing: border-box;
+        padding: 0 10px;
+      }
+      span {
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        outline: none;
+        border: none;
+        display: block;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
+    .el-button {
+      width: 128px;
+      padding: 10px 20px;
+      margin: 0px 16px 16px 0px;
+    }
+  }
+  .el-radio {
+    margin: 10px 30px 10px 0px;
+  }
+  .el-checkbox {
+    margin-top: 10px !important;
+    margin-left: 0px !important;
+    margin-bottom: 10px !important;
+    margin-right: 10px !important;
+  }
+  .el-radio__label {
+    box-sizing: border-box;
+    width: 70px;
+    padding-left: 5px;
+    display: inline-block; 
+  }
+  .el-icon-question {
+    color: rgba(214,214,214,1);
+  }
+  .selected-item {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(146,146,146,1);
+    line-height: 40px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    span {
+      background:rgba(248,248,248,1);
+      border-radius:4px;
+      border:1px solid rgba(220,220,220,1);
+      display: inline-block;
+      line-height: 1;
+      padding: 4px 8px;
+      font-size: 12px;
+      color:rgba(0,0,0,0.65);
+      margin-right: 8px;
+      i{
+        margin-left: 5px;
+      }
+    }
+  }
+  .zike-btn-active {
+    color: rgb(230, 203, 92);
+    border-color: rgb(230, 203, 92); 
+    outline: 0;
+    background-color: rgb(255, 252, 240);
+  }
+  .zike-btn-selected {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
+  }
+  .header-seleted-item {
+    font-size: 12px;
+    font-weight: 400;
+    color: #000000;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+    span {
+      background: #f8f8f8;
+      border-radius: 4px;
+      border: 1px solid gainsboro;
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 12px;
+      color:rgba(0,0,0,0.65);
+      display: inline-block;
+    }
+  }
+}
+
+#work-zone-post {
+  .cropper-alert-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    background: rgba(black, .5);
+    visibility: hidden;
+    height: 0;
+    transition: all .3s ease;
+  }
+  .cropper-alert-mask.show {
+    visibility: visible;
+    height: 100%;
+  }
+  .cropper-alert {
+    opacity: 0;
+    transition: all .3s ease;
+    visibility: hidden;
+    transform: scale(2);
+    padding: 30px;
+    position: fixed;
+    z-index: 90;
+    top: 50px;
+    left: 50%;
+    margin-left: -300px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+  }
+  .cropper {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    padding: 80px 150px;
+    background-color: #f8f8f8;
+  }
+  .cropper-box {
+    width: 300px;
+    height: 300px;
+  }
+  .cropper-res-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    box-sizing: content-box;
+  }
+  .cropper-res {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    background-color: white;
+  }
+  #cropper-btn{
+    width: 100%;
+    height: 30px;
+    background: white;
+    border: 1px solid #e1e1e1;
+    color: #646464;
+  }
+  .head-pic {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background: rgba(0,0,0,.1);
+    overflow: hidden;
+    line-height: 80px;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 20px;
+  }
+}
 </style>

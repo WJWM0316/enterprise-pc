@@ -1,3 +1,4 @@
+@import "~COLORS/variables";
 #zike-backend {
   > aside {
     width: 200px;
@@ -87,4 +88,13 @@ ul {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+
+.el-button--primary{
+  color: #354048 !important;
+}
+
+.el-checkbox__inner {
+  border-radius: 50% !important;
 }

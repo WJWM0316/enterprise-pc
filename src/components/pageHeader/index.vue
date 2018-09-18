@@ -4,14 +4,14 @@
 			<ul class="navigation">
 				<li><i class="el-icon-bell"></i></li>
 				<li>
-					<img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg" alt="">
-					<span style="color:#354048;margin-left: 16px;">欢迎登陆，</span>
-					<el-dropdown trigger="click" @command="todoAction">
-					  <span class="el-dropdown-link" style="color:#354048">
-					    七芊<i class="el-icon-caret-bottom el-icon--right"></i>
-					  </span>
+					<el-dropdown trigger="hover" @command="logout" placement="bottom">
+					  <div class="el-dropdown-link" style="color:#354048">
+					  	<img :src="userInfos.avatarInfo.middleUrl" alt="">
+					    <span style="margin-left: 10px;">欢迎登陆，&nbsp;&nbsp;{{userInfos.realname}}</span>
+					    <i class="el-icon-caret-bottom el-icon--right"></i>
+					  </div>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="out">退 出</el-dropdown-item>
+					    <el-dropdown-item command="out">退出登陆</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>
@@ -59,26 +59,23 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { removeAccessToken } from '@/store/cacheService'
 
 @Component({
 	methods: {
     ...mapActions(['logoutApi'])
+  },
+  computed: {
+    ...mapGetters([
+      'userInfos'
+    ])
   }
 })
 export default class ComponentHeader extends Vue {
-	todoAction(command) {
-		switch(command) {
-			case 'out':
-				this.logoutApi()
-					.then(() => {
-						removeAccessToken()
-						this.$router.push({name: 'login'})
-					})
-				break
-			default:
-				break
-		}
+	logout(command) {
+		this.logoutApi()
+			.then(() => {
+				this.$router.push({name: 'login'})
+			})
 	}
 }
 </script>

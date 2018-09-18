@@ -10,10 +10,10 @@ const ssCache = new Cache({ storage: 'sessionStorage' });
 // 所有存储键
 const KEYS = {
   token: 'ak',
-  userInfo: 'currentUser'
+  userInfo: {}
 };
 
-const namespace = 'ZIKE_WEB';
+const namespace = 'zike';
 
 /* eslint-disable */
 // 为存储键增加命名空间
