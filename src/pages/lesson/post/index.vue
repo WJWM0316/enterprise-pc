@@ -55,6 +55,7 @@
             :on-success="handleFileSuccess"
             :show-file-list="false"
             :limit="fileUpload.limit"
+            :multiple="true"
             :on-progress="uploadFileProcess">
             <el-button slot="trigger" size="large" type="primary" :class="{'btn-change': fileUpload.show}">{{fileUpload.btnTxt}}</el-button>
           </el-upload>

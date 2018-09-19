@@ -201,7 +201,7 @@
             class="click-item"
             type="primary"
             :class="{'zike-btn-selected': form.memberList.show}"
-            @click="openModal('memberList')">
+            @click="openModal('invisibleList')">
               {{form.memberList.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-popover
@@ -346,7 +346,7 @@
             <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
           </div>
           <!-- 组织-end -->
-          <!-- 选择不可见学员-start -->
+          <!-- 参与直播学员-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'memberList'">
             <div style="margin: 30px 0;">
               <search-bar
@@ -361,7 +361,7 @@
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="memberClassification('groupList', groupItem.groupId)">
+                @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -375,7 +375,37 @@
               </el-checkbox-group>
             </div>
           </div>
-          <!-- 选择不可见学员-end -->
+          <!-- 参与直播学员-end -->
+           <!-- 对这些人不可见-start -->
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'invisibleList'">
+            <div style="margin: 30px 0;">
+              <search-bar
+                width="464px"
+                @search="handleSearch"
+                v-model="ownerUidName"
+                placeholder="请输入导师名称" />
+            </div>
+            <div class="group-list">
+              <el-button size="large" @click="memberClassification('uid', 'all')">所有人</el-button>
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
+                  {{groupItem.groupName}}
+              </el-button>
+            </div>
+            <div class="menber-list">
+              <el-checkbox-group v-model="form.memberList.tem">
+                <el-checkbox
+                  :label="menberItem.realname"
+                  :key="menberIndex"
+                  @change="multipleSelection('memberList', menberItem)"
+                  v-for="(menberItem, menberIndex) in temMenberLists" />
+              </el-checkbox-group>
+            </div>
+          </div>
+          <!-- 对这些人不可见-end -->
         </div>
       </div>
   </modal-dialog>

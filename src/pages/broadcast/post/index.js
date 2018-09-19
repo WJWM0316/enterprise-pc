@@ -85,6 +85,13 @@ export default class BroadcastPost extends Vue {
       tem: [],
       show: false
     },
+    // 不可见直播成员
+    check_invisibleList: '',
+    invisibleList: {
+      value: '',
+      tem: [],
+      show: false
+    },
     // 课程是否上线 1->上线 0->下线
     status: 1,
     // 权重
@@ -270,6 +277,9 @@ export default class BroadcastPost extends Vue {
   		case 'memberList':
   			this.models.title = '参与直播学员'
   			break
+      case 'invisibleList':
+        this.models.title = '对这些人不可见'
+        break
   		default:
   			break
   	}
@@ -432,10 +442,10 @@ export default class BroadcastPost extends Vue {
    * @detail  刷选组员数据
    * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(item) {
+  filterWorkZoneMenber(type, id) {
     let menberLists = [...this.menberLists]
     menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.id)
+      return field.selfGroup.includes(id)
     })
     this.temMenberLists = menberLists
   }
