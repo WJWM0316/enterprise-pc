@@ -26,31 +26,40 @@
       <el-form-item
         label="音频/视频"
         class="limit-width">
-        <div class="zike-progress">
-          <div class="mask" :style="{ width: fileUpload.progress + '%' }"></div>
-          <div  class="file-infos">
-            <i class="el-icon-info"></i>
-            <span>原音频文件名.m4a</span>
+        <div class="uploader-control">
+          <div class="progress" :class="{'uploader-error': fileUpload.status === 'error'}" v-show="fileUpload.show">
+            <div class="progress-bar" :style="{width: fileUpload.progress + '%'}"></div>
+            <div class="box">
+              <div class="file-infos">
+                <i class="el-icon-question"></i>
+                <span class="file-name">{{fileUpload.infos.name}}</span>
+              </div>
+              <div class="file-status">
+                <span
+                  class="status-text"
+                  :class="{'processing': fileUpload.status === 'processing', 'success': fileUpload.status === 'success', 'error': fileUpload.status === 'error'}">
+                    {{fileUpload.progressText}}
+                  </span>
+                <i class="el-icon-error"></i>
+              </div>
+            </div>
           </div>
-          <div class="file-status">
-            <span>{{fileUpload.progress === 99 ? '上传成功' : '上传中'}}</span>
-            <i class="el-icon-circle-close"></i>
-          </div>
+          <el-upload
+            ref="file"
+            name="file"
+            :accept="fileUpload.accept"
+            :data="fileUpload.params"
+            :action="fileUpload.action"
+            :before-upload="beforeFileUpload"
+            :on-error="handleFileError"
+            :on-success="handleFileSuccess"
+            :show-file-list="false"
+            :limit="fileUpload.limit"
+            :on-progress="uploadFileProcess">
+            <el-button slot="trigger" size="large" type="primary" :class="{'btn-change': fileUpload.show}">{{fileUpload.btnTxt}}</el-button>
+          </el-upload>
+          <div class="tips">{{fileUpload.tips}}</div>
         </div>
-        <el-upload
-          ref="file"
-          name="file"
-          :accept="fileUpload.accept"
-          :data="fileUpload.params"
-          :action="fileUpload.action"
-          :before-upload="beforeFileUpload"
-          :on-success="handleFileSuccess"
-          :show-file-list="false"
-          :limit="fileUpload.limit"
-          :on-progress="uploadFileProcess">
-          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
-          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
-        </el-upload>
       </el-form-item>
       <!-- 上传视频或者音频 start-->
 
@@ -137,33 +146,77 @@ export default WorkZonePost
       border-radius: 4px;
     }
   }
-  .zike-progress {
+}
+.uploader-control {
+  .progress {
     width:380px;
     height:38px;
     padding: 0 16px;
     border-radius:2px;
     border:1px solid rgba(220,220,220,1);
     position: relative;
-    .file-infos{
-      float: left;
-      position: relative;
-      z-index: 2;
+    font-size: 12px;
+    float: left;
+    margin-right: 16px;
+  }
+  .uploader-error {
+    border-color: red;
+  }
+  .progress-bar{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(38,191,129,.08);
+    width: 0%;
+    height: 100%;
+    border-radius: 2px;
+    z-index:1;
+  }
+  .box {
+    position: relative;
+    z-index:2;
+    display: flex;
+  }
+  .file-infos {
+    flex-grow: 1;
+    text-align: left;
+    i{
+      margin-right: 5px;
+      color: #354048;
     }
-    .file-status{
-      float: right;
-      position: relative;
-      z-index: 2;
+  }
+  .file-status {
+    flex-grow: 1;
+    text-align: right;
+    i{
+      margin-left: 5px;
+      color: #FF3434;
     }
-    .mask{
-      width:0%;
-      height:38px;
-      background:rgba(255,249,217,1);
-      border-radius:1px 0px 0px 1px;
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 1;
-    }
+  }
+  .file-name {
+    color: #354048;
+  }
+  .tips {
+    font-size:12px;
+    font-weight:400;
+    color:rgba(188,188,188,1);
+  }
+  .processing {
+    color: #929292;
+  }
+  .success {
+    color: #929292;
+  }
+  .error {
+    color: #FF3434;
+  }
+  .btn-change {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
   }
 }
 </style>

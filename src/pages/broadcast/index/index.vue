@@ -31,13 +31,13 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('note', props.scope.row)">
-              帖子管理
+              问答区
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('menber', props.scope.row)">
-              成员管理
+              直播回顾
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->

@@ -1,10 +1,12 @@
 /**
- * 所有直播对应的接口请求
+ * 直播模块api
  */
-import { post } from './api'
+import { request } from './index.js'
+import Qs from 'qs'
 
-export const demo = data => post({
-  url: '/article/lists',
-  data
-})
-
+// 添加直播
+export const postLiveApi = data => request('/live/create', 'post', Qs.stringify(data))
+// 编辑接口
+export const putLiveApi = params => request(`/live/${params.id}/edit`, 'put', Qs.stringify(data))
+// 获取分类
+export const getCategoryListsApi = params => request('/category', 'get', params)
