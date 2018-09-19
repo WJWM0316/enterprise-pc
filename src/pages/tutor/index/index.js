@@ -86,22 +86,18 @@ export default class CourseList extends Vue {
     }
   ]
 
-  // 搜索表单
-  form = {
-    searchWord: ''
-  }
-
-  // 初始化的搜索表单
-  initForm = {
-    searchWord: ''
-  }
-
   // 分页信息
-  pagination = {
+  /*pagination = {
     page: 1,
     pageSize: this.zikeDefaultPageSize,
     pageCount: 0,
     total: 0
+  }*/
+  pagination = {
+    page: 1,
+    pageCount: 20,
+    type: 1,
+    name: ''
   }
 
   searchType = false
@@ -119,6 +115,19 @@ export default class CourseList extends Vue {
     height: '400px'
   }
 
+  // 确认信息弹窗
+  delateModels = {
+    show: false,
+    title: '移除导师确认提醒',
+    txt: '删除后该导师将无法进入，但其所有内容均会保留',
+    showClose: true,
+    confirmText: '删除',
+    type: 'confirm',
+    confirmType: 'danger',
+    width: '432px',
+    height: '192px'
+  }
+
   visible = true
   created() {
     this.init()
@@ -134,23 +143,18 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   async getTutorList() {
-    let params = {
-      type: this.tutorType === 'inner' ? 1 : 2,
-      page: 1,
-      pageCount: 20
-    }
-
+    let params = this.pagination
     getTutorListApi(params).then(res=>{
       this.tutorList = res.data.data
     })
   }
 
-
-
   // 点击搜索时触发
   handleSearch () {
+
+    console.log(1111)
     this.pagination.page = 1
-    this.setPathQuery(this.form)
+    this.getTutorList()
   }
 
   // 添加导师-跳转
@@ -187,6 +191,7 @@ export default class CourseList extends Vue {
 
   select(type){
     if(type !== this.tutorType){
+      this.pagination.type = type === 'inner' ? 1 : 2,
       this.tutorType = type
       this.getTutorList()
     }

@@ -13,7 +13,7 @@
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="pagination.name"
           placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
@@ -99,6 +99,30 @@
                 </div>
               </el-collapse-transition>
             </div>
+          </div>
+        </div>
+    </modal-dialog>
+
+
+    <modal-dialog
+      v-model="delateModels.show"
+      :title="delateModels.title"
+      :show-close="delateModels.showClose"
+      :confirm-text="delateModels.confirmText"
+      :type="delateModels.type"
+      :width="delateModels.width"
+      :min-height="delateModels.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="">
+          <h3 class="dialog-title">
+            {{delateModels.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html" style="">
+          <div class="customize-html-content">
+            <p>{{delateModels.txt}} </p>
           </div>
         </div>
     </modal-dialog>

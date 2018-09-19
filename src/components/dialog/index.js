@@ -50,12 +50,17 @@ import Component from 'vue-class-component'
     // 弹窗最小高度
     minHeight: {
       type: [Number, String],
-      default: 200
+      default: 90
     },
     // 确定按钮文本
     confirmText: {
       type: String,
       default: '确定'
+    },
+    // 确定按钮显示状态
+    confirmType: {
+      type: String,
+      default: ''
     },
     // 取消按钮文本
     cancelText: {
