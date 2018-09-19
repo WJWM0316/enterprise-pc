@@ -1,2 +1,3 @@
-$color-red: red;
-$color-green: green;
+@function function-name($args) {
+	@return $args;
+}

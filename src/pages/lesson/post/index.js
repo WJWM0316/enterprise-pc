@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import Editor from 'COMPONENTS/editor'
+import { getAccessToken } from '@/store/cacheService'
+import { upload_api } from '@/store/api/index.js'
 
 @Component({
   components: {
@@ -8,7 +10,8 @@ import Editor from 'COMPONENTS/editor'
   },
   methods: {
     ...mapActions([
-      'showMsg'
+      'showMsg',
+      'uploadApi'
     ])
   },
   computed: {
@@ -17,6 +20,7 @@ import Editor from 'COMPONENTS/editor'
 })
 export default class WorkZonePost extends Vue {
 
+  // 提交的表单字段
   form = {
     course_id: '', // 课程id
     title: '', // 课节标题
@@ -27,20 +31,40 @@ export default class WorkZonePost extends Vue {
     status: 1 // 状态：0下线，1上线
   }
 
+  // 验证规则
   rules = {
     title: [
       { required: true, message: '请输入活动名称', trigger: 'blur' }
     ]
   }
 
-  // 确认信息弹窗
-  models = {
-    show: false,
-    title: '提示',
-    showClose: true,
-    confirmText: '提交',
-    currentModalName: '',
-    type: 'confirm'
+  // 图片上传
+  imageUpload = {
+    action: upload_api,
+    list: [],
+    limit: 9,
+    accept: '.png,.jpg',
+    tips: 'JPG、PNG格式，最多可上传9张',
+    btnTxt: '选择图片',
+    params: {
+      token: getAccessToken(),
+      attach_type: 'img',
+    }
+  }
+
+  // 文件上传
+  fileUpload = {
+    action: upload_api,
+    list: [],
+    limit: 1,
+    accept: '.mp4',
+    progress: 0,
+    tips: 'JPG、PNG格式，最多可上传9张',
+    btnTxt: '选择图片',
+    params: {
+      token: getAccessToken(),
+      attach_type: 'video',
+    }
   }
 
   // 社区介绍富文本编辑器
@@ -50,23 +74,12 @@ export default class WorkZonePost extends Vue {
     height: 350
   }
 
+
   // 默认提交表单按钮可以点击
   submitBtnClick = true
+
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
-  restaurants = []
-  timeout =  null
-  temMenberLists = []
-  fileList = [
-    {
-      name: 'food.jpeg',
-      url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-    },
-    {
-      name: 'food2.jpeg',
-      url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-    }
-  ]
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -113,15 +126,60 @@ export default class WorkZonePost extends Vue {
    */
   initPageByUpdate() {}
 
-  submitUpload() {
-    this.$refs.upload.submit();
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-12
+   * @detail   图片上传成功
+   * @return   {[type]}   [description]
+   */
+  handleImageSuccess(res) {
+    this.imageUpload.list.push(res.data[0])
   }
 
-  handleRemove(file, fileList) {
-    console.log(file, fileList)
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-12
+   * @detail   图片上传之前的处理
+   * @return   {[type]}   [description]
+   */
+  beforeImageUpload(file) {}
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-12
+   * @detail   文件上传成功
+   * @return   {[type]}   [description]
+   */
+  handleFileSuccess(res) {
+    // this.imageUpload.list.push(res.data[0])
   }
 
-  handlePreview(file) {
-    console.log(file)
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-12
+   * @detail   文件上传之前的处理
+   * @return   {[type]}   [description]
+   */
+  beforeFileUpload(file) {
+    const isLt10M = file.size / 1024 / 1024  < 10
+    if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
+        this.$message.error('请上传正确的视频格式')
+        return false
+    }
+    if (!isLt10M) {
+        this.$message.error('上传视频大小不能超过10MB哦!')
+        return false
+    }
   }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-12
+   * @detail   上传进度
+   * @return   {[type]}   [description]
+   */
+  uploadFileProcess(event, file, fileList){
+    this.fileUpload.progress = file.percentage.toFixed(0)
+    console.log(file.percentage.toFixed(0))
+  }
+
 }

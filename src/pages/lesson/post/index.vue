@@ -15,29 +15,41 @@
       <!-- 请填写课节名 start-->
       <el-form-item
         label="课节标题"
-        prop="name"
+        prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
+          <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
       </el-form-item>
       <!-- 请填写课节名 end-->
       
       <!-- 上传视频或者音频 start-->
       <el-form-item
         label="音频/视频"
-        prop="name"
         class="limit-width">
+        <div class="zike-progress">
+          <div class="mask" :style="{ width: fileUpload.progress + '%' }"></div>
+          <div  class="file-infos">
+            <i class="el-icon-info"></i>
+            <span>原音频文件名.m4a</span>
+          </div>
+          <div class="file-status">
+            <span>{{fileUpload.progress === 99 ? '上传成功' : '上传中'}}</span>
+            <i class="el-icon-circle-close"></i>
+          </div>
+        </div>
         <el-upload
-          class="upload-demo"
           ref="file"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          show-file-list="false"
-          list-type="['mp3']"
-          :multiple="false"
-          :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-          <div slot="tip" class="el-upload__tip">格式支持mp3、mp4</div>
+          name="file"
+          :accept="fileUpload.accept"
+          :data="fileUpload.params"
+          :action="fileUpload.action"
+          :before-upload="beforeFileUpload"
+          :on-success="handleFileSuccess"
+          :show-file-list="false"
+          :limit="fileUpload.limit"
+          :on-progress="uploadFileProcess">
+          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
       </el-form-item>
       <!-- 上传视频或者音频 start-->
@@ -45,12 +57,11 @@
       <!-- 图文编辑 start-->
       <el-form-item
         label="图文编辑"
-        prop="content"
         >
           <editor
             class="editor"
             :content="ContentEditor.content"
-            v-model="form.content"
+            v-model="form.datails"
             :path="ContentEditor.path"
             :height="ContentEditor.height" />
       </el-form-item>
@@ -58,27 +69,29 @@
 
       <!-- 设置打卡标题 start-->
       <el-form-item label="设置打卡标题">
-        <el-input type="textarea" v-model="form.desc" :rows="10"></el-input>
+        <el-input type="textarea" v-model="form.punjch_card_title" :rows="10"></el-input>
       </el-form-item>
       <!-- 设置打卡标题 end-->
 
       <!-- 上传图片 start-->
       <el-form-item>
         <ul class="img-list">
-          <li v-for="(imgItem, imgIndex) in fileList" :key="imgIndex" @click="handlePreview">
+          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex">
             <img :src="imgItem.url" alt="">
           </li>
         </ul>
         <el-upload
-          class="upload-demo"
           ref="image"
-          show-file-list="false"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :multiple="true"
-          :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选择图片</el-button>
-          <div slot="tip" class="el-upload__tip">JPG、PNG格式，最多可上传9张</div>
+          name="image"
+          :accept="imageUpload.accept"
+          :data="imageUpload.params"
+          :action="imageUpload.action"
+          :before-upload="beforeImageUpload"
+          :on-success="handleImageSuccess"
+          :show-file-list="false"
+          :limit="imageUpload.limit">
+          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
       </el-form-item>
       <!-- 上传图片 start-->
@@ -122,6 +135,34 @@ export default WorkZonePost
       width: 100%;
       height: 100%;
       border-radius: 4px;
+    }
+  }
+  .zike-progress {
+    width:380px;
+    height:38px;
+    padding: 0 16px;
+    border-radius:2px;
+    border:1px solid rgba(220,220,220,1);
+    position: relative;
+    .file-infos{
+      float: left;
+      position: relative;
+      z-index: 2;
+    }
+    .file-status{
+      float: right;
+      position: relative;
+      z-index: 2;
+    }
+    .mask{
+      width:0%;
+      height:38px;
+      background:rgba(255,249,217,1);
+      border-radius:1px 0px 0px 1px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
     }
   }
 }
