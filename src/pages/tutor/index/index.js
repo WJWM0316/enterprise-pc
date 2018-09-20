@@ -90,12 +90,12 @@ export default class CourseList extends Vue {
   /*pagination = {
     page: 1,
     pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
+    count: 0,
     total: 0
   }*/
   pagination = {
     page: 1,
-    pageCount: 20,
+    count: 20,
     type: 1,
     name: ''
   }
@@ -128,6 +128,8 @@ export default class CourseList extends Vue {
     height: '192px'
   }
 
+  nowSelectDeleteItem = {}
+
   visible = true
   created() {
     this.init()
@@ -151,8 +153,6 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-
-    console.log(1111)
     this.pagination.page = 1
     this.getTutorList()
   }
@@ -163,18 +163,33 @@ export default class CourseList extends Vue {
   }
 
   //移除老师
-  deleteTea(item) {
+  deleteTea() {
+    this.delateModels.show = false
+    let item = this.nowSelectDeleteItem
+    if(!item.uid){
+      return
+    }
+    console.log(1)
+
     deletetTutorApi({id: item.uid}).then(res=>{
-      this.$message(res.data.msg);
+    console.log(2)
+
+      this.nowSelectDeleteItem = {}
+      this.$message(res.data.msg)
       this.getTutorList()
     },res=>{
-      this.$message(res.data.msg);
+      this.$message(res.data.msg)
     })
+  }
+
+  showDeleteHint(item){
+    this.delateModels.show = true
+    this.nowSelectDeleteItem = item
   }
 
   //搜索老师
   searchTea(mobile) {
-    let that = this;
+    let that = this
     if(this.searchValue.length===0){
       return
     }
@@ -200,6 +215,7 @@ export default class CourseList extends Vue {
   cancel(){
     this.searchType = false
   }
+
   confirm(){
     this.searchType = false
     this.toTea()

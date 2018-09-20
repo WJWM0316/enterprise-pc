@@ -53,11 +53,12 @@ export default class WorkZonePost extends Vue {
   // 确认信息弹窗
   models = {
     show: false,
-    title: '提示',
+    title: '创建成功',
     showClose: true,
-    confirmText: '提交',
-    currentModalName: '',
-    type: 'confirm'
+    minHeight: 100,
+    txt: '已经帮导师创建账号成功，可以交给导师登录了',
+    confirmText: '知道了',
+    type: 'alert'
   }
 
   // 默认提交表单按钮可以点击
@@ -104,9 +105,10 @@ export default class WorkZonePost extends Vue {
   }
   // 提交表单数据
   submit(params) {
+    let that = this
     createTutorApi(params)
       .then(res => {
-        this.showMsg({ content: '创建成功~', type: 'success', duration: 3000 })
+        that.models.show = true
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -130,34 +132,6 @@ export default class WorkZonePost extends Vue {
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   打开弹窗model
-   * @return   {[type]}        [description]
-   */
-  openModal(type) {
-  	switch(type) {
-  		case 'owner_uid':
-  			this.models.title = '选择工作圈圈主'
-  			break
-  		case 'members':
-  			this.models.title = '选择工作圈成员'
-  			break
-  		case 'organizations':
-  			this.models.title = '选择组织'
-  			break
-  		case 'hits':
-  			this.models.title = '选择不可见成员'
-  			break
-  		default:
-  			break
-  	}
-    this.models.currentModalName = type
-    this.models.width = '860px'
-    this.models.minHeight = '284px'
-  	this.models.show = true
-  }
-  /**
-   * @Author   小书包
    * @DateTime 2018-09-12
    * @detail   初始化新增页面数据
    * @return   {[type]}   [description]
@@ -179,9 +153,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   confirm() {
-    const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value ? true : false
-    this.models.show = false
+    this.$router.push({ name: 'tutor'})
   }
 
   /**
@@ -191,12 +163,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}        [description]
    */
   cancel() {
-    const type = this.models.currentModalName
-    this.form[type].value = ''
-    this.form[type].tem = []
     this.models.show = false
   }
 
   todoAction(type) {}
-
 }

@@ -28,7 +28,7 @@
         <!-- 操作行数据 -->
 
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="deleteTea(props.scope.row)">移除导师</el-button>
+          <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="showDeleteHint(props.scope.row)">移除导师</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
@@ -70,7 +70,7 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 10px;">
+        <div slot="title" style="margin-left: 20px;">
           <h3 class="dialog-title">
             {{models.title}} 
           </h3>
@@ -103,7 +103,6 @@
         </div>
     </modal-dialog>
 
-
     <modal-dialog
       v-model="delateModels.show"
       :title="delateModels.title"
@@ -112,17 +111,16 @@
       :type="delateModels.type"
       :width="delateModels.width"
       :min-height="delateModels.minHeight"
-      @confirm="confirm"
-      @cancel="cancel"
+      @confirm="deleteTea"
       >
-        <div slot="title" style="">
+        <div slot="title" style="margin-left: 22px;">
           <h3 class="dialog-title">
             {{delateModels.title}} 
           </h3>
         </div>
-        <div slot="customize-html" style="">
+        <div slot="customize-html" style="margin-left: 40px;">
           <div class="customize-html-content">
-            <p>{{delateModels.txt}} </p>
+            <p class="dialog_p">{{delateModels.txt}} </p>
           </div>
         </div>
     </modal-dialog>
@@ -282,4 +280,13 @@ export default CourseList
     };
   }
 }
+
+
+.dialog_p {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:22px;
+  }
 </style>
