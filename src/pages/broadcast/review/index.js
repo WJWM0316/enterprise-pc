@@ -12,7 +12,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   },
   computed: {
     ...mapGetters([
-      'jobCircleLists'
+      'jobCircleLists',
+      'liveReviewList'
     ])
   },
   watch: {
@@ -33,7 +34,7 @@ export default class BroadcastReview extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'status21',
+      prop: 'content',
       label: '查看内容',
       align: 'center',
       showTips: 'yes',
@@ -60,7 +61,7 @@ export default class BroadcastReview extends Vue {
       filterPlacement: '测试啦'
     },
     {
-      prop: 'name12',
+      prop: 'fromUserName',
       label: '发布人',
       align: 'center',
       showTips: 'no',

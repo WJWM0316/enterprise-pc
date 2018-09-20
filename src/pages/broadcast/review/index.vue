@@ -17,7 +17,7 @@
       </el-col>
     </el-row>
     <table-list
-    :list="jobCircleLists.list"
+    :list="liveReviewList.list"
     :fields="fields"
     :total="jobCircleLists.total"
     >
@@ -39,7 +39,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'">
-          {{}}
+          {{props.scope.row.content}}
         </div>
         <div v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.status }}

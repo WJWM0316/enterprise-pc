@@ -17,8 +17,7 @@ const state = {
 
 const mutations = {
   [GET_LIVE_REVIEW_LIST] (state, data) {
-    console.log(data)
-    state.liveReviewList = data
+    state.liveReviewList.list = data.data
   }
 }
 
