@@ -15,12 +15,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   methods: {
     ...mapActions([
       'getJobCircleMemberListsApi',
-      'postJobCircleApi',
-      'putJobCircleApi',
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
-      'postUploadConfigApi',
       'uploadApi',
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
@@ -29,77 +26,82 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getTutorListApi',
       'updateGroupListsApi',
       'updateCategoryListsApi',
-      'postLiveApi',
-      'putLiveApi',
-      'getCategoryApi'
+      'getCategoryApi',
+      'postCourseApi',
+      'putCourseApi',
+      'getCourseDetailApi',
+      'postCourseApi',
+      'putCourseApi',
+      'getCourseListsApi',
+      'getCourseDetailApi',
+      'getCoursePeopleApi',
+      'getCourseOrganizationsApi',
+      'getCourseCategoryApi'
     ])
   },
   computed: {
     ...mapGetters([
       'groupLists',
-      'jobCircleMemberLists',
       'menberLists',
-      'uploadConfig',
-      'jobCircleDetails',
-      'jobCircleOrganizationLists',
-      'jobCircleHitLists',
       'categoryList',
-      'tutorLists'
+      'tutorLists',
+      'courseDetail',
+      'courseOrganizations'
     ])
   }
 })
 export default class BroadcastPost extends Vue {
 
   form = {
-    // 直播名称
-    liveName: '',
-    // 直播主用户ID
-    check_categoryList: '',
-    categoryList: {
+    // 课程名称
+    title: '',
+    // 课程分类
+    check_category_id: '',
+    category_id: {
       value: '',
       tem: {},
       show: false
     },
     startTime: '',
     // 课程所属组织
-    check_groupList: '',
-    groupList: {
+    check_group_id: '',
+    group_id: {
       tem: [],
       value: '',
       show: false
     },
-    // 直播封面的id
-    check_coverImgId: '',
-    coverImgId: {
+    // 课程封面的id
+    check_icon: '',
+    icon: {
       value: '',
       tem: '',
       showError: false
     },
-    // 直播成员
-    check_uid: '',
-    uid: {
+    // 课程导师
+    check_master_uid: '',
+    master_uid: {
       value: '',
       tem: [],
       show: false
     },
-    // 请填写直播介绍
+    // 课程介绍
     intro: '',
-    // 不可见直播成员
-    check_memberList: '',
-    memberList: {
+    // 必修学员
+    check_members: '',
+    members: {
       value: '',
       tem: [],
       show: false
     },
-    // 不可见直播成员
-    check_invisibleList: '',
-    invisibleList: {
+    // 不可见课程成员
+    check_hits: '',
+    hits: {
       value: '',
       tem: [],
       show: false
     },
     // 课程是否上线 1->上线 0->下线
-    isOnline: 1,
+    status: 1,
     // 权重
     sort: ''
   }
@@ -117,19 +119,19 @@ export default class BroadcastPost extends Vue {
   }
 
   rules = {
-    liveName: [
-      { required: true, message: '请输入直播名称', trigger: 'blur' }
+    title: [
+      { required: true, message: '请输入课程名称', trigger: 'blur' }
     ],
-    check_categoryList: [
-      { required: true, message: '请选择直播分类', trigger: 'blur' }
+    check_category_id: [
+      { required: true, message: '请选择课程分类', trigger: 'blur' }
     ],
-    check_groupList: [
+    check_group_id: [
       { required: true, message: '请选择组织', trigger: 'blur' }
     ],
-    check_coverImgId: [
-      { required: true, message: '请上传直播封面图片', trigger: 'blur' }
+    check_icon: [
+      { required: true, message: '请上传课程封面图片', trigger: 'blur' }
     ],
-    check_uid: [
+    check_master_uid: [
       { required: true, message: '请选择导师', trigger: 'blur' }
     ],
     startTime: [
@@ -190,19 +192,19 @@ export default class BroadcastPost extends Vue {
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
         const need = [
-          'liveName',
+          'title',
           'uid',
-          'categoryList',
-          'groupList',
-          'startTime',
+          'category_id',
+          'group_id',
           'intro',
-          'isOnline',
-          'coverImgId',
-          'memberList',
-          'invisibleList',
-          'sort'
+          'status',
+          'icon',
+          'members',
+          'hits',
+          'sort',
+          'master_uid'
         ]
-        const action = this.$route.name === 'broadcastPost' ? 'postLiveApi' : 'putLiveApi'
+        const action = this.$route.name === 'coursePost' ? 'postCourseApi' : 'putCourseApi'
         const params = this.transformData(this.form, need)
         this.submit(params, action)
       }
@@ -223,7 +225,6 @@ export default class BroadcastPost extends Vue {
         formData[field] = data[field].value
       }
     })
-    formData.startTime = Date.parse(new Date(this.form.startTime)) / 1000
     return formData
   }
   /**
@@ -291,19 +292,19 @@ export default class BroadcastPost extends Vue {
    */
   openModal(type) {
   	switch(type) {
-  		case 'categoryList':
+  		case 'category_id':
   			this.models.title = '选择分类'
   			break
-  		case 'uid':
+  		case 'master_uid':
   			this.models.title = '选择导师'
   			break
-  		case 'groupList':
+  		case 'group_id':
   			this.models.title = '选择组织'
   			break
-  		case 'memberList':
-  			this.models.title = '参与直播学员'
+  		case 'members':
+  			this.models.title = '参与课程学员'
   			break
-      case 'invisibleList':
+      case 'hits':
         this.models.title = '对这些人不可见'
         break
   		default:
@@ -322,7 +323,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   initPageByPost() {
-    if(this.$route.name !== 'broadcastPost') return
+    if(this.$route.name !== 'coursePost') return
     Promise.all([
       this.getGroupListsApi(),
       this.getMenberListsApi({selectAll: 1}),
@@ -347,61 +348,49 @@ export default class BroadcastPost extends Vue {
    */
   initPageByUpdate() {
     const params = {id: this.$route.params.id}
-    if(this.$route.name !== 'workZoneUpdate') return
+    if(this.$route.name !== 'courseUpdate') return
     Promise.all(
       [
-        this.getJobCircleDetailsApi(params),
-        this.getJobCircleHitListsApi(params),
-        this.getJobCircleOrganizationListsApi(params),
+        this.getCourseDetailApi(params),
+        this.getCoursePeopleApi(params),
+        this.getCourseOrganizationsApi(params),
+        this.getCourseCategoryApi(),
+        this.getMenberListsApi({selectAll: 1}),
         this.getGroupListsApi(),
         this.getMenberListsApi({selectAll: 1}),
-        this.getJobCircleMemberListsApi(params)
+        this.getCategoryListsApi(),
+        this.getTutorListApi({type: 1})
       ]
     )
     .then((res) => {
-      const jobCircleDetails = {...this.jobCircleDetails}
-      this.form.name = jobCircleDetails.name
-      this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
-      this.form.sort = jobCircleDetails.sort
-      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.categoryList.value = jobCircleDetails.ownerUid
-      this.form.coverImgId.value = jobCircleDetails.coverImgId
-      this.form.coverImgId.tem = jobCircleDetails.coverImg
-      this.form.id = jobCircleDetails.id
-      this.form.check_coverImgId = jobCircleDetails.coverImgId
-
-      // 成员列表的遍历
-      this.menberLists.map(field => {
-        // 导师的筛选
-        if(field.uid === jobCircleDetails.ownerUid) {
-          this.form.categoryList.tem = field
-          this.form.categoryList.show = true
-          this.form.check_categoryList = field.uid
-        }
-        // 直播成员
-        if(this.jobCircleMemberLists.includes(field.uid)) {
-          this.form.uid.value += '' + field.uid
-          this.form.uid.tem.push(field.realname)
-          this.form.uid.show = true
-          this.form.check_uid += '' + field.uid
-        }
-        // 不可见学员
-        if(this.jobCircleHitLists.includes(field.uid)) {
-          this.form.memberList.value += '' + field.uid
-          this.form.memberList.tem.push(field.realname)
-          this.form.memberList.show = true
-        }
-      })
-
+      const courseDetail = this.courseDetail
+      this.form.title = courseDetail.title
+      this.form.intro = courseDetail.intro
+      this.form.sort = courseDetail.sort
+      this.form.status = courseDetail.status === '上线' ? 1 : 0
+      this.form.icon.value = courseDetail.icon
+      this.form.icon.tem = courseDetail.coverImg
+      this.ContentEditor.content = courseDetail.intro
+      this.temcategoryList = [...this.categoryList]
+      this.temMenberLists = [...this.menberLists]
+      this.temcategoryList = [...this.categoryList]
+      this.temTutorLists = [...this.tutorLists]
+      this.tem_groupLists = [...this.groupLists]
       // 组织的遍历
       this.groupLists.map(field => {
-        // 直播组织
-        if(this.jobCircleOrganizationLists.includes(field.groupId)) {
-          this.form.groupList.value += '' + field.groupId
-          this.form.groupList.tem.push(field.groupName)
-          this.form.groupList.show = true
-          this.form.check_groupList += '' + field.groupId
+        if(this.courseOrganizations.includes(field.groupId)) {
+          this.form.group_id.value += '' + field.groupId
+          this.form.group_id.tem.push(field)
+          this.form.group_id.show = true
+          this.form.check_group_id += '' + field.groupId
+        }
+      })
+      this.tutorLists.map(field => {
+        if(field.uid === courseDetail.masterUid) {
+          this.form.master_uid.value = field.uid
+          this.form.master_uid.tem.push(field)
+          this.form.master_uid.show = true
+          this.form.check_master_uid = field.uid
         }
       })
     })
@@ -507,13 +496,13 @@ export default class BroadcastPost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.categoryList = data
+    this.form.category_id = data
   }
 
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
-   * @detail   选择直播组织
+   * @detail   选择课程组织
    * @return   {[type]}   [description]
    */
   seleteGroup(item, key) {
@@ -526,7 +515,7 @@ export default class BroadcastPost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.groupList = data
+    this.form.group_id = data
   }
 
   /**
@@ -703,10 +692,10 @@ export default class BroadcastPost extends Vue {
         this.flag.imgHasLoad = false
         this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
-        this.form.coverImgId.value = infos.id
-        this.form.coverImgId.tem = infos.url
-        this.form.check_coverImgId = infos.id
-        this.$refs.form.validateField('check_coverImgId')
+        this.form.icon.value = infos.id
+        this.form.icon.tem = infos.url
+        this.form.check_icon = infos.id
+        this.$refs.form.validateField('check_icon')
       })
       .catch(err => {
         this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })

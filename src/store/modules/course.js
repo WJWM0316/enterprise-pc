@@ -17,7 +17,10 @@ import {
 } from 'API/course'
 
 const state = {
-  courseList: {},
+  courseList: {
+    list: [],
+    total: 0
+  },
   courseDetail: {},
   coursePeaple: {},
   courseOrganizations: {},
@@ -26,7 +29,8 @@ const state = {
 
 const mutations = {
   [GET_COURSE_LISTS] (status, data) {
-    state.courseList = data
+    state.courseList.list = data.data
+    state.courseList.total = data.meta.total
   },
   [GET_COURSE_DEATAILS] (status, data) {
     state.courseDetail = data
@@ -61,7 +65,7 @@ const actions = {
   getCourseListsApi (store, params) {
     return getCourseListsApi(params)
       .then(res => {
-        store.commit(GET_COURSE_LISTS, res.data.data)
+        store.commit(GET_COURSE_LISTS, res.data)
         return res
       })
       .catch(error => {

@@ -16,102 +16,88 @@
       <!-- 请填写课程名 -->
       <el-form-item
         label="课程名称"
-        prop="liveName"
+        prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.liveName" :maxlength="30" style="width: 380px;" />
+          <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
       </el-form-item>
       
       <!-- 课程分类 -->
       <el-form-item
         label="课程分类"
-        prop="check_categoryList"
+        prop="check_category_id"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.categoryList.show">
+          <div class="selected-item" v-show="form.category_id.show">
             已选择：
             <span
-              @click="removeMultipleCheck('categoryList', cateIndex)"
+              @click="removeMultipleCheck('category_id', cateIndex)"
               :key="cateIndex"
-              v-for="(cateItem, cateIndex) in form.categoryList.tem">
+              v-for="(cateItem, cateIndex) in form.category_id.tem">
                 {{ cateItem.categoryName }}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
-            @click="openModal('categoryList')"
-            :class="{'zike-btn-selected': form.categoryList.show}">
-              {{form.categoryList.show ? '重新选择' : '点击选择'}}
+            @click="openModal('category_id')"
+            :class="{'zike-btn-selected': form.category_id.show}">
+              {{form.category_id.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
       
       <!-- 课程导师 -->
       <el-form-item
         label="课程导师"
-        prop="check_uid"
+        prop="check_master_uid"
         class="limit-width"
         > 
-          <div class="selected-item" v-show="form.uid.show">
+          <div class="selected-item" v-show="form.master_uid.show">
             已选择：
-            <span @click="removeSingleChecked('uid')">
-              {{ form.uid.tem.realname }}<i class="el-icon-close"></i>
+            <span @click="removeSingleChecked('master_uid')">
+              {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
-            @click="openModal('uid')"
-            :class="{'zike-btn-selected': form.uid.show}">
-              {{form.uid.show ? '重新选择' : '点击选择'}}
+            @click="openModal('master_uid')"
+            :class="{'zike-btn-selected': form.master_uid.show}">
+              {{form.master_uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
 
       <!-- 所属组织 -->
       <el-form-item
         label="所属组织"
-        prop="check_groupList"
+        prop="check_group_id"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.groupList.show">
+          <div class="selected-item" v-show="form.group_id.show">
             已选择：
             <span
-              @click="removeMultipleCheck('groupList', groupIndex)"
+              @click="removeMultipleCheck('group_id', groupIndex)"
               :key="groupIndex"
-              v-for="(groupItem, groupIndex) in form.groupList.tem">
+              v-for="(groupItem, groupIndex) in form.group_id.tem">
                 {{groupItem.groupName}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
-            :class="{'zike-btn-selected': form.groupList.show}"
-            @click="openModal('groupList')">
-              {{form.groupList.show ? '重新选择' : '点击选择'}}
+            :class="{'zike-btn-selected': form.group_id.show}"
+            @click="openModal('group_id')">
+              {{form.group_id.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-popover
             placement="top-start"
-            ref="groupList"
+            ref="group_id"
             title="标题"
             width="200"
             trigger="hover"
             content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
           </el-popover>
-          <i class="el-icon-question" v-popover:groupList></i>
-      </el-form-item>
-      
-      <!-- 课程开始时间 -->
-      <el-form-item
-        label="课程开始时间"
-        prop="startTime"
-        class="limit-width"
-        >
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            style="width: 380px;"
-            placeholder="点击选择时间">
-          </el-date-picker>
+          <i class="el-icon-question" v-popover:group_id></i>
       </el-form-item>
 
       <div class="walk-title">课程详细信息</div>
@@ -119,21 +105,21 @@
       <!-- 课程封面 -->
       <el-form-item
         label="课程封面"
-        prop="check_coverImgId"
+        prop="check_icon"
         class="limit-width"
         >
-        <div class="upload-error-tips upload-error-tips-show" v-if="form.coverImgId.showError">
+        <div class="upload-error-tips upload-error-tips-show" v-if="form.icon.showError">
           <div class="tips">
             <p><i class="el-icon-error"></i></p>
             <p>上传失败</p>
           </div>
         </div>
-        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.coverImgId.tem}">
-          <i  class="el-icon-upload"></i> {{form.coverImgId.tem ? '重新上传' : '上传封面'}}
+        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
+          <i  class="el-icon-upload"></i> {{form.icon.tem ? '重新上传' : '上传封面'}}
           <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
         </div>
-        <div class="img-box" v-if="form.coverImgId.tem">
-          <img :src="form.coverImgId.tem" class="upload-cover">
+        <div class="img-box" v-if="form.icon.tem">
+          <img :src="form.icon.tem" class="upload-cover">
         </div>
         <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
       </el-form-item>
@@ -151,16 +137,16 @@
             @blur="handleContentEditorBlur" />
       </el-form-item>
       
-      <!-- 参与课程学员 -->
+      <!-- 选择必修学员 -->
       <el-form-item
-        label="参与课程学员"
-        prop="check_memberList"
+        label="选择必修学员"
+        prop="check_members"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.memberList.show">
+          <div class="selected-item" v-show="form.members.show">
             <span
-              @click="removeMultipleCheck('memberList', hIndex)"
-              v-for="(hItem, hIndex) in form.memberList.tem"
+              @click="removeMultipleCheck('members', hIndex)"
+              v-for="(hItem, hIndex) in form.members.tem"
               :key="hIndex">
                 {{hItem}}<i class="el-icon-close"></i>
             </span>
@@ -168,31 +154,31 @@
           <el-button
             class="click-item"
             type="primary"
-            :class="{'zike-btn-selected': form.memberList.show}"
-            @click="openModal('memberList')">
-              {{form.memberList.show ? '重新选择' : '点击选择'}}
+            :class="{'zike-btn-selected': form.members.show}"
+            @click="openModal('members')">
+              {{form.members.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-popover
             placement="top-start"
-            ref="memberList"
+            ref="members"
             title="标题"
             width="200"
             trigger="hover"
             content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
           </el-popover>
-          <i class="el-icon-question" v-popover:memberList></i>
+          <i class="el-icon-question" v-popover:members></i>
       </el-form-item>
 
-      <!-- 对这些人不可见 -->
+      <!-- 不可见学员 -->
       <el-form-item
-        label="对这些人不可见"
-        prop="check_invisibleList"
+        label="不可见学员"
+        prop="check_hits"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.invisibleList.show">
+          <div class="selected-item" v-show="form.hits.show">
             <span
-              @click="removeMultipleCheck('invisibleList', hIndex)"
-              v-for="(hItem, hIndex) in form.invisibleList.tem"
+              @click="removeMultipleCheck('hits', hIndex)"
+              v-for="(hItem, hIndex) in form.hits.tem"
               :key="hIndex">
                 {{hItem}}<i class="el-icon-close"></i>
             </span>
@@ -200,19 +186,19 @@
           <el-button
             class="click-item"
             type="primary"
-            :class="{'zike-btn-selected': form.invisibleList.show}"
-            @click="openModal('invisibleList')">
-              {{form.invisibleList.show ? '重新选择' : '点击选择'}}
+            :class="{'zike-btn-selected': form.hits.show}"
+            @click="openModal('hits')">
+              {{form.hits.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-popover
             placement="top-start"
-            ref="invisibleList"
+            ref="hits"
             title="标题"
             width="200"
             trigger="hover"
             content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
           </el-popover>
-          <i class="el-icon-question" v-popover:invisibleList></i>
+          <i class="el-icon-question" v-popover:hits></i>
       </el-form-item>
 
       <div class="walk-title">其他设置</div>
@@ -242,8 +228,8 @@
 
       <!-- 是否上线 -->
       <el-form-item label="是否上线">
-        <el-radio v-model="form.isOnline" :label="1">上线</el-radio>
-        <el-radio v-model="form.isOnline" :label="0">下线</el-radio>
+        <el-radio v-model="form.status" :label="1">上线</el-radio>
+        <el-radio v-model="form.status" :label="0">下线</el-radio>
       </el-form-item>
 
       <!-- 确认提交 -->
@@ -270,7 +256,7 @@
       <div slot="customize-html">
         <div class="customize-html-content">
           <!-- 课程分类-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'categoryList'">
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'category_id'">
             <div class="group-list">
               <el-button
                 size="large"
@@ -305,7 +291,7 @@
           </div>
           <!-- 课程分类-end -->
           <!-- 选择课程导师-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'uid'">
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'master_uid'">
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
@@ -314,21 +300,21 @@
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="tutorClassification('uid', 'all')">外部导师</el-button>
+              <el-button size="large" @click="tutorClassification('master_uid', 'all')">外部导师</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 :class="{'zike-btn-active-selected': groupItem.active}"
-                @click="tutorClassification('uid', groupItem)">
+                @click="tutorClassification('master_uid', groupItem)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
             <div class="menber-list">
-              <el-radio v-model="form.uid.value"
+              <el-radio v-model="form.master_uid.value"
                 :label="tutorItem.uid"
                 :key="tutorIndex"
-                @change="singleSelection('uid', tutorItem)"
+                @change="singleSelection('master_uid', tutorItem)"
                 v-for="(tutorItem, tutorIndex) in temTutorLists">
                   {{tutorItem.realname}}
               </el-radio>
@@ -336,7 +322,7 @@
           </div>
           <!-- 选择课程成员-end -->
           <!-- 组织-start -->
-          <div class="groupList-type-list" v-if="models.currentModalName === 'groupList'">
+          <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
             <el-button
               size="large"
               v-for="(groupItem, groupIndex) in tem_groupLists"
@@ -352,8 +338,8 @@
             </p>
           </div>
           <!-- 组织-end -->
-          <!-- 参与课程学员-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'memberList'">
+          <!-- 必修学员-start -->
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
@@ -372,18 +358,18 @@
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.memberList.tem">
+              <el-checkbox-group v-model="form.members.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
-                  @change="multipleSelection('memberList', menberItem)"
+                  @change="multipleSelection('members', menberItem)"
                   v-for="(menberItem, menberIndex) in temMenberLists" />
               </el-checkbox-group>
             </div>
           </div>
-          <!-- 参与课程学员-end -->
-           <!-- 对这些人不可见-start -->
-          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'invisibleList'">
+          <!-- 必修学员-end -->
+           <!-- 不可见学员-start -->
+          <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'hits'">
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
@@ -402,16 +388,16 @@
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.invisibleList.tem">
+              <el-checkbox-group v-model="form.hits.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
-                  @change="multipleSelection('invisibleList', menberItem)"
+                  @change="multipleSelection('hits', menberItem)"
                   v-for="(menberItem, menberIndex) in temMenberLists" />
               </el-checkbox-group>
             </div>
           </div>
-          <!-- 对这些人不可见-end -->
+          <!-- 不可见学员-end -->
         </div>
       </div>
   </modal-dialog>

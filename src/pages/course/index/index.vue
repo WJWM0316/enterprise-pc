@@ -14,8 +14,9 @@
       </el-col>
     </el-row>
     <table-list
-    :list="courseList"
+    :list="courseList.list"
     :fields="fields"
+    :total="courseList.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -23,49 +24,49 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('edit', props.scope.row)"
+            @click="routeJump(props.scope.row.id, 'courseUpdate')"
             >
               编辑
           </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('lesson', props.scope.row)"
+            @click="routeJump(props.scope.row.id, 'lessonList')"
             >
               课节
           </el-button>
           <!-- <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('communicate', props.scope.row)"
+            @click="routeJump(props.scope.row, '')"
             >
               成员交流
           </el-button> -->
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'title'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
               placement="right"
               width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
+              <i class="u-image auto"><img :src="props.scope.row.coverImg"></i>
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto" v-popover:popoverCover>
-                <img :src="props.scope.row.img">
+                <img :src="props.scope.row.coverImg">
               </i>
             </div>
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.courseName}} </div>
+                <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
                 <div class="tutor-name">导师名称-组织架构</div>
             </div>
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'online'">
-          {{ props.scope.row.online == 0 ? '下线' : '上线' }}
+        <div v-else-if="props.scope.column.property === 'category'">
+          {{ props.scope.row.category.name}}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
