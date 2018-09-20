@@ -12,6 +12,12 @@ const state = {
 
 const mutations = {
   [GET_TUTOR_LIST] (status, data) {
+    data.map(field => {
+      field.selfGroup = []
+      field.group.map(val => {
+        field.selfGroup.push(val.groupId)
+      })
+    })
     state.tutorLists = data
   }
 }

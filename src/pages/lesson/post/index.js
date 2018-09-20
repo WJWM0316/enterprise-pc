@@ -34,7 +34,7 @@ export default class WorkZonePost extends Vue {
   // 验证规则
   rules = {
     title: [
-      { required: true, message: '请输入活动名称', trigger: 'blur' }
+      { required: true, message: '请填写课节标题', trigger: 'blur' }
     ]
   }
 
@@ -57,14 +57,18 @@ export default class WorkZonePost extends Vue {
     action: upload_api,
     list: [],
     limit: 1,
-    accept: '.mp4',
+    accept: '.mp4, .mp3',
     progress: 0,
-    tips: 'JPG、PNG格式，最多可上传9张',
-    btnTxt: '选择图片',
+    tips: '格式支持mp3、mp4',
+    btnTxt: '选择文件',
+    progressText: '上传中',
     params: {
       token: getAccessToken(),
-      attach_type: 'video',
-    }
+      attach_type: '',
+    },
+    status: 'processing',
+    infos: {},
+    show: false
   }
 
   // 社区介绍富文本编辑器
@@ -98,8 +102,9 @@ export default class WorkZonePost extends Vue {
     return formData
   }
   // 提交表单数据
-  submit(params, action) {
-    console.log(11)
+  submit() {
+    this.$refs['form'].validate((valid) => {})
+    console.log(this.form)
   }
 
   handleContentEditorBlur() {
@@ -151,7 +156,10 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
-    // this.imageUpload.list.push(res.data[0])
+    this.fileUpload.status = 'success'
+    this.fileUpload.progress = 100
+    this.fileUpload.progressText = '上传成功'
+    this.fileUpload.btnTxt = '重新上传'
   }
 
   /**
@@ -161,15 +169,10 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
-    const isLt10M = file.size / 1024 / 1024  < 10
-    if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
-        this.$message.error('请上传正确的视频格式')
-        return false
-    }
-    if (!isLt10M) {
-        this.$message.error('上传视频大小不能超过10MB哦!')
-        return false
-    }
+    this.fileUpload.infos = file
+    this.fileUpload.show = true
+    this.fileUpload.btnTxt = '重新上传'
+    this.fileUpload.params.attach_type = file.type.split('/')[0]
   }
   /**
    * @Author   小书包
@@ -182,4 +185,18 @@ export default class WorkZonePost extends Vue {
     console.log(file.percentage.toFixed(0))
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   文件上传失败
+   * @return   {[type]}   [description]
+   */
+  handleFileError(err, file, fileList) {
+    const { msg } = JSON.parse(err.message)
+    this.showMsg({ content: `${msg}~`, type: 'error', duration: 3000 })
+    this.fileUpload.status = 'error'
+    this.fileUpload.progress = 0
+    this.fileUpload.progressText = '上传失败'
+    this.fileUpload.btnTxt = '重新上传'
+  }
 }

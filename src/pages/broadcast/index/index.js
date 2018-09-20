@@ -30,10 +30,29 @@ export default class CourseList extends Vue {
   fields = [
     {
       prop: 'name',
-      label: '课 程',
+      label: '直 播',
       align: 'center',
       showTips: 'no',
-      width: '55%'
+      width: '35%'
+    },
+    {
+      prop: 'status1',
+      label: '状态',
+      align: 'center',
+      showTips: 'yes',
+      width: '10%',
+      filteredValue:
+      [
+        {
+          label: '上线',
+          value: 'status-1'
+        },
+        {
+          label: '下线',
+          value: 'status-0'
+        }
+      ],
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'status',
@@ -78,10 +97,17 @@ export default class CourseList extends Vue {
       filterPlacement: '权重的提示文案'
     },
     {
+      prop: 'name1',
+      label: '开始时间',
+      align: 'center',
+      showTips: 'no',
+      width: '15%'
+    },
+    {
       prop: 'actions',
       label: '操 作',
       showTips: 'no',
-      width: '15%'
+      width: '20%'
     }
   ]
 

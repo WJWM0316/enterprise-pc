@@ -1,5 +1,5 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-work-zone-list">
     <div class="page-position">工作圈管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
@@ -24,21 +24,21 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('edit', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'workZoneUpdate')">
               编辑
           </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('note', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'notesList')">
               帖子管理
           </el-button>
-          <!-- <el-button
+          <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'menbersList')">
               成员管理
-          </el-button> -->
+          </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
@@ -80,7 +80,47 @@ import CourseList from './index'
 export default CourseList
 </script>
 
-<!-- <style lang="scss">
-@import "./index.scss"
+<style lang="scss">
+@import "~COLORS/variables";
+.page-work-zone-list {
+  background: white;
+  .input-with-select {
+    width: 400px;
+  }
+  .action-zone {
+    text-align: right;
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .header {
+    margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
+  }
+  .content {
+    .lalel{
+      font-size: 12px;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    .group-name{
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      background:rgba(53,64,72,1);
+      padding: 2px 5px;
+    }
+    .name {
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      padding: 2px 5px;
+      background:rgba(255,249,217,1);
+      color:rgba(215,171,112,1);
+    }
+  }
+}
+
 </style>
- -->

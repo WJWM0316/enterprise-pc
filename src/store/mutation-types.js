@@ -2,7 +2,6 @@ export const GET_ARTICLELIST = 'article/GET_ARTICLELIST'
 export const SHOW_AJAX_LOADING = 'commom/SHOW_AJAX_LOADING'
 export const HIDE_AJAX_LOADING = 'commom/HIDE_AJAX_LOADING'
 export const SWITCH_OPEN_MODAL = 'commom/SWITCH_OPEN_MODAL'
-export const GET_BROADCAST_LIST = 'broadcast/GET_BROADCAST_LIST'
 export const GET_COURSE_LIST = 'course/GET_COURSE_LIST'
 export const GET_NOTICE_LIST = 'notice/GET_NOTICE_LIST'
 export const GET_ORGANIZATION_LIST = 'organization/GET_ORGANIZATION_LIST'
@@ -33,3 +32,6 @@ export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
 
 // 工作台模块
 export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'
+
+// 直播模块
+export const GET_BROADCAST_CATEGORY_LIST = 'broadcast/GET_BROADCAST_CATEGORY_LIST'
