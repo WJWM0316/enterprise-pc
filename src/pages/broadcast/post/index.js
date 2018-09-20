@@ -26,7 +26,12 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getJobCircleHitListsApi',
       'getJobCircleOrganizationListsApi',
       'getCategoryListsApi',
-      'getTutorListApi'
+      'getTutorListApi',
+      'updateGroupListsApi',
+      'updateCategoryListsApi',
+      'postLiveApi',
+      'putLiveApi',
+      'getCategoryApi'
     ])
   },
   computed: {
@@ -38,7 +43,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'jobCircleDetails',
       'jobCircleOrganizationLists',
       'jobCircleHitLists',
-      'broadcastCategoryLists',
+      'categoryList',
       'tutorLists'
     ])
   }
@@ -55,6 +60,7 @@ export default class BroadcastPost extends Vue {
       tem: {},
       show: false
     },
+    startTime: '',
     // 课程所属组织
     check_groupList: '',
     groupList: {
@@ -63,8 +69,8 @@ export default class BroadcastPost extends Vue {
       show: false
     },
     // 直播封面的id
-    check_cover_img_id: '',
-    cover_img_id: {
+    check_coverImgId: '',
+    coverImgId: {
       value: '',
       tem: '',
       showError: false
@@ -77,7 +83,7 @@ export default class BroadcastPost extends Vue {
       show: false
     },
     // 请填写直播介绍
-    content: '',
+    intro: '',
     // 不可见直播成员
     check_memberList: '',
     memberList: {
@@ -93,7 +99,7 @@ export default class BroadcastPost extends Vue {
       show: false
     },
     // 课程是否上线 1->上线 0->下线
-    status: 1,
+    isOnline: 1,
     // 权重
     sort: ''
   }
@@ -115,19 +121,19 @@ export default class BroadcastPost extends Vue {
       { required: true, message: '请输入直播名称', trigger: 'blur' }
     ],
     check_categoryList: [
-      { required: true, message: '请选择直播主用户ID', trigger: 'blur' }
+      { required: true, message: '请选择直播分类', trigger: 'blur' }
     ],
     check_groupList: [
       { required: true, message: '请选择组织', trigger: 'blur' }
     ],
-    check_cover_img_id: [
+    check_coverImgId: [
       { required: true, message: '请上传直播封面图片', trigger: 'blur' }
     ],
     check_uid: [
-      { required: true, message: '请选择直播成员ID', trigger: 'blur' }
+      { required: true, message: '请选择导师', trigger: 'blur' }
     ],
-    content: [
-      { required: true, message: '请填写社区介绍', trigger: 'click', validator: editorRules.validator }
+    startTime: [
+      { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ]
   }
 
@@ -155,14 +161,20 @@ export default class BroadcastPost extends Vue {
   restaurants = []
   timeout =  null
   temMenberLists = []
-  temBroadcastCategoryLists = []
+  temcategoryList = []
   temTutorLists = []
-  temGroupLists = []
+  tem_groupLists = []
   value1 = ''
   // 导师名称
   ownerUidName = ''
   visible2 = false
   input = ''
+  // 分类弹窗显示
+  categoryModal = {
+    show: false,
+    name: '',
+    loading: false
+  }
 
   /**
    * @Author   小书包
@@ -170,14 +182,27 @@ export default class BroadcastPost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
+    // console.log(Date.parse(new Date(this.form.startTime))/ 1000)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'categoryList', 'groupList', 'cover_img_id', 'uid', 'content', 'memberList', 'status', 'sort', 'id']
-        const action = this.$route.name === 'workZonePost' ? 'postJobCircleApi' : 'putJobCircleApi'
+        const need = [
+          'liveName',
+          'uid',
+          'categoryList',
+          'groupList',
+          'startTime',
+          'intro',
+          'isOnline',
+          'coverImgId',
+          'memberList',
+          'invisibleList',
+          'sort'
+        ]
+        const action = this.$route.name === 'broadcastPost' ? 'postLiveApi' : 'putLiveApi'
         const params = this.transformData(this.form, need)
         this.submit(params, action)
       }
@@ -198,6 +223,7 @@ export default class BroadcastPost extends Vue {
         formData[field] = data[field].value
       }
     })
+    formData.startTime = Date.parse(new Date(this.form.startTime)) / 1000
     return formData
   }
   /**
@@ -208,7 +234,7 @@ export default class BroadcastPost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: this.$route.name === 'workZonePost' ? '创建直播成功~' : '更新直播成功~', type: 'success', duration: 3000 })
+        this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -229,7 +255,7 @@ export default class BroadcastPost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    this.$refs.form.validateField('content')
+    // this.$refs.form.validateField('content')
   }
 
   loadAll() {
@@ -305,9 +331,9 @@ export default class BroadcastPost extends Vue {
     ])
     .then(() => {
       this.temMenberLists = [...this.menberLists]
-      this.temBroadcastCategoryLists = [...this.broadcastCategoryLists]
+      this.temcategoryList = [...this.categoryList]
       this.temTutorLists = [...this.tutorLists]
-      this.temGroupLists = [...this.groupLists]
+      this.tem_groupLists = [...this.groupLists]
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -340,10 +366,10 @@ export default class BroadcastPost extends Vue {
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.categoryList.value = jobCircleDetails.ownerUid
-      this.form.cover_img_id.value = jobCircleDetails.coverImgId
-      this.form.cover_img_id.tem = jobCircleDetails.coverImg
+      this.form.coverImgId.value = jobCircleDetails.coverImgId
+      this.form.coverImgId.tem = jobCircleDetails.coverImg
       this.form.id = jobCircleDetails.id
-      this.form.check_cover_img_id = jobCircleDetails.coverImgId
+      this.form.check_coverImgId = jobCircleDetails.coverImgId
 
       // 成员列表的遍历
       this.menberLists.map(field => {
@@ -456,10 +482,11 @@ export default class BroadcastPost extends Vue {
    * @detail   导师分类
    * @return   {[type]}   [description]
    */
-  tutorClassification(type, groupId) {
+  tutorClassification(type, item) {
+    // this.updateGroupListsApi({groupId: item.groupId})
     let list = [...this.tutorLists]
     list = list.filter(field => {
-      return field.selfGroup.includes(groupId)
+      return field.selfGroup.includes(item.groupId)
     })
     this.temTutorLists = list
   }
@@ -470,17 +497,10 @@ export default class BroadcastPost extends Vue {
    * @detail   选择分类
    * @return   {[type]}   [description]
    */
-  checkCategory(index) {
-    const temBroadcastCategoryLists = this.broadcastCategoryLists
-    const data = {
-      show: false,
-      tem: [],
-      value: []
-    }
-    temBroadcastCategoryLists.map((field, i) => {
-      if(index === i) {
-        field.active = !field.active
-      }
+  selectCategory(item, key) {
+    this.updateCategoryListsApi({categoryId: item.categoryId})
+    const data = { show: false, tem: [], value: [] }
+    this[key].map((field) => {
       if(field.active) {
         data.tem.push(field)
         data.value.push(field.categoryId)
@@ -488,8 +508,27 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.categoryList = data
-    this.temBroadcastCategoryLists = [...temBroadcastCategoryLists]
   }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   选择直播组织
+   * @return   {[type]}   [description]
+   */
+  seleteGroup(item, key) {
+    this.updateGroupListsApi({groupId: item.groupId})
+    const data = { show: false, tem: [], value: [] }
+    this[key].map((field) => {
+      if(field.active) {
+        data.tem.push(field)
+        data.value.push(field.groupId)
+      }
+    })
+    data.value = data.value.join(',')
+    this.form.groupList = data
+  }
+
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
@@ -516,32 +555,6 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = value.join(',')
   }
 
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   选择直播组织
-   * @return   {[type]}   [description]
-   */
-  seleteGroup(item) {
-    const groupLists = [...this.groupLists]
-    const data = {
-      show: false,
-      tem: [],
-      value: []
-    }
-    groupLists.map((field, i) => {
-      if(item.groupId === field.groupId) {
-        field.active = !field.active
-      }
-      if(field.active) {
-        data.tem.push(field)
-        data.value.push(field.categoryId)
-      }
-    })
-    data.value = data.value.join(',')
-    this.form.groupList = data
-    this.temGroupLists = [...groupLists]
-  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
@@ -572,16 +585,28 @@ export default class BroadcastPost extends Vue {
     this.form[type] = data
   }
 
-  // 添加课程分类
-  addCourseType() {
-    const courseTypeList = this.courseTypeList
-    const bool = courseTypeList.some(field => {
-      return field.label  === this.courseType
-    })
-    if(bool) {
-      this.showMsg({ content: '请不要重复添加~', type: 'error', duration: 3000 })
-    }
-    // this.showCreateCourseTypeBox = !this.showCreateCourseTypeBox
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   添加分类
+   * @return   {[type]}   [description]
+   */
+  getCategory() {
+    this.categoryModal.loading = true
+    this.getCategoryApi({name: this.categoryModal.name})
+        .then(() => {
+          this.getCategoryListsApi()
+              .then(() => {
+                this.categoryModal.loading = false
+                this.categoryModal.show = false
+                this.temcategoryList = [...this.categoryList]
+              })
+        })
+        .catch(err => {
+          this.categoryModal.loading = false
+          this.categoryModal.show = false
+          this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        })
   }
   /**
    * 用户点击头像
@@ -678,10 +703,10 @@ export default class BroadcastPost extends Vue {
         this.flag.imgHasLoad = false
         this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
-        this.form.cover_img_id.value = infos.id
-        this.form.cover_img_id.tem = infos.url
-        this.form.check_cover_img_id = infos.id
-        this.$refs.form.validateField('check_cover_img_id')
+        this.form.coverImgId.value = infos.id
+        this.form.coverImgId.tem = infos.url
+        this.form.check_coverImgId = infos.id
+        this.$refs.form.validateField('check_coverImgId')
       })
       .catch(err => {
         this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })

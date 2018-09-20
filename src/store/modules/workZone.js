@@ -5,7 +5,8 @@ import {
   GET_JOB_CIRCLE_MENBER_LISTS,
   GET_GROUP_LISTS,
   GET_MENBER_LISTS,
-  GET_JOB_CIRCLE_MENBER_DETAILS
+  GET_JOB_CIRCLE_MENBER_DETAILS,
+  UPDATE_GROUP_LISTS
 } from '../mutation-types'
 
 import {
@@ -35,20 +36,28 @@ const state = {
 }
 
 const mutations = {
-  [GET_WORK_ZONE_LISTS] (status, data) {
+  [GET_WORK_ZONE_LISTS] (state, data) {
     state.jobCircleLists.list = data.data
     state.jobCircleLists.total = data.meta.total
   },
-  [GET_JOB_CIRCLE_MENBER_LISTS] (status, data) {
+  [GET_JOB_CIRCLE_MENBER_LISTS] (state, data) {
     state.jobCircleMemberLists = data
   },
-  [GET_GROUP_LISTS] (status, data) {
+  [GET_GROUP_LISTS] (state, data) {
+    data.map(field => {field.active = false})
     state.groupLists = data
   },
-  [GET_JOB_CIRCLE_MENBER_LISTS] (status, data) {
+  [UPDATE_GROUP_LISTS] (state, params) {
+    state.groupLists.map(field => {
+      if(field.groupId === params.groupId) {
+        field.active = !field.active
+      }
+    })
+  },
+  [GET_JOB_CIRCLE_MENBER_LISTS] (state, data) {
     state.jobCircleMemberLists = data
   },
-  [GET_MENBER_LISTS] (status, data) {
+  [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
       field.selfGroup = []
       field.group.map(val => {
@@ -57,13 +66,13 @@ const mutations = {
     })
     state.menberLists = data
   },
-  [GET_JOB_CIRCLE_MENBER_DETAILS] (status, data) {
+  [GET_JOB_CIRCLE_MENBER_DETAILS] (state, data) {
     state.jobCircleDetails = data
   },
-  [GET_JOB_CIRCLE_ORGANIZATION_LISTS] (status, data) {
+  [GET_JOB_CIRCLE_ORGANIZATION_LISTS] (state, data) {
     state.jobCircleOrganizationLists = data
   },
-  [GET_JOB_CIRCLE_HIT_LISTS] (status, data) {
+  [GET_JOB_CIRCLE_HIT_LISTS] (state, data) {
     state.jobCircleHitLists = data
   }
 }
@@ -176,6 +185,10 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
+  },
+  // 更细分组列表
+  updateGroupListsApi(store, params) {
+    store.commit(UPDATE_GROUP_LISTS, params)
   }
 }
 

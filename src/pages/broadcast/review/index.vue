@@ -1,6 +1,9 @@
 <template>
-  <section class="broadcast-index-list">
-    <div class="page-position">直播管理</div>
+  <section class="broadcast-review-list">
+    <el-breadcrumb separator=">" class="zike-breadcrumb">
+      <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
+      <el-breadcrumb-item>直播回顾</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
@@ -25,45 +28,18 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('edit', props.scope.row)">
-              编辑
+              恢复
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('note', props.scope.row)">
-              问答区
-            </el-button>
-          <el-button
-            type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
-              直播回顾
+              删除
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
-          <div class="img-box">
-            <el-popover
-              ref="popoverCover"
-              placement="right"
-              width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
-            </el-popover>
-            <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
-              </i>
-            </div>
-          </div>
-          <div class="content">
-            <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
-                <div class="lalel">
-                  <span class="group-name">{{props.scope.row.groupName}}</span>
-                  <span class="name">{{props.scope.row.realname}}</span>
-                </div>
-            </div>
-          </div>
+        <div v-else-if="props.scope.column.property === 'name'">
+          {{}}
         </div>
         <div v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.status }}
@@ -76,13 +52,13 @@
 </template>
 
 <script>
-import BroadcastIndex from './index'
-export default BroadcastIndex
+import BroadcastReview from './index'
+export default BroadcastReview
 </script>
 
 <style lang="scss">
 @import "~COLORS/variables";
-.broadcast-index-list {
+.broadcast-review-list {
   background: white;
   .input-with-select {
     width: 400px;

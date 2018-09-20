@@ -24,7 +24,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     SearchBar
   }
 })
-export default class CourseList extends Vue {
+export default class BroadcastIndex extends Vue {
 
   // 表格字段
   fields = [

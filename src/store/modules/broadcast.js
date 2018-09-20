@@ -1,25 +1,29 @@
 import {
-  GET_BROADCAST_CATEGORY_LIST
+  GET_LIVE_REVIEW_LIST
 } from '../mutation-types'
 
 import {
   postLiveApi,
   putLiveApi,
-  getCategoryListsApi
+  getLiveReviewListApi
 } from 'API/broadcast'
 
 const state = {
-  broadcastCategoryLists: {}
+  liveReviewList: {
+    list: [],
+    total: 50
+  }
 }
 
 const mutations = {
-  [GET_BROADCAST_CATEGORY_LIST] (status, data) {
-    state.broadcastCategoryLists = data
+  [GET_LIVE_REVIEW_LIST] (state, data) {
+    console.log(data)
+    state.liveReviewList = data
   }
 }
 
 const getters = {
-  broadcastCategoryLists: state => state.broadcastCategoryLists
+  liveReviewList: state => state.liveReviewList
 }
 
 const actions = {
@@ -54,16 +58,16 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
-   /**
+  /**
    * @Author   小书包
    * @DateTime 2018-09-19
-   * @detail   获取分类
+   * @detail   获取直播就顾
    * @return   {[type]}          [description]
    */
-  getCategoryListsApi (store, params) {
-    return getCategoryListsApi(params)
+  getLiveReviewListApi (store, params) {
+    return getLiveReviewListApi(params)
       .then(res => {
-        store.commit(GET_BROADCAST_CATEGORY_LIST, res.data.data)
+        store.commit(GET_LIVE_REVIEW_LIST, res.data)
         return res
       })
       .catch(error => {

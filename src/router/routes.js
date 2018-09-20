@@ -91,6 +91,15 @@ export const routes = [
     },
     children: [
       {
+        path: 'review/:id',
+        name: 'broadcastReviewList',
+        component: () => import(/* webpackChunkName: "broadcastReviewList" */ '@/pages/broadcast/review/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'broadcast'
+        }
+      },
+      {
         path: 'index',
         name: 'broadcastList',
         component: () => import(/* webpackChunkName: "broadcastList" */ '@/pages/broadcast/index/index.vue'),

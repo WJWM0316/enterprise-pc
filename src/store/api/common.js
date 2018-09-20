@@ -7,3 +7,7 @@ import { request } from './index.js'
 export const uploadApi = data => request('/attaches', 'post', data)
 // 获取上传配置
 export const postUploadConfigApi = data => request('/attaches/config', 'post', data)
+// 获取分类
+export const getCategoryListsApi = params => request('/category', 'get', params)
+// 添加分类
+export const getCategoryApi = params => request('/category/create', 'get', params)
