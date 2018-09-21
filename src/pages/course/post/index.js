@@ -329,7 +329,7 @@ export default class CoursePost extends Vue {
       this.tem_groupLists = [...this.groupLists]
     })
     .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
+      this.$message.error('初始化页面失败~')
     })
   }
   /**
@@ -622,7 +622,7 @@ export default class CoursePost extends Vue {
         .catch(err => {
           this.categoryModal.loading = false
           this.categoryModal.show = false
-          this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+          this.$message.error(`${err.msg}~`)
         })
   }
   /**
@@ -660,9 +660,9 @@ export default class CoursePost extends Vue {
     if (len > 0) {
       const file = files.item(0)
       if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
-        this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 3000 })
+        this.$message.error('选择的文件格式不对~')
       } else if (file.size > ALLOW_MAX_SIZE) {
-        this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 3000 })
+        this.$message.error('选择的文件太大啦~')
       } else {
         let inputImage = document.querySelector('#uplaod-file')
         let URL = window.URL || window.webkitURL
@@ -726,7 +726,7 @@ export default class CoursePost extends Vue {
         this.$refs.form.validateField('check_icon')
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`)
       })
   }
 

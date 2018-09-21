@@ -117,24 +117,6 @@ export default class CourseList extends Vue {
 
   searchType = '1'
 
-  created() {
-    for (let i = 0; i < 5; i++) {
-      this.courseList.push({
-        date: '2016-05-03',
-        courseName: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-        tag: 0,
-        course: '公开卡',
-        online: 0,
-        type: '产品',
-        range: 'desc',
-        img: 'http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg',
-        isDeleted: 0,
-        sort: 'desc'
-      })
-    }
-  }
-
   init() {
     this.form = Object.assign(this.form, this.$route.query)
     this.getCourseList()
@@ -163,7 +145,7 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-    this.pagination.page = 1
+    this.setPathQuery(this.form)
   }
 
   /**

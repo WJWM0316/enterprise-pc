@@ -13,6 +13,8 @@ export const getLiveReviewListApi = params => request(`/live/review/${params.id}
 // 获取直播详情
 export const getLiveDetailApi = params => request(`/live/info/${params.id}`, 'get')
 // 获取必修学员列表
-export const getLiveMenberListApi = params => request(`/live/menber/${params.id}`, 'get')
+export const getLiveMenberListApi = params => request(`/live/member/${params.id}`, 'get')
 // 获取不可见学员列表
 export const getLiveInvisibleMenberListApi = params => request(`/live/invisible/${params.id}`, 'get')
+// 获取直播列表
+export const getLiveListApi = params => request(`/live`, 'get', params)

@@ -151,7 +151,8 @@ export default class pageOrganization extends Vue {
   		})
 
   		getGroupListApi().then( res => {
-  			this.groupList = [this.groupList,...res.data.data]
+  			// console.log(res.data.data)
+  			this.groupList = [...this.groupList,...res.data.data]
   		})
   	}
 

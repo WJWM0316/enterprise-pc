@@ -41,6 +41,7 @@ export const GET_LIVE_REVIEW_LIST = 'broadcast/GET_LIVE_REVIEW_LIST'
 export const GET_LIVE_DETAILS = 'broadcast/GET_LIVE_DETAILS'
 export const GET_LIVE_MENBER_LIST = 'broadcast/GET_LIVE_MENBER_LIST'
 export const GET_LIVE_INVISIBLE_LIST = 'broadcast/GET_LIVE_INVISIBLE_LIST'
+export const GET_LIVE_LIST = 'broadcast/GET_LIVE_LIST'
 
 // 课程模块
 export const GET_COURSE_LISTS = 'course/GET_COURSE_LISTS'

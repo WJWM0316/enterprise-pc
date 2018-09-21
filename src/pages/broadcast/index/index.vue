@@ -6,7 +6,7 @@
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="form.liveName"
           placeholder="请输入直播名称或关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
@@ -14,9 +14,9 @@
       </el-col>
     </el-row>
     <table-list
-    :list="jobCircleLists.list"
+    :list="liveLists.list"
     :fields="fields"
-    :total="jobCircleLists.total"
+    :total="liveLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -24,43 +24,43 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastUpdate')">
+            @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastResponseList')">
+            @click="routeJump(props.scope.row.liveId, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastReviewList')">
+            @click="routeJump(props.scope.row.liveId, 'broadcastReviewList')">
               直播回顾
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'liveName'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
               placement="right"
               width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
+              <i class="u-image auto"><img :src="props.scope.row.cover.smallUrl"></i>
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
+                <img :src="props.scope.row.cover.smallUrl">
               </i>
             </div>
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
+                <div class="limit-row-num-2"> {{ props.scope.row.liveName}} </div>
                 <div class="lalel">
-                  <span class="group-name">{{props.scope.row.groupName}}</span>
-                  <span class="name">{{props.scope.row.realname}}</span>
+                  <span class="group-name">{{props.scope.row.masterGroup}}</span>
+                  <span class="name">{{props.scope.row.masterName}}</span>
                 </div>
             </div>
           </div>

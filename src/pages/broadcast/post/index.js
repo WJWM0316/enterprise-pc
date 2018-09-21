@@ -14,13 +14,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   },
   methods: {
     ...mapActions([
-      'getJobCircleMemberListsApi',
-      'postJobCircleApi',
-      'putJobCircleApi',
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
-      'postUploadConfigApi',
       'uploadApi',
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
@@ -31,20 +27,19 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'updateCategoryListsApi',
       'postLiveApi',
       'putLiveApi',
-      'getCategoryApi'
+      'getCategoryApi',
+      'getLiveDetailApi',
+      'getLiveMenberListApi',
+      'getLiveInvisibleMenberListApi'
     ])
   },
   computed: {
     ...mapGetters([
       'groupLists',
-      'jobCircleMemberLists',
       'menberLists',
-      'uploadConfig',
-      'jobCircleDetails',
-      'jobCircleOrganizationLists',
-      'jobCircleHitLists',
       'categoryList',
-      'tutorLists'
+      'tutorLists',
+      'liveDetails'
     ])
   }
 })
@@ -60,7 +55,7 @@ export default class BroadcastPost extends Vue {
       tem: {},
       show: false
     },
-    startTime: '',
+    expectedStartTime: '',
     // 课程所属组织
     check_groupList: '',
     groupList: {
@@ -132,7 +127,7 @@ export default class BroadcastPost extends Vue {
     check_uid: [
       { required: true, message: '请选择导师', trigger: 'blur' }
     ],
-    startTime: [
+    expectedStartTime: [
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ]
   }
@@ -182,7 +177,7 @@ export default class BroadcastPost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
-    // console.log(Date.parse(new Date(this.form.startTime))/ 1000)
+    // console.log(Date.parse(new Date(this.form.expectedStartTime))/ 1000)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -194,7 +189,7 @@ export default class BroadcastPost extends Vue {
           'uid',
           'categoryList',
           'groupList',
-          'startTime',
+          'expectedStartTime',
           'intro',
           'isOnline',
           'coverImgId',
@@ -223,7 +218,7 @@ export default class BroadcastPost extends Vue {
         formData[field] = data[field].value
       }
     })
-    formData.startTime = Date.parse(new Date(this.form.startTime)) / 1000
+    formData.expectedStartTime = Date.parse(new Date(this.form.expectedStartTime)) / 1000
     return formData
   }
   /**
@@ -234,14 +229,14 @@ export default class BroadcastPost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
+        this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
         }, 3000)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`)
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -279,7 +274,6 @@ export default class BroadcastPost extends Vue {
   }
 
   created() {
-    this.restaurants = this.loadAll()
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -347,63 +341,20 @@ export default class BroadcastPost extends Vue {
    */
   initPageByUpdate() {
     const params = {id: this.$route.params.id}
-    if(this.$route.name !== 'workZoneUpdate') return
+    if(this.$route.name !== 'broadcastUpdate') return
     Promise.all(
       [
-        this.getJobCircleDetailsApi(params),
-        this.getJobCircleHitListsApi(params),
-        this.getJobCircleOrganizationListsApi(params),
+        this.getLiveDetailApi(params),
+        this.getLiveMenberListApi(params),
+        this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi(),
         this.getMenberListsApi(),
-        this.getJobCircleMemberListsApi(params)
       ]
     )
     .then((res) => {
-      const jobCircleDetails = {...this.jobCircleDetails}
-      this.form.name = jobCircleDetails.name
-      this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
-      this.form.sort = jobCircleDetails.sort
-      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.categoryList.value = jobCircleDetails.ownerUid
-      this.form.coverImgId.value = jobCircleDetails.coverImgId
-      this.form.coverImgId.tem = jobCircleDetails.coverImg
-      this.form.id = jobCircleDetails.id
-      this.form.check_coverImgId = jobCircleDetails.coverImgId
-
-      // 成员列表的遍历
-      this.menberLists.map(field => {
-        // 导师的筛选
-        if(field.uid === jobCircleDetails.ownerUid) {
-          this.form.categoryList.tem = field
-          this.form.categoryList.show = true
-          this.form.check_categoryList = field.uid
-        }
-        // 直播成员
-        if(this.jobCircleMemberLists.includes(field.uid)) {
-          this.form.uid.value += '' + field.uid
-          this.form.uid.tem.push(field.realname)
-          this.form.uid.show = true
-          this.form.check_uid += '' + field.uid
-        }
-        // 不可见学员
-        if(this.jobCircleHitLists.includes(field.uid)) {
-          this.form.memberList.value += '' + field.uid
-          this.form.memberList.tem.push(field.realname)
-          this.form.memberList.show = true
-        }
-      })
-
-      // 组织的遍历
-      this.groupLists.map(field => {
-        // 直播组织
-        if(this.jobCircleOrganizationLists.includes(field.groupId)) {
-          this.form.groupList.value += '' + field.groupId
-          this.form.groupList.tem.push(field.groupName)
-          this.form.groupList.show = true
-          this.form.check_groupList += '' + field.groupId
-        }
-      })
+      const {categoryList, groupList, info, invisibleList, memberList} = this.liveDetails
+      console.log(info, this.form)
+      this.form.id = infos.id
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
