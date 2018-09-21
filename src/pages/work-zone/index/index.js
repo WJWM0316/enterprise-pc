@@ -91,52 +91,58 @@ export default class CourseList extends Vue {
     name: ''
   }
 
-  // 初始化的搜索表单
-  initForm = {
-    name: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
+    this.form = Object.assign(this.form, this.$route.query)
     this.getWorkZoneLists()
   }
 
   /**
-   * 获取课程列表
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取工作圈列表
+   * @return   {[type]}                    [description]
    */
-  getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.query}
+  getWorkZoneLists({ page, pageSize } = {}) {
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize
+    }
     if(this.form.name) {
       params.name = this.form.name
+    }
+    if(this.form.status) {
+      params.status = this.form.status
     }
     this.getJobCircleListsApi(params)
   }
 
-  // 点击搜索时触发
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   点击搜索时触发
+   */
   handleSearch() {
     this.setPathQuery(this.form)
   }
 
-  // 添加课程-跳转
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   添加课程
+   */
   addWorkZone() {
     this.$router.push({ name: 'workZonePost'})
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   路由切换
+   */
   routeJump(id, routeName) {
-    // console.log(id)
     this.$router.push({ name: routeName, params: { id } })
   }
 }

@@ -1,25 +1,44 @@
 import {
-  GET_BROADCAST_CATEGORY_LIST
+  GET_LIVE_REVIEW_LIST,
+  GET_LIVE_MENBER_LIST,
+  GET_LIVE_INVISIBLE_LIST,
+  GET_LIVE_DETAILS
 } from '../mutation-types'
 
 import {
   postLiveApi,
   putLiveApi,
-  getCategoryListsApi
+  getLiveReviewListApi,
+  getLiveDetailApi,
+  getLiveMenberListApi,
+  getLiveInvisibleMenberListApi
 } from 'API/broadcast'
 
 const state = {
-  broadcastCategoryLists: {}
+  liveReviewList: {
+    list: [],
+    total: 50
+  },
+  liveDetails: {}
 }
 
 const mutations = {
-  [GET_BROADCAST_CATEGORY_LIST] (status, data) {
-    state.broadcastCategoryLists = data
+  [GET_LIVE_REVIEW_LIST] (state, data) {
+    state.liveReviewList.list = data.data
+  },
+  [GET_LIVE_DETAILS] (state, data) {
+    state.liveDetails = data
+  },
+  [GET_LIVE_INVISIBLE_LIST] (state, data) {
+    state.liveReviewList.list = data.data
+  },
+  [GET_LIVE_MENBER_LIST] (state, data) {
+    state.liveReviewList.list = data.data
   }
 }
 
 const getters = {
-  broadcastCategoryLists: state => state.broadcastCategoryLists
+  liveReviewList: state => state.liveReviewList
 }
 
 const actions = {
@@ -54,16 +73,64 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
-   /**
+  /**
    * @Author   小书包
    * @DateTime 2018-09-19
-   * @detail   获取分类
+   * @detail   获取直播回顾
    * @return   {[type]}          [description]
    */
-  getCategoryListsApi (store, params) {
-    return getCategoryListsApi(params)
+  getLiveReviewListApi (store, params) {
+    return getLiveReviewListApi(params)
       .then(res => {
-        store.commit(GET_BROADCAST_CATEGORY_LIST, res.data.data)
+        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取直播详情
+   * @return   {[type]}          [description]
+   */
+  getLiveDetailApi (store, params) {
+    return getLiveDetailApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取必修学员列表
+   * @return   {[type]}          [description]
+   */
+  getLiveMenberListApi (store, params) {
+    return getLiveMenberListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取不可见学员列表
+   * @return   {[type]}          [description]
+   */
+  getLiveInvisibleMenberListApi (store, params) {
+    return getLiveInvisibleMenberListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_REVIEW_LIST, res.data)
         return res
       })
       .catch(error => {

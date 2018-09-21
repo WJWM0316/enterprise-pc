@@ -18,7 +18,5 @@ export const putJobCircleApi = data => request(`/job/circle/${data.id}`, 'put', 
 export const getJobCircleDetailsApi = params => request(`/job/circle/${params.id}`, 'get')
 // 添加工作圈
 export const postJobCircleApi = data => request('/job/circle', 'post', Qs.stringify(data))
-// 获取成员列表
-export const getMenberListsApi = params => request('/member', 'get', params)
 // 获取分组成员列表
 export const getGroupListsApi = params => request('/group', 'get', params)

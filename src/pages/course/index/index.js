@@ -17,25 +17,30 @@ import { getListCourse } from '@/store/api/course.js'
   components: {
     TableList,
     SearchBar
+  },
+  methods: {
+    ...mapActions([
+      'getCourseListsApi'
+    ])
+  },
+  computed: {
+    ...mapGetters([
+      'courseList'
+    ])
   }
 })
 export default class CourseList extends Vue {
 
-  // 表单数据
-  courseList = []
-  input5 = ''
-  total = 50
-
   // 表格字段
   fields = [
     {
-      prop: 'courseName',
+      prop: 'title',
       label: '课 程',
       align: 'center',
       width: '60%'
     },
     {
-      prop: 'online',
+      prop: 'status',
       label: '是否上线',
       align: 'center',
       showTips: 'yes',
@@ -54,7 +59,7 @@ export default class CourseList extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'type',
+      prop: 'category',
       label: '类 型',
       align: 'center',
       showTips: 'yes',
@@ -94,7 +99,7 @@ export default class CourseList extends Vue {
 
   // 搜索表单
   form = {
-    searchWord: ''
+    name: ''
   }
 
   // 初始化的搜索表单
@@ -128,70 +133,56 @@ export default class CourseList extends Vue {
         sort: 'desc'
       })
     }
+  }
 
+  init() {
+    this.form = Object.assign(this.form, this.$route.query)
     this.getCourseList()
   }
 
-
   /**
-   * 初始化表单、分页页面数据
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   获取课程列表
+   * @return   {[type]}          [description]
    */
-  init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
-    // this.getCourseList()
+  getCourseList({ page, pageSize } = {}) {
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize
+    }
+    if(this.form.name) {
+      params.name = this.form.name
+    }
+    if(this.form.status) {
+      params.status = this.form.status
+    }
+    this.getCourseListsApi(params)
   }
 
-  /**
-   * 获取课程列表
-   */
-  getCourseList() {
-    getListCourse(this.pagination).then(res => {
-      console.log(res)
-    })
-  }
 
   // 点击搜索时触发
   handleSearch () {
     this.pagination.page = 1
-    this.setPathQuery(this.form)
-    this.getCourseList()
   }
 
-  // 添加课程-跳转
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   添加课程
+   * @return   {[type]}          [description]
+   */
   addCourse() {
     this.$router.push({ name: 'coursePost'})
   }
 
-  todoAction(type, item) {
-    switch(type) {
-      case 'edit':
-        this.$router.push({
-          name: 'courseUpdate',
-          params: {
-            id: item.id ? item.id : 0
-          }
-        })
-        break
-      case 'communicate':
-        this.$router.push({
-          name: 'lessonList',
-          params: {
-            id: item.id ? item.id : 0
-          }
-        })
-        break
-      case 'lesson':
-        this.$router.push({
-          name: 'lessonList',
-          params: {
-            id: item.id ? item.id : 0
-          }
-        })
-        break
-      default:
-        break
-    }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   页面跳转
+   * @return   {[type]}          [description]
+   */
+  routeJump(id, routeName) {
+    this.$router.push({name: routeName, params: { id }})
   }
 }

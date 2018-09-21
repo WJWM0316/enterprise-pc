@@ -1,5 +1,5 @@
 <template>
-  <section class="broadcast-list">
+  <section class="broadcast-index-list">
     <div class="page-position">直播管理</div>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
@@ -24,19 +24,19 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('edit', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('note', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastReviewList')">
               直播回顾
             </el-button>
         </div>
@@ -76,10 +76,50 @@
 </template>
 
 <script>
-import CourseList from './index'
-export default CourseList
+import BroadcastIndex from './index'
+export default BroadcastIndex
 </script>
 
 <style lang="scss">
-@import "./index.scss"
+@import "~COLORS/variables";
+.broadcast-index-list {
+  background: white;
+  .input-with-select {
+    width: 400px;
+  }
+  .action-zone {
+    text-align: right;
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .header {
+    margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
+  }
+  .content {
+    .lalel{
+      font-size: 12px;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    .group-name{
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      background:rgba(53,64,72,1);
+      padding: 2px 5px;
+    }
+    .name {
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      padding: 2px 5px;
+      background:rgba(255,249,217,1);
+      color:rgba(215,171,112,1);
+    }
+  }
+}
 </style>

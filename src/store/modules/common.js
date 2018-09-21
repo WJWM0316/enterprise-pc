@@ -4,16 +4,24 @@ import {
   SWITCH_OPEN_MODAL,
   HIDE_AJAX_LOADING,
   SHOW_AJAX_LOADING,
-  GET_UPLOAD_CONFIG
+  GET_UPLOAD_CONFIG,
+  GET_CATEGORY_LIST,
+  GET_MENBER_LISTS,
+  UPDATE_CATEGORY_LIST
 } from '../mutation-types'
 
 import {
   postUploadConfigApi,
-  uploadApi
+  uploadApi,
+  getCategoryListsApi,
+  getMenberListsApi,
+  getCategoryApi
 } from 'API/common'
 
 const state = {
+  categoryList: {},
   uploadConfig: {},
+  menberLists: [],
   message: {
     content: '',
     type: 'error',
@@ -48,6 +56,28 @@ const mutations = {
   // 获取上传文件的配置
   [GET_UPLOAD_CONFIG] (state, data) {
     state.uploadConfig = data
+  },
+  // 获取分类
+  [GET_CATEGORY_LIST] (state, data) {
+    data.map(field => {field.active = false})
+    state.categoryList = data
+  },
+  // 更新分类列表
+  [UPDATE_CATEGORY_LIST] (state, params) {
+    state.categoryList.map(field => {
+      if(params.categoryId === field.categoryId) {
+        field.active = !field.active
+      }
+    })
+  },
+  [GET_MENBER_LISTS] (state, data) {
+    data.map(field => {
+      field.selfGroup = []
+      field.group.map(val => {
+        field.selfGroup.push(val.groupId)
+      })
+    })
+    state.menberLists = data
   }
 }
 
@@ -56,7 +86,9 @@ const getters = {
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal,
-  uploadConfig: state => state.uploadConfig
+  uploadConfig: state => state.uploadConfig,
+  menberLists: state => state.menberLists,
+  categoryList: state => state.categoryList
 }
 
 const actions = {
@@ -81,7 +113,12 @@ const actions = {
   hideMsg (store) {
     store.commit(HIDE_MSG)
   },
-  // 获取上传的配置
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   获取上传的配置
+   * @return   {[type]}          [description]
+   */
   postUploadConfigApi(store, params) {
     return postUploadConfigApi(params)
       .then(res => {
@@ -92,10 +129,66 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
-  // 上传文件
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   上传文件
+   * @return   {[type]}          [description]
+   */
   uploadApi(store, params) {
     return uploadApi(params)
       .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取分类
+   * @return   {[type]}          [description]
+   */
+  getCategoryListsApi (store, params) {
+    return getCategoryListsApi(params)
+      .then(res => {
+        store.commit(GET_CATEGORY_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   更新分类列表
+   * @return   {[type]}          [description]
+   */
+  updateCategoryListsApi (store, params) {
+    store.commit(UPDATE_CATEGORY_LIST, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   上传文件
+   * @return   {[type]}          [description]
+   */
+  getCategoryApi(store, params) {
+    return getCategoryApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  // 获取成员列表
+  getMenberListsApi(store, params) {
+    return getMenberListsApi(params)
+      .then(res => {
+        store.commit(GET_MENBER_LISTS, res.data.data)
         return res
       })
       .catch(error => {

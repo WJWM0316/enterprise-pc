@@ -6,10 +6,15 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
 @Component({
   name: 'lighthouse-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi'])
+    ...mapActions([
+      'getLiveReviewListApi'
+    ])
   },
   computed: {
-    ...mapGetters(['jobCircleLists'])
+    ...mapGetters([
+      'jobCircleLists',
+      'liveReviewList'
+    ])
   },
   watch: {
     '$route': {
@@ -24,19 +29,46 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     SearchBar
   }
 })
-export default class BroadcastIndex extends Vue {
+export default class BroadcastReview extends Vue {
 
   // 表格字段
   fields = [
     {
-      prop: 'name',
-      label: '直 播',
+      prop: 'content',
+      label: '查看内容',
       align: 'center',
-      showTips: 'no',
-      width: '35%'
+      showTips: 'yes',
+      width: '10%',
+      filteredValue:
+      [
+        {
+          label: '全部',
+          value: 'status-1'
+        },
+        {
+          label: '文字',
+          value: 'status-0'
+        },
+        {
+          label: '图片',
+          value: 'status-0'
+        },
+        {
+          label: '语音',
+          value: 'status-0'
+        }
+      ],
+      filterPlacement: '测试啦'
     },
     {
-      prop: 'status1',
+      prop: 'fromUserName',
+      label: '发布人',
+      align: 'center',
+      showTips: 'no',
+      width: '15%'
+    },
+    {
+      prop: 'statusName',
       label: '状态',
       align: 'center',
       showTips: 'yes',
@@ -44,60 +76,22 @@ export default class BroadcastIndex extends Vue {
       filteredValue:
       [
         {
-          label: '上线',
-          value: 'status-1'
-        },
-        {
-          label: '下线',
-          value: 'status-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
-    },
-    {
-      prop: 'status',
-      label: '是否上线',
-      align: 'center',
-      showTips: 'yes',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '上线',
-          value: 'status-1'
-        },
-        {
-          label: '下线',
-          value: 'status-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
-    },
-    {
-      prop: 'sort',
-      label: '权 重',
-      align: 'center',
-      showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
           label: '全部',
-          value: 'sort-全部'
+          value: 'status-1'
         },
         {
-          label: '升序',
-          value: 'sort-升序'
+          label: '正常',
+          value: 'status-0'
         },
         {
-          label: '降序',
-          value: 'sort-降序'
+          label: '已删除',
+          value: 'status-0'
         }
       ],
-      filterPlacement: '权重的提示文案'
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'name1',
+      prop: 'createdAt',
       label: '开始时间',
       align: 'center',
       showTips: 'no',
@@ -138,45 +132,29 @@ export default class BroadcastIndex extends Vue {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
-    this.getWorkZoneLists()
+    this.getLiveReviewList()
   }
 
   /**
    * 获取课程列表
    */
-  getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.query}
-    if(this.form.name) {
-      params.name = this.form.name
-    }
-    this.getJobCircleListsApi(params)
+  getLiveReviewList() {
+    const params = this.$route.params
+    this.getLiveReviewListApi(params)
   }
 
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-21
-   * @detail   点击搜索时触发
-   * @return   {[type]}   [description]
-   */
+  // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
+    this.getLiveReviewList()
   }
 
   /**
    * @Author   小书包
    * @DateTime 2018-09-21
-   * @detail   添加课程
+   * @detail   列表待办项
    */
-  addBroadcast() {
-    this.$router.push({ name: 'broadcastPost'})
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-21
-   * @detail   路由跳转
-   */
-  routeJump(id, routeName) {
-    this.$router.push({name: routeName, params: {id}})
+  todoAction(item) {
+    console.log(item)
   }
 }

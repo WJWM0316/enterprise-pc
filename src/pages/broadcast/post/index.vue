@@ -103,12 +103,13 @@
       <!-- 直播开始时间 -->
       <el-form-item
         label="直播开始时间"
-        prop="check_categoryList"
+        prop="startTime"
         class="limit-width"
         >
           <el-date-picker
-            v-model="value1"
-            type="date"
+            v-model="form.startTime"
+            type="datetime"
+            style="width: 380px;"
             placeholder="点击选择时间">
           </el-date-picker>
       </el-form-item>
@@ -118,21 +119,21 @@
       <!-- 直播封面 -->
       <el-form-item
         label="直播封面"
-        prop="check_cover_img_id"
+        prop="check_coverImgId"
         class="limit-width"
         >
-        <div class="upload-error-tips upload-error-tips-show" v-if="form.cover_img_id.showError">
+        <div class="upload-error-tips upload-error-tips-show" v-if="form.coverImgId.showError">
           <div class="tips">
             <p><i class="el-icon-error"></i></p>
             <p>上传失败</p>
           </div>
         </div>
-        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.cover_img_id.tem}">
-          <i  class="el-icon-upload"></i> {{form.cover_img_id.tem ? '重新上传' : '上传封面'}}
+        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.coverImgId.tem}">
+          <i  class="el-icon-upload"></i> {{form.coverImgId.tem ? '重新上传' : '上传封面'}}
           <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
         </div>
-        <div class="img-box" v-if="form.cover_img_id.tem">
-          <img :src="form.cover_img_id.tem" class="upload-cover">
+        <div class="img-box" v-if="form.coverImgId.tem">
+          <img :src="form.coverImgId.tem" class="upload-cover">
         </div>
         <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
       </el-form-item>
@@ -140,12 +141,11 @@
       <!-- 直播简介 -->
       <el-form-item
         label="直播简介"
-        prop="content"
         >
           <editor
             class="editor"
             :content="ContentEditor.content"
-            v-model="form.content"
+            v-model="form.intro"
             :path="ContentEditor.path"
             :height="ContentEditor.height"
             @blur="handleContentEditorBlur" />
@@ -186,13 +186,13 @@
       <!-- 对这些人不可见 -->
       <el-form-item
         label="对这些人不可见"
-        prop="check_memberList"
+        prop="check_invisibleList"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.memberList.show">
+          <div class="selected-item" v-show="form.invisibleList.show">
             <span
-              @click="removeMultipleCheck('memberList', hIndex)"
-              v-for="(hItem, hIndex) in form.memberList.tem"
+              @click="removeMultipleCheck('invisibleList', hIndex)"
+              v-for="(hItem, hIndex) in form.invisibleList.tem"
               :key="hIndex">
                 {{hItem}}<i class="el-icon-close"></i>
             </span>
@@ -200,19 +200,19 @@
           <el-button
             class="click-item"
             type="primary"
-            :class="{'zike-btn-selected': form.memberList.show}"
+            :class="{'zike-btn-selected': form.invisibleList.show}"
             @click="openModal('invisibleList')">
-              {{form.memberList.show ? '重新选择' : '点击选择'}}
+              {{form.invisibleList.show ? '重新选择' : '点击选择'}}
           </el-button>
           <el-popover
             placement="top-start"
-            ref="memberList"
+            ref="invisibleList"
             title="标题"
             width="200"
             trigger="hover"
             content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
           </el-popover>
-          <i class="el-icon-question" v-popover:memberList></i>
+          <i class="el-icon-question" v-popover:invisibleList></i>
       </el-form-item>
 
       <div class="walk-title">其他设置</div>
@@ -242,8 +242,8 @@
 
       <!-- 是否上线 -->
       <el-form-item label="是否上线">
-        <el-radio v-model="form.status" :label="1">上线</el-radio>
-        <el-radio v-model="form.status" :label="0">下线</el-radio>
+        <el-radio v-model="form.isOnline" :label="1">上线</el-radio>
+        <el-radio v-model="form.isOnline" :label="0">下线</el-radio>
       </el-form-item>
 
       <!-- 确认提交 -->
@@ -274,24 +274,25 @@
             <div class="group-list">
               <el-button
                 size="large"
-                v-for="(cateItem, cateIndex) in temBroadcastCategoryLists"
+                v-for="(cateItem, cateIndex) in temcategoryList"
                 :key="cateIndex"
                 :class="{'zike-btn-active-selected': cateItem.active}"
-                @click="checkCategory(cateIndex)">
+                @click="selectCategory(cateItem, 'categoryList')">
                   {{cateItem.categoryName}}
               </el-button>
               <el-popover
                 placement="top"
                 width="304"
+                trigger="click"
                 popper-class="my-popover0001"
-                v-model="visible2">
+                v-model="categoryModal.show">
                 <div class="header">新建分类</div>
                 <div class="main">
-                  <el-input v-model="input" placeholder="请输入分类名，限制10个字以内" :maxlength="10"></el-input>
+                  <el-input v-model="categoryModal.name" placeholder="请输入分类名，限制10个字以内" :maxlength="10"></el-input>
                 </div>
                 <div class="footer-btn-box">
-                  <el-button size="mini" @click="visible2 = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
+                  <el-button size="mini" @click="categoryModal.show = false">取消</el-button>
+                  <el-button type="primary" size="mini" @click="getCategory" :loading="categoryModal.loading">确定</el-button>
                 </div>
                 <el-button size="large" slot="reference">
                   + &nbsp;新建分类
@@ -318,7 +319,8 @@
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="tutorClassification('uid', groupItem.groupId)">
+                :class="{'zike-btn-active-selected': groupItem.active}"
+                @click="tutorClassification('uid', groupItem)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -337,13 +339,17 @@
           <div class="groupList-type-list" v-if="models.currentModalName === 'groupList'">
             <el-button
               size="large"
-              v-for="(groupItem, groupIndex) in temGroupLists"
-               @click="seleteGroup(groupItem)"
+              v-for="(groupItem, groupIndex) in tem_groupLists"
+               @click="seleteGroup(groupItem, 'groupLists')"
               :class="{'zike-btn-active-selected': groupItem.active}"
               :key="groupIndex">
                 {{groupItem.groupName}}
             </el-button>
-            <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
+            <p class="tips">
+              如果需要对部门组织进行修改，请点击左侧的
+              <router-link :to="{name: 'organization'}" class="set">【组织】</router-link>
+              进行修改；如无权限，请联系管理员修改。
+            </p>
           </div>
           <!-- 组织-end -->
           <!-- 参与直播学员-start -->
@@ -396,11 +402,11 @@
               </el-button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.memberList.tem">
+              <el-checkbox-group v-model="form.invisibleList.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
-                  @change="multipleSelection('memberList', menberItem)"
+                  @change="multipleSelection('invisibleList', menberItem)"
                   v-for="(menberItem, menberIndex) in temMenberLists" />
               </el-checkbox-group>
             </div>
