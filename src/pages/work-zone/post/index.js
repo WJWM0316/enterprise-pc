@@ -321,6 +321,7 @@ export default class WorkZonePost extends Vue {
       this.form.cover_img_id.tem = jobCircleDetails.coverImg
       this.form.id = jobCircleDetails.id
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
+      console.log(this.form)
 
       // 成员列表的遍历
       this.menberLists.map(field => {

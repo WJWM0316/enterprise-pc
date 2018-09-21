@@ -46,7 +46,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'categoryList',
       'tutorLists',
       'courseDetail',
-      'courseOrganizations'
+      'courseOrganizations',
+      'courseCategory'
     ])
   }
 })
@@ -59,7 +60,7 @@ export default class BroadcastPost extends Vue {
     check_category_id: '',
     category_id: {
       value: '',
-      tem: {},
+      tem: [],
       show: false
     },
     startTime: '',
@@ -127,6 +128,12 @@ export default class BroadcastPost extends Vue {
     ],
     check_group_id: [
       { required: true, message: '请选择组织', trigger: 'blur' }
+    ],
+    check_members: [
+      { required: true, message: '请选择必修学员', trigger: 'blur' }
+    ],
+    check_hits: [
+      { required: true, message: '请选择不可见学员', trigger: 'blur' }
     ],
     check_icon: [
       { required: true, message: '请上传课程封面图片', trigger: 'blur' }
@@ -352,9 +359,9 @@ export default class BroadcastPost extends Vue {
     Promise.all(
       [
         this.getCourseDetailApi(params),
-        this.getCoursePeopleApi(params),
+        this.getCoursePeopleApi({...params, role: 1}),
         this.getCourseOrganizationsApi(params),
-        this.getCourseCategoryApi(),
+        this.getCourseCategoryApi(params),
         this.getMenberListsApi({selectAll: 1}),
         this.getGroupListsApi(),
         this.getMenberListsApi({selectAll: 1}),
@@ -370,12 +377,14 @@ export default class BroadcastPost extends Vue {
       this.form.status = courseDetail.status === '上线' ? 1 : 0
       this.form.icon.value = courseDetail.icon
       this.form.icon.tem = courseDetail.coverImg
+      this.form.check_icon = courseDetail.icon
       this.ContentEditor.content = courseDetail.intro
       this.temcategoryList = [...this.categoryList]
       this.temMenberLists = [...this.menberLists]
       this.temcategoryList = [...this.categoryList]
       this.temTutorLists = [...this.tutorLists]
       this.tem_groupLists = [...this.groupLists]
+
       // 组织的遍历
       this.groupLists.map(field => {
         if(this.courseOrganizations.includes(field.groupId)) {
@@ -385,12 +394,23 @@ export default class BroadcastPost extends Vue {
           this.form.check_group_id += '' + field.groupId
         }
       })
+      // 导师的遍历
       this.tutorLists.map(field => {
         if(field.uid === courseDetail.masterUid) {
           this.form.master_uid.value = field.uid
           this.form.master_uid.tem.push(field)
           this.form.master_uid.show = true
           this.form.check_master_uid = field.uid
+        }
+      })
+      // 分类的遍历
+      this.categoryList.map(field => {
+        if(field.categoryId === this.courseCategory.id) {
+          this.form.category_id.value = field.categoryId
+          this.form.category_id.tem.push(field)
+          this.form.category_id.show = true
+          this.form.check_category_id = field.categoryId
+          console.log(this.form)
         }
       })
     })
