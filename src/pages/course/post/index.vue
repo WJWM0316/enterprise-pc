@@ -180,7 +180,7 @@
               @click="removeMultipleCheck('hits', hIndex)"
               v-for="(hItem, hIndex) in form.hits.tem"
               :key="hIndex">
-                {{hItem}}<i class="el-icon-close"></i>
+                {{hItem.realname}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button

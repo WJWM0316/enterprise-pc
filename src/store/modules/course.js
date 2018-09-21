@@ -3,7 +3,8 @@ import {
   GET_COURSE_DEATAILS,
   GET_COURSE_PEAPLE,
   GET_COURSE_ORGANAZATIOMNS,
-  GET_COURSE_CATAGORY
+  GET_COURSE_CATAGORY,
+  GET_COURSE_PEAPLE_HITS
 } from '../mutation-types'
 
 import {
@@ -23,6 +24,7 @@ const state = {
   },
   courseDetail: {},
   coursePeaple: {},
+  coursePeapleHits: {},
   courseOrganizations: {},
   courseCategory: {}
 }
@@ -38,6 +40,9 @@ const mutations = {
   [GET_COURSE_PEAPLE] (status, data) {
     state.coursePeaple = data
   },
+  [GET_COURSE_PEAPLE_HITS] (status, data) {
+    state.coursePeapleHits = data
+  },
   [GET_COURSE_ORGANAZATIOMNS] (status, data) {
     state.courseOrganizations = data
   },
@@ -50,6 +55,7 @@ const getters = {
   courseList: state => state.courseList,
   courseDetail: state => state.courseDetail,
   coursePeaple: state => state.coursePeaple,
+  coursePeapleHits: state => state.coursePeapleHits,
   courseOrganizations: state => state.courseOrganizations,
   courseCategory: state => state.courseCategory
 }
@@ -121,13 +127,29 @@ const actions = {
   /**
    * @Author   小书包
    * @DateTime 2018-09-20
-   * @detail   获取课程成员
+   * @detail   获取课程必修成员
    * @return   {[type]}          [description]
    */
   getCoursePeopleApi (store, params) {
     return getCoursePeopleApi(params)
       .then(res => {
         store.commit(GET_COURSE_PEAPLE, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return error
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   获取不可见学员
+   * @return   {[type]}          [description]
+   */
+  getCoursePeopleHitsApi (store, params) {
+    return getCoursePeopleApi({...params, role: 2})
+      .then(res => {
+        store.commit(GET_COURSE_PEAPLE_HITS, res.data.data)
         return res
       })
       .catch(error => {

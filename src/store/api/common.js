@@ -11,3 +11,5 @@ export const postUploadConfigApi = data => request('/attaches/config', 'post', d
 export const getCategoryListsApi = params => request('/category', 'get', params)
 // 添加分类
 export const getCategoryApi = params => request('/category/create', 'get', params)
+// 获取成员列表
+export const getMenberListsApi = params => request('/member', 'get', params)

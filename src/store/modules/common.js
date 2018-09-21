@@ -6,6 +6,7 @@ import {
   SHOW_AJAX_LOADING,
   GET_UPLOAD_CONFIG,
   GET_CATEGORY_LIST,
+  GET_MENBER_LISTS,
   UPDATE_CATEGORY_LIST
 } from '../mutation-types'
 
@@ -13,12 +14,14 @@ import {
   postUploadConfigApi,
   uploadApi,
   getCategoryListsApi,
+  getMenberListsApi,
   getCategoryApi
 } from 'API/common'
 
 const state = {
   categoryList: {},
   uploadConfig: {},
+  menberLists: [],
   message: {
     content: '',
     type: 'error',
@@ -66,6 +69,15 @@ const mutations = {
         field.active = !field.active
       }
     })
+  },
+  [GET_MENBER_LISTS] (state, data) {
+    data.map(field => {
+      field.selfGroup = []
+      field.group.map(val => {
+        field.selfGroup.push(val.groupId)
+      })
+    })
+    state.menberLists = data
   }
 }
 
@@ -75,6 +87,7 @@ const getters = {
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal,
   uploadConfig: state => state.uploadConfig,
+  menberLists: state => state.menberLists,
   categoryList: state => state.categoryList
 }
 
@@ -171,6 +184,17 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
+  // 获取成员列表
+  getMenberListsApi(store, params) {
+    return getMenberListsApi(params)
+      .then(res => {
+        store.commit(GET_MENBER_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

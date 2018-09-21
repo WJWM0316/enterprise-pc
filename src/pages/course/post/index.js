@@ -36,7 +36,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getCourseDetailApi',
       'getCoursePeopleApi',
       'getCourseOrganizationsApi',
-      'getCourseCategoryApi'
+      'getCourseCategoryApi',
+      'getCoursePeopleHitsApi'
     ])
   },
   computed: {
@@ -47,7 +48,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'tutorLists',
       'courseDetail',
       'courseOrganizations',
-      'courseCategory'
+      'courseCategory',
+      'coursePeaple',
+      'coursePeapleHits'
     ])
   }
 })
@@ -366,7 +369,8 @@ export default class BroadcastPost extends Vue {
         this.getGroupListsApi(),
         this.getMenberListsApi({selectAll: 1}),
         this.getCategoryListsApi(),
-        this.getTutorListApi({type: 1})
+        this.getTutorListApi({type: 1}),
+        this.getCoursePeopleHitsApi(params)
       ]
     )
     .then((res) => {
@@ -410,9 +414,29 @@ export default class BroadcastPost extends Vue {
           this.form.category_id.tem.push(field)
           this.form.category_id.show = true
           this.form.check_category_id = field.categoryId
-          console.log(this.form)
         }
       })
+
+      // 学员的遍历
+      this.menberLists.map(field => {
+        console.log(this.coursePeaple.includes(field.uid))
+        // 必修学员
+        if(this.coursePeaple.includes(field.uid)) {
+          this.form.members.value += '' + field.uid
+          this.form.members.tem.push(field)
+          this.form.members.show = true
+          this.form.check_members += '' + field.uid
+        }
+
+         // 不可见学员
+        if(this.coursePeapleHits.includes(field.uid)) {
+          this.form.hits.value += '' + field.uid
+          this.form.hits.tem.push(field)
+          this.form.hits.show = true
+          this.form.check_hits += '' + field.uid
+        }
+      })
+      console.log(this.form)
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
