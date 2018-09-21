@@ -5,7 +5,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import { getListCourse } from '@/store/api/course.js'
 
 @Component({
-  name: 'course-list',
+  name: 'group-manage',
   watch: {
     '$route': {
       handler () {

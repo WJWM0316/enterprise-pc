@@ -209,7 +209,42 @@ export const routes = [
       useNav: true,
       icon: 'el-icon-star-on',
       module: 'organization'
-    }
+    },
+    children: [
+      {
+        path: 'groupManage',
+        name: 'groupManage',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupManage/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
+      },{
+        path: 'addGroup',
+        name: 'addGroup',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupPost/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
+      },{
+        path: 'editGroup',
+        name: 'editGroup',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupPost/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
+      },{
+        path: 'addMember',
+        name: 'addMember',
+        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/memberPost/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
+      }
+    ]
   },
   {
     path: '/tutor',

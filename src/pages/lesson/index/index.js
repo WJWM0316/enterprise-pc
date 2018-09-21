@@ -131,9 +131,14 @@ export default class CourseList extends Vue {
     this.getWorkZoneLists()
   }
 
-  // 添加课程-跳转
-  addWorkZone() {
-    this.$router.push({ name: 'workZonePost'})
+  // 新建课节-跳转
+  addLesson() {
+    this.$router.push({ name: 'lessonPost'})
+  }
+
+  //设置排序
+  setSort(){
+    
   }
 
   todoAction(type, item) {

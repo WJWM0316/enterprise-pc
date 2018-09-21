@@ -3,6 +3,7 @@ import Component from 'vue-class-component'
 import Editor from 'COMPONENTS/editor'
 import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
+import { postLessonApi } from '@/store/api/lesson.js'
 
 @Component({
   components: {
@@ -25,9 +26,9 @@ export default class WorkZonePost extends Vue {
     course_id: '', // 课程id
     title: '', // 课节标题
     av_id: '', // 音视频id
-    datails: '', // 内容详情
-    punjch_card_title: '', // 打卡题目
-    punjch_card_img: '', // 打卡图片
+    details: '', // 内容详情
+    punch_card_title: '', // 打卡题目
+    punch_card_img: '', // 打卡图片
     status: 1 // 状态：0下线，1上线
   }
 
@@ -46,6 +47,7 @@ export default class WorkZonePost extends Vue {
     accept: '.png,.jpg',
     tips: 'JPG、PNG格式，最多可上传9张',
     btnTxt: '选择图片',
+    hintTxt: '设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工额通过自由发布打卡内容来解锁下一节课。', 
     params: {
       token: getAccessToken(),
       attach_type: 'img',
@@ -101,10 +103,44 @@ export default class WorkZonePost extends Vue {
     })
     return formData
   }
+
+  // 检测是否可以提交
+  checkSubmit() {
+    this.$refs['form'].validate((valid) => {
+      if (valid) {
+        // 给提交按钮加loading
+        this.submitBtnClick = !this.submitBtnClick
+        // 修改提交时按钮的文案
+        this.submitBtnTxt = '正在提交'
+        // 需要提交的参数的key值
+        const required = ['course_id','title','status','punch_card_title','details','av_id']
+        // 过滤不需要提交的参数
+        console.log(this.form)
+        const params = this.transformData(this.form, required)
+        this.submit(params)
+      }
+    })
+  }
+
   // 提交表单数据
-  submit() {
-    this.$refs['form'].validate((valid) => {})
-    console.log(this.form)
+  submit(params) {
+    console.log(params)
+    let that = this
+    postLessonApi(params)
+      .then(res => {
+        that.models.show = true
+        setTimeout(() => {
+          this.submitBtnClick = !this.submitBtnClick
+          this.submitBtnTxt = '提交'
+        }, 3000)
+      })
+      .catch(err => {
+        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        setTimeout(() => {
+          this.submitBtnClick = !this.submitBtnClick
+          this.submitBtnTxt = '提交'
+        }, 3000)
+      })
   }
 
   handleContentEditorBlur() {
@@ -112,6 +148,9 @@ export default class WorkZonePost extends Vue {
   }
 
   created() {
+    
+    this.form.course_id = 1
+
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -138,7 +177,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleImageSuccess(res) {
-    this.imageUpload.list.push(res.data[0])
+    console.log(res)
+    this.imageUpload.list.push(res.data[0].id)
   }
 
   /**
@@ -156,6 +196,9 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
+    console.log(res)
+    this.form.av_id = res.data[0].id
+
     this.fileUpload.status = 'success'
     this.fileUpload.progress = 100
     this.fileUpload.progressText = '上传成功'

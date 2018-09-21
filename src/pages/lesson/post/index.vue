@@ -71,7 +71,7 @@
           <editor
             class="editor"
             :content="ContentEditor.content"
-            v-model="form.datails"
+            v-model="form.details"
             :path="ContentEditor.path"
             :height="ContentEditor.height" />
       </el-form-item>
@@ -79,7 +79,7 @@
 
       <!-- 设置打卡标题 start-->
       <el-form-item label="设置打卡标题">
-        <el-input type="textarea" v-model="form.punjch_card_title" :rows="10"></el-input>
+        <el-input type="textarea" v-model="form.punch_card_title" :rows="10"></el-input>
       </el-form-item>
       <!-- 设置打卡标题 end-->
 
@@ -103,6 +103,8 @@
           <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
           <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
+
+        <p class="upload_p">{{imageUpload.hintTxt}}</p>
       </el-form-item>
       <!-- 上传图片 start-->
 
@@ -115,7 +117,7 @@
 
       <!-- 确认提交 -->
       <el-form-item>
-        <el-button type="primary" @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
 </div>
@@ -219,5 +221,12 @@ export default WorkZonePost
     color:rgba(146,146,146,1);
     border-color: rgba(237,237,237,1);
   }
+}
+.upload_p {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(146,146,146,1);
+  line-height:22px;
 }
 </style>
