@@ -24,19 +24,19 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('edit', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('note', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
+            @click="routeJump(props.scope.row.id, 'broadcastReviewList')">
               直播回顾
             </el-button>
         </div>

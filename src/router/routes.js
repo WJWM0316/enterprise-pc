@@ -100,6 +100,15 @@ export const routes = [
         }
       },
       {
+        path: 'response/:id',
+        name: 'broadcastResponseList',
+        component: () => import(/* webpackChunkName: "broadcastResponseList" */ '@/pages/broadcast/response/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'broadcast'
+        }
+      },
+      {
         path: 'index',
         name: 'broadcastList',
         component: () => import(/* webpackChunkName: "broadcastList" */ '@/pages/broadcast/index/index.vue'),

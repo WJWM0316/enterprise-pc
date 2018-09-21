@@ -2,7 +2,7 @@
   <section class="broadcast-review-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
-      <el-breadcrumb-item>直播回顾</el-breadcrumb-item>
+      <el-breadcrumb-item>问答区</el-breadcrumb-item>
     </el-breadcrumb>
     <table-list
     :list="liveReviewList.list"
@@ -16,7 +16,7 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction(props.scope.row)">
-              {{props.scope.row.status === 1 ? '删除' : '恢复'}}
+              删除
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->

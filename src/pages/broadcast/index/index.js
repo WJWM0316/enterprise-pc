@@ -152,33 +152,31 @@ export default class BroadcastIndex extends Vue {
     this.getJobCircleListsApi(params)
   }
 
-  // 点击搜索时触发
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   点击搜索时触发
+   * @return   {[type]}   [description]
+   */
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getWorkZoneLists()
   }
 
-  // 添加课程-跳转
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   添加课程
+   */
   addBroadcast() {
     this.$router.push({ name: 'broadcastPost'})
   }
 
-  todoAction(type, item) {
-    switch(type) {
-      case 'edit':
-        this.$router.push({
-          name: 'workZoneUpdate',
-          params: {
-            id: item.id
-          }
-        })
-        break
-      case 'note':
-        break
-      case 'menber':
-        break
-      default:
-        break
-    }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   路由跳转
+   */
+  routeJump(id, routeName) {
+    this.$router.push({name: routeName, params: {id}})
   }
 }

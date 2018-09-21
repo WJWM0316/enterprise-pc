@@ -98,29 +98,11 @@ export default class CourseList extends Vue {
 
   // 搜索表单
   form = {
-    searchWord: ''
+    name: ''
   }
 
-  // 初始化的搜索表单
-  initForm = {
-    searchWord: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
-  /**
-   * 初始化表单、分页页面数据
-   */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
+    this.form = Object.assign(this.form, this.$route.query)
     this.getCourseList()
   }
 
@@ -130,8 +112,18 @@ export default class CourseList extends Vue {
    * @detail   获取课程列表
    * @return   {[type]}          [description]
    */
-  getCourseList() {
-    this.getCourseListsApi()
+  getCourseList({ page, pageSize } = {}) {
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize
+    }
+    if(this.form.name) {
+      params.name = this.form.name
+    }
+    if(this.form.status) {
+      params.status = this.form.status
+    }
+    this.getCourseListsApi(params)
   }
 
   /**
@@ -140,8 +132,7 @@ export default class CourseList extends Vue {
    * @detail   手动搜索
    * @return   {[type]}          [description]
    */
-  handleSearch () {
-    this.pagination.page = 1
+  handleSearch() {
     this.setPathQuery(this.form)
   }
 
@@ -162,11 +153,6 @@ export default class CourseList extends Vue {
    * @return   {[type]}          [description]
    */
   routeJump(id, routeName) {
-    this.$router.push({
-      name: routeName,
-      params: {
-        id
-      }
-    })
+    this.$router.push({name: routeName, params: { id }})
   }
 }

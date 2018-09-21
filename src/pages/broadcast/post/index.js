@@ -325,9 +325,9 @@ export default class BroadcastPost extends Vue {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
       this.getGroupListsApi(),
-      this.getMenberListsApi({selectAll: 1}),
+      this.getMenberListsApi(),
       this.getCategoryListsApi(),
-      this.getTutorListApi({type: 1})
+      this.getTutorListApi()
     ])
     .then(() => {
       this.temMenberLists = [...this.menberLists]
@@ -354,7 +354,7 @@ export default class BroadcastPost extends Vue {
         this.getJobCircleHitListsApi(params),
         this.getJobCircleOrganizationListsApi(params),
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params)
       ]
     )
@@ -483,13 +483,19 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    // this.updateGroupListsApi({groupId: item.groupId})
     let list = [...this.tutorLists]
-    list = list.filter(field => {
-      return field.selfGroup.includes(item.groupId)
-    })
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      list = list.filter(field => {
+        return !field.group
+      })
+    } else {
+      list = list.filter(field => {
+        return field.group && field.selfGroup.includes(item.groupId)
+      })
+    }
     this.temTutorLists = list
   }
+
 
   /**
    * @Author   小书包

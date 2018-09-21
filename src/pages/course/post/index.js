@@ -14,22 +14,15 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   },
   methods: {
     ...mapActions([
-      'getJobCircleMemberListsApi',
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
       'uploadApi',
-      'getJobCircleDetailsApi',
-      'getJobCircleHitListsApi',
-      'getJobCircleOrganizationListsApi',
       'getCategoryListsApi',
       'getTutorListApi',
       'updateGroupListsApi',
       'updateCategoryListsApi',
       'getCategoryApi',
-      'postCourseApi',
-      'putCourseApi',
-      'getCourseDetailApi',
       'postCourseApi',
       'putCourseApi',
       'getCourseListsApi',
@@ -54,7 +47,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     ])
   }
 })
-export default class BroadcastPost extends Vue {
+export default class CoursePost extends Vue {
 
   form = {
     // 课程名称
@@ -93,14 +86,14 @@ export default class BroadcastPost extends Vue {
     // 必修学员
     check_members: '',
     members: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
     // 不可见课程成员
     check_hits: '',
     hits: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
@@ -170,17 +163,12 @@ export default class BroadcastPost extends Vue {
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
-  restaurants = []
-  timeout =  null
   temMenberLists = []
   temcategoryList = []
   temTutorLists = []
   tem_groupLists = []
-  value1 = ''
   // 导师名称
   ownerUidName = ''
-  visible2 = false
-  input = ''
   // 分类弹窗显示
   categoryModal = {
     show: false,
@@ -202,6 +190,7 @@ export default class BroadcastPost extends Vue {
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
         const need = [
+          'id',
           'title',
           'uid',
           'category_id',
@@ -245,14 +234,14 @@ export default class BroadcastPost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
+        this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
         }, 3000)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`);
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -267,12 +256,6 @@ export default class BroadcastPost extends Vue {
    */
   handleContentEditorBlur() {
     // this.$refs.form.validateField('content')
-  }
-
-  loadAll() {
-    return [
-      { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' }
-    ]
   }
 
   /**
@@ -290,7 +273,6 @@ export default class BroadcastPost extends Vue {
   }
 
   created() {
-    this.restaurants = this.loadAll()
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -362,19 +344,19 @@ export default class BroadcastPost extends Vue {
     Promise.all(
       [
         this.getCourseDetailApi(params),
-        this.getCoursePeopleApi({...params, role: 1}),
+        this.getCoursePeopleApi(params),
         this.getCourseOrganizationsApi(params),
         this.getCourseCategoryApi(params),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getCoursePeopleHitsApi(params),
+        this.getMenberListsApi(),
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
         this.getCategoryListsApi(),
-        this.getTutorListApi({type: 1}),
-        this.getCoursePeopleHitsApi(params)
+        this.getTutorListApi()
       ]
     )
     .then((res) => {
       const courseDetail = this.courseDetail
+      this.form.id = courseDetail.id
       this.form.title = courseDetail.title
       this.form.intro = courseDetail.intro
       this.form.sort = courseDetail.sort
@@ -398,18 +380,20 @@ export default class BroadcastPost extends Vue {
           this.form.check_group_id += '' + field.groupId
         }
       })
+
       // 导师的遍历
       this.tutorLists.map(field => {
         if(field.uid === courseDetail.masterUid) {
           this.form.master_uid.value = field.uid
-          this.form.master_uid.tem.push(field)
+          this.form.master_uid.tem = field
           this.form.master_uid.show = true
           this.form.check_master_uid = field.uid
         }
       })
+
       // 分类的遍历
       this.categoryList.map(field => {
-        if(field.categoryId === this.courseCategory.id) {
+        if(field.categoryId === this.courseCategory.id) {/*   */
           this.form.category_id.value = field.categoryId
           this.form.category_id.tem.push(field)
           this.form.category_id.show = true
@@ -419,27 +403,24 @@ export default class BroadcastPost extends Vue {
 
       // 学员的遍历
       this.menberLists.map(field => {
-        console.log(this.coursePeaple.includes(field.uid))
-        // 必修学员
         if(this.coursePeaple.includes(field.uid)) {
-          this.form.members.value += '' + field.uid
-          this.form.members.tem.push(field)
+          this.form.members.value.push(field.uid)
+          this.form.members.tem.push(field.realname)
           this.form.members.show = true
-          this.form.check_members += '' + field.uid
+          this.form.check_members +=  field.uid
         }
-
-         // 不可见学员
         if(this.coursePeapleHits.includes(field.uid)) {
-          this.form.hits.value += '' + field.uid
-          this.form.hits.tem.push(field)
+          this.form.hits.value.push(field.uid)
+          this.form.hits.tem.push(field.realname)
           this.form.hits.show = true
           this.form.check_hits += '' + field.uid
         }
       })
-      console.log(this.form)
+      this.form.members.value = this.form.members.value.join(',')
+      this.form.hits.value = this.form.hits.value.join(',')
     })
     .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
+      this.$message.error('初始化页面失败~');
     })
   }
   /**
@@ -465,8 +446,8 @@ export default class BroadcastPost extends Vue {
    */
   cancel() {
     const type = this.models.currentModalName
-    this.form[type].value = ''
-    this.form[type].tem = []
+    // this.form[type].value = ''
+    // this.form[type].tem = []
     this.models.show = false
     this.ownerUidName = ''
   }
@@ -516,11 +497,16 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    // this.updateGroupListsApi({groupId: item.groupId})
     let list = [...this.tutorLists]
-    list = list.filter(field => {
-      return field.selfGroup.includes(item.groupId)
-    })
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      list = list.filter(field => {
+        return !field.group
+      })
+    } else {
+      list = list.filter(field => {
+        return field.group && field.selfGroup.includes(item.groupId)
+      })
+    }
     this.temTutorLists = list
   }
 
@@ -577,14 +563,12 @@ export default class BroadcastPost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    const menberLists = [...this.menberLists]
     const value = []
-    menberLists.map(field => {
+    this.menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
-
     this.form[type].value = value.join(',')
   }
 

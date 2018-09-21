@@ -140,7 +140,6 @@
       <!-- 选择必修学员 -->
       <el-form-item
         label="选择必修学员"
-        prop="check_members"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.members.show">
@@ -172,7 +171,6 @@
       <!-- 不可见学员 -->
       <el-form-item
         label="不可见学员"
-        prop="check_hits"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.hits.show">
@@ -180,7 +178,7 @@
               @click="removeMultipleCheck('hits', hIndex)"
               v-for="(hItem, hIndex) in form.hits.tem"
               :key="hIndex">
-                {{hItem.realname}}<i class="el-icon-close"></i>
+                {{hItem}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
@@ -300,7 +298,7 @@
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="tutorClassification('master_uid', 'all')">外部导师</el-button>
+              <el-button size="large" @click="tutorClassification('master_uid', 'outer')">外部导师</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
@@ -422,8 +420,8 @@
 </div>
 </template>
 <script>
-import BroadcastPost from './index'
-export default BroadcastPost
+import CoursePost from './index'
+export default CoursePost
 </script>
 <style lang="scss">
 @import "~cropperjs/dist/cropper.min.css";

@@ -192,14 +192,14 @@ export default class WorkZonePost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: this.$route.name === 'workZonePost' ? '创建直播成功~' : '更新直播成功~', type: 'success', duration: 3000 })
+        this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
         }, 3000)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`);
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'

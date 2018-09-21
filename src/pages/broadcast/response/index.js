@@ -35,37 +35,31 @@ export default class BroadcastReview extends Vue {
   fields = [
     {
       prop: 'content',
-      label: '查看内容',
-      align: 'center',
-      showTips: 'yes',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'status-1'
-        },
-        {
-          label: '文字',
-          value: 'status-0'
-        },
-        {
-          label: '图片',
-          value: 'status-0'
-        },
-        {
-          label: '语音',
-          value: 'status-0'
-        }
-      ],
-      filterPlacement: '测试啦'
-    },
-    {
-      prop: 'fromUserName',
-      label: '发布人',
+      label: '提问内容',
       align: 'center',
       showTips: 'no',
-      width: '15%'
+      width: '10%'
+    },
+    {
+      prop: 'fromUserNam1',
+      label: '提问人',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
+    },
+    {
+      prop: 'fromUserName2',
+      label: '回答内容',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
+    },
+    {
+      prop: 'fromUserName3',
+      label: '回答者',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
     },
     {
       prop: 'statusName',
@@ -91,17 +85,10 @@ export default class BroadcastReview extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'createdAt',
-      label: '开始时间',
-      align: 'center',
-      showTips: 'no',
-      width: '15%'
-    },
-    {
       prop: 'actions',
       label: '操 作',
       showTips: 'no',
-      width: '20%'
+      width: '50%'
     }
   ]
 

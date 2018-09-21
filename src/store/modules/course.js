@@ -131,7 +131,7 @@ const actions = {
    * @return   {[type]}          [description]
    */
   getCoursePeopleApi (store, params) {
-    return getCoursePeopleApi(params)
+    return getCoursePeopleApi({...params, role: 1})
       .then(res => {
         store.commit(GET_COURSE_PEAPLE, res.data.data)
         return res
