@@ -82,6 +82,25 @@ export default class BroadcastIndex extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
+      prop: 'categoryName',
+      label: '分类',
+      align: 'center',
+      showTips: 'yes',
+      width: '10%',
+      filteredValue:
+      [
+        {
+          label: '上线',
+          value: 'categoryId-1'
+        },
+        {
+          label: '下线',
+          value: 'categoryId-0'
+        }
+      ],
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+    },
+    {
       prop: 'sort',
       label: '权 重',
       align: 'center',

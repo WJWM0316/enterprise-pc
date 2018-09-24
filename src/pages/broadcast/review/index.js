@@ -7,12 +7,12 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   name: 'lighthouse-list',
   methods: {
     ...mapActions([
-      'getLiveReviewListApi'
+      'getLiveReviewListApi',
+      'updateLiveApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'jobCircleLists',
       'liveReviewList'
     ])
   },
@@ -107,46 +107,38 @@ export default class BroadcastReview extends Vue {
 
   // 搜索表单
   form = {
-    name: ''
+    status: ''
   }
-
-  // 初始化的搜索表单
-  initForm = {
-    name: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
-  searchType = '1'
 
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
+    console.log(this.$route.params)
+    this.form = Object.assign(this.form, this.$route.query, this.$route.params)
     this.getLiveReviewList()
   }
 
   /**
    * 获取课程列表
    */
-  getLiveReviewList() {
-    const params = this.$route.params
+  getLiveReviewList({ page, pageSize } = {}) {
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize
+    }
+    if(this.form.status) {
+      params.status = this.form.status
+    }
+    if(this.form.id) {
+      params.id = this.form.id
+    }
     this.getLiveReviewListApi(params)
   }
 
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getLiveReviewList()
   }
 
   /**
@@ -155,6 +147,7 @@ export default class BroadcastReview extends Vue {
    * @detail   列表待办项
    */
   todoAction(item) {
+    this.updateLiveApi({id: item.liveId, status: item.status === 1 ? 0 : 1})
     console.log(item)
   }
 }

@@ -24,7 +24,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'uploadApi',
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
-      'getJobCircleOrganizationListsApi'
+      'getJobCircleOrganizationListsApi',
+      'updateGroupListsApi'
     ])
   },
   computed: {
@@ -144,7 +145,7 @@ export default class WorkZonePost extends Vue {
   restaurants = []
   timeout =  null
   temMenberLists = []
-
+  tem_groupLists = []
   // 导师名称
   ownerUidName = ''
 
@@ -268,7 +269,7 @@ export default class WorkZonePost extends Vue {
     this.models.width = '860px'
     this.models.minHeight = '284px'
      // 获取成员列表
-    this.getMenberListsApi({selectAll: 1})
+    this.getMenberListsApi()
       .then(() => {
         this.temMenberLists = [...this.menberLists]
         this.models.show = true
@@ -285,9 +286,10 @@ export default class WorkZonePost extends Vue {
     // 获取组列表
     this.getGroupListsApi()
     // 获取成员列表
-    this.getMenberListsApi({selectAll: 1})
+    this.getMenberListsApi()
       .then(() => {
         this.temMenberLists = [...this.menberLists]
+        this.tem_groupLists = [...this.groupLists]
       })
   }
   /**
@@ -305,12 +307,13 @@ export default class WorkZonePost extends Vue {
         this.getJobCircleHitListsApi(params),
         this.getJobCircleOrganizationListsApi(params),
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params)
       ]
     )
     .then((res) => {
       const jobCircleDetails = {...this.jobCircleDetails}
+      this.tem_groupLists = [...this.groupLists]
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
       this.ContentEditor.content = jobCircleDetails.content
@@ -374,6 +377,7 @@ export default class WorkZonePost extends Vue {
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
     this.$refs.form.validateField(`check_${type}`)
+    console.log(this.form[type])
   }
 
   /**
@@ -422,7 +426,7 @@ export default class WorkZonePost extends Vue {
   filterWorkZoneMenber(item) {
     let menberLists = [...this.menberLists]
     menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.id)
+      return field.selfGroup.includes(item.groupId)
     })
     this.temMenberLists = menberLists
   }
@@ -456,18 +460,20 @@ export default class WorkZonePost extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
-   * @detail   选择工作圈组织
+   * @detail   选择课程组织
    * @return   {[type]}   [description]
    */
-  seleteGroup(type, item) {
-    const groupLists = [...this.groupLists]
-    const value = []
-    groupLists.map(field => {
-      if(this.form[type].tem.includes(field.groupName)) {
-        value.push(field.groupId)
+  seleteGroup(item, key) {
+    this.updateGroupListsApi({groupId: item.groupId})
+    const data = { show: false, tem: [], value: [] }
+    this[key].map((field) => {
+      if(field.active) {
+        data.tem.push(field.groupName)
+        data.value.push(field.groupId)
       }
     })
-    this.form[type].value = value.join(',')
+    data.value = data.value.join(',')
+    this.form.organizations = data
   }
   /**
    * @Author   小书包

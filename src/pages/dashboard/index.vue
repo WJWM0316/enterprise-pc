@@ -14,9 +14,24 @@ import MainContent from './content.vue'
 	components: {
 		AsiderBar,
 		MainContent
-	}
+	},
+	methods: {
+		...mapActions([
+			'showMsg',
+			'getCompanyInfoApi'
+		])
+	},
+	computed: {
+    ...mapGetters([
+      'companyInfo'
+    ])
+  }
 })
-export default class pageDashboard extends Vue {}
+export default class pageDashboard extends Vue {
+	created() {
+		this.getCompanyInfoApi()
+	}
+}
 </script>
 <style lang="scss" scoped>
 #dashboard {

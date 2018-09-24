@@ -263,7 +263,7 @@
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="memberClassification('members', groupItem.id)">
+                @click="memberClassification('members', groupItem.groupId)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -280,13 +280,21 @@
           <!-- 选择工作圈成员-end -->
           <!-- 组织-start -->
           <div class="organizations-type-list" v-if="models.currentModalName === 'organizations'">
-            <el-checkbox-group v-model="form.organizations.tem">
+            <el-button
+              size="large"
+              v-for="(groupItem, groupIndex) in tem_groupLists"
+               @click="seleteGroup(groupItem, 'groupLists')"
+              :class="{'zike-btn-active-selected': groupItem.active}"
+              :key="groupIndex">
+                {{groupItem.groupName}}
+            </el-button>
+            <!-- <el-checkbox-group v-model="form.organizations.tem">
               <el-checkbox
                 :label="groupItem.groupName"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 @change="seleteGroup('organizations', groupItem)" />
-            </el-checkbox-group>
+            </el-checkbox-group> -->
             <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
           </div>
           <!-- 组织-end -->
@@ -402,6 +410,19 @@ export default WorkZonePost
       cursor: pointer;
       color: #4080AD;
     }
+    .el-button {
+      width: 128px;
+      padding: 10px 20px;
+      margin: 0px 16px 16px 0px;
+    }
+  }
+  .zike-btn-active-selected {
+    background:rgba(255,226,102,0.2);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:#D7AB70;
+    border-color: #EDEDED;
   }
   .menber-compulsory-type-list {
     margin: 20px 18px 18px;

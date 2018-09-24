@@ -7,7 +7,7 @@
     <table-list
     :list="liveReviewList.list"
     :fields="fields"
-    :total="jobCircleLists.total"
+    :total="liveReviewList.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

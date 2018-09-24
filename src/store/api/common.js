@@ -13,3 +13,5 @@ export const getCategoryListsApi = params => request('/category', 'get', params)
 export const getCategoryApi = params => request('/category/create', 'get', params)
 // 获取成员列表
 export const getMenberListsApi = params => request('/member', 'get', params)
+// 获取公司信息
+export const getCompanyInfoApi = params => request('/company', 'get')

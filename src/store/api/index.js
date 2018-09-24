@@ -63,6 +63,8 @@ export const request = (url, method, params = {}) => {
       return axios.put(realurl, params)
     case 'delete':
       return axios.delete(realurl, params)
+    case 'patch':
+      return axios.patch(realurl, params)
     default:
       break
   }

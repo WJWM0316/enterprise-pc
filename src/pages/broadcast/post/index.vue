@@ -103,11 +103,11 @@
       <!-- 直播开始时间 -->
       <el-form-item
         label="直播开始时间"
-        prop="startTime"
+        prop="expectedStartTime"
         class="limit-width"
         >
           <el-date-picker
-            v-model="form.startTime"
+            v-model="form.expectedStartTime"
             type="datetime"
             style="width: 380px;"
             placeholder="点击选择时间">

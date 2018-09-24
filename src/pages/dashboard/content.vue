@@ -1,7 +1,7 @@
 <template>
 	<div class="left-content">
 		<section class="company-infos">
-			<h1>深圳市腾旭科技有限公司</h1>
+			<h1>{{companyInfo.companyName}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
 				<button class="click-item time-button">有限期 7 天</button>
@@ -157,7 +157,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 	methods: {
 		...mapActions([
 			'showMsg',
-			'getUserListsApi'
+			'getUserListsApi',
+			'getCompanyInfoApi'
 		])
 	},
 	components: {
@@ -165,7 +166,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 	},
 	 computed: {
     ...mapGetters([
-      'dashboardUserLists'
+      'dashboardUserLists',
+      'companyInfo'
     ])
   }
 })

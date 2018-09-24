@@ -31,8 +31,6 @@ export const GET_UPLOAD_CONFIG = 'commom/GET_UPLOAD_CONFIG'
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
 export const GET_TUTOR_OUTER_LIST = 'tutor/GET_TUTOR_OUTER_LIST'
 
-// 工作台模块
-export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'
 
 // 直播模块
 export const GET_CATEGORY_LIST = 'broadcast/GET_CATEGORY_LIST'
@@ -50,3 +48,7 @@ export const GET_COURSE_PEAPLE = 'course/GET_COURSE_PEAPLE'
 export const GET_COURSE_PEAPLE_HITS = 'course/GET_COURSE_PEAPLE_HITS'
 export const GET_COURSE_ORGANAZATIOMNS = 'course/GET_COURSE_ORGANAZATIOMNS'
 export const GET_COURSE_CATAGORY = 'course/GET_COURSE_CATAGORY'
+
+// 工作台模块
+export const GET_COMPANY_INFOS = 'common/GET_COMPANY_INFOS'
+export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'

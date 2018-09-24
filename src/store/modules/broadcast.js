@@ -13,7 +13,8 @@ import {
   getLiveDetailApi,
   getLiveMenberListApi,
   getLiveInvisibleMenberListApi,
-  getLiveListApi
+  getLiveListApi,
+  updateLiveApi
 } from 'API/broadcast'
 
 const state = {
@@ -159,6 +160,21 @@ const actions = {
     return getLiveListApi(params)
       .then(res => {
         store.commit(GET_LIVE_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   更新直播消息状态
+   * @return   {[type]}          [description]
+   */
+  updateLiveApi (store, params) {
+    return updateLiveApi(params)
+      .then(res => {
         return res
       })
       .catch(error => {

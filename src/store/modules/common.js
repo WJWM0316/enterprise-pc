@@ -7,7 +7,8 @@ import {
   GET_UPLOAD_CONFIG,
   GET_CATEGORY_LIST,
   GET_MENBER_LISTS,
-  UPDATE_CATEGORY_LIST
+  UPDATE_CATEGORY_LIST,
+  GET_COMPANY_INFOS
 } from '../mutation-types'
 
 import {
@@ -15,7 +16,8 @@ import {
   uploadApi,
   getCategoryListsApi,
   getMenberListsApi,
-  getCategoryApi
+  getCategoryApi,
+  getCompanyInfoApi
 } from 'API/common'
 
 const state = {
@@ -29,7 +31,8 @@ const state = {
   },
   showDialog: false,
   ajaxLoading: false,
-  openModal: false // 是否处于打开modal层状态
+  openModal: false, // 是否处于打开modal层状态
+  companyInfo: {}
 }
 
 const mutations = {
@@ -78,7 +81,11 @@ const mutations = {
       })
     })
     state.menberLists = data
-  }
+  },
+  // 获取公司信息
+  [GET_COMPANY_INFOS] (state, data) {
+    state.companyInfo = data
+  },
 }
 
 const getters = {
@@ -88,7 +95,8 @@ const getters = {
   openModal: state => state.openModal,
   uploadConfig: state => state.uploadConfig,
   menberLists: state => state.menberLists,
-  categoryList: state => state.categoryList
+  categoryList: state => state.categoryList,
+  companyInfo: state => state.companyInfo
 }
 
 const actions = {
@@ -184,11 +192,32 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
-  // 获取成员列表
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   获取成员列表
+   * @return   {[type]}          [description]
+   */
   getMenberListsApi(store, params) {
     return getMenberListsApi(params)
       .then(res => {
         store.commit(GET_MENBER_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   获取成员列表
+   * @return   {[type]}          [description]
+   */
+  getCompanyInfoApi(store, params) {
+    return getCompanyInfoApi(params)
+      .then(res => {
+        store.commit(GET_COMPANY_INFOS, res.data.data)
         return res
       })
       .catch(error => {
