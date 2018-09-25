@@ -81,7 +81,7 @@ export default class MenberList extends Vue {
     Promise.all(
       [
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params),
         this.getJobCircleDetailsApi(params),
         this.getJobCircleHitListsApi(params),
@@ -198,17 +198,18 @@ export default class MenberList extends Vue {
     this.submitBtnClick = !this.submitBtnClick
     this.putJobCircleApi(this.form)
       .then(res => {
-        this.showMsg({ content: `${res.data.msg}~`, type: 'success', duration: 3000 })
+        this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
         }, 3000)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`)
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
+          this.$router.push({name: 'workZoneList'})
         }, 3000)
       })
   }

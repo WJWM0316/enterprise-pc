@@ -131,7 +131,8 @@ export default class CourseList extends Vue {
   getCourseList({ page, pageSize } = {}) {
     const params = {
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
     if(this.form.name) {
       params.name = this.form.name

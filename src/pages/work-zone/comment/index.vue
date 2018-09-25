@@ -2,58 +2,48 @@
   <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
-      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item>评论</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="form.keyword"
           placeholder="输入内容或者发布者" />
       </el-col>
     </el-row>
     <table-list
-    :list="jobCircleLists.list"
+    :list="jobCircleCommentFirstLists.list"
     :fields="fields"
-    :total="jobCircleLists.total"
+    :total="jobCircleCommentFirstLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('comment', props.scope.row)">
-              评论
-          </el-button>
-          <el-button
-            type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('delete', props.scope.row)">
               删除
           </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('hide', props.scope.row)">
-              隐藏
+              热门评论
           </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('top', props.scope.row)">
-              置顶
+              {{props.scope.row.isTop ? '取消置顶' : '设置置顶'}}
           </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('top', props.scope.row)">
-              恢复
+            @click="todoAction('recover', props.scope.row)">
+              二级评论
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
+        <!-- <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
@@ -76,10 +66,7 @@
                 </div>
             </div>
           </div>
-        </div>
-        <div v-else-if="props.scope.column.property === 'status'">
-          {{ props.scope.row.status }}
-        </div>
+        </div> -->
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>

@@ -48,7 +48,7 @@
           <el-button
             type="text"
             v-if="props.scope.row.deletedAt === '已删除'"
-            @click="todoAction('top1', props.scope.row)">
+            @click="todoAction('recover', props.scope.row)">
               恢复
           </el-button>
         </div>

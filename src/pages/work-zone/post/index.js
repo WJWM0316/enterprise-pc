@@ -197,6 +197,7 @@ export default class WorkZonePost extends Vue {
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
+          this.$router.push({name: 'workZoneList'})
         }, 3000)
       })
       .catch(err => {
