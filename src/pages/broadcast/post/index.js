@@ -233,6 +233,7 @@ export default class BroadcastPost extends Vue {
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
+          this.$router.push({name: 'broadcastList'})
         }, 3000)
       })
       .catch(err => {

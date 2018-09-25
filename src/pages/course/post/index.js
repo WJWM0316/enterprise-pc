@@ -238,6 +238,7 @@ export default class CoursePost extends Vue {
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
+          this.$router.push({name: 'courseList'})
         }, 3000)
       })
       .catch(err => {
@@ -436,7 +437,6 @@ export default class CoursePost extends Vue {
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
     this.$refs.form.validateField(`check_${type}`)
-    console.log(this.form[type])
   }
 
   /**
@@ -498,15 +498,9 @@ export default class CoursePost extends Vue {
    */
   tutorClassification(type, item) {
     let list = [...this.tutorLists]
-    if(Object.prototype.toString.call(item) === '[object String]') {
-      list = list.filter(field => {
-        return !field.group
-      })
-    } else {
-      list = list.filter(field => {
-        return field.group && field.selfGroup.includes(item.groupId)
-      })
-    }
+    list = Object.prototype.toString.call(item) === '[object String]' 
+        ? list.filter(field => { return !field.group })
+        : list.filter(field => { return field.group && field.selfGroup.includes(item.groupId) })
     this.temTutorLists = list
   }
 
