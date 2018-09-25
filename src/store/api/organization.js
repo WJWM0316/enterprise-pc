@@ -38,3 +38,8 @@ export const putGroupApi = params => request(`/group/${params.id}`, 'put', param
 // 获取内容管理员可操作的分组
 export const getContentAdminGroupApi = params => request(`/group/contentAdminGroup/${params.id}`, 'get', params)
 
+
+// 公司信息
+export const getContentAdminGroupApi1 = params => request(`/group/contentAdminGroup/${params.id}`, 'get', params)
+
+

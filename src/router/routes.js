@@ -228,11 +228,24 @@ export const routes = [
       icon: 'el-icon-star-on',
       module: 'organization'
     },
+    // 直接跳转列表页
+    redirect: {
+      name: 'memberList'
+    },
     children: [
+      {
+        path: 'index',
+        name: 'memberList',
+        component: () => import( '@/pages/organization/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
+      },
       {
         path: 'groupManage',
         name: 'groupManage',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupManage/index.vue'),
+        component: () => import( '@/pages/organization/groupManage/index.vue'),
         meta: {
           keepAlive: false,
           module: 'organization'
@@ -240,7 +253,7 @@ export const routes = [
       },{
         path: 'addGroup',
         name: 'addGroup',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupPost/index.vue'),
+        component: () => import( '@/pages/organization/groupPost/index.vue'),
         meta: {
           keepAlive: false,
           module: 'organization'
@@ -248,7 +261,7 @@ export const routes = [
       },{
         path: 'editGroup',
         name: 'editGroup',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/groupPost/index.vue'),
+        component: () => import( '@/pages/organization/groupPost/index.vue'),
         meta: {
           keepAlive: false,
           module: 'organization'
@@ -256,7 +269,7 @@ export const routes = [
       },{
         path: 'addMember',
         name: 'addMember',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/organization/memberPost/index.vue'),
+        component: () => import( '@/pages/organization/memberPost/index.vue'),
         meta: {
           keepAlive: false,
           module: 'organization'
