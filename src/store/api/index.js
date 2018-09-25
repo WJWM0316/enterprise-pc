@@ -14,8 +14,7 @@ export const upload_api = `${window.location.origin}/attaches`
 
 // 请求超时时间
 axios.defaults.timeout = 10000
-axios.defaults.baseURL = 'http://ent.xplus.ziwork.com/tiger'
-// axios.defaults.baseURL = API_ROOT
+axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 // 请求拦截器
