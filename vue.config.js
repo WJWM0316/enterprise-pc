@@ -44,7 +44,7 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      '': {
+      'tiger': {
         target: 'http://web.xplus.ziwork.com/tiger',
         changeOrigin: true,
         pathRewrite: {
