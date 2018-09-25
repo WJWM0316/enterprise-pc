@@ -2,7 +2,8 @@ import {
   GET_LIVE_REVIEW_LIST,
   GET_LIVE_MENBER_LIST,
   GET_LIVE_INVISIBLE_LIST,
-  GET_LIVE_DETAILS
+  GET_LIVE_DETAILS,
+  GET_LIVE_LIST
 } from '../mutation-types'
 
 import {
@@ -11,7 +12,9 @@ import {
   getLiveReviewListApi,
   getLiveDetailApi,
   getLiveMenberListApi,
-  getLiveInvisibleMenberListApi
+  getLiveInvisibleMenberListApi,
+  getLiveListApi,
+  updateLiveApi
 } from 'API/broadcast'
 
 const state = {
@@ -19,7 +22,11 @@ const state = {
     list: [],
     total: 50
   },
-  liveDetails: {}
+  liveDetails: {},
+  liveLists: {
+    list: [],
+    total: 0
+  }
 }
 
 const mutations = {
@@ -34,11 +41,17 @@ const mutations = {
   },
   [GET_LIVE_MENBER_LIST] (state, data) {
     state.liveReviewList.list = data.data
+  },
+  [GET_LIVE_LIST] (state, data) {
+    state.liveLists.list = data.data
+    state.liveLists.total = data.meta.total
   }
 }
 
 const getters = {
-  liveReviewList: state => state.liveReviewList
+  liveReviewList: state => state.liveReviewList,
+  liveLists: state => state.liveLists,
+  liveDetails: state => state.liveDetails
 }
 
 const actions = {
@@ -98,7 +111,7 @@ const actions = {
   getLiveDetailApi (store, params) {
     return getLiveDetailApi(params)
       .then(res => {
-        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        store.commit(GET_LIVE_DETAILS, res.data.data)
         return res
       })
       .catch(error => {
@@ -131,6 +144,37 @@ const actions = {
     return getLiveInvisibleMenberListApi(params)
       .then(res => {
         store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取直播列表
+   * @return   {[type]}          [description]
+   */
+  getLiveListApi (store, params) {
+    return getLiveListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   更新直播消息状态
+   * @return   {[type]}          [description]
+   */
+  updateLiveApi (store, params) {
+    return updateLiveApi(params)
+      .then(res => {
         return res
       })
       .catch(error => {

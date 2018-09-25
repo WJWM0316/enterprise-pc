@@ -22,7 +22,7 @@ export const routes = [
       // 一级路由需要设置， 是否在侧边栏显示
       useNav: true,
       // 对应的图标名称
-      icon: 'el-icon-info',
+      icon: 'icon-worktable',
       // 当前所属的模块
       module: 'dashboard'
     }
@@ -40,7 +40,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-error',
+      icon: 'icon-class',
       module: 'course'
     },
     children: [
@@ -86,7 +86,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-success',
+      icon: 'icon-live',
       module: 'broadcast'
     },
     children: [
@@ -145,7 +145,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-warning',
+      icon: 'icon-work',
       module: 'work-zone'
     },
     // 直接跳转列表页
@@ -213,7 +213,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-question',
+      icon: 'icon-message',
       module: 'notice'
     }
   },
@@ -225,7 +225,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-star-on',
+      icon: 'icon-organization',
       module: 'organization'
     },
     // 直接跳转列表页
@@ -289,7 +289,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-message',
+      icon: 'icon-teacher',
       module: 'tutor'
     },
     children: [
@@ -333,7 +333,7 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: true,
-      icon: 'el-icon-circle-close',
+      icon: 'icon-statistics',
       module: 'statistics'
     }
   },
@@ -369,12 +369,34 @@ export const routes = [
     name: 'user',
     title: '个人中心',
     component: () => import(/* webpackChunkName: "user" */ '@/pages/user/index.vue'),
+    redirect: {
+      name: 'userIndex'
+    },
     meta: {
       keepAlive: false,
       useNav: false,
       icon: 'el-icon-circle-close',
       module: 'user'
-    }
+    },
+    children: [
+      {
+        path: 'info',
+        name: 'userIndex',
+        component: () => import(/* webpackChunkName: "userIndex" */ '@/pages/user/index/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'user'
+        }
+      },{
+        path: 'post',
+        name: 'userPost',
+        component: () => import(/* webpackChunkName: "userPost" */ '@/pages/user/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'user'
+        }
+      }
+    ]
   },
   // 课节模块
   {

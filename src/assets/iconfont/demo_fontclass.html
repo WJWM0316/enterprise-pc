@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>IconFont</title>
+    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="iconfont.css">
+</head>
+<body>
+    <div class="main markdown">
+        <h1>IconFont 图标</h1>
+        <ul class="icon_lists clear">
+            
+                <li>
+                <i class="icon iconfont icon-email"></i>
+                    <div class="name">email</div>
+                    <div class="fontclass">.icon-email</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-live"></i>
+                    <div class="name">live</div>
+                    <div class="fontclass">.icon-live</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-achievement"></i>
+                    <div class="name">achievement</div>
+                    <div class="fontclass">.icon-achievement</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-book"></i>
+                    <div class="name">book</div>
+                    <div class="fontclass">.icon-book</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-organization"></i>
+                    <div class="name">organization</div>
+                    <div class="fontclass">.icon-organization</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-message"></i>
+                    <div class="name">message</div>
+                    <div class="fontclass">.icon-message</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-post"></i>
+                    <div class="name">post</div>
+                    <div class="fontclass">.icon-post</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-phone"></i>
+                    <div class="name">phone</div>
+                    <div class="fontclass">.icon-phone</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-search"></i>
+                    <div class="name">search</div>
+                    <div class="fontclass">.icon-search</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-class"></i>
+                    <div class="name">class</div>
+                    <div class="fontclass">.icon-class</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-set"></i>
+                    <div class="name">set</div>
+                    <div class="fontclass">.icon-set</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-statistics"></i>
+                    <div class="name">statistics</div>
+                    <div class="fontclass">.icon-statistics</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-video_download"></i>
+                    <div class="name">video_download</div>
+                    <div class="fontclass">.icon-video_download</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-video_scan"></i>
+                    <div class="name">video_scan</div>
+                    <div class="fontclass">.icon-video_scan</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-teacher"></i>
+                    <div class="name">teacher</div>
+                    <div class="fontclass">.icon-teacher</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-video_nosound"></i>
+                    <div class="name">video_nosound</div>
+                    <div class="fontclass">.icon-video_nosound</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-video_sound"></i>
+                    <div class="name">video_sound</div>
+                    <div class="fontclass">.icon-video_sound</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-work"></i>
+                    <div class="name">work</div>
+                    <div class="fontclass">.icon-work</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-WeChat"></i>
+                    <div class="name">WeChat</div>
+                    <div class="fontclass">.icon-WeChat</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-worktable"></i>
+                    <div class="name">worktable</div>
+                    <div class="fontclass">.icon-worktable</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-exclamation-circle"></i>
+                    <div class="name">exclamation-circle</div>
+                    <div class="fontclass">.icon-exclamation-circle</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-check-circle"></i>
+                    <div class="name">check-circle</div>
+                    <div class="fontclass">.icon-check-circle</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-question-circle"></i>
+                    <div class="name">question-circle</div>
+                    <div class="fontclass">.icon-question-circle</div>
+                </li>
+            
+                <li>
+                <i class="icon iconfont icon-checked"></i>
+                    <div class="name">checked</div>
+                    <div class="fontclass">.icon-checked</div>
+                </li>
+            
+        </ul>
+
+        <h2 id="font-class-">font-class引用</h2>
+        <hr>
+
+        <p>font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题。</p>
+        <p>与unicode使用方式相比，具有如下特点：</p>
+        <ul>
+        <li>兼容性良好，支持ie8+，及所有现代浏览器。</li>
+        <li>相比于unicode语意明确，书写更直观。可以很容易分辨这个icon是什么。</li>
+        <li>因为使用class来定义图标，所以当要替换图标时，只需要修改class里面的unicode引用。</li>
+        <li>不过因为本质上还是使用的字体，所以多色图标还是不支持的。</li>
+        </ul>
+        <p>使用步骤如下：</p>
+        <h3 id="-fontclass-">第一步：引入项目下面生成的fontclass代码：</h3>
+
+
+        <pre><code class="lang-js hljs javascript"><span class="hljs-comment">&lt;link rel="stylesheet" type="text/css" href="./iconfont.css"&gt;</span></code></pre>
+        <h3 id="-">第二步：挑选相应图标并获取类名，应用于页面：</h3>
+        <pre><code class="lang-css hljs">&lt;<span class="hljs-selector-tag">i</span> <span class="hljs-selector-tag">class</span>="<span class="hljs-selector-tag">iconfont</span> <span class="hljs-selector-tag">icon-xxx</span>"&gt;&lt;/<span class="hljs-selector-tag">i</span>&gt;</code></pre>
+        <blockquote>
+        <p>"iconfont"是你项目下的font-family。可以通过编辑项目查看，默认是"iconfont"。</p>
+        </blockquote>
+    </div>
+</body>
+</html>

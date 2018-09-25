@@ -6,10 +6,17 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
 @Component({
   name: 'note-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi', 'showMsg'])
+    ...mapActions([
+      'showMsg',
+      'getJobCircleNoteListsApi',
+      'deleteJobCircleNoteApi',
+      'setJobCircleNotetoTopApi'
+    ])
   },
   computed: {
-    ...mapGetters(['jobCircleLists'])
+    ...mapGetters([
+      'jobCircleNoteLists'
+    ])
   },
   watch: {
     '$route': {
@@ -29,106 +36,125 @@ export default class NoteList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'name',
-      label: '课 程',
+      prop: 'content',
+      label: '帖子内容',
       align: 'center',
       showTips: 'no',
-      width: '55%'
+      width: '30%'
     },
     {
-      prop: 'status',
-      label: '是否上线',
+      prop: 'realname',
+      label: '发布者',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
+    },
+    {
+      prop: 'type',
+      label: '文件类型',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
+    },
+    {
+      prop: 'visible',
+      label: '是否公开',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
-          label: '上线',
-          value: 'status-1'
+          label: '全部',
+          value: 'visible-3'
         },
         {
-          label: '下线',
-          value: 'status-0'
+          label: '公开',
+          value: 'visible-0'
+        },
+        {
+          label: '隐藏',
+          value: 'visible-1'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'sort',
-      label: '权 重',
+      prop: 'deletedAt',
+      label: '状态',
       align: 'center',
-      showTips: 'no',
+      showTips: 'yes',
       width: '10%',
       filteredValue:
       [
         {
           label: '全部',
-          value: 'sort-全部'
+          value: 'delete-3'
         },
         {
-          label: '升序',
-          value: 'sort-升序'
+          label: '正常',
+          value: 'delete-0'
         },
         {
-          label: '降序',
-          value: 'sort-降序'
+          label: '已删除',
+          value: 'delete-1'
         }
       ],
-      filterPlacement: '权重的提示文案'
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+    },
+    {
+      prop: 'createdAt',
+      label: '建立时间',
+      align: 'center',
+      showTips: 'no',
+      width: '15%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
-      width: '15%',
+      width: '30%',
       filterPlacement: '吊炸天的操作~'
     }
   ]
 
   // 搜索表单
   form = {
-    name: ''
-  }
-
-  // 初始化的搜索表单
-  initForm = {
-    name: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
+    keyword: ''
   }
 
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
-    this.getWorkZoneLists()
+    this.form = Object.assign(this.form, this.$route.query, this.$route.params)
+    this.getJobCircleNoteLists()
   }
 
   /**
    * 获取课程列表
    */
-  getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.query}
-    if(this.form.name) {
-      params.name = this.form.name
+  getJobCircleNoteLists({ page, pageSize } = {}) {
+    const params = {
+      id: this.form.id,
+      page: page || 1,
+      count: this.zikeDefaultPageSize
     }
-    this.getJobCircleListsApi(params)
+    if(this.form.status) {
+      params.status = this.form.status
+    }
+    if(this.form.keyword) {
+      params.keyword = this.form.keyword
+    }
+    this.getJobCircleNoteListsApi(params)
+        .then(() => {
+          console.log(this.jobCircleNoteLists)
+        })
   }
 
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getWorkZoneLists()
   }
 
   // 添加课程-跳转
@@ -142,13 +168,26 @@ export default class NoteList extends Vue {
         this.showMsg({ content: '评论操作~', type: 'error', duration: 3000 })
         break
       case 'delete':
-        this.showMsg({ content: '删除操作~', type: 'error', duration: 3000 })
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.deleteJobCircleNoteApi({id: item.id})
+              .then(() => {
+                this.getJobCircleNoteLists()
+              })
+        })
         break
       case 'hide':
         this.showMsg({ content: '隐藏操作~', type: 'error', duration: 3000 })
         break
       case 'top':
-        this.showMsg({ content: '置顶操作~', type: 'error', duration: 3000 })
+        this.setJobCircleNotetoTopApi({id: item.id})
+            .then(() => {
+              this.getJobCircleNoteLists()
+            })
         break
       default:
         break

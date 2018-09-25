@@ -6,7 +6,7 @@
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="form.liveName"
           placeholder="请输入直播名称或关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
@@ -14,59 +14,67 @@
       </el-col>
     </el-row>
     <table-list
-    :list="jobCircleLists.list"
+    :list="liveLists.list"
     :fields="fields"
-    :total="jobCircleLists.total"
+    :total="liveLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastUpdate')">
+            v-if="props.scope.row.status === 1 || props.scope.row.status === 3"
+            @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastResponseList')">
+            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
+            @click="routeJump(props.scope.row.liveId, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="routeJump(props.scope.row.id, 'broadcastReviewList')">
+            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
+            @click="routeJump(props.scope.row.liveId, 'broadcastReviewList')">
               直播回顾
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'liveName'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
               placement="right"
               width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
+              <i class="u-image auto"><img :src="props.scope.row.cover.smallUrl"></i>
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
+                <img :src="props.scope.row.cover.smallUrl">
               </i>
             </div>
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
+                <div class="limit-row-num-2"> {{ props.scope.row.liveName}} </div>
                 <div class="lalel">
-                  <span class="group-name">{{props.scope.row.groupName}}</span>
-                  <span class="name">{{props.scope.row.realname}}</span>
+                  <span class="group-name">{{props.scope.row.masterGroup}}</span>
+                  <span class="name">{{props.scope.row.masterName}}</span>
                 </div>
             </div>
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'status'">
-          {{ props.scope.row.status }}
+        <div v-else-if="props.scope.column.property === 'statusName'">
+          <span v-if="props.scope.row.status === 1" class="live-status-icon-pending">
+            {{ props.scope.row.statusName }}
+          </span>
+          <span v-else-if="props.scope.row.status === 2" class="live-status-icon-doing">
+            {{ props.scope.row.statusName }}
+          </span>
+          <span v-else class="live-status-icon-completed">
+            {{ props.scope.row.statusName }}
+          </span>
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
@@ -119,6 +127,42 @@ export default BroadcastIndex
       padding: 2px 5px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
+    }
+  }
+  .live-status-icon-doing{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(38,191,129,1);
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+  .live-status-icon-completed{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(255,52,52,1);
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+  .live-status-icon-pending{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(188,188,188,1);
+      border-radius: 50%;
+      vertical-align: middle;
     }
   }
 }

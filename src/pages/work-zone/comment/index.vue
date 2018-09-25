@@ -9,51 +9,51 @@
         <search-bar
           width="500px"
           @search="handleSearch"
-          v-model="form.keyword"
+          v-model="form.name"
           placeholder="输入内容或者发布者" />
       </el-col>
     </el-row>
     <table-list
-    :list="jobCircleNoteLists.list"
+    :list="jobCircleLists.list"
     :fields="fields"
-    :total="jobCircleNoteLists.total"
+    :total="jobCircleLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt !== '已删除'"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('comment', props.scope.row)">
               评论
           </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt !== '已删除'"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('delete', props.scope.row)">
               删除
           </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt !== '已删除'"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('hide', props.scope.row)">
-              {{props.scope.row.visible === '公开' ? '隐藏' : '公开'}}
+              隐藏
           </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt !== '已删除'"
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('top', props.scope.row)">
-              {{props.scope.row.isTop ? '取消置顶' : '设置置顶'}}
+              置顶
           </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt === '已删除'"
-            @click="todoAction('top1', props.scope.row)">
+            :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            @click="todoAction('top', props.scope.row)">
               恢复
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <!-- <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
@@ -76,7 +76,10 @@
                 </div>
             </div>
           </div>
-        </div> -->
+        </div>
+        <div v-else-if="props.scope.column.property === 'status'">
+          {{ props.scope.row.status }}
+        </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>

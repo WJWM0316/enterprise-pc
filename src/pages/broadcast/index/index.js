@@ -4,12 +4,16 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
-  name: 'lighthouse-list',
+  name: 'broadcast-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi'])
+    ...mapActions([
+      'getLiveListApi'
+    ])
   },
   computed: {
-    ...mapGetters(['jobCircleLists'])
+    ...mapGetters([
+      'liveLists'
+    ])
   },
   watch: {
     '$route': {
@@ -29,14 +33,14 @@ export default class BroadcastIndex extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'name',
+      prop: 'liveName',
       label: '直 播',
       align: 'center',
       showTips: 'no',
       width: '35%'
     },
     {
-      prop: 'status1',
+      prop: 'statusName',
       label: '状态',
       align: 'center',
       showTips: 'yes',
@@ -44,18 +48,22 @@ export default class BroadcastIndex extends Vue {
       filteredValue:
       [
         {
-          label: '上线',
+          label: '未开始',
           value: 'status-1'
         },
         {
-          label: '下线',
-          value: 'status-0'
+          label: '进行中',
+          value: 'status-2'
+        },
+        {
+          label: '已结束',
+          value: 'status-3'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'status',
+      prop: 'onlineStatusName',
       label: '是否上线',
       align: 'center',
       showTips: 'yes',
@@ -74,30 +82,33 @@ export default class BroadcastIndex extends Vue {
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'sort',
-      label: '权 重',
+      prop: 'categoryName',
+      label: '分类',
       align: 'center',
-      showTips: 'no',
+      showTips: 'yes',
       width: '10%',
       filteredValue:
       [
         {
-          label: '全部',
-          value: 'sort-全部'
+          label: '上线',
+          value: 'categoryId-1'
         },
         {
-          label: '升序',
-          value: 'sort-升序'
-        },
-        {
-          label: '降序',
-          value: 'sort-降序'
+          label: '下线',
+          value: 'categoryId-0'
         }
       ],
-      filterPlacement: '权重的提示文案'
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'name1',
+      prop: 'sort',
+      label: '权 重',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
+    },
+    {
+      prop: 'expectedStartTime',
       label: '开始时间',
       align: 'center',
       showTips: 'no',
@@ -113,43 +124,32 @@ export default class BroadcastIndex extends Vue {
 
   // 搜索表单
   form = {
-    name: ''
+    liveName: ''
   }
 
-  // 初始化的搜索表单
-  initForm = {
-    name: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
-  searchType = '1'
-
-  /**
-   * 初始化表单、分页页面数据
-   */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
-    this.getWorkZoneLists()
+    this.form = Object.assign(this.form, this.$route.query)
+    this.getLiveLists()
   }
 
   /**
-   * 获取课程列表
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取直播列表
+   * @return   {[type]}   [description]
    */
-  getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.query}
-    if(this.form.name) {
-      params.name = this.form.name
+  getLiveLists({ page, pageSize } = {}) {
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize
     }
-    this.getJobCircleListsApi(params)
+    if(this.form.liveName) {
+      params.liveName = this.form.liveName
+    }
+    if(this.form.status) {
+      params.status = this.form.status
+    }
+    this.getLiveListApi(params)
   }
 
   /**

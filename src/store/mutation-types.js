@@ -19,6 +19,7 @@ export const GET_GROUP_LISTS = 'workZone/GET_GROUP_LISTS'
 export const UPDATE_GROUP_LISTS = 'workZone/UPDATE_GROUP_LISTS'
 export const GET_MENBER_LISTS = 'workZone/GET_MENBER_LISTS'
 export const GET_JOB_CIRCLE_MENBER_DETAILS = 'workZone/GET_JOB_CIRCLE_MENBER_DETAILS'
+export const GET_JOB_CIRCLE_NOTE_LISTS = 'workZone/GET_JOB_CIRCLE_NOTE_LISTS'
 
 //公共宫模块接口
 export const SHOW_MSG = 'commom/SHOW_MSG'
@@ -31,8 +32,6 @@ export const GET_UPLOAD_CONFIG = 'commom/GET_UPLOAD_CONFIG'
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
 export const GET_TUTOR_OUTER_LIST = 'tutor/GET_TUTOR_OUTER_LIST'
 
-// 工作台模块
-export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'
 
 // 直播模块
 export const GET_CATEGORY_LIST = 'broadcast/GET_CATEGORY_LIST'
@@ -41,6 +40,7 @@ export const GET_LIVE_REVIEW_LIST = 'broadcast/GET_LIVE_REVIEW_LIST'
 export const GET_LIVE_DETAILS = 'broadcast/GET_LIVE_DETAILS'
 export const GET_LIVE_MENBER_LIST = 'broadcast/GET_LIVE_MENBER_LIST'
 export const GET_LIVE_INVISIBLE_LIST = 'broadcast/GET_LIVE_INVISIBLE_LIST'
+export const GET_LIVE_LIST = 'broadcast/GET_LIVE_LIST'
 
 // 课程模块
 export const GET_COURSE_LISTS = 'course/GET_COURSE_LISTS'
@@ -49,3 +49,7 @@ export const GET_COURSE_PEAPLE = 'course/GET_COURSE_PEAPLE'
 export const GET_COURSE_PEAPLE_HITS = 'course/GET_COURSE_PEAPLE_HITS'
 export const GET_COURSE_ORGANAZATIOMNS = 'course/GET_COURSE_ORGANAZATIOMNS'
 export const GET_COURSE_CATAGORY = 'course/GET_COURSE_CATAGORY'
+
+// 工作台模块
+export const GET_COMPANY_INFOS = 'common/GET_COMPANY_INFOS'
+export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'

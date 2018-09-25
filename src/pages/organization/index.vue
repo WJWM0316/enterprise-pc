@@ -1,9 +1,6 @@
 <template>
   <router-view />
 </template>
-<script>
-export default {}
-</script>
 <style lang="scss">
 .page-position {
 	margin-bottom: 32px;

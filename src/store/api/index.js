@@ -10,11 +10,11 @@ let loadingInstance = null
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
-export const upload_api = `${window.location.origin}/attaches`
+export const upload_api = `${window.location.origin}/tiger/attaches`
 
 // 请求超时时间
 axios.defaults.timeout = 10000
-// axios.defaults.baseURL = API_ROOT
+// axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 // 请求拦截器
@@ -63,6 +63,8 @@ export const request = (url, method, params = {}) => {
       return axios.put(realurl, params)
     case 'delete':
       return axios.delete(realurl, params)
+    case 'patch':
+      return axios.patch(realurl, params)
     default:
       break
   }

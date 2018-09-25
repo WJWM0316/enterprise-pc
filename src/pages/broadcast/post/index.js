@@ -14,13 +14,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   },
   methods: {
     ...mapActions([
-      'getJobCircleMemberListsApi',
-      'postJobCircleApi',
-      'putJobCircleApi',
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
-      'postUploadConfigApi',
       'uploadApi',
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
@@ -31,19 +27,20 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'updateCategoryListsApi',
       'postLiveApi',
       'putLiveApi',
-      'getCategoryApi'
+      'getCategoryListsApi',
+      'getLiveDetailApi',
+      'getLiveMenberListApi',
+      'getLiveInvisibleMenberListApi',
+      'getTutorListApi'
     ])
   },
   computed: {
     ...mapGetters([
       'groupLists',
-      'jobCircleMemberLists',
       'menberLists',
-      'uploadConfig',
-      'jobCircleDetails',
-      'jobCircleOrganizationLists',
-      'jobCircleHitLists',
       'categoryList',
+      'tutorLists',
+      'liveDetails',
       'tutorLists'
     ])
   }
@@ -56,8 +53,8 @@ export default class BroadcastPost extends Vue {
     // 直播主用户ID
     check_categoryList: '',
     categoryList: {
-      value: '',
-      tem: {},
+      value: [],
+      tem: [],
       show: false
     },
     startTime: '',
@@ -65,7 +62,7 @@ export default class BroadcastPost extends Vue {
     check_groupList: '',
     groupList: {
       tem: [],
-      value: '',
+      value: [],
       show: false
     },
     // 直播封面的id
@@ -87,14 +84,14 @@ export default class BroadcastPost extends Vue {
     // 不可见直播成员
     check_memberList: '',
     memberList: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
     // 不可见直播成员
     check_invisibleList: '',
     invisibleList: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
@@ -164,7 +161,6 @@ export default class BroadcastPost extends Vue {
   temcategoryList = []
   temTutorLists = []
   tem_groupLists = []
-  value1 = ''
   // 导师名称
   ownerUidName = ''
   visible2 = false
@@ -182,7 +178,6 @@ export default class BroadcastPost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
-    // console.log(Date.parse(new Date(this.form.startTime))/ 1000)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -234,14 +229,14 @@ export default class BroadcastPost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
-        this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
+        this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
         }, 3000)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`)
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
@@ -256,12 +251,6 @@ export default class BroadcastPost extends Vue {
    */
   handleContentEditorBlur() {
     // this.$refs.form.validateField('content')
-  }
-
-  loadAll() {
-    return [
-      { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' }
-    ]
   }
 
   /**
@@ -279,7 +268,6 @@ export default class BroadcastPost extends Vue {
   }
 
   created() {
-    this.restaurants = this.loadAll()
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -347,66 +335,80 @@ export default class BroadcastPost extends Vue {
    */
   initPageByUpdate() {
     const params = {id: this.$route.params.id}
-    if(this.$route.name !== 'workZoneUpdate') return
+    if(this.$route.name !== 'broadcastUpdate') return
     Promise.all(
       [
-        this.getJobCircleDetailsApi(params),
-        this.getJobCircleHitListsApi(params),
-        this.getJobCircleOrganizationListsApi(params),
+        this.getLiveDetailApi(params),
+        this.getLiveMenberListApi(params),
+        this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi(),
         this.getMenberListsApi(),
-        this.getJobCircleMemberListsApi(params)
+        this.getCategoryListsApi(),
+        this.getTutorListApi()
       ]
     )
     .then((res) => {
-      const jobCircleDetails = {...this.jobCircleDetails}
-      this.form.name = jobCircleDetails.name
-      this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
-      this.form.sort = jobCircleDetails.sort
-      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.categoryList.value = jobCircleDetails.ownerUid
-      this.form.coverImgId.value = jobCircleDetails.coverImgId
-      this.form.coverImgId.tem = jobCircleDetails.coverImg
-      this.form.id = jobCircleDetails.id
-      this.form.check_coverImgId = jobCircleDetails.coverImgId
+      const {categoryList, groupList, info, invisibleList, memberList} = this.liveDetails
 
-      // 成员列表的遍历
-      this.menberLists.map(field => {
-        // 导师的筛选
-        if(field.uid === jobCircleDetails.ownerUid) {
-          this.form.categoryList.tem = field
-          this.form.categoryList.show = true
-          this.form.check_categoryList = field.uid
-        }
-        // 直播成员
-        if(this.jobCircleMemberLists.includes(field.uid)) {
-          this.form.uid.value += '' + field.uid
-          this.form.uid.tem.push(field.realname)
-          this.form.uid.show = true
-          this.form.check_uid += '' + field.uid
-        }
-        // 不可见学员
-        if(this.jobCircleHitLists.includes(field.uid)) {
-          this.form.memberList.value += '' + field.uid
-          this.form.memberList.tem.push(field.realname)
-          this.form.memberList.show = true
-        }
+      // 分类的遍历
+      categoryList.map(field => {
+        this.form.categoryList.tem.push(field)
+        this.form.categoryList.value.push(field.categoryId)
+        this.form.categoryList.show = true
+      })
+
+      // 不可见学员
+      invisibleList.map(field => {
+        this.form.invisibleList.tem.push(field.realname)
+        this.form.invisibleList.value.push(field.uid)
+        this.form.invisibleList.show = true
+      })
+
+      // 必修学员
+      memberList.map(field => {
+        this.form.memberList.tem.push(field.realname)
+        this.form.memberList.value.push(field.uid)
+        this.form.memberList.show = true
       })
 
       // 组织的遍历
-      this.groupLists.map(field => {
-        // 直播组织
-        if(this.jobCircleOrganizationLists.includes(field.groupId)) {
-          this.form.groupList.value += '' + field.groupId
-          this.form.groupList.tem.push(field.groupName)
-          this.form.groupList.show = true
-          this.form.check_groupList += '' + field.groupId
+      groupList.map(field => {
+        this.form.groupList.tem.push(field)
+        this.form.groupList.value.push(field.groupId)
+        this.form.groupList.show = true
+      })
+
+      // 导师的遍历
+      this.tutorLists.map(field => {
+        if(field.uid === info.masterUid) {
+          this.form.uid.value = field.uid
+          this.form.uid.tem = field
+          this.form.uid.show = true
+          this.form.check_uid = field.uid
         }
       })
+
+      this.form.id = info.id
+      this.form.startTime = new Date(info.expectedStartTime)
+      this.form.coverImgId.value = info.coverImgId
+      this.form.coverImgId.tem = info.cover.smallUrl
+      this.form.check_coverImgId = info.coverImgId
+      this.form.sort = info.sort
+      this.form.isOnline = info.isOnline
+      this.form.liveName = info.liveName
+      this.form.intro = info.intro
+      this.form.groupList.value = this.form.groupList.value.join(',')
+      this.form.check_groupList = this.form.groupList.value
+      this.form.categoryList.value = this.form.categoryList.value.join(',')
+      this.form.check_categoryList = this.form.categoryList.value
+      this.form.invisibleList.value = this.form.invisibleList.value.join(',')
+      this.form.check_invisibleList = this.form.invisibleList.value
+      this.form.memberList.value = this.form.memberList.value.join(',')
+      this.form.check_memberList = this.form.memberList.value
+      this.ContentEditor.content = info.intro
     })
     .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
+      this.$message.error('初始化页面失败~');
     })
   }
   /**
@@ -422,7 +424,6 @@ export default class BroadcastPost extends Vue {
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
     this.$refs.form.validateField(`check_${type}`)
-    console.log(this.form[type])
   }
 
   /**
