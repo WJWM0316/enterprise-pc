@@ -23,22 +23,19 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            v-if="1 > 0"
+            v-if="props.scope.row.status === 1 || props.scope.row.status === 3"
             @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            v-if="1 > 0"
+            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
             @click="routeJump(props.scope.row.liveId, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            v-if="1 > 0"
+            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
             @click="routeJump(props.scope.row.liveId, 'broadcastReviewList')">
               直播回顾
             </el-button>
@@ -69,10 +66,10 @@
           </div>
         </div>
         <div v-else-if="props.scope.column.property === 'statusName'">
-          <span v-if="props.scope.row.status === 1" class="live-status-icon-doing">
+          <span v-if="props.scope.row.status === 1" class="live-status-icon-pending">
             {{ props.scope.row.statusName }}
           </span>
-          <span v-else-if="props.scope.row.status === 2" class="live-status-icon-pending">
+          <span v-else-if="props.scope.row.status === 2" class="live-status-icon-doing">
             {{ props.scope.row.statusName }}
           </span>
           <span v-else class="live-status-icon-completed">

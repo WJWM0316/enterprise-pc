@@ -57,7 +57,7 @@ export default class BroadcastPost extends Vue {
       tem: [],
       show: false
     },
-    expectedStartTime: '',
+    startTime: '',
     // 课程所属组织
     check_groupList: '',
     groupList: {
@@ -129,7 +129,7 @@ export default class BroadcastPost extends Vue {
     check_uid: [
       { required: true, message: '请选择导师', trigger: 'blur' }
     ],
-    expectedStartTime: [
+    startTime: [
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ]
   }
@@ -178,7 +178,6 @@ export default class BroadcastPost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
-    console.log(222)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -190,7 +189,7 @@ export default class BroadcastPost extends Vue {
           'uid',
           'categoryList',
           'groupList',
-          'expectedStartTime',
+          'startTime',
           'intro',
           'isOnline',
           'coverImgId',
@@ -219,8 +218,7 @@ export default class BroadcastPost extends Vue {
         formData[field] = data[field].value
       }
     })
-    formData.expectedStartTime = Date.parse(new Date(this.form.expectedStartTime)) / 1000
-    formData.startTime = formData.expectedStartTime
+    formData.startTime = Date.parse(new Date(this.form.startTime)) / 1000
     return formData
   }
   /**
@@ -391,7 +389,7 @@ export default class BroadcastPost extends Vue {
       })
 
       this.form.id = info.id
-      this.form.expectedStartTime = info.createdAt
+      this.form.startTime = new Date(info.expectedStartTime)
       this.form.coverImgId.value = info.coverImgId
       this.form.coverImgId.tem = info.cover.smallUrl
       this.form.check_coverImgId = info.coverImgId

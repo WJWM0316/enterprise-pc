@@ -20,3 +20,35 @@ export const getJobCircleDetailsApi = params => request(`/job/circle/${params.id
 export const postJobCircleApi = data => request('/job/circle', 'post', Qs.stringify(data))
 // 获取分组成员列表
 export const getGroupListsApi = params => request('/group', 'get', params)
+// 获取工作圈帖子列表
+export const getJobCircleNoteListsApi = params => request(`/jobcircle/postlist/${params.id}`, 'get', params)
+// 获取工作圈一级评论
+export const getJobCircleCommentFirstListsApi = params => request('/jobcircle/comment/commentList', 'get', params)
+// 获取工作圈二级评论
+export const getJobCircleCommentSecondListsApi = params => request('/jobcircle/comment/replyList', 'get', params)
+// 【工作圈】搜索一级评论
+export const getJobCircleCommentSearchListsApi = params => request('/jobcircle/searchComment', 'get', params)
+// 【工作圈】设置热评
+export const setJobCircleHotCommentApi = params => request('/jobcircle/comment/hot/', 'put', params)
+// 【工作圈】取消热评
+export const cancleJobCircleHotCommentApi = params => request('/jobcircle/comment/hot/', 'delete', params)
+// 【工作圈】删除评论
+export const deleteJobCircleCommentApi = params => request('/jobcircle/comment', 'delete', params)
+// 【工作圈】恢复已删除评论
+export const recoverJobCircleCommentApi = params => request('/jobcircle/comment', 'post', params)
+// 【工作圈】删除帖子
+export const deleteJobCircleNoteApi = params => request(`/jobcircle/post/${params.id}`, 'delete')
+// 【工作圈】删除帖子
+export const setJobCircleNotetoTopApi = params => request(`/jobcircle/post/stick`, 'put', params)
+// 获取工作圈帖子详情
+export const getJobCircleNoteDetailApi = params => request(`/jobcircle/post/${params.id}`, 'get')
+// 添加工作圈帖子
+export const postJobCircleNoteApi = params => request(`/jobcircle/post`, 'post', params)
+// 圈主设置工作圈帖子隐藏/公开
+export const updateJobCircleNoteVisibleApi = params => request(`/jobcircle/post/visible`, 'put', params)
+// 获取工作圈分月相册
+export const getJobCircleAlbumApi = params => request(`/jobcircle/picture/${params.id}`, 'get', params)
+// 获取工作圈所有帖子
+export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params.id}`, 'get', params)
+// 获取工作圈所有帖子链接分页
+export const getJobCircleUrlsApi = params => request(`/jobcircle/urls/${params.id}`, 'get', params)

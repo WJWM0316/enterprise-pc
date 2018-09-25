@@ -4,7 +4,7 @@
       <div>
         <div class="logo">
           <div class="avatar-uploader">
-            <img :src="companyLogoUrl" class="avatar">
+            <!-- <img :src="companyLogoUrl" class="avatar"> -->
           </div>
         </div>
         <ul>
