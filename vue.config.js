@@ -4,7 +4,7 @@ const resolve  = dir => { return path.join(__dirname, dir) }
 
 module.exports = {
   lintOnSave: true,
-  baseUrl: process.env.NODE_ENV === 'production' ? '/tiger/' : '/',
+  // baseUrl: process.env.NODE_ENV === 'production' ? '/tiger/' : '/',
   configureWebpack: {
   	entry: {
 	    vendors: [
@@ -44,8 +44,8 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      'tiger': {
-        target: 'http://web.xplus.ziwork.com/tiger',
+      '': {
+        target: 'http://web.xplus.ziwork.com/tiger/aaaaa',
         changeOrigin: true,
         pathRewrite: {
           '^/tiger': ''
