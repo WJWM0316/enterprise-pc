@@ -10,7 +10,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'showMsg',
       'getJobCircleNoteListsApi',
       'deleteJobCircleNoteApi',
-      'setJobCircleNotetoTopApi'
+      'setJobCircleNotetoTopApi',
+      'updateJobCircleNoteVisibleApi'
     ])
   },
   computed: {
@@ -26,7 +27,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       immediate: true
     }
   },
-   components: {
+  components: {
     TableList,
     SearchBar
   }
@@ -135,21 +136,23 @@ export default class NoteList extends Vue {
    * 获取课程列表
    */
   getJobCircleNoteLists({ page, pageSize } = {}) {
+    console.log(1)
     const params = {
       id: this.form.id,
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
-    if(this.form.status) {
-      params.status = this.form.status
+    if(this.form.visible) {
+      params.visible = this.form.visible === '3' ? '' : this.form.visible
+    }
+    if(this.form.delete) {
+      params.delete = this.form.delete === '3' ? '' : this.form.delete
     }
     if(this.form.keyword) {
       params.keyword = this.form.keyword
     }
     this.getJobCircleNoteListsApi(params)
-        .then(() => {
-          console.log(this.jobCircleNoteLists)
-        })
   }
 
   // 点击搜索时触发
@@ -181,7 +184,10 @@ export default class NoteList extends Vue {
         })
         break
       case 'hide':
-        this.showMsg({ content: '隐藏操作~', type: 'error', duration: 3000 })
+        this.updateJobCircleNoteVisibleApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
+            .then(() => {
+              this.getJobCircleNoteLists()
+            })
         break
       case 'top':
         this.setJobCircleNotetoTopApi({id: item.id})

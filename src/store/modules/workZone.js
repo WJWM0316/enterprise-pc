@@ -20,7 +20,8 @@ import {
   getGroupListsApi,
   getJobCircleNoteListsApi,
   deleteJobCircleNoteApi,
-  setJobCircleNotetoTopApi
+  setJobCircleNotetoTopApi,
+  updateJobCircleNoteVisibleApi
 } from 'API/workZone'
 
 const state = {
@@ -34,7 +35,10 @@ const state = {
   jobCircleDetails: {},
   jobCircleOrganizationLists: [],
   jobCircleHitLists: [],
-  jobCircleNoteLists: {}
+  jobCircleNoteLists: {
+    list: [],
+    total: 0
+  }
 }
 
 const mutations = {
@@ -261,6 +265,22 @@ const actions = {
    */
   setJobCircleNotetoTopApi(store, params) {
     return setJobCircleNotetoTopApi(params)
+      .then(res => {
+        // store.commit(GET_JOB_CIRCLE_NOTE_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   圈主设置工作圈帖子隐藏/公开
+   * @return   {[type]}          [description]
+   */
+  updateJobCircleNoteVisibleApi(store, params) {
+    return updateJobCircleNoteVisibleApi(params)
       .then(res => {
         // store.commit(GET_JOB_CIRCLE_NOTE_LISTS, res.data)
         return res

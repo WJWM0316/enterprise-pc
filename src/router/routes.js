@@ -173,6 +173,16 @@ export const routes = [
           module: 'work-zone'
         }
       },
+      // 评论的入口
+      {
+        path: 'comment/:id',
+        name: 'commentList',
+        component: () => import(/* webpackChunkName: "commentList" */ '@/pages/work-zone/comment/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
       // 成员区的入口
       {
         path: 'menber/:id',
