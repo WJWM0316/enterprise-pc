@@ -321,7 +321,7 @@ export default class WorkZonePost extends Vue {
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = jobCircleDetails.ownerUid
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
-      this.form.cover_img_id.tem = jobCircleDetails.coverImg
+      this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
       this.form.id = jobCircleDetails.id
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
       console.log(this.form)
