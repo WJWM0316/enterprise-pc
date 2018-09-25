@@ -24,18 +24,21 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            v-if="1 > 0"
             @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            v-if="1 > 0"
             @click="routeJump(props.scope.row.liveId, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            v-if="1 > 0"
             @click="routeJump(props.scope.row.liveId, 'broadcastReviewList')">
               直播回顾
             </el-button>
@@ -65,8 +68,16 @@
             </div>
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'status'">
-          {{ props.scope.row.status }}
+        <div v-else-if="props.scope.column.property === 'statusName'">
+          <span v-if="props.scope.row.status === 1" class="live-status-icon-doing">
+            {{ props.scope.row.statusName }}
+          </span>
+          <span v-else-if="props.scope.row.status === 2" class="live-status-icon-pending">
+            {{ props.scope.row.statusName }}
+          </span>
+          <span v-else class="live-status-icon-completed">
+            {{ props.scope.row.statusName }}
+          </span>
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
@@ -119,6 +130,42 @@ export default BroadcastIndex
       padding: 2px 5px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
+    }
+  }
+  .live-status-icon-doing{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(38,191,129,1);
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+  .live-status-icon-completed{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(255,52,52,1);
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+  .live-status-icon-pending{
+    line-height: 1;
+    &:before{
+      content: '';
+      display: inline-block;
+      width:6px;
+      height:6px;
+      background:rgba(188,188,188,1);
+      border-radius: 50%;
+      vertical-align: middle;
     }
   }
 }

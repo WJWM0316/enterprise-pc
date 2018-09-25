@@ -178,6 +178,7 @@ export default class BroadcastPost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
+    console.log(222)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -392,7 +393,7 @@ export default class BroadcastPost extends Vue {
       this.form.id = info.id
       this.form.expectedStartTime = info.createdAt
       this.form.coverImgId.value = info.coverImgId
-      this.form.coverImgId.tem = info.coverImgId
+      this.form.coverImgId.tem = info.cover.smallUrl
       this.form.check_coverImgId = info.coverImgId
       this.form.sort = info.sort
       this.form.isOnline = info.isOnline
