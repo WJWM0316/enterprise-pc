@@ -6,6 +6,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
+  base: 'tiger',
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -16,11 +17,11 @@ const router = new Router({
   }
 })
 
-router.beforeEach((to, from, next) => {
-  if (from.name !== to.name) {
-    window.scrollTo(0, 0)
-  }
-  next(true)
-})
+// router.beforeEach((to, from, next) => {
+//   if (from.name !== to.name) {
+//     window.scrollTo(0, 0)
+//   }
+//   next(true)
+// })
 
 export default router
