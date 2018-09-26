@@ -377,7 +377,7 @@ export const routes = [
     title: '个人中心',
     component: () => import(/* webpackChunkName: "user" */ '@/pages/user/index.vue'),
     redirect: {
-      name: 'userIndex'
+      name: 'userInfos'
     },
     meta: {
       keepAlive: false,
@@ -387,14 +387,15 @@ export const routes = [
     },
     children: [
       {
-        path: 'info',
-        name: 'userIndex',
-        component: () => import(/* webpackChunkName: "userIndex" */ '@/pages/user/index/index.vue'),
+        path: 'info/:id',
+        name: 'userInfos',
+        component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/index.vue'),
         meta: {
           keepAlive: false,
           module: 'user'
         }
-      },{
+      },
+      {
         path: 'post',
         name: 'userPost',
         component: () => import(/* webpackChunkName: "userPost" */ '@/pages/user/post/index.vue'),

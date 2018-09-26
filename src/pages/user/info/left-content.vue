@@ -2,8 +2,10 @@
   <div class="user-left-content">
 		<div class="base-infos">
 			<div class="base-infos-header">
-				<h2>李天一</h2>
-				<div class="user-avatar"></div>
+				<h2>{{personalInfoBase.realname}}</h2>
+				<div class="user-avatar">
+					<img :src="personalInfoBase.avatar.smallUrl" alt="" v-if="personalInfoBase.avatar">
+				</div>
 			</div>
 			<ul class="user-his-infos">
 				<li>
@@ -54,8 +56,47 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-@Component({})
-export default class ComponentLeft extends Vue {}
+@Component({
+	methods: {
+		...mapActions([
+			'getPersonalInfoLessonsApi',
+			'getPersonalInfoStudyApi',
+			'getPersonalInfoBaseApi',
+			'getPersonalInfoLivesApi',
+			'getPersonalInfoJobCirclesApi'
+		])
+	},
+	computed: {
+    ...mapGetters([
+      'personalInfoLessons',
+      'personalInfoStudy',
+      'personalInfoBase',
+      'personalInfoLives',
+      'personalInfoJobCircles'
+    ])
+  }
+})
+export default class ComponentLeft extends Vue {
+	created() {
+		this.init()
+	}
+	init() {
+		const params = this.$route.params
+		Promise.all([
+      this.getPersonalInfoLessonsApi(params),
+      this.getPersonalInfoStudyApi(params),
+      this.getPersonalInfoBaseApi(params),
+      this.getPersonalInfoLivesApi(params),
+      this.getPersonalInfoJobCirclesApi(params)
+    ])
+    .then(() => {
+      console.log(11)
+    })
+    .catch((err) => {
+      this.$message.error('初始化页面失败~')
+    })
+	}
+}
 </script>
 <style lang="scss">
 #user {
@@ -86,7 +127,12 @@ export default class ComponentLeft extends Vue {}
 			height:108px;
 			border-radius:66px;
 			float: right;
-			background: rgba(0,0,0,.05)
+			background: rgba(0,0,0,.05);
+			overflow: hidden;
+			img{
+				width: 100%;
+				height: 100%;
+			}
 		}
 	}
 	.user-his-infos{

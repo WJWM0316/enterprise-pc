@@ -115,7 +115,6 @@ export default class BroadcastReview extends Vue {
    */
   init() {
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
-    console.log(this.form)
     this.getLiveReviewList()
   }
 

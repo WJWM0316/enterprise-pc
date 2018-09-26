@@ -319,7 +319,7 @@ export default class CoursePost extends Vue {
     if(this.$route.name !== 'coursePost') return
     Promise.all([
       this.getGroupListsApi(),
-      this.getMenberListsApi({selectAll: 1}),
+      this.getMenberListsApi(),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 1})
     ])
