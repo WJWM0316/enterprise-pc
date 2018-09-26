@@ -30,12 +30,12 @@
             @click="todoAction('edit', props.scope.row)">
               编辑
             </el-button>
-          <el-button
+          <!-- <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('punch', props.scope.row)">
               打卡管理
-            </el-button>
+            </el-button> -->
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'title'" class="flex-box">
