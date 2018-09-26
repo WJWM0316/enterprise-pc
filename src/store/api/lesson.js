@@ -38,8 +38,17 @@ export const setExcellentCourseCardApi = params => request(`/CourseSection/Cours
 export const getLessonListsApi = params => request(`/CourseSection`, 'get', params)
 
 // 新增课程课节
-export const postLessonApi = params => request(`/CourseSection`, 'post', params)
+export const putLessonApi = params => request(`CourseSection/${params.id}`, 'put', params)
+
 
 
 // 新增课程课节
-export const putLessonApi = params => request(`CourseSection/${params.id}`, 'put', params)
+export const postLessonApi = params => request(`/CourseSection`, 'post', params)
+
+//获取课程课节详情
+export const getLessonEditApi = params => request(`/CourseSection/${params.id}/edit`, 'get')
+
+//编辑课程课节
+export const lessonEditApi = params => request(`/CourseSection/${params.course_id}`, 'put', params)
+
+

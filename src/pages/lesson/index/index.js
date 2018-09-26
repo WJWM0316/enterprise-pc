@@ -30,8 +30,8 @@ export default class CourseList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'name',
-      label: '课 程',
+      prop: 'title',
+      label: '课 节',
       align: 'center',
       showTips: 'no',
       width: '55%'
@@ -105,11 +105,13 @@ export default class CourseList extends Vue {
     total: 0
   }
 
+  lessonList = []
+
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    console.log(this.$route)
+    console.log('init----',this.$route)
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
@@ -120,12 +122,31 @@ export default class CourseList extends Vue {
    * 获取课程列表
    */
   getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.params}
+    let data = {
+      order: {
+        update_time: 'DESC',
+        favors_count: 'DESC',
+        comments_count: 'DESC'
+      },
+      course_id: this.$route.params.id
+    }
+    let jsonDataString = JSON.stringify({search: data})
+    console.log(jsonDataString)
+    let UrlString = encodeURIComponent(jsonDataString)
+    let param = {
+      jsonData: UrlString,
+      page: 1,
+      pageCount: 20
+    }
+    console.log(param)
     if(this.form.name) {
       params.name = this.form.name
     }
 
-    this.getJobCircleListsApi(params)
+    getLessonListsApi(param).then(res=>{
+      this.lessonList = res.data.data
+      console.log(this.lessonList)
+    })
   }
 
   // 点击搜索时触发
@@ -143,7 +164,7 @@ export default class CourseList extends Vue {
     console.log(item)
     switch(type) {
       case 'edit':
-        this.$router.push({ name: 'lessonEdit',query: {id: item.id}})
+        this.$router.push({ name: 'lessonEdit',query: {id: item.courseSectionId}})
         break
       case 'add':
         this.$router.push({ name: 'lessonAdd'})

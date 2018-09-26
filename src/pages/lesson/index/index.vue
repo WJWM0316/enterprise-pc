@@ -16,10 +16,10 @@
         <el-button type="primary" @click="todoAction('add')" class="click-item">新建课节</el-button>
       </el-col>
     </el-row>
+    <!-- :total="jobCircleLists.total" -->
     <table-list
-    :list="jobCircleLists.list"
+    :list="lessonList"
     :fields="fields"
-    :total="jobCircleLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -38,7 +38,7 @@
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'title'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
@@ -54,16 +54,12 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
-                <div class="lalel">
-                  <span class="group-name">{{props.scope.row.groupName}}</span>
-                  <span class="name">{{props.scope.row.realname}}</span>
-                </div>
+                <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
             </div>
           </div>
         </div>
         <div v-else-if="props.scope.column.property === 'status'">
-          {{ props.scope.row.status }}
+          {{ props.scope.row.status == 1? '上线':'下线' }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

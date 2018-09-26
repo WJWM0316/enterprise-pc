@@ -32,15 +32,15 @@
             <div class="box">
               <div class="file-infos">
                 <i class="el-icon-question"></i>
-                <span class="file-name">{{fileUpload.infos.name}}</span>
+                <span class="file-name limit-row-num-1">{{fileUpload.infos.name}}</span>
               </div>
-              <div class="file-status">
+              <div class="file-status" >
                 <span
                   class="status-text"
                   :class="{'processing': fileUpload.status === 'processing', 'success': fileUpload.status === 'success', 'error': fileUpload.status === 'error'}">
                     {{fileUpload.progressText}}
                   </span>
-                <i class="el-icon-error"></i>
+                <!-- <i class="el-icon-error"></i> -->
               </div>
             </div>
           </div>
@@ -127,6 +127,8 @@ import WorkZonePost from './index'
 export default WorkZonePost
 </script>
 <style lang="scss">
+@import "~cropperjs/dist/cropper.min.css";
+
 #lesson-post {
   background: white;
   .limit-width {

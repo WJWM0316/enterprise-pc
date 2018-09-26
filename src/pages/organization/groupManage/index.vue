@@ -8,7 +8,7 @@
 
     <el-row class="header">
       <el-col :span="24" class="right-content">
-        <el-button type="primary" @click="addGroup" class="click-item " style="float: right">新建分组</el-button>
+        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right">新建分组</el-button>
       </el-col>
     </el-row>
     <table-list

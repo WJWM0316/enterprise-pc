@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import Editor from 'COMPONENTS/editor'
 import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
-import { postLessonApi } from '@/store/api/lesson.js'
+import { postLessonApi, getLessonEditApi, lessonEditApi } from '@/store/api/lesson.js'
 
 @Component({
   components: {
@@ -89,6 +89,9 @@ export default class WorkZonePost extends Vue {
 
   // 状态。编辑或者添加
   action = ''
+
+  // 编辑id
+  lessonId = ''
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -115,8 +118,16 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
+
+        // img id
+        let imgListId = ''
+        this.imageUpload.list.map(function(value,index){
+            console.log('map遍历:'+index+'--'+value);
+            imgListId+=value.id+','
+        })
+        this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
         // 需要提交的参数的key值
-        const required = ['course_id','title','status','punch_card_title','details','av_id']
+        const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
         // 过滤不需要提交的参数
         console.log(this.form)
         const params = this.transformData(this.form, required)
@@ -129,21 +140,55 @@ export default class WorkZonePost extends Vue {
   submit(params) {
     console.log(params)
     let that = this
-    postLessonApi(params)
-      .then(res => {
-        that.models.show = true
+    let obj = {
+      suc: function(res){
+          console.log(1111)
+
+        that.$message({
+          message: '成功',
+          type: 'success'
+        })
+
         setTimeout(() => {
-          this.submitBtnClick = !this.submitBtnClick
-          this.submitBtnTxt = '提交'
+          console.log(1111)
+          that.$router.go(-1)
+          that.submitBtnClick = !that.submitBtnClick
+          that.submitBtnTxt = '提交'
         }, 3000)
+      },
+      catch:function(err){
+        setTimeout(() => {
+          that.submitBtnClick = !that.submitBtnClick
+          that.submitBtnTxt = '提交'
+        }, 3000)
+        console.log(err)
+        if(err.msg){
+          that.$message.error(err.msg);
+        }
+      },
+    }
+
+    if(this.action === 'add'){
+      postLessonApi(params)
+      .then(res => {
+        obj.suc(res)
+      },res=>{
+        obj.catch(res)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
-        setTimeout(() => {
-          this.submitBtnClick = !this.submitBtnClick
-          this.submitBtnTxt = '提交'
-        }, 3000)
+        obj.catch(res)
       })
+    }else {
+      lessonEditApi(params)
+      .then(res => {
+        obj.suc(res)
+      },res=>{
+        obj.catch(res)
+      })
+      .catch(err => {
+        obj.catch(err)
+      })
+    }
   }
 
   handleContentEditorBlur() {
@@ -152,31 +197,63 @@ export default class WorkZonePost extends Vue {
 
   created() {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
-    this.form.course_id = 1
-
-    console.log(this.$route)
+    this.form.course_id = this.$route.query.id
 
     if(this.action === 'add'){
       this.initPageByPost()
     }else {
+      //编辑
+      this.lessonId = this.$route.id
       this.initPageByUpdate()
     }
   }
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-12
+   * @DateTime 2018-09-1ž
    * @detail   初始化新增页面数据
    * @return   {[type]}   [description]
    */
-  initPageByPost() {}
+  initPageByPost() {
+    /*this.form.av_id = 111
+
+    this.fileUpload.status = 'error'
+    this.fileUpload.progress = 100
+    this.fileUpload.progressText = ''
+    this.fileUpload.btnTxt = '重新上传'
+    this.fileUpload.show = true*/
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
    * @detail   编辑时初始化页面
    * @return   {[type]}   [description]
    */
-  initPageByUpdate() {}
+  initPageByUpdate() {
+    getLessonEditApi({id: this.form.course_id}).then(res=>{
+      let msg = res.data.data
+      console.log(msg)
+
+      this.ContentEditor.content = msg.details
+      if(msg.av){
+        this.fileUpload.infos.name = msg.av.fileName
+        this.fileUpload.status = 'success'
+        this.fileUpload.progress = 100
+        this.fileUpload.progressText = ''
+        this.fileUpload.btnTxt = '重新上传'
+        this.fileUpload.show = true
+      }
+      this.form = {
+        course_id: msg.courseSectionId, // 课程id
+        title: msg.title, // 课节标题
+        av_id: msg.avId, // 音视频id
+        details:  msg.details, // 内容详情
+        punch_card_title:  msg.punchCardTitle, // 打卡题目
+        punch_card_img:  msg.punch_card_img, // 打卡图片
+        status:  msg.status // 状态：0下线，1上线
+      }
+    })
+  }
 
   /**
    * @Author   小书包
@@ -186,7 +263,7 @@ export default class WorkZonePost extends Vue {
    */
   handleImageSuccess(res) {
     console.log(res)
-    this.imageUpload.list.push(res.data[0].id)
+    this.imageUpload.list.push(res.data[0])
   }
 
   /**
@@ -195,7 +272,9 @@ export default class WorkZonePost extends Vue {
    * @detail   图片上传之前的处理
    * @return   {[type]}   [description]
    */
-  beforeImageUpload(file) {}
+  beforeImageUpload(file) {
+    console.log(file)
+  }
 
   /**
    * @Author   小书包
@@ -220,6 +299,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
+    console.log(file)
     this.fileUpload.infos = file
     this.fileUpload.show = true
     this.fileUpload.btnTxt = '重新上传'
@@ -243,11 +323,13 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileError(err, file, fileList) {
-    const { msg } = JSON.parse(err.message)
-    this.showMsg({ content: `${msg}~`, type: 'error', duration: 3000 })
+    console.log(err)
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'
     this.fileUpload.btnTxt = '重新上传'
+    const { msg } = JSON.parse(err.message)
+    this.showMsg({ content: `${msg}~`, type: 'error', duration: 3000 })
+    
   }
 }
