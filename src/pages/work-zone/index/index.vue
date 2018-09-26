@@ -76,8 +76,8 @@
 </template>
 
 <script>
-import CourseList from './index'
-export default CourseList
+import WorkzoneList from './index'
+export default WorkzoneList
 </script>
 
 <style lang="scss">

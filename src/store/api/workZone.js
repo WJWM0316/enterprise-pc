@@ -25,17 +25,17 @@ export const getJobCircleNoteListsApi = params => request(`/jobcircle/postlist/$
 // 获取工作圈一级评论
 export const getJobCircleCommentFirstListsApi = params => request(`/jobcircle/comment/commentList/${params.id}`, 'get', params)
 // 获取工作圈二级评论
-export const getJobCircleCommentSecondListsApi = params => request('/jobcircle/comment/replyList', 'get', params)
+export const getJobCircleCommentSecondListsApi = params => request(`/jobcircle/comment/replyList/${params.id}`, 'get', params)
 // 【工作圈】搜索一级评论
 export const getJobCircleCommentSearchListsApi = params => request('/jobcircle/searchComment', 'get', params)
 // 【工作圈】设置热评
-export const setJobCircleHotCommentApi = params => request('/jobcircle/comment/hot/', 'put', params)
+export const setJobCircleHotCommentApi = params => request(`/jobcircle/comment/hot/${params.id}`, 'put', params)
 // 【工作圈】取消热评
-export const cancleJobCircleHotCommentApi = params => request('/jobcircle/comment/hot/', 'delete', params)
+export const cancleJobCircleHotCommentApi = params => request(`/jobcircle/comment/hot/${params.id}`, 'delete', params)
 // 【工作圈】删除评论
-export const deleteJobCircleCommentApi = params => request('/jobcircle/comment', 'delete', params)
+export const deleteJobCircleCommentApi = params => request(`/jobcircle/comment/${params.id}`, 'delete')
 // 【工作圈】恢复已删除评论
-export const recoverJobCircleCommentApi = params => request('/jobcircle/comment', 'post', params)
+export const recoverJobCircleCommentApi = params => request(`/jobcircle/comment/recover/${params.id}`, 'post', params)
 // 【工作圈】删除帖子
 export const deleteJobCircleNoteApi = params => request(`/jobcircle/post/${params.id}`, 'delete')
 // 【工作圈】删除帖子

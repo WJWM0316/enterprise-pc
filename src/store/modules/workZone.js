@@ -7,7 +7,8 @@ import {
   GET_JOB_CIRCLE_MENBER_DETAILS,
   UPDATE_GROUP_LISTS,
   GET_JOB_CIRCLE_NOTE_LISTS,
-  GET_JOB_CIRCLE_COMMENT_FIRSTLISTS
+  GET_JOB_CIRCLE_COMMENT_FIRST_LISTS,
+  GET_JOB_CIRCLE_COMMENT_SECOND_LISTS
 } from '../mutation-types'
 
 import {
@@ -24,7 +25,13 @@ import {
   setJobCircleNotetoTopApi,
   updateJobCircleNoteVisibleApi,
   recoverJobCircleNoteApi,
-  getJobCircleCommentFirstListsApi
+  getJobCircleCommentFirstListsApi,
+  getJobCircleCommentSearchListsApi,
+  deleteJobCircleCommentApi,
+  recoverJobCircleCommentApi,
+  setJobCircleHotCommentApi,
+  cancleJobCircleHotCommentApi,
+  getJobCircleCommentSecondListsApi
 } from 'API/workZone'
 
 const state = {
@@ -43,6 +50,10 @@ const state = {
     total: 0
   },
   jobCircleCommentFirstLists: {
+    list: [],
+    total: 0
+  },
+  jobCircleCommentSecondLists: {
     list: [],
     total: 0
   }
@@ -83,9 +94,13 @@ const mutations = {
     state.jobCircleNoteLists.list = data.data
     state.jobCircleNoteLists.total = data.meta.total
   },
-  [GET_JOB_CIRCLE_COMMENT_FIRSTLISTS] (state, data) {
+  [GET_JOB_CIRCLE_COMMENT_FIRST_LISTS] (state, data) {
     state.jobCircleCommentFirstLists.list = data.data
     state.jobCircleCommentFirstLists.total = data.meta.total
+  },
+  [GET_JOB_CIRCLE_COMMENT_SECOND_LISTS] (state, data) {
+    state.jobCircleCommentSecondLists.list = data.data
+    state.jobCircleCommentSecondLists.total = data.meta.total
   }
 }
 
@@ -97,7 +112,8 @@ const getters = {
   jobCircleOrganizationLists: state => state.jobCircleOrganizationLists,
   jobCircleHitLists: state => state.jobCircleHitLists,
   jobCircleNoteLists: state => state.jobCircleNoteLists,
-  jobCircleCommentFirstLists: state => state.jobCircleCommentFirstLists
+  jobCircleCommentFirstLists: state => state.jobCircleCommentFirstLists,
+  jobCircleCommentSecondLists: state => state.jobCircleCommentSecondLists
 }
 
 const actions = {
@@ -323,10 +339,86 @@ const actions = {
    * @detail   工作圈一级评论
    * @return   {[type]}          [description]
    */
-  getJobCircleCommentFirstListsApi(store, params) {
-    return getJobCircleCommentFirstListsApi(params)
+  getJobCircleCommentSecondListsApi(store, params) {
+    return getJobCircleCommentSecondListsApi(params)
       .then(res => {
-        store.commit(GET_JOB_CIRCLE_COMMENT_FIRSTLISTS, res.data)
+        store.commit(GET_JOB_CIRCLE_COMMENT_SECOND_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   工作圈二级评论
+   * @return   {[type]}          [description]
+   */
+  getJobCircleCommentFirstListsApi(store, params) {
+    return getJobCircleCommentSearchListsApi(params)
+      .then(res => {
+        store.commit(GET_JOB_CIRCLE_COMMENT_FIRST_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   删除评论
+   * @return   {[type]}          [description]
+   */
+  deleteJobCircleCommentApi(store, params) {
+    return deleteJobCircleCommentApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   恢复已删除的评论
+   * @return   {[type]}          [description]
+   */
+  recoverJobCircleCommentApi(store, params) {
+    return recoverJobCircleCommentApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   设置热门评论
+   * @return   {[type]}          [description]
+   */
+  setJobCircleHotCommentApi(store, params) {
+    return setJobCircleHotCommentApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   取消热门评论
+   * @return   {[type]}          [description]
+   */
+  cancleJobCircleHotCommentApi(store, params) {
+    return cancleJobCircleHotCommentApi(params)
+      .then(res => {
         return res
       })
       .catch(error => {

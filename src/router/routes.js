@@ -173,11 +173,21 @@ export const routes = [
           module: 'work-zone'
         }
       },
-      // 评论的入口
+      // 一级评论的入口
       {
         path: 'comment/:id',
         name: 'commentList',
-        component: () => import(/* webpackChunkName: "commentList" */ '@/pages/work-zone/comment/index.vue'),
+        component: () => import(/* webpackChunkName: "commentList" */ '@/pages/work-zone/comment-first/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
+      // 二级评论的入口
+      {
+        path: 'comments/:id',
+        name: 'commentSecondList',
+        component: () => import(/* webpackChunkName: "commentSecondList" */ '@/pages/work-zone/comment-second/index.vue'),
         meta: {
           keepAlive: false,
           module: 'work-zone'

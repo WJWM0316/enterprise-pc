@@ -27,13 +27,13 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     SearchBar
   }
 })
-export default class CourseList extends Vue {
+export default class WorkzoneList extends Vue {
 
   // 表格字段
   fields = [
     {
       prop: 'name',
-      label: '课 程',
+      label: '工作圈',
       align: 'center',
       showTips: 'no',
       width: '55%'
