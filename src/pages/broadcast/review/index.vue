@@ -14,9 +14,15 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction(props.scope.row)">
-              {{props.scope.row.status === 1 ? '删除' : '恢复'}}
+            v-if="props.scope.row.status"
+            @click="todoAction('delete', props.scope.row)">
+              删除
+          </el-button>
+          <el-button
+            type="text"
+            v-if="!props.scope.row.status"
+            @click="todoAction('recover', props.scope.row)">
+              恢复
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->

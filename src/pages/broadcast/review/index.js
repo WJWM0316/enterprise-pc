@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
-  name: 'lighthouse-list',
+  name: 'review-list',
   methods: {
     ...mapActions([
       'getLiveReviewListApi',
@@ -38,24 +38,24 @@ export default class BroadcastReview extends Vue {
       label: '查看内容',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '40%',
       filteredValue:
       [
         {
           label: '全部',
-          value: 'status-1'
+          value: 'type-all'
         },
         {
-          label: '文字',
-          value: 'status-0'
+          label: '文本',
+          value: 'type-text'
         },
         {
           label: '图片',
-          value: 'status-0'
+          value: 'type-img'
         },
         {
           label: '语音',
-          value: 'status-0'
+          value: 'type-audio'
         }
       ],
       filterPlacement: '测试啦'
@@ -65,7 +65,7 @@ export default class BroadcastReview extends Vue {
       label: '发布人',
       align: 'center',
       showTips: 'no',
-      width: '15%'
+      width: '10%'
     },
     {
       prop: 'statusName',
@@ -95,13 +95,13 @@ export default class BroadcastReview extends Vue {
       label: '开始时间',
       align: 'center',
       showTips: 'no',
-      width: '15%'
+      width: '20%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'no',
-      width: '20%'
+      width: '10%'
     }
   ]
 
@@ -115,6 +115,7 @@ export default class BroadcastReview extends Vue {
    */
   init() {
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
+    console.log(this.form)
     this.getLiveReviewList()
   }
 
@@ -123,15 +124,16 @@ export default class BroadcastReview extends Vue {
    */
   getLiveReviewList({ page, pageSize } = {}) {
     const params = {
-      page: page || 1,
+      id: this.form.id,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
     if(this.form.status) {
       params.status = this.form.status
     }
-    if(this.form.id) {
-      params.id = this.form.id
+    if(this.form.type) {
+      params.type = this.form.type === 'all' ? '' : this.form.type
     }
     this.getLiveReviewListApi(params)
   }
@@ -146,7 +148,42 @@ export default class BroadcastReview extends Vue {
    * @DateTime 2018-09-21
    * @detail   列表待办项
    */
-  todoAction(item) {
-    this.updateLiveApi({id: item.liveId, status: item.status === 1 ? 0 : 1})
+  todoAction(type, item) {
+    switch(type) {
+      case 'delete':
+        this.$confirm('是否删除该评论, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.updateLiveApi({id: item.messageId, status: 0, globalLoading: true})
+              .then(() => {
+                this.getLiveReviewList()
+              })
+        })
+        .catch(action => {
+          this.$message({type: 'info', message: '取消操作~'})
+        })
+        break
+      case 'recover':
+        this.$confirm('是否恢复该评论, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.updateLiveApi({id: item.messageId, status : 1, globalLoading: true})
+              .then(() => {
+                this.getLiveReviewList()
+              })
+        })
+        .catch(action => {
+          this.$message({type: 'info', message: '取消操作~'})
+        })
+        break
+      default:
+        break
+    }
   }
 }

@@ -173,6 +173,7 @@ const actions = {
    * @return   {[type]}          [description]
    */
   updateLiveApi (store, params) {
+    console.log(params)
     return updateLiveApi(params)
       .then(res => {
         return res

@@ -195,7 +195,8 @@ export default class BroadcastPost extends Vue {
           'coverImgId',
           'memberList',
           'invisibleList',
-          'sort'
+          'sort',
+          'id'
         ]
         const action = this.$route.name === 'broadcastPost' ? 'postLiveApi' : 'putLiveApi'
         const params = this.transformData(this.form, need)
@@ -381,7 +382,7 @@ export default class BroadcastPost extends Vue {
 
       // 导师的遍历
       this.tutorLists.map(field => {
-        if(field.uid === info.masterUid) {
+        if(field.uid === info.masterId) {
           this.form.uid.value = field.uid
           this.form.uid.tem = field
           this.form.uid.show = true

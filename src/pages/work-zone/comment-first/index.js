@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyPrompt from 'COMPONENTS/prompt/index.vue'
 @Component({
-  name: 'note-list',
+  name: 'comment-list',
   methods: {
     ...mapActions([
       'showMsg',
@@ -124,7 +124,7 @@ export default class CommentList extends Vue {
   getJobCircleCommentFirstLists({ page, pageSize } = {}) {
     const params = {
       postId: this.form.id,
-      page: page || 1,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }

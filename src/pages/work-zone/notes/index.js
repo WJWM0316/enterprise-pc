@@ -150,7 +150,7 @@ export default class NoteList extends Vue {
   getJobCircleNoteLists({ page, pageSize } = {}) {
     const params = {
       id: this.form.id,
-      page: page || 1,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }

@@ -110,7 +110,7 @@ export default class WorkzoneList extends Vue {
    */
   getWorkZoneLists({ page, pageSize } = {}) {
     const params = {
-      page: page || 1,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
