@@ -6,31 +6,35 @@
 				<div class="num">(10)</div>
 			</div>
 			<div :class="{active: 	currentType === 1}" @click="tabClick(1)">
-				<div class="cell">参与的课程</div>
+				<div class="cell">参与的直播</div>
 				<div class="num">(10)</div>
 			</div>
 			<div :class="{active: 	currentType === 2}" @click="tabClick(2)">
-				<div class="cell">参与的课程</div>
+				<div class="cell">参与的工作圈</div>
 				<div class="num">(10)</div>
 			</div>
   	</div>
   	<ul class="his-dynamics-ul-list">
-			<li v-for="item in 8" :key="item">
-				<div class="img-box"></div>
-				<div class="text-content">
-					<h2>零基础成为月销十万的电商达人</h2>
-					<div class="u-info">
-						<span class="group-name">头像最长显示…</span>
-						<span class="user-name">名称最长显示…</span>
+  		<template>
+				<li v-for="(courseItem, courseIndex) in personalInfoLessons" :key="courseIndex">
+					<div class="img-box">
+						<img :src="courseItem.courseCoverImg.smallUrl" alt="">
 					</div>
-					<div class="progress">
-						<div class="learn-rate-text">已学习<span>12%</span></div>
-						<div class="line">
-							<div class="doing" :style="`width: ${item}0%`"></div>
+					<div class="text-content">
+						<h2>{{courseItem.courseTitle}}</h2>
+						<div class="u-info">
+							<span class="group-name">{{courseItem.masterTitle}}</span>
+							<span class="user-name">{{courseItem.masterName}}</span>
+						</div>
+						<div class="progress">
+							<div class="learn-rate-text">已学习<span> {{courseItem.selfProcess}}% </span></div>
+							<div class="line">
+								<div class="doing" :style="`width: ${courseItem.selfProcess}%`"></div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</li>
+				</li>
+			</template>
   	</ul>
   </div>
 </template>
@@ -38,7 +42,27 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-@Component({})
+
+@Component({
+	methods: {
+		...mapActions([
+			'getPersonalInfoLessonsApi',
+			'getPersonalInfoStudyApi',
+			'getPersonalInfoBaseApi',
+			'getPersonalInfoLivesApi',
+			'getPersonalInfoJobCirclesApi'
+		])
+	},
+	computed: {
+    ...mapGetters([
+      'personalInfoLessons',
+      'personalInfoStudy',
+      'personalInfoBase',
+      'personalInfoLives',
+      'personalInfoJobCircles'
+    ])
+  }
+})
 export default class ComponentRight extends Vue {
 	currentType = 0
 	tabClick(num) {
@@ -47,7 +71,7 @@ export default class ComponentRight extends Vue {
 }
 </script>
 <style lang="scss">
-#user {
+#user-info {
 	padding: 0;
 	.user-right-content{
 		flex-grow: 1;
@@ -115,6 +139,10 @@ export default class ComponentRight extends Vue {
 			border-radius:4px;
 			background: rgba(0,0,0,.05);
 			margin-right: 16px;
+			img{
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.text-content {
 			flex-grow: 1;
@@ -156,6 +184,9 @@ export default class ComponentRight extends Vue {
 			}
 		}
 		.progress {
+			span{
+				color: #D7AB70;
+			}
 			.learn-rate-text {
 				overflow: hidden;
 				margin-bottom: 8px;
@@ -170,11 +201,11 @@ export default class ComponentRight extends Vue {
 				border-radius:8px;
 				overflow: hidden;
 				position: relative;
-				.doing{
-					height:6px;
-					background:rgba(255,226,102,1);
-					border-radius:8px;
-				}
+			}
+			.doing{
+				height:6px;
+				background:rgba(255,226,102,1);
+				border-radius:8px;
 			}
 		}
 		.u-info{

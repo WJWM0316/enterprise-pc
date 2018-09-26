@@ -1,5 +1,5 @@
 <template>
-  <div id="user">
+  <div id="user-info">
 		<left-component />
 		<right-component />
   </div>
@@ -19,7 +19,7 @@ import RightComponent from './right-content.vue'
 export default class pageIndex extends Vue {}
 </script>
 <style lang="scss">
-#user {
-	display: flex;
+#user-info {
+	display: -webkit-box;
 }
 </style>
