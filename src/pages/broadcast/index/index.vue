@@ -23,19 +23,19 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            v-if="props.scope.row.status === 1 || props.scope.row.status === 3"
+            v-if="props.scope.row.status === 1 || props.scope.row.status === 2"
             @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
+            v-if="props.scope.row.status === 3"
             @click="routeJump(props.scope.row.liveId, 'broadcastResponseList')">
               问答区
             </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.status === 2 || props.scope.row.status === 3"
+            v-if="props.scope.row.status === 3"
             @click="routeJump(props.scope.row.liveId, 'broadcastReviewList')">
               直播回顾
             </el-button>
@@ -59,8 +59,8 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.liveName}} </div>
                 <div class="lalel">
-                  <span class="group-name">{{props.scope.row.masterGroup}}</span>
-                  <span class="name">{{props.scope.row.masterName}}</span>
+                  <span class="group-name" :class="{'outer-group-name': props.scope.row.masterGroup === '外聘导师'}">{{props.scope.row.masterGroup}}</span>
+                  <span class="name" :class="{'outer-name': props.scope.row.masterGroup === '外聘导师'}">{{props.scope.row.masterName}}</span>
                 </div>
             </div>
           </div>
@@ -127,6 +127,14 @@ export default BroadcastIndex
       padding: 2px 5px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
+    }
+    .outer-group-name {
+      background: transparent;
+      color: #929292;
+    }
+    .outer-name {
+      background: transparent;
+      color: #929292;
     }
   }
   .live-status-icon-doing{

@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyPrompt from 'COMPONENTS/prompt/index.vue'
 @Component({
-  name: 'note-list',
+  name: 'comment-list',
   methods: {
     ...mapActions([
       'showMsg',
@@ -12,7 +12,11 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
       'setJobCircleNotetoTopApi',
       'updateJobCircleNoteVisibleApi',
       'recoverJobCircleNoteApi',
-      'getJobCircleCommentFirstListsApi'
+      'getJobCircleCommentFirstListsApi',
+      'deleteJobCircleCommentApi',
+      'recoverJobCircleCommentApi',
+      'setJobCircleHotCommentApi',
+      'cancleJobCircleHotCommentApi'
     ])
   },
   computed: {
@@ -40,20 +44,20 @@ export default class CommentList extends Vue {
   fields = [
     {
       prop: 'content',
-      label: '帖子内容',
+      label: '评论内容',
       align: 'center',
       showTips: 'no',
       width: '30%'
     },
     {
-      prop: 'realname',
+      prop: 'userName',
       label: '发布者',
       align: 'center',
       showTips: 'no',
       width: '10%'
     },
     {
-      prop: 'deletedAt',
+      prop: 'status',
       label: '状态',
       align: 'center',
       showTips: 'yes',
@@ -119,8 +123,8 @@ export default class CommentList extends Vue {
    */
   getJobCircleCommentFirstLists({ page, pageSize } = {}) {
     const params = {
-      id: this.form.id,
-      page: page || 1,
+      postId: this.form.id,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
@@ -149,16 +153,16 @@ export default class CommentList extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'comment':
-        this.$router.push({name: 'commentList', params: {id: item.id}})
+        this.$router.push({name: 'commentSecondList', params: {id: item.id}})
         break
       case 'delete':
-        this.$confirm('此操作将永久删除该帖子, 是否继续?', '提示', {
+        this.$confirm('是否删除该评论, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         })
         .then(() => {
-          this.deleteJobCircleNoteApi({id: item.id})
+          this.deleteJobCircleCommentApi({id: item.id, globalLoading: true})
               .then(() => {
                 this.getJobCircleCommentFirstListsApi()
               })
@@ -167,20 +171,20 @@ export default class CommentList extends Vue {
           this.$message({type: 'info', message: '取消操作~'})
         })
         break
-      case 'hide':
-        this.updateJobCircleNoteVisibleApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
+      case 'hot':
+        this.setJobCircleHotCommentApi({id: item.id, globalLoading: true})
+            .then(() => {
+              this.getJobCircleCommentFirstListsApi()
+            })
+        break
+      case 'cancelHot':
+        this.cancleJobCircleHotCommentApi({id: item.id, globalLoading: true})
             .then(() => {
               this.getJobCircleCommentFirstListsApi()
             })
         break
       case 'recover':
-        this.recoverJobCircleNoteApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
-            .then(() => {
-              this.getJobCircleCommentFirstListsApi()
-            })
-        break
-      case 'top':
-        this.setJobCircleNotetoTopApi({id: item.id})
+        this.recoverJobCircleCommentApi({id: item.id, globalLoading: true})
             .then(() => {
               this.getJobCircleCommentFirstListsApi()
             })

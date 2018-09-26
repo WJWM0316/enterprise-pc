@@ -7,7 +7,7 @@ import Qs from 'qs'
 // 添加直播
 export const postLiveApi = data => request('/live/create', 'post', Qs.stringify(data))
 // 编辑接口
-export const putLiveApi = params => request(`/live/${params.id}/edit`, 'put', Qs.stringify(params))
+export const putLiveApi = params => request(`/live/${params.id}/edit`, 'post', Qs.stringify(params))
 // 直播回顾
 export const getLiveReviewListApi = params => request(`/live/review/${params.id}`, 'get',  params)
 // 获取直播详情
@@ -19,4 +19,4 @@ export const getLiveInvisibleMenberListApi = params => request(`/live/invisible/
 // 获取直播列表
 export const getLiveListApi = params => request(`/live`, 'get', params)
 // 更新直播状态
-export const updateLiveApi = params => request(`/live`, 'patch', params)
+export const updateLiveApi = params => request(`/live/message/${params.id}`, 'patch', params)

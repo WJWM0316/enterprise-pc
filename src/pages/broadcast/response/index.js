@@ -38,7 +38,7 @@ export default class BroadcastReview extends Vue {
       label: '提问内容',
       align: 'center',
       showTips: 'no',
-      width: '10%'
+      width: '40%'
     },
     {
       prop: 'fromUserNam1',
@@ -108,9 +108,9 @@ export default class BroadcastReview extends Vue {
   /**
    * 获取课程列表
    */
-  getLiveReviewList() {
+  getLiveReviewList({ page, pageSize } = {}) {
     const params = {
-      page: page || 1,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
@@ -123,7 +123,6 @@ export default class BroadcastReview extends Vue {
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getLiveReviewList()
   }
 
   /**

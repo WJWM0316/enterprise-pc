@@ -1,13 +1,14 @@
 <template>
-  <section class="broadcast-review-list">
+  <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
-      <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
-      <el-breadcrumb-item>直播回顾</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
+      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item>二级评论</el-breadcrumb-item>
     </el-breadcrumb>
     <table-list
-    :list="liveReviewList.list"
+    :list="jobCircleCommentSecondLists.list"
     :fields="fields"
-    :total="liveReviewList.total"
+    :total="jobCircleCommentSecondLists.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -18,18 +19,10 @@
             @click="todoAction('delete', props.scope.row)">
               删除
           </el-button>
-          <el-button
-            type="text"
-            v-if="!props.scope.row.status"
-            @click="todoAction('recover', props.scope.row)">
-              恢复
-          </el-button>
         </div>
-        <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'content'">
-          {{props.scope.row.content}}
+        <div v-else-if="props.scope.column.property === 'status'">
+          {{ props.scope.row.status === 1 ? '正常' : '已删除' }}
         </div>
-        <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
@@ -37,13 +30,13 @@
 </template>
 
 <script>
-import BroadcastReview from './index'
-export default BroadcastReview
+import CommentList from './index'
+export default CommentList
 </script>
 
 <style lang="scss">
 @import "~COLORS/variables";
-.broadcast-review-list {
+.page-note-list {
   background: white;
   .zike-breadcrumb {
     margin-bottom: 30px;

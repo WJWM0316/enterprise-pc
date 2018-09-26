@@ -1,9 +1,16 @@
 /**
- * 所有用户对应的接口请求
+ * 个人中心模块api
  */
-import { post } from './api'
+import { request } from './index.js'
+import Qs from 'qs'
 
-export const demo = data => post({
-  url: '/article/lists',
-  data
-})
+// 个人课程信息接口
+export const getPersonalInfoLessonsApi = params => request(`/personal/info/${params.id}/lessons`, 'get')
+// 个人学习信息接口
+export const getPersonalInfoStudyApi = params => request(`/personal/info/${params.id}/study`, 'get')
+// 个人信息接口
+export const getPersonalInfoBaseApi = params => request(`/personal/info/${params.id}/base`, 'get')
+// 个人直播信息接口
+export const getPersonalInfoLivesApi = params => request(`/personal/info/${params.id}/lives`, 'get')
+// 个人空间工作圈信息接口
+export const getPersonalInfoJobCirclesApi = params => request(`/personal/info/${params.id}/jobcircles`, 'get')

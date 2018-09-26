@@ -173,11 +173,21 @@ export const routes = [
           module: 'work-zone'
         }
       },
-      // 评论的入口
+      // 一级评论的入口
       {
         path: 'comment/:id',
         name: 'commentList',
-        component: () => import(/* webpackChunkName: "commentList" */ '@/pages/work-zone/comment/index.vue'),
+        component: () => import(/* webpackChunkName: "commentList" */ '@/pages/work-zone/comment-first/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'work-zone'
+        }
+      },
+      // 二级评论的入口
+      {
+        path: 'comments/:id',
+        name: 'commentSecondList',
+        component: () => import(/* webpackChunkName: "commentSecondList" */ '@/pages/work-zone/comment-second/index.vue'),
         meta: {
           keepAlive: false,
           module: 'work-zone'
@@ -380,7 +390,7 @@ export const routes = [
     title: '个人中心',
     component: () => import(/* webpackChunkName: "user" */ '@/pages/user/index.vue'),
     redirect: {
-      name: 'userIndex'
+      name: 'userInfos'
     },
     meta: {
       keepAlive: false,
@@ -390,14 +400,15 @@ export const routes = [
     },
     children: [
       {
-        path: 'info',
-        name: 'userIndex',
-        component: () => import(/* webpackChunkName: "userIndex" */ '@/pages/user/index/index.vue'),
+        path: 'info/:id',
+        name: 'userInfos',
+        component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/index.vue'),
         meta: {
           keepAlive: false,
           module: 'user'
         }
-      },{
+      },
+      {
         path: 'post',
         name: 'userPost',
         component: () => import(/* webpackChunkName: "userPost" */ '@/pages/user/post/index.vue'),

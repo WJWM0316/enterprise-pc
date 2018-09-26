@@ -2,7 +2,8 @@
   <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
-      <el-breadcrumb-item>评论</el-breadcrumb-item>
+      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
@@ -23,51 +24,38 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
+            v-if="props.scope.row.status"
             @click="todoAction('delete', props.scope.row)">
               删除
           </el-button>
           <el-button
             type="text"
-            @click="todoAction('hide', props.scope.row)">
+            v-if="!props.scope.row.status"
+            @click="todoAction('recover', props.scope.row)">
+              恢复
+          </el-button>
+          <el-button
+            type="text"
+            v-if="!props.scope.row.isHot && props.scope.row.status"
+            @click="todoAction('hot', props.scope.row)">
               热门评论
           </el-button>
           <el-button
             type="text"
-            @click="todoAction('top', props.scope.row)">
-              {{props.scope.row.isTop ? '取消置顶' : '设置置顶'}}
+            v-if="props.scope.row.isHot && props.scope.row.status"
+            @click="todoAction('cancelHot', props.scope.row)">
+              取消热门
           </el-button>
           <el-button
             type="text"
-            @click="todoAction('recover', props.scope.row)">
+            v-if="props.scope.row.commentCount > 0"
+            @click="todoAction('comment', props.scope.row)">
               二级评论
           </el-button>
         </div>
-        <!-- 重新定义课程名这一列的显示 -->
-        <!-- <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
-          <div class="img-box">
-            <el-popover
-              ref="popoverCover"
-              placement="right"
-              width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
-            </el-popover>
-            <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
-              </i>
-            </div>
-          </div>
-          <div class="content">
-            <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.name}} </div>
-                <div class="lalel">
-                  <span class="group-name">{{props.scope.row.groupName}}</span>
-                  <span class="name">{{props.scope.row.realname}}</span>
-                </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- 其他列按后端给回的字段显示 -->
+        <div v-else-if="props.scope.column.property === 'status'">
+          {{ props.scope.row.status === 1 ? '正常' : '已删除' }}
+        </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>

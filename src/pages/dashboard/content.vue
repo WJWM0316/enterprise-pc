@@ -53,19 +53,19 @@
 		</section>
 		<section class="actions-flex-box">
 			<div>
-				<i class="icon-zike"></i>
+				<i class="icon-zike icon-add-menber"></i>
 				<p>添加成员</p>
 			</div>
 			<div>
-				<i class="icon-zike"></i>
+				<i class="icon-zike icon-add-notice"></i>
 				<p>新建通知</p>
 			</div>
 			<div @click="routeJump('coursePost')">
-				<i class="icon-zike"></i>
+				<i class="icon-zike icon-add-course"></i>
 				<p>新建课程</p>
 			</div>
 			<div @click="routeJump('broadcastPost')">
-				<i class="icon-zike"></i>
+				<i class="icon-zike icon-add-broadcast"></i>
 				<p>新建直播</p>
 			</div>
 		</section>
@@ -231,19 +231,6 @@ export default class pageDashboard extends Vue {
   routeJump(name) {
   	this.$router.push({name})
   }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-15
-   * @detail   测试一下
-   * @return   {[type]}   [description]
-   */
-  created() {
-  	this.getUserListsApi({count: 5})
-  		.then(() => {
-  			// console.log(this.dashboardUserLists)
-  		})
-  }
 }
 </script>
 <style lang="scss">
@@ -378,6 +365,22 @@ export default class pageDashboard extends Vue {
 			display: inline-block;
 			vertical-align: middle;
 			margin-right: 20px;
+		}
+		.icon-add-menber {
+			background: url('~IMAGES/pc_home_btn_add.png') no-repeat center center;
+			background-size: 100%;
+		}
+		.icon-add-notice {
+			background: url('~IMAGES/pc_hone_btn_newnotice.png') no-repeat center center;
+			background-size: 100%;
+		}
+		.icon-add-course {
+			background: url('~IMAGES/pc_hone_btn_newclass.png') no-repeat center center;
+			background-size: 100%;
+		}
+		.icon-add-broadcast {
+			background: url('~IMAGES/pc_hone_btn_newlive.png') no-repeat center center;
+			background-size: 100%;
 		}
 	}
 	.notice-flex-box{

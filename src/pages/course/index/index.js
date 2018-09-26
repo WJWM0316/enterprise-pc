@@ -102,19 +102,6 @@ export default class CourseList extends Vue {
     name: ''
   }
 
-  // 初始化的搜索表单
-  initForm = {
-    searchWord: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    count: this.zikeDefaultPageSize,
-    status: 0,
-    name: ''
-  }
-
   searchType = '1'
 
   init() {
@@ -130,7 +117,7 @@ export default class CourseList extends Vue {
    */
   getCourseList({ page, pageSize } = {}) {
     const params = {
-      page: page || 1,
+      page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
