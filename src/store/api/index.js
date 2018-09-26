@@ -62,6 +62,7 @@ export const request = (url, method, params = {}) => {
     case 'post':
       return axios.post(realurl, params)
     case 'put':
+      console.log(params)
       return axios.put(realurl, params)
     case 'delete':
       return axios.delete(realurl, params)

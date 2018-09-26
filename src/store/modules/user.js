@@ -25,6 +25,13 @@ const state = {
 
 const mutations = {
   [GET_PERSONAL_INFO_LESSONS] (state, data) {
+    data.map(field => {
+      if(!field.courseLessons) {
+        field.selfProcess = 0
+      } else {
+        field.selfProcess = (field.courseFinished / field.courseLessons) * 100
+      }
+    })
     state.personalInfoLessons = data
   },
   [GET_PERSONAL_INFO_STUDY] (state, data) {
@@ -61,7 +68,7 @@ const actions = {
   getPersonalInfoLessonsApi (store, params) {
     return getPersonalInfoLessonsApi(params)
       .then(res => {
-        store.commit(GET_PERSONAL_INFO_LESSONS, res.data.info)
+        store.commit(GET_PERSONAL_INFO_LESSONS, res.data.data)
         return res
       })
       .catch(error => {
@@ -77,7 +84,7 @@ const actions = {
   getPersonalInfoStudyApi (store, params) {
     return getPersonalInfoStudyApi(params)
       .then(res => {
-        store.commit(GET_PERSONAL_INFO_STUDY, res.data.info)
+        store.commit(GET_PERSONAL_INFO_STUDY, res.data.data)
         return res
       })
       .catch(error => {

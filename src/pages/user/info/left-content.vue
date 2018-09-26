@@ -10,19 +10,19 @@
 			<ul class="user-his-infos">
 				<li>
 					<i class="icon iconfont icon-post"></i>
-					<span>UI设计师</span>
+					<span>{{personalInfoBase.occupation}}</span>
 				</li>
 				<li>
 					<i class="icon iconfont icon-organization"></i>
-					<span>某某某事业群 | 某某平台部 | 某某技术部 | UED</span>
+					<span>{{personalInfoBase.groupName}}</span>
 				</li>
 				<li>
 					<i class="icon iconfont icon-phone"></i>
-					<span>155 3063 2317</span>
+					<span>{{personalInfoBase.mobile}}</span>
 				</li>
 				<li>
 					<i class="icon iconfont icon-email"></i>
-					<span>rashawn.breitenberg@yahoo.com</span>
+					<span>{{personalInfoBase.email}}</span>
 				</li>
 				<li>
 					<i class="icon iconfont icon-WeChat"></i>
@@ -36,16 +36,16 @@
 		<div class="his-dynamics">
 			<div class="his-dynamics-businiss-flex">
 				<div>
-					<strong>55</strong>
+					<strong>{{personalInfoStudy.studyTimeCount}}</strong>
 					<p>学习时长</p>
 				</div>
 				<div>
-					<strong>55</strong>
-					<p>学习时长</p>
+					<strong>{{personalInfoStudy.finishedLessonCount}}</strong>
+					<p>完成课程数</p>
 				</div>
 				<div>
-					<strong>55</strong>
-					<p>学习时长</p>
+					<strong>{{personalInfoStudy.sessionCardCount}}</strong>
+					<p>打卡数</p>
 				</div>
 			</div>
 			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>22.3% </span> 的同事 ~ </div>
@@ -90,7 +90,7 @@ export default class ComponentLeft extends Vue {
       this.getPersonalInfoJobCirclesApi(params)
     ])
     .then(() => {
-      console.log(11)
+      // console.log(this.personalInfoLessons)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')
@@ -99,7 +99,7 @@ export default class ComponentLeft extends Vue {
 }
 </script>
 <style lang="scss">
-#user {
+#user-info {
 	.user-left-content {
 		width: 388px;
 		margin-right: 22px;
