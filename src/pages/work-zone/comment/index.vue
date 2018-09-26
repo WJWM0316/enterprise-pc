@@ -75,8 +75,8 @@
 </template>
 
 <script>
-import NoteList from './index'
-export default NoteList
+import CommentList from './index'
+export default CommentList
 </script>
 
 <style lang="scss">

@@ -34,7 +34,7 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
     MyPrompt
   }
 })
-export default class NoteList extends Vue {
+export default class CommentList extends Vue {
 
   // 表格字段
   fields = [
@@ -53,36 +53,6 @@ export default class NoteList extends Vue {
       width: '10%'
     },
     {
-      prop: 'type',
-      label: '文件类型',
-      align: 'center',
-      showTips: 'no',
-      width: '10%'
-    },
-    {
-      prop: 'visible',
-      label: '是否公开',
-      align: 'center',
-      showTips: 'yes',
-      width: '15%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'visible-3'
-        },
-        {
-          label: '公开',
-          value: 'visible-0'
-        },
-        {
-          label: '隐藏',
-          value: 'visible-1'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
-    },
-    {
       prop: 'deletedAt',
       label: '状态',
       align: 'center',
@@ -92,15 +62,15 @@ export default class NoteList extends Vue {
       [
         {
           label: '全部',
-          value: 'delete-3'
+          value: 'status-3'
         },
         {
           label: '正常',
-          value: 'delete-0'
+          value: 'status-0'
         },
         {
           label: '已删除',
-          value: 'delete-1'
+          value: 'status-1'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -157,8 +127,8 @@ export default class NoteList extends Vue {
     if(this.form.visible) {
       params.visible = this.form.visible === '3' ? '' : this.form.visible
     }
-    if(this.form.delete) {
-      params.delete = this.form.delete === '3' ? '' : this.form.delete
+    if(this.form.status) {
+      params.status = this.form.status === '3' ? '' : this.form.status
     }
     if(this.form.keyword) {
       params.keyword = this.form.keyword

@@ -114,7 +114,6 @@ export default class BroadcastReview extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
-    console.log(this.$route.params)
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
     this.getLiveReviewList()
   }
@@ -125,7 +124,8 @@ export default class BroadcastReview extends Vue {
   getLiveReviewList({ page, pageSize } = {}) {
     const params = {
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
     if(this.form.status) {
       params.status = this.form.status
@@ -148,6 +148,5 @@ export default class BroadcastReview extends Vue {
    */
   todoAction(item) {
     this.updateLiveApi({id: item.liveId, status: item.status === 1 ? 0 : 1})
-    console.log(item)
   }
 }
