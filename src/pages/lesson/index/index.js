@@ -123,6 +123,9 @@ export default class CourseList extends Vue {
    */
   getWorkZoneLists() {
     let data = {
+      like: {
+        title:this.form.name
+      },
       order: {
         update_time: 'DESC',
         favors_count: 'DESC',
@@ -138,10 +141,11 @@ export default class CourseList extends Vue {
       page: 1,
       pageCount: 20
     }
-    console.log(param)
+
+    /*console.log(param)
     if(this.form.name) {
       params.name = this.form.name
-    }
+    }*/
 
     getLessonListsApi(param).then(res=>{
       this.lessonList = res.data.data

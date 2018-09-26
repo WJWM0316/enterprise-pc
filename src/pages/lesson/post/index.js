@@ -120,12 +120,14 @@ export default class WorkZonePost extends Vue {
         this.submitBtnTxt = '正在提交'
 
         // img id
-        let imgListId = ''
-        this.imageUpload.list.map(function(value,index){
-            console.log('map遍历:'+index+'--'+value);
-            imgListId+=value.id+','
-        })
-        this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
+        if(this.imageUpload.list.length>0){
+          let imgListId = ''
+          this.imageUpload.list.map(function(value,index){
+              console.log('map遍历:'+index+'--'+value);
+              imgListId+=value.id+','
+          })
+          this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
+        }
         // 需要提交的参数的key值
         const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
         // 过滤不需要提交的参数
@@ -142,15 +144,12 @@ export default class WorkZonePost extends Vue {
     let that = this
     let obj = {
       suc: function(res){
-          console.log(1111)
-
         that.$message({
           message: '成功',
           type: 'success'
         })
 
         setTimeout(() => {
-          console.log(1111)
           that.$router.go(-1)
           that.submitBtnClick = !that.submitBtnClick
           that.submitBtnTxt = '提交'
@@ -167,7 +166,7 @@ export default class WorkZonePost extends Vue {
         }
       },
     }
-
+    console.log('=======',params)
     if(this.action === 'add'){
       postLessonApi(params)
       .then(res => {
@@ -197,8 +196,9 @@ export default class WorkZonePost extends Vue {
 
   created() {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
-    this.form.course_id = this.$route.query.id
+    this.form.course_id = this.$route.params.id
 
+    console.log()
     if(this.action === 'add'){
       this.initPageByPost()
     }else {
@@ -215,13 +215,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   initPageByPost() {
-    /*this.form.av_id = 111
-
-    this.fileUpload.status = 'error'
-    this.fileUpload.progress = 100
-    this.fileUpload.progressText = ''
-    this.fileUpload.btnTxt = '重新上传'
-    this.fileUpload.show = true*/
   }
   /**
    * @Author   小书包
