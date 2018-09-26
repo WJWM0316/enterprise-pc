@@ -49,6 +49,6 @@ export const postLessonApi = params => request(`/CourseSection`, 'post', params)
 export const getLessonEditApi = params => request(`/CourseSection/${params.id}/edit`, 'get')
 
 //编辑课程课节
-export const lessonEditApi = params => request(`/CourseSection/${params.course_id}`, 'put', params)
+export const lessonEditApi = params => request(`/CourseSection/${params.lessonId}`, 'put', params)
 
 

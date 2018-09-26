@@ -123,15 +123,13 @@ export default class WorkZonePost extends Vue {
         if(this.imageUpload.list.length>0){
           let imgListId = ''
           this.imageUpload.list.map(function(value,index){
-              console.log('map遍历:'+index+'--'+value);
-              imgListId+=value.id+','
+              imgListId+=value.id+'-'
           })
           this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
         }
         // 需要提交的参数的key值
         const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
         // 过滤不需要提交的参数
-        console.log(this.form)
         const params = this.transformData(this.form, required)
         this.submit(params)
       }
@@ -160,13 +158,11 @@ export default class WorkZonePost extends Vue {
           that.submitBtnClick = !that.submitBtnClick
           that.submitBtnTxt = '提交'
         }, 3000)
-        console.log(err)
         if(err.msg){
           that.$message.error(err.msg);
         }
       },
     }
-    console.log('=======',params)
     if(this.action === 'add'){
       postLessonApi(params)
       .then(res => {
@@ -178,6 +174,7 @@ export default class WorkZonePost extends Vue {
         obj.catch(res)
       })
     }else {
+      params.lessonId = this.lessonId
       lessonEditApi(params)
       .then(res => {
         obj.suc(res)
@@ -198,12 +195,12 @@ export default class WorkZonePost extends Vue {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
     this.form.course_id = this.$route.params.id
 
-    console.log()
+    console.log(this.$route)
     if(this.action === 'add'){
       this.initPageByPost()
     }else {
       //编辑
-      this.lessonId = this.$route.id
+      this.lessonId = this.$route.query.id
       this.initPageByUpdate()
     }
   }
@@ -223,11 +220,10 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   initPageByUpdate() {
-    getLessonEditApi({id: this.form.course_id}).then(res=>{
+    getLessonEditApi({id: this.lessonId}).then(res=>{
       let msg = res.data.data
-      console.log(msg)
-
       this.ContentEditor.content = msg.details
+      this.imageUpload.list = msg.punchCardCImgInfo
       if(msg.av){
         this.fileUpload.infos.name = msg.av.fileName
         this.fileUpload.status = 'success'
@@ -255,7 +251,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleImageSuccess(res) {
-    console.log(res)
     this.imageUpload.list.push(res.data[0])
   }
 
@@ -266,7 +261,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeImageUpload(file) {
-    console.log(file)
   }
 
   /**
@@ -276,7 +270,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
-    console.log(res)
     this.form.av_id = res.data[0].id
 
     this.fileUpload.status = 'success'
@@ -292,7 +285,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
-    console.log(file)
     this.fileUpload.infos = file
     this.fileUpload.show = true
     this.fileUpload.btnTxt = '重新上传'
@@ -306,7 +298,6 @@ export default class WorkZonePost extends Vue {
    */
   uploadFileProcess(event, file, fileList){
     this.fileUpload.progress = file.percentage.toFixed(0)
-    console.log(file.percentage.toFixed(0))
   }
 
   /**
@@ -316,7 +307,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileError(err, file, fileList) {
-    console.log(err)
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'

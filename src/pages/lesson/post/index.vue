@@ -99,7 +99,7 @@
           :before-upload="beforeImageUpload"
           :on-success="handleImageSuccess"
           :show-file-list="false"
-          :limit="imageUpload.limit">
+          :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
           <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
           <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
