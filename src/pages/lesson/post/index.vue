@@ -87,7 +87,9 @@
       <el-form-item>
         <ul class="img-list">
           <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex">
-            <img :src="imgItem.url" alt="">
+
+            <img class="" :src="imgItem.url" alt="" @mouseover="imgOp (imgIndex,'over') "
+            @mouseout="imgOp(imgIndex,'out')" >
           </li>
         </ul>
         <el-upload
@@ -149,6 +151,9 @@ export default WorkZonePost
       width: 100%;
       height: 100%;
       border-radius: 4px;
+      &:after {
+
+      }
     }
   }
 }

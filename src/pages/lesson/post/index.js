@@ -92,6 +92,25 @@ export default class WorkZonePost extends Vue {
 
   // 编辑id
   lessonId = ''
+
+  created() {
+    this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
+    this.form.course_id = this.$route.params.id
+
+    console.log(this.$route)
+    if(this.action === 'add'){
+      this.initPageByPost()
+    }else {
+      //编辑
+      this.lessonId = this.$route.query.id
+      this.initPageByUpdate()
+    }
+  }
+
+  imgOp(index,type){
+    console.log(type,index)
+  }
+
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -191,19 +210,7 @@ export default class WorkZonePost extends Vue {
     this.$refs.form.validateField('content')
   }
 
-  created() {
-    this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
-    this.form.course_id = this.$route.params.id
-
-    console.log(this.$route)
-    if(this.action === 'add'){
-      this.initPageByPost()
-    }else {
-      //编辑
-      this.lessonId = this.$route.query.id
-      this.initPageByUpdate()
-    }
-  }
+  
 
   /**
    * @Author   小书包
