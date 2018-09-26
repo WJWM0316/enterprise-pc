@@ -6,7 +6,10 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
 @Component({
   name: 'lighthouse-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi', 'showMsg'])
+    ...mapActions([
+      'getJobCircleListsApi',
+      'showMsg'
+    ])
   },
   computed: {
     ...mapGetters(['jobCircleLists'])
@@ -108,7 +111,8 @@ export default class CourseList extends Vue {
   getWorkZoneLists({ page, pageSize } = {}) {
     const params = {
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
     if(this.form.name) {
       params.name = this.form.name

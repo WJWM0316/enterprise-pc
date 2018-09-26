@@ -55,6 +55,12 @@ export default ComponentTableList
       background: #f4f4f4;
       font-size: 14px;
       padding: 0;
+      .cell{
+        > div {
+          line-height: 46px;
+          vertical-align: middle;
+        }
+      }
     }
   }
   .el-table__body {

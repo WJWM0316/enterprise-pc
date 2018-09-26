@@ -16,7 +16,9 @@ export const upload_api = `${window.location.origin}/tiger/attaches`
 axios.defaults.timeout = 10000
 // axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-
+if(process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
+}
 // 请求拦截器
 axios.interceptors.request.use(
   config => {

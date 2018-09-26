@@ -97,28 +97,11 @@ export default class BroadcastReview extends Vue {
     name: ''
   }
 
-  // 初始化的搜索表单
-  initForm = {
-    name: ''
-  }
-
-  // 分页信息
-  pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    pageCount: 0,
-    total: 0
-  }
-
-  searchType = '1'
-
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
+    this.form = Object.assign(this.form, this.$route.query, this.$route.params)
     this.getLiveReviewList()
   }
 
@@ -126,7 +109,14 @@ export default class BroadcastReview extends Vue {
    * 获取课程列表
    */
   getLiveReviewList() {
-    const params = this.$route.params
+    const params = {
+      page: page || 1,
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
+    }
+    if(this.form.id) {
+      params.id = this.form.id
+    }
     this.getLiveReviewListApi(params)
   }
 

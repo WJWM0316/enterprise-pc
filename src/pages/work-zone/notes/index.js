@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-
+import MyPrompt from 'COMPONENTS/prompt/index.vue'
 @Component({
   name: 'note-list',
   methods: {
@@ -10,7 +10,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'showMsg',
       'getJobCircleNoteListsApi',
       'deleteJobCircleNoteApi',
-      'setJobCircleNotetoTopApi'
+      'setJobCircleNotetoTopApi',
+      'updateJobCircleNoteVisibleApi',
+      'recoverJobCircleNoteApi'
     ])
   },
   computed: {
@@ -26,9 +28,10 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       immediate: true
     }
   },
-   components: {
+  components: {
     TableList,
-    SearchBar
+    SearchBar,
+    MyPrompt
   }
 })
 export default class NoteList extends Vue {
@@ -123,6 +126,16 @@ export default class NoteList extends Vue {
     keyword: ''
   }
 
+  // 确认信息弹窗
+  models = {
+    show: true,
+    title: '提示',
+    showClose: true,
+    confirmText: '提交',
+    currentModalName: '',
+    type: 'confirm'
+  }
+
   /**
    * 初始化表单、分页页面数据
    */
@@ -138,18 +151,19 @@ export default class NoteList extends Vue {
     const params = {
       id: this.form.id,
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
-    if(this.form.status) {
-      params.status = this.form.status
+    if(this.form.visible) {
+      params.visible = this.form.visible === '3' ? '' : this.form.visible
+    }
+    if(this.form.delete) {
+      params.delete = this.form.delete === '3' ? '' : this.form.delete
     }
     if(this.form.keyword) {
       params.keyword = this.form.keyword
     }
     this.getJobCircleNoteListsApi(params)
-        .then(() => {
-          console.log(this.jobCircleNoteLists)
-        })
   }
 
   // 点击搜索时触发
@@ -165,10 +179,10 @@ export default class NoteList extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'comment':
-        this.showMsg({ content: '评论操作~', type: 'error', duration: 3000 })
+        this.$router.push({name: 'commentList', params: {id: item.id}})
         break
       case 'delete':
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除该帖子, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -179,9 +193,21 @@ export default class NoteList extends Vue {
                 this.getJobCircleNoteLists()
               })
         })
+        .catch(action => {
+          this.$message({type: 'info', message: '取消操作~'})
+        })
         break
       case 'hide':
-        this.showMsg({ content: '隐藏操作~', type: 'error', duration: 3000 })
+        this.updateJobCircleNoteVisibleApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
+            .then(() => {
+              this.getJobCircleNoteLists()
+            })
+        break
+      case 'recover':
+        this.recoverJobCircleNoteApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
+            .then(() => {
+              this.getJobCircleNoteLists()
+            })
         break
       case 'top':
         this.setJobCircleNotetoTopApi({id: item.id})
@@ -193,4 +219,6 @@ export default class NoteList extends Vue {
         break
     }
   }
+  confirm() {}
+  cancel() {}
 }

@@ -6,7 +6,8 @@ import {
   GET_GROUP_LISTS,
   GET_JOB_CIRCLE_MENBER_DETAILS,
   UPDATE_GROUP_LISTS,
-  GET_JOB_CIRCLE_NOTE_LISTS
+  GET_JOB_CIRCLE_NOTE_LISTS,
+  GET_JOB_CIRCLE_COMMENT_FIRSTLISTS
 } from '../mutation-types'
 
 import {
@@ -20,7 +21,10 @@ import {
   getGroupListsApi,
   getJobCircleNoteListsApi,
   deleteJobCircleNoteApi,
-  setJobCircleNotetoTopApi
+  setJobCircleNotetoTopApi,
+  updateJobCircleNoteVisibleApi,
+  recoverJobCircleNoteApi,
+  getJobCircleCommentFirstListsApi
 } from 'API/workZone'
 
 const state = {
@@ -34,7 +38,14 @@ const state = {
   jobCircleDetails: {},
   jobCircleOrganizationLists: [],
   jobCircleHitLists: [],
-  jobCircleNoteLists: {}
+  jobCircleNoteLists: {
+    list: [],
+    total: 0
+  },
+  jobCircleCommentFirstLists: {
+    list: [],
+    total: 0
+  }
 }
 
 const mutations = {
@@ -71,6 +82,10 @@ const mutations = {
   [GET_JOB_CIRCLE_NOTE_LISTS] (state, data) {
     state.jobCircleNoteLists.list = data.data
     state.jobCircleNoteLists.total = data.meta.total
+  },
+  [GET_JOB_CIRCLE_COMMENT_FIRSTLISTS] (state, data) {
+    state.jobCircleCommentFirstLists.list = data.data
+    state.jobCircleCommentFirstLists.total = data.meta.total
   }
 }
 
@@ -81,7 +96,8 @@ const getters = {
   jobCircleDetails: state => state.jobCircleDetails,
   jobCircleOrganizationLists: state => state.jobCircleOrganizationLists,
   jobCircleHitLists: state => state.jobCircleHitLists,
-  jobCircleNoteLists: state => state.jobCircleNoteLists
+  jobCircleNoteLists: state => state.jobCircleNoteLists,
+  jobCircleCommentFirstLists: state => state.jobCircleCommentFirstLists
 }
 
 const actions = {
@@ -263,6 +279,54 @@ const actions = {
     return setJobCircleNotetoTopApi(params)
       .then(res => {
         // store.commit(GET_JOB_CIRCLE_NOTE_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   圈主设置工作圈帖子隐藏/公开
+   * @return   {[type]}          [description]
+   */
+  updateJobCircleNoteVisibleApi(store, params) {
+    return updateJobCircleNoteVisibleApi(params)
+      .then(res => {
+        // store.commit(GET_JOB_CIRCLE_NOTE_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   工作圈帖子删除恢复
+   * @return   {[type]}          [description]
+   */
+  recoverJobCircleNoteApi(store, params) {
+    return recoverJobCircleNoteApi(params)
+      .then(res => {
+        // store.commit(GET_JOB_CIRCLE_NOTE_LISTS, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   工作圈一级评论
+   * @return   {[type]}          [description]
+   */
+  getJobCircleCommentFirstListsApi(store, params) {
+    return getJobCircleCommentFirstListsApi(params)
+      .then(res => {
+        store.commit(GET_JOB_CIRCLE_COMMENT_FIRSTLISTS, res.data)
         return res
       })
       .catch(error => {

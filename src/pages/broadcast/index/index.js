@@ -141,7 +141,8 @@ export default class BroadcastIndex extends Vue {
   getLiveLists({ page, pageSize } = {}) {
     const params = {
       page: page || 1,
-      count: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      globalLoading: true
     }
     if(this.form.liveName) {
       params.liveName = this.form.liveName

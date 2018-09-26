@@ -23,7 +23,7 @@ export const getGroupListsApi = params => request('/group', 'get', params)
 // 获取工作圈帖子列表
 export const getJobCircleNoteListsApi = params => request(`/jobcircle/postlist/${params.id}`, 'get', params)
 // 获取工作圈一级评论
-export const getJobCircleCommentFirstListsApi = params => request('/jobcircle/comment/commentList', 'get', params)
+export const getJobCircleCommentFirstListsApi = params => request(`/jobcircle/comment/commentList/${params.id}`, 'get', params)
 // 获取工作圈二级评论
 export const getJobCircleCommentSecondListsApi = params => request('/jobcircle/comment/replyList', 'get', params)
 // 【工作圈】搜索一级评论
@@ -52,3 +52,5 @@ export const getJobCircleAlbumApi = params => request(`/jobcircle/picture/${para
 export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params.id}`, 'get', params)
 // 获取工作圈所有帖子链接分页
 export const getJobCircleUrlsApi = params => request(`/jobcircle/urls/${params.id}`, 'get', params)
+// 工作圈帖子删除恢复
+export const recoverJobCircleNoteApi = params => request(`/jobcircle/post/recover`, 'put', params)
