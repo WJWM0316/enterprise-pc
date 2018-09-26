@@ -13,7 +13,7 @@
           placeholder="课节名称" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addLesson" class="click-item">新建课节</el-button>
+        <el-button type="primary" @click="todoAction('add')" class="click-item">新建课节</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -33,14 +33,8 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('note', props.scope.row)">
-              帖子管理
-            </el-button>
-          <el-button
-            type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('menber', props.scope.row)">
-              成员管理
+            @click="todoAction('punch', props.scope.row)">
+              打卡管理
             </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->

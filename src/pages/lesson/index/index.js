@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import { getLessonListsApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -108,6 +109,7 @@ export default class CourseList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
+    console.log(this.$route)
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
@@ -118,10 +120,11 @@ export default class CourseList extends Vue {
    * 获取课程列表
    */
   getWorkZoneLists() {
-    const params = {page: 1, count: 20, ...this.$route.query}
+    const params = {page: 1, count: 20, ...this.$route.params}
     if(this.form.name) {
       params.name = this.form.name
     }
+
     this.getJobCircleListsApi(params)
   }
 
@@ -131,31 +134,22 @@ export default class CourseList extends Vue {
     this.getWorkZoneLists()
   }
 
-  // 新建课节-跳转
-  addLesson() {
-    this.$router.push({ name: 'lessonPost'})
-  }
-
   //设置排序
   setSort(){
     
   }
 
   todoAction(type, item) {
+    console.log(item)
     switch(type) {
       case 'edit':
-        this.$router.push({
-          name: 'workZoneUpdate',
-          params: {
-            id: item.id
-          }
-        })
+        this.$router.push({ name: 'lessonEdit',query: {id: item.id}})
         break
-      case 'note':
-        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
+      case 'add':
+        this.$router.push({ name: 'lessonAdd'})
         break
-      case 'menber':
-        this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
+      case 'punch':
+        //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       default:
         break

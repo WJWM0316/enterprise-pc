@@ -35,7 +35,7 @@ export const distoryAndRegaihnLessonPunchApi = params => request(`/CourseSection
 export const setExcellentCourseCardApi = params => request(`/CourseSection/CourseSectionCard/setExcellentCourseCard`, 'post')
 
 // 获取课程课节列表
-export const getLessonListsApi = params => request(`CourseSection`, 'get')
+export const getLessonListsApi = params => request(`/CourseSection`, 'get', params)
 
 // 新增课程课节
 export const postLessonApi = params => request(`/CourseSection`, 'post', params)

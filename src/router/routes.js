@@ -400,7 +400,7 @@ export const routes = [
   },
   // 课节模块
   {
-    path: '/lesson',
+    path: '/lesson/:id',
     name: 'lesson',
     title: '课节',
     // 引用的组件
@@ -426,8 +426,18 @@ export const routes = [
         }
       },
       {
-        path: 'post',
-        name: 'lessonPost',
+        path: 'lessonEdit/:id',
+        name: 'lessonEdit',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'course'
+        }
+      },
+
+      {
+        path: 'lessonAdd',
+        name: 'lessonAdd',
         component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
         meta: {
           keepAlive: false,

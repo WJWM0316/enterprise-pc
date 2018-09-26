@@ -86,6 +86,9 @@ export default class WorkZonePost extends Vue {
 
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
+
+  // 状态。编辑或者添加
+  action = ''
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -148,11 +151,16 @@ export default class WorkZonePost extends Vue {
   }
 
   created() {
-    
+    this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
     this.form.course_id = 1
 
-    this.initPageByPost()
-    this.initPageByUpdate()
+    console.log(this.$route)
+
+    if(this.action === 'add'){
+      this.initPageByPost()
+    }else {
+      this.initPageByUpdate()
+    }
   }
 
   /**
