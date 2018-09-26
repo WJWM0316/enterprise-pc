@@ -14,9 +14,8 @@
         </div>
         <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
           <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
-        </div>
-        <div class="img-box" v-if="form.icon.tem">
-          <img :src="form.icon.tem" class="upload-cover">
+          <img :src="avatarUrl" class="upload-cover">
+          <div class="upload-cover-mask"></div>
         </div>
 		  </el-form-item>
 		  <el-form-item label="所属部门" prop="region">
@@ -40,6 +39,29 @@
 		  <el-form-item label="微信号" prop="name">
 		    <el-input v-model="form.name"></el-input>
 		  </el-form-item>
+      <!-- 所属组织 -->
+      <el-form-item
+        label="所属组织"
+        prop="check_group_id"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.group_id.show">
+            已选择：
+            <span
+              @click="removeMultipleCheck('group_id', groupIndex)"
+              :key="groupIndex"
+              v-for="(groupItem, groupIndex) in form.group_id.tem">
+                {{groupItem.groupName}}<i class="el-icon-close"></i>
+            </span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.group_id.show}"
+            @click="openModal('group_id')">
+              {{form.group_id.show ? '重新选择' : '点击选择'}}
+          </el-button>
+      </el-form-item>
 		  <el-form-item label="微信号" prop="name">
 		    <el-button type="primary">提交</el-button>
 		    <el-button>删除该账号</el-button>
@@ -63,14 +85,182 @@
 	      </div>
 	    </div>
 	  </div>
+    <modal-dialog
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :min-height="models.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="margin-left: 10px;">
+          <h3 class="dialog-title">
+            {{models.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html">
+          <div class="customize-html-content">
+            <!-- 课程分类-start -->
+            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'category_id'">
+              <div class="group-list">
+                <el-button
+                  size="large"
+                  v-for="(cateItem, cateIndex) in temcategoryList"
+                  :key="cateIndex"
+                  :class="{'zike-btn-active-selected': cateItem.active}"
+                  @click="selectCategory(cateItem, 'categoryList')">
+                    {{cateItem.categoryName}}
+                </el-button>
+                <el-popover
+                  placement="top"
+                  width="304"
+                  trigger="click"
+                  popper-class="my-popover0001"
+                  v-model="categoryModal.show">
+                  <div class="header">新建分类</div>
+                  <div class="main">
+                    <el-input v-model="categoryModal.name" placeholder="请输入分类名，限制10个字以内" :maxlength="10"></el-input>
+                  </div>
+                  <div class="footer-btn-box">
+                    <el-button size="mini" @click="categoryModal.show = false">取消</el-button>
+                    <el-button type="primary" size="mini" @click="getCategory" :loading="categoryModal.loading">确定</el-button>
+                  </div>
+                  <el-button size="large" slot="reference">
+                    + &nbsp;新建分类
+                  </el-button>
+                </el-popover>
+              </div>
+              <div class="tips">
+                如果需要对部门组织进行修改，请点击<span>【分类设置】</span>进行修改；如无权限，请联系管理员修改。
+              </div>
+            </div>
+            <!-- 课程分类-end -->
+            <!-- 选择课程导师-start -->
+            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'master_uid'">
+              <div style="margin: 30px 0;">
+                <search-bar
+                  width="464px"
+                  @search="handleSearch"
+                  v-model="ownerUidName"
+                  placeholder="请输入导师名称" />
+              </div>
+              <div class="group-list">
+                <el-button size="large" @click="tutorClassification('master_uid', 'outer')">外部导师</el-button>
+                <el-button
+                  size="large"
+                  v-for="(groupItem, groupIndex) in groupLists"
+                  :key="groupIndex"
+                  :class="{'zike-btn-active-selected': groupItem.active}"
+                  @click="tutorClassification('master_uid', groupItem)">
+                    {{groupItem.groupName}}
+                </el-button>
+              </div>
+              <div class="menber-list">
+                <el-radio v-model="form.master_uid.value"
+                  :label="tutorItem.uid"
+                  :key="tutorIndex"
+                  @change="singleSelection('master_uid', tutorItem)"
+                  v-for="(tutorItem, tutorIndex) in temTutorLists">
+                    {{tutorItem.realname}}
+                </el-radio>
+              </div>
+            </div>
+            <!-- 选择课程成员-end -->
+            <!-- 组织-start -->
+            <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in tem_groupLists"
+                 @click="seleteGroup(groupItem, 'groupLists')"
+                :class="{'zike-btn-active-selected': groupItem.active}"
+                :key="groupIndex">
+                  {{groupItem.groupName}}
+              </el-button>
+              <p class="tips">
+                如果需要对部门组织进行修改，请点击左侧的
+                <router-link :to="{name: 'organization'}" class="set">【组织】</router-link>
+                进行修改；如无权限，请联系管理员修改。
+              </p>
+            </div>
+            <!-- 组织-end -->
+            <!-- 必修学员-start -->
+            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
+              <div style="margin: 30px 0;">
+                <search-bar
+                  width="464px"
+                  @search="handleSearch"
+                  v-model="ownerUidName"
+                  placeholder="请输入导师名称" />
+              </div>
+              <div class="group-list">
+                <el-button size="large" @click="memberClassification('uid', 'all')">所有人</el-button>
+                <el-button
+                  size="large"
+                  v-for="(groupItem, groupIndex) in groupLists"
+                  :key="groupIndex"
+                  @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
+                    {{groupItem.groupName}}
+                </el-button>
+              </div>
+              <div class="menber-list">
+                <el-checkbox-group v-model="form.members.tem">
+                  <el-checkbox
+                    :label="menberItem.realname"
+                    :key="menberIndex"
+                    @change="multipleSelection('members', menberItem)"
+                    v-for="(menberItem, menberIndex) in temMenberLists" />
+                </el-checkbox-group>
+              </div>
+            </div>
+            <!-- 必修学员-end -->
+             <!-- 不可见学员-start -->
+            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'hits'">
+              <div style="margin: 30px 0;">
+                <search-bar
+                  width="464px"
+                  @search="handleSearch"
+                  v-model="ownerUidName"
+                  placeholder="请输入导师名称" />
+              </div>
+              <div class="group-list">
+                <el-button size="large" @click="memberClassification('uid', 'all')">所有人</el-button>
+                <el-button
+                  size="large"
+                  v-for="(groupItem, groupIndex) in groupLists"
+                  :key="groupIndex"
+                  @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
+                    {{groupItem.groupName}}
+                </el-button>
+              </div>
+              <div class="menber-list">
+                <el-checkbox-group v-model="form.hits.tem">
+                  <el-checkbox
+                    :label="menberItem.realname"
+                    :key="menberIndex"
+                    @change="multipleSelection('hits', menberItem)"
+                    v-for="(menberItem, menberIndex) in temMenberLists" />
+                </el-checkbox-group>
+              </div>
+            </div>
+            <!-- 不可见学员-end -->
+          </div>
+        </div>
+    </modal-dialog>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import defaultAvatar from 'IMAGES/img_normal_head.png';
+import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
 @Component({
+  components: {
+    ModalDialog
+  },
 	computed: {
     avatarUrl() {
       return this.form.icon.tem || defaultAvatar
@@ -84,6 +274,11 @@ export default class pageUser extends Vue {
       value: '',
       tem: '',
       showError: false
+    },
+    group_id: {
+      tem: [],
+      value: '',
+      show: false
     }
 	}
 	rules = {
@@ -107,6 +302,86 @@ export default class pageUser extends Vue {
       value: '裁剪完成，立即上传'
     }
   }
+
+  // 确认信息弹窗
+  models = {
+    show: false,
+    title: '提示',
+    showClose: true,
+    confirmText: '提交',
+    currentModalName: '',
+    type: 'confirm'
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   打开弹窗model
+   */
+  openModal(type) {
+    switch(type) {
+      case 'category_id':
+        this.models.title = '选择分类'
+        break
+      case 'master_uid':
+        this.models.title = '选择导师'
+        break
+      case 'group_id':
+        this.models.title = '选择组织'
+        break
+      case 'members':
+        this.models.title = '参与课程学员'
+        break
+      case 'hits':
+        this.models.title = '对这些人不可见'
+        break
+      default:
+        break
+    }
+    this.models.currentModalName = type
+    this.models.width = '860px'
+    this.models.minHeight = '284px'
+    this.temMenberLists = [...this.menberLists]
+    this.models.show = true
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   弹窗确定按钮
+   * @return   {[type]}   [description]
+   */
+  confirm() {
+    const type = this.models.currentModalName
+    this.form[type].show = this.form[type].value ? true : false
+    this.models.show = false
+    this.ownerUidName = ''
+    this.form[`check_${type}`] = this.form[type].value
+    this.$refs.form.validateField(`check_${type}`)
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   弹窗关闭按钮
+   */
+  cancel() {
+    const type = this.models.currentModalName
+    // this.form[type].value = ''
+    // this.form[type].tem = []
+    this.models.show = false
+    this.ownerUidName = ''
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   移除多选
+   */
+  removeMultipleCheck(type, index) {
+    const value = this.form[type].value.split(',').splice(index, 1)
+    this.form[type].tem.splice(index, 1)
+    this.form[type].value = value.join(',')
+    this.form[type].show = this.form[type].tem <= 0 ? false : true
+  }
+
 	/**
    * 用户点击头像
    */
@@ -254,28 +529,19 @@ export default class pageUser extends Vue {
 }
 #user-post {
   .upload-image {
-	    display: inline-block;
-	    line-height: 1;
-	    cursor: pointer;
-	    border: 1px solid #dcdfe6;
-	    color: #606266;
-	    -webkit-appearance: none;
-	    text-align: center;
-	    box-sizing: border-box;
-	    -webkit-transition: .1s;
-	    transition: .1s;
-	    font-weight: 500;
-	    padding: 12px 20px;
-	    font-size: 14px;
-	    border-radius: 4px;
-  		background-color: #FFE266;
-  		border-color: #FFE266;
-  		color:rgba(53,64,72,1);
-  		display: inline-block;
-  		vertical-align: middle;
-  		width:96px;
-  		height: 96px;
-  		border-radius: 50%;
+    cursor: pointer;
+    transition: .1s;
+		display: inline-block;
+		vertical-align: middle;
+		width:96px;
+		height: 96px;
+		border-radius: 50%;
+    &:hover{
+      .upload-cover-mask{
+        opacity: .3;
+        visibility: visible;
+      }
+    };
 	}
 	.upload-image-tips {
 		font-size:12px;
@@ -298,15 +564,33 @@ export default class pageUser extends Vue {
   		text-align: left;
   	}
   }
-  .img-box {
-  	overflow: hidden;
-  	margin-top: 15px;
-  	.upload-cover {
-  		width:96px;
-			height:96px;
-			border-radius:4px;
-			display: block;
-  	}
+  .upload-cover {
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .upload-cover-mask {
+    width:96px;
+    height:96px;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    background: black;
+    border-radius:50%;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: all ease .4s;
   }
   .upload-error-tips {
   	width:96px;
