@@ -108,7 +108,13 @@ export default class WorkZonePost extends Vue {
   }
 
   imgOp(index,type){
-    console.log(type,index)
+    if(type === 'over'){
+      this.imageUpload.list[index].show = true
+    }else if(type === 'out'){
+      this.imageUpload.list[index].show = false
+    }else if(type === 'delete'){
+      this.imageUpload.list.splice(index,1)
+    }
   }
 
   /**
@@ -229,8 +235,13 @@ export default class WorkZonePost extends Vue {
   initPageByUpdate() {
     getLessonEditApi({id: this.lessonId}).then(res=>{
       let msg = res.data.data
-      this.ContentEditor.content = msg.details
+
+      msg.punchCardCImgInfo.map(function(value,index){
+        value.show = false
+      })
+      
       this.imageUpload.list = msg.punchCardCImgInfo
+      this.ContentEditor.content = msg.details
       if(msg.av){
         this.fileUpload.infos.name = msg.av.fileName
         this.fileUpload.status = 'success'
@@ -258,6 +269,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleImageSuccess(res) {
+    res.data[0].show = false
     this.imageUpload.list.push(res.data[0])
   }
 

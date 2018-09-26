@@ -48,7 +48,7 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'communityCount',
-      label: 'TA的邀请',
+      label: 'TA的课程',
       align: 'center',
     },
     {
@@ -71,7 +71,7 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'communityCount',
-      label: 'TA的邀请',
+      label: 'TA的课程',
       align: 'center',
     },
     {

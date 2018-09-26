@@ -10,7 +10,7 @@
           width="500px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="课节名称" />
+          placeholder="请输入关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="todoAction('add')" class="click-item">新建课节</el-button>

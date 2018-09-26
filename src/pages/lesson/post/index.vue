@@ -86,10 +86,14 @@
       <!-- 上传图片 start-->
       <el-form-item>
         <ul class="img-list">
-          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex">
-
-            <img class="" :src="imgItem.url" alt="" @mouseover="imgOp (imgIndex,'over') "
-            @mouseout="imgOp(imgIndex,'out')" >
+          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
+            @mouseover="imgOp (imgIndex,'over') "
+            @mouseout="imgOp(imgIndex,'out')" 
+          >
+            <img class="" :src="imgItem.url" alt="" >
+            <span class="deleteImg" v-if="imgItem.show"
+              @click="imgOp(imgIndex,'delete')"
+            >删除图片</span>
           </li>
         </ul>
         <el-upload
@@ -146,6 +150,18 @@ export default WorkZonePost
       float: left;
       background: rgba(0,0,0,.05);
       position: relative;
+      .deleteImg {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #333333;
+        font-size: 14px;
+        background: #ececec;
+      }
     }
     img{
       width: 100%;
