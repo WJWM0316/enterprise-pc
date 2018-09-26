@@ -17,7 +17,7 @@
           placeholder="请输入导师名称或关键字" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" class="click-item" @click="openMadal">添加外部导师</el-button>
+        <el-button type="primary" class="click-item" @click="openMadal" v-if="tutorType === 'outer'">添加外部导师</el-button>
       </el-col>
     </el-row>
     <table-list
