@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, deleteGroupApi, addGroupApi, editGroupApi } from '@/store/api/organization.js'
 
 @Component({
-  name: 'menber-list',
+  name: 'groupPost',
   methods: {
     ...mapActions([
       'showMsg',
@@ -32,26 +32,16 @@ import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/o
   }
 })
 export default class MenberList extends Vue {
-
-
   // 搜索表单
   form = {
-    groupName:'',
     id: '',
     name: '',
-    owner_uid: '',
-    organizations: '',
-    cover_img_id: '',
-    members: '',
-    content: '',
-    hits: '',
-    status: '',
-    sort: ''
   }
 
   rules = {
-    groupName: [
-      { required: true, message: '请填写课节标题', trigger: 'blur' }
+    name: [
+      //{ required: true, message: '分组名必须填写，最多20个字', trigger: 'blur' }
+      { validator: this.validatePass,  trigger: 'blur' }
     ]
   }
 
@@ -70,9 +60,23 @@ export default class MenberList extends Vue {
   // 搜索成员
   searchName = ''
 
-  create(){
-
+  //编辑需要
+  editData = {
+    groupId: '',
+    name: '',
+    groupNameList:[]
   }
+
+  validatePass(rule, value, callback){
+    if (value === '') {
+      callback(new Error('分组名必须填写，最多20个字'));
+    } else if ( this.editData.groupNameList.includes(value)){
+      callback(new Error('分组名已经存在，请重新填写'));
+    }else {
+      callback();
+    }
+  }
+
   init() {
     const params = {
       id: this.$route.params.id
@@ -88,33 +92,62 @@ export default class MenberList extends Vue {
       ]
     )
     .then((res) => {
-      console.log(res)
       this.temMenberLists = [...this.menberLists]
       this.checkList = data
-      this.form.members = data.value.join(',')
+
+      if(this.$route.name === 'editGroup'){
+        this.getEditMsg()
+      }
+      
+    },res=>{
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
     })
   }
+
+  //编辑信息操作
+  getEditMsg(){
+    getMemberListApi({groupId: this.$route.params.groupId}).then(res=>{
+      const menberLists = [...res.data.data]
+      const list = []
+
+      menberLists.map(field => {
+        list.push(field.realname)
+      })
+      this.checkList.tem = list
+      this.form.name = res.data.data[0].group[0].groupName
+      this.multipleSelection()
+
+
+      this.editData.groupId = this.$route.params.groupId
+      this.editData.name = this.form.name
+      this.groupLists.map(item=>{
+        if(item.groupName != this.form.name){
+          this.editData.groupNameList.push(item.groupName)
+        }
+      })
+    })
+  }
   
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-17
    * @detail   搜索成员
-   * @return   {[type]}   [description]
    */
   handleSearch() {
+    let params = {}
+    if(this.searchName.length>0){
+      params = {
+        name: this.searchName
+      }
+    }
     // 获取成员列表
-    this.getMenberListsApi({name: this.searchName})
+    this.getMenberListsApi(params)
       .then(() => {
         this.temMenberLists = [...this.menberLists]
       })
   }
 
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-10
    * @detail  刷选组员数据
    */
   filterWorkZoneMenber(item) {
@@ -126,27 +159,23 @@ export default class MenberList extends Vue {
   }
 
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-10
    * @detail   多选
    */
   multipleSelection() {
     const menberLists = [...this.menberLists]
     const value = []
+
     menberLists.map(field => {
       if(this.checkList.tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
+
     this.checkList.value = value
-    this.form.members = value.join(',')
   }
 
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
    * @detail   成员分类
-   * @return   {[type]}   [description]
    */
   memberClassification(groupId) {
     const data = {
@@ -168,39 +197,56 @@ export default class MenberList extends Vue {
       })
     }
 
-    console.log(data)
     this.checkList = data
   }
 
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-18
    * @detail   修改表单
-   * @return   {[type]}   [description]
    */
-  submit() {
-    this.submitBtnClick = !this.submitBtnClick
-    this.putJobCircleApi(this.form)
-      .then(res => {
+  submit(params) {
+    let obj = {
+      suc: (res)=>{
         this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
-          this.$router.push({name: 'workZoneList'})
+          this.$router.push({name: 'groupManage'})
         }, 3000)
-      })
-      .catch(err => {
+      },
+      err: (err)=>{
         this.$message.error(`${err.msg}~`)
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
-          this.$router.push({name: 'workZoneList'})
+          //this.$router.push({name: 'groupManage'})
         }, 3000)
-      })
+      }
+    }
+    if(this.$route.name === 'addGroup'){
+      addGroupApi(params)
+        .then(res => {
+          obj.suc(res)
+        })
+        .catch(err => {
+          obj.err(err)
+        })
+    }else {
+      params.id = this.$route.params.groupId
+      editGroupApi(params)
+        .then(res => {
+          obj.suc(res)
+        })
+        .catch(err => {
+          obj.err(err)
+        })
+    }
+
+    
   }
 
   // 检测是否可以提交
   checkSubmit() {
+
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加loading
@@ -208,23 +254,16 @@ export default class MenberList extends Vue {
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
 
-        // img id
-        if(this.imageUpload.list.length>0){
-          let imgListId = ''
-          this.imageUpload.list.map(function(value,index){
-              imgListId+=value.id+'-'
-          })
-          this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
+        const params = {
+          name: this.form.name,
+          memberList: this.checkList.value.join(',')
         }
-        // 需要提交的参数的key值
-        const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
-        // 过滤不需要提交的参数
-        const params = this.transformData(this.form, required)
+
         this.submit(params)
       }
     })
   }
-  
+
   transformData(data, params) {
     const formData = {}
     params.map(field => {

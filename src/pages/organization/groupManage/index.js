@@ -110,6 +110,7 @@ export default class groupList extends Vue {
   }
 
   todoAction(type, item) {
+    console.log(item)
     switch(type) {
       case 'add':
         this.$router.push({
@@ -120,7 +121,7 @@ export default class groupList extends Vue {
         this.$router.push({
           name: 'editGroup',
           params: {
-            id: item.id ? item.id : 0
+            groupId: item.groupId
           }
         })
         break

@@ -279,7 +279,7 @@ export const routes = [
           module: 'organization'
         }
       },{
-        path: 'editGroup',
+        path: 'editGroup/:groupId',
         name: 'editGroup',
         component: () => import( '@/pages/organization/groupPost/index.vue'),
         meta: {
@@ -459,15 +459,6 @@ export const routes = [
       {
         path: 'lessonAdd',
         name: 'lessonAdd',
-        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: 'update/:id',
-        name: 'lessonUpdate',
         component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
         meta: {
           keepAlive: false,

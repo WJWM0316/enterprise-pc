@@ -10,16 +10,29 @@
       :rules="rules"
       ref="form"
       >
+        <div v-if="$route.name === 'addGroup'">
 
-        <div class="walk-title">新建分组名称</div>
+          <div class="walk-title">新建分组名称</div>
 
-        <!-- 请填写课程名称 -->
-        <el-form-item
-          prop="groupName"
-          class="limit-width"
-          >
-            <el-input v-model="form.groupName" :maxlength="20" style="width: 400px;" placeholder="请输入分组名，限制20个字以内..."/>
-        </el-form-item>
+          <!-- 请填写课程名称 -->
+          <el-form-item
+            prop="name"
+            class="limit-width"
+            >
+              <el-input v-model="form.name" :maxlength="20" style="width: 400px;" placeholder="请输入分组名，限制20个字以内..."/>
+          </el-form-item>
+        </div>
+        <div v-else>
+          <div class="walk-title">编辑分组名称</div>
+          <!-- 请填写课程名称 -->
+          <el-form-item
+            label="分组名称"
+            prop="name"
+            class="limit-width"
+            >
+              <el-input v-model="form.name" :maxlength="20" style="width: 400px;" placeholder="请输入分组名，限制20个字以内..."/>
+          </el-form-item>
+        </div>
 
 
         <div class="walk-title">选择分组成员</div>

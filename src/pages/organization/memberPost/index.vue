@@ -1,8 +1,8 @@
 <template>
   <div id="course-post">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
-      <el-breadcrumb-item :to="{ name: 'course' }">课程管理</el-breadcrumb-item>
-      <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建课程' : '更新课程'}}</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
+      <el-breadcrumb-item>{{$route.name === 'addMember' ? '添加成员' : '编辑成员'}}</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form
       :model="form"
@@ -10,7 +10,6 @@
       ref="form"
       label-width="130px">
 
-        <div class="walk-title">课程基础信息</div>
 
         <!-- 请填写课程名称 -->
         <el-form-item
@@ -66,98 +65,6 @@
             <i class="el-icon-question" v-popover:organizations></i>
         </el-form-item>
 
-        <div class="walk-title">课程详细信息</div>
-
-        <!-- 课程封面 -->
-        <el-form-item
-          label="课程封面"
-          prop="classification"
-          class="limit-width"
-          >
-          <div class="upload-error-tips upload-error-tips-show">
-            <div class="tips">
-              <p><i class="el-icon-error"></i></p>
-              <p>上传失败</p>
-            </div>
-          </div>
-          <div class="upload-image click-item" role="button" @click="onSelectFile">
-            <i  class="el-icon-upload"></i> 上传封面
-            <input type="file" id="uplaod-file" ref="hiddenFile" @change="onFileChange" style="display: none;" />
-          </div>
-          <div class="img-box">
-            <img :src="companyLogoUrl" class="upload-cover">
-          </div>
-          <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
-        </el-form-item>
-        
-        <el-form-item
-          label="课程介绍"
-          prop="introduction"
-          class="zike-edit"
-          >
-            <editor
-              class="editor"
-              :content="ContentEditor.content"
-              v-model="form.introduction"
-              :path="ContentEditor.path"
-              :height="ContentEditor.height"
-              @blur="handleContentEditorBlur" />
-        </el-form-item>
-        
-        <!-- 选择必修学员 -->
-        <el-form-item
-          label="选择必修学员"
-          class="limit-width"
-          >
-            <div class="selected-item">
-              <span @click="removeCheck" v-for="item in 4" :key="item">学员{{item}}<i class="el-icon-close"></i></span>
-            </div>
-            <el-button class="click-item" type="primary" @click="openModal('menberCompulsory')">点击选择</el-button>
-        </el-form-item>
-
-        <!-- 选择不可见学员 -->
-        <el-form-item
-          label="选择不可见学员"
-          class="limit-width"
-          >
-            <div class="selected-item">
-              <span @click="removeCheck" v-for="item in 4" :key="item">学员{{item}}<i class="el-icon-close"></i></span>
-            </div>
-            <el-button class="click-item" type="primary" @click="openModal('menberInvisible')">点击选择</el-button>
-            <el-popover
-              placement="top-start"
-              ref="hits"
-              title="标题"
-              width="200"
-              trigger="hover"
-              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-            </el-popover>
-            <i class="el-icon-question" v-popover:hits></i>
-        </el-form-item>
-
-        <div class="walk-title">其他设置</div>
-        <!-- 权重 -->
-        <el-form-item
-          label="设置权重"
-          class="limit-width"
-          >
-            <el-input-number
-              v-model="form.sort"
-              controls-position="right"
-              :min="1" :max="1000000"
-              class="click-item quanzhong"
-              style="width: 240px;"
-              :controls="false" />
-            <el-popover
-              placement="top-start"
-              ref="sort"
-              title="标题"
-              width="200"
-              trigger="hover"
-              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-            </el-popover>
-            <i class="el-icon-question" v-popover:sort></i>
-        </el-form-item>
 
         <!-- 是否上线 -->
         <el-form-item label="是否上线">
