@@ -56,18 +56,18 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  // const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
+  const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
   switch(method) {
     case 'get':
-      return axios.get(url, { params })
+      return axios.get(url, { params: {...params, token: getAccessToken()} })
     case 'post':
-      return axios.post(url, params)
+      return axios.post(realurl, params)
     case 'put':
-      return axios.put(url, params)
+      return axios.put(realurl, params)
     case 'delete':
-      return axios.delete(url, params)
+      return axios.delete(realurl, params)
     case 'patch':
-      return axios.patch(url, params)
+      return axios.patch(realurl, params)
     default:
       break
   }
