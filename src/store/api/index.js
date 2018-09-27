@@ -19,7 +19,7 @@ axios.defaults.timeout = 10000
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
-console.log('dddddd')
+console.log('新的')
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
@@ -56,18 +56,18 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
+  // const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
   switch(method) {
     case 'get':
-      return axios.get(url, {params: {...params, token: getAccessToken()}})
+      return axios.get(url, { params })
     case 'post':
-      return axios.post(realurl, params)
+      return axios.post(url, params)
     case 'put':
-      return axios.put(realurl, params)
+      return axios.put(url, params)
     case 'delete':
-      return axios.delete(realurl, params)
+      return axios.delete(url, params)
     case 'patch':
-      return axios.patch(realurl, params)
+      return axios.patch(url, params)
     default:
       break
   }
