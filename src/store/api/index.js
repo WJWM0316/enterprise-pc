@@ -11,7 +11,7 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
-console.log('测试32')
+console.log('测试34')
 // 请求超时时间
 // axios.defaults.timeout = 10000
 // axios.defaults.withCredentials = true
@@ -19,7 +19,7 @@ console.log('测试32')
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
-axios.defaults.headers.common['Authorization-User'] = `token=${getAccessToken()}`
+axios.defaults.headers.common['Authorization'] = getAccessToken()
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
@@ -56,18 +56,17 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
   switch(method) {
     case 'get':
-      return axios.get(url, { params: {...params, token: getAccessToken()} })
+      return axios.get(url, { params: {params})
     case 'post':
-      return axios.post(realurl, params)
+      return axios.post(url, params)
     case 'put':
-      return axios.put(realurl, params)
+      return axios.put(url, params)
     case 'delete':
-      return axios.delete(realurl, params)
+      return axios.delete(url, params)
     case 'patch':
-      return axios.patch(realurl, params)
+      return axios.patch(url, params)
     default:
       break
   }
