@@ -13,12 +13,13 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 export const upload_api = `${window.location.origin}/tiger/attaches`
 
 // 请求超时时间
-axios.defaults.timeout = 10000
+// axios.defaults.timeout = 10000
 // axios.defaults.withCredentials = true
 // axios.defaults.crossDomain = true
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
+console.log(123)
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
