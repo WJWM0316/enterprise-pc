@@ -146,6 +146,8 @@ export default class CourseList extends Vue {
    */
   async getTutorList() {
     let params = this.pagination
+
+    console.log(params)
     getTutorListApi(params).then(res=>{
       this.tutorList = res.data.data
     })
@@ -153,6 +155,7 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
+    console.log(111)
     this.pagination.page = 1
     this.getTutorList()
   }
@@ -190,13 +193,17 @@ export default class CourseList extends Vue {
   //搜索老师
   searchTea(mobile) {
     let that = this
+
+
     if(this.searchValue.length===0){
       return
     }
+    this.searchList = {}
     this.searchType = true
     searchTutorApi({mobile: this.searchValue}).then(res=>{
       that.$message(res.data.msg);
-      if(res.data.data.length===0){
+      console.log(res)
+      if(res.data.data){
         this.searchList = res.data.data
       }
     },res=>{

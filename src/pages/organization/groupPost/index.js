@@ -70,6 +70,9 @@ export default class MenberList extends Vue {
   // 搜索成员
   searchName = ''
 
+  create(){
+
+  }
   init() {
     const params = {
       id: this.$route.params.id
@@ -164,6 +167,8 @@ export default class MenberList extends Vue {
         }
       })
     }
+
+    console.log(data)
     this.checkList = data
   }
 
@@ -193,4 +198,43 @@ export default class MenberList extends Vue {
         }, 3000)
       })
   }
+
+  // 检测是否可以提交
+  checkSubmit() {
+    this.$refs['form'].validate((valid) => {
+      if (valid) {
+        // 给提交按钮加loading
+        this.submitBtnClick = !this.submitBtnClick
+        // 修改提交时按钮的文案
+        this.submitBtnTxt = '正在提交'
+
+        // img id
+        if(this.imageUpload.list.length>0){
+          let imgListId = ''
+          this.imageUpload.list.map(function(value,index){
+              imgListId+=value.id+'-'
+          })
+          this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
+        }
+        // 需要提交的参数的key值
+        const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
+        // 过滤不需要提交的参数
+        const params = this.transformData(this.form, required)
+        this.submit(params)
+      }
+    })
+  }
+  
+  transformData(data, params) {
+    const formData = {}
+    params.map(field => {
+      if(typeof data[field] != 'object') {
+        formData[field] = data[field]
+      } else {
+        formData[field] = data[field].value
+      }
+    })
+    return formData
+  }
+
 }

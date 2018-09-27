@@ -5,7 +5,7 @@ import { request } from './index.js'
 import Qs from 'qs'
 
 //获取导师列表
-export const getTutorListApi = params => request('/tutor', 'get', Qs.stringify(params))
+export const getTutorListApi = params => request('/tutor', 'get', params)
 
 // 删除外部导师
 export const deletetTutorApi = params => request(`/tutor/${params.id}`, 'delete', Qs.stringify(params))

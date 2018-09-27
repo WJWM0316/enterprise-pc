@@ -3,7 +3,7 @@
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'memberList' }">组织成员管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'groupManage' }">组织管理</el-breadcrumb-item>
-      <el-breadcrumb-item>{{$route.name === 'addGroup' ? '新建分组' : '更新课程'}}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{$route.name === 'addGroup' ? '新建分组' : '编辑分组'}}</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form
       :model="form"
@@ -57,7 +57,7 @@
 
         <!-- 确认提交 -->
         <el-form-item class="footer-button">
-          <el-button type="primary" class="click-item " @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+          <el-button type="primary" class="click-item " @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
         </el-form-item>
     </el-form>
   </div>

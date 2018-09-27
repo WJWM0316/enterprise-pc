@@ -84,14 +84,14 @@
               placeholder="请输入手机号搜索" />
             <div class="fetch-result" v-if="searchType">
               <el-collapse-transition>
-                <div class="transition-flex-box" v-if="searchList.length > 0">
+                <div class="transition-flex-box" v-if="searchList">
                   <div class="img-box"></div>
                   <div class="text-inner-content">
-                    <p class="user-name">魏圣</p>
-                    <p class="user-degree">创始人兼CEO</p>
+                    <p class="user-name">{{searchList.realname}}</p>
+                    <p class="user-degree">{{searchList.title[0]}}</p>
                   </div>
                   <div class="phone-box">
-                    159-9997-2494
+                    {{searchList.mobile}}
                   </div>
                 </div>
                 <div class="transition-flex-box tutor-nodata" v-else>
@@ -204,6 +204,7 @@ export default CourseList
     font-size:14px;
     font-weight:400;
     color:rgba(90,94,102,1);
+    margin-bottom: 50px;
     .img-box {
       width: 48px;
       height: 48px;
