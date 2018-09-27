@@ -84,11 +84,11 @@
               placeholder="请输入手机号搜索" />
             <div class="fetch-result" v-if="searchType">
               <el-collapse-transition>
-                <div class="transition-flex-box" v-if="searchList">
+                <div class="transition-flex-box" v-if="searchList&&searchList.realname">
                   <div class="img-box"></div>
                   <div class="text-inner-content">
-                    <p class="user-name">{{searchList.realname}}</p>
-                    <p class="user-degree">{{searchList.title[0]}}</p>
+                    <p class="user-name" v-if="searchList.realname">{{searchList.realname}}</p>
+                    <p class="user-degree" v-if="searchList.title">{{searchList.title[0]}}</p>
                   </div>
                   <div class="phone-box">
                     {{searchList.mobile}}

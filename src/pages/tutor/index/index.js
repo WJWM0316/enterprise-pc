@@ -102,7 +102,7 @@ export default class CourseList extends Vue {
 
   searchType = false
   searchValue = ''
-  searchList = []
+  searchList = {}
 
   // 确认信息弹窗
   models = {
@@ -172,7 +172,7 @@ export default class CourseList extends Vue {
     if(!item.uid){
       return
     }
-    
+
     deletetTutorApi({id: item.uid}).then(res=>{
       this.nowSelectDeleteItem = {}
       this.$message(res.data.msg)
@@ -191,12 +191,14 @@ export default class CourseList extends Vue {
   searchTea(mobile) {
     let that = this
 
-
+    console.log(this.searchValue)
     if(this.searchValue.length===0){
       return
     }
-    this.searchList = {}
     this.searchType = true
+
+    console.log(this.searchList)
+
     searchTutorApi({mobile: this.searchValue}).then(res=>{
       that.$message(res.data.msg);
       console.log(res)
@@ -204,6 +206,8 @@ export default class CourseList extends Vue {
         this.searchList = res.data.data
       }
     },res=>{
+      this.searchList = {}
+      console.log(res)
       that.$message(res.data.msg);
     })
   }
