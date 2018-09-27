@@ -19,7 +19,6 @@ axios.defaults.timeout = 10000
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
-console.log('新的1')
 // 请求拦截器
 axios.interceptors.request.use(
   config => {

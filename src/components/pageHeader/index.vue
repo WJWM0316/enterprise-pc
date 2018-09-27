@@ -8,7 +8,7 @@
 				<li>
 					<el-dropdown trigger="hover" @command="logout" placement="bottom">
 					  <div class="el-dropdown-link" style="color:#354048">
-					  	<img :src="userInfos.avatarInfo.middleUrl" alt="">
+					  	<img :src="userInfos.avatarInfo.middleUrl" alt="" v-if="userInfos.avatarInfo">
 					    <span style="margin-left: 10px;">欢迎登陆，&nbsp;&nbsp;{{userInfos.realname}}</span>
 					    <i class="el-icon-caret-bottom el-icon--right"></i>
 					  </div>
