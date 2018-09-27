@@ -1,71 +1,136 @@
 <template>
   <div id="user-post">
   	<div class="page-position">编辑成员</div>
-  	<el-form :model="form" :rules="rules" ref="form" label-width="100px">
-  		<el-form-item label="姓名" prop="name">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="头像" prop="name">
-		    <div class="upload-error-tips upload-error-tips-show" v-if="form.icon.showError">
-          <div class="tips">
-            <p><i class="el-icon-error"></i></p>
-            <p>上传失败</p>
-          </div>
-        </div>
-        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
-          <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
-          <img :src="avatarUrl" class="upload-cover">
-          <div class="upload-cover-mask"></div>
-        </div>
-		  </el-form-item>
-		  <el-form-item label="所属部门" prop="region">
-		    <el-select v-model="form.region" placeholder="请选择活动区域">
-		      <el-option label="区域一" value="shanghai"></el-option>
-		      <el-option label="区域二" value="beijing"></el-option>
-		    </el-select>
-		  </el-form-item>
-		  <el-form-item label="职位" prop="name">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="邮箱" prop="name">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="设置密码" prop="name">
-		    <el-button type="primary">点击修改</el-button>
-		  </el-form-item>
-		  <el-form-item label="手机号码" prop="name">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="微信号" prop="name">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-      <!-- 所属组织 -->
-      <el-form-item
-        label="所属组织"
-        prop="check_group_id"
-        class="limit-width"
-        >
-          <div class="selected-item" v-show="form.group_id.show">
-            已选择：
-            <span
-              @click="removeMultipleCheck('group_id', groupIndex)"
-              :key="groupIndex"
-              v-for="(groupItem, groupIndex) in form.group_id.tem">
-                {{groupItem.groupName}}<i class="el-icon-close"></i>
-            </span>
-          </div>
-          <el-button
-            class="click-item"
-            type="primary"
-            :class="{'zike-btn-selected': form.group_id.show}"
-            @click="openModal('group_id')">
-              {{form.group_id.show ? '重新选择' : '点击选择'}}
-          </el-button>
-      </el-form-item>
-		  <el-form-item label="微信号" prop="name">
-		    <el-button type="primary">提交</el-button>
-		    <el-button>删除该账号</el-button>
-		  </el-form-item>
+  	<el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      label-width="120px">
+
+        <!-- 姓名 start-->
+    		<el-form-item
+          label="姓名"
+          prop="name">
+  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		  </el-form-item>
+        <!-- 姓名 end-->
+
+        <!-- 头像 start-->
+  		  <el-form-item
+          label="头像">
+    		    <div class="upload-error-tips upload-error-tips-show" v-if="form.icon.showError">
+              <div class="tips">
+                <p><i class="el-icon-error"></i></p>
+                <p>上传失败</p>
+              </div>
+            </div>
+            <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
+              <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
+              <img :src="avatarUrl" class="upload-cover">
+              <div class="upload-cover-mask"></div>
+            </div>
+  		  </el-form-item>
+        <!-- 头像 end-->
+        <!-- 所属部门 start-->
+  		  <el-form-item
+          label="所属部门"
+          prop="region">
+    		    <el-select v-model="form.region" placeholder="请选择所属部门" class="limit-width">
+    		      <el-option label="区域一" value="shanghai"></el-option>
+    		      <el-option label="区域二" value="beijing"></el-option>
+    		    </el-select>
+  		  </el-form-item>
+        <!-- 所属部门 end-->
+
+        <!-- 职位 start-->
+  		  <el-form-item
+          label="职位"
+          prop="name">
+  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		  </el-form-item>
+        <!-- 职位 end -->
+        
+        <!-- 邮箱 start -->
+  		  <el-form-item
+          label="邮箱"
+          prop="name">
+  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		  </el-form-item>
+        <!-- 邮箱 end -->
+
+        <!-- 设置密码 start-->
+  		  <el-form-item
+          label="设置密码"
+          prop="name">
+  		      <el-button type="primary">点击修改</el-button>
+  		  </el-form-item>
+        <!-- 设置密码 end-->
+
+        <!-- 手机号码 start -->
+  		  <el-form-item
+          label="手机号码">
+  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		  </el-form-item>
+        <!-- 手机号码 end -->
+
+        <!-- 微信号 start -->
+  		  <el-form-item
+          label="微信号">
+  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		  </el-form-item>
+        <!-- 微信号 end -->
+        
+        <!-- 权限管理 start -->
+        <el-form-item
+          label="权限管理">
+            <el-select
+              v-model="value10"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              class="limit-width"
+              placeholder="选择权限管理">
+              <el-option
+                v-for="item in options5"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+        </el-form-item>
+        <!-- 权限管理 end -->
+
+        <!-- 选择管理分组 start-->
+        <el-form-item
+          label="选择管理分组"
+          prop="name"
+          >
+            <div class="selected-item" v-show="form.group_id.show">
+              已选择：
+              <span
+                @click="removeMultipleCheck('group_id', groupIndex)"
+                :key="groupIndex"
+                v-for="(groupItem, groupIndex) in form.group_id.tem">
+                  {{groupItem.groupName}}<i class="el-icon-close"></i>
+              </span>
+            </div>
+            <el-button
+              class="click-item"
+              type="primary"
+              :class="{'zike-btn-selected': form.group_id.show}"
+              @click="openModal('group_id')">
+                {{form.group_id.show ? '重新选择' : '点击选择'}}
+            </el-button>
+        </el-form-item>
+        <!-- 选择管理分组 end-->
+
+        <!-- 微信号 start -->
+  		  <el-form-item>
+  		    <el-button type="primary" class="form-btn">提交</el-button>
+  		    <el-button class="form-btn">删除该账号</el-button>
+  		  </el-form-item>
+        <!-- 微信号 end -->
   	</el-form>
   	<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
 	    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
@@ -130,6 +195,7 @@ import userUpdate from './index'
 export default userUpdate
 </script>
 <style lang="scss">
+@import "~cropperjs/dist/cropper.min.css";
 #user-post {
 	background: white;
   .groupList-type-list {
@@ -148,6 +214,12 @@ export default userUpdate
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
     }
+  }
+  .limit-width{
+    width: 224px;
+  }
+  .form-btn{
+    width: 124px;
   }
   .zike-btn-active-selected {
     background:rgba(255,226,102,0.2);
