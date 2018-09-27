@@ -421,7 +421,7 @@ export const routes = [
   },
   // 课节模块
   {
-    path: '/lesson/:id',
+    path: '/lesson',
     name: 'lesson',
     title: '课节',
     // 引用的组件
