@@ -11,7 +11,7 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
-console.log('测试34')
+console.log('测试35')
 // 请求超时时间
 // axios.defaults.timeout = 10000
 // axios.defaults.withCredentials = true
@@ -58,7 +58,7 @@ export const request = (url, method, params = {}) => {
   }
   switch(method) {
     case 'get':
-      return axios.get(url, { params: {params})
+      return axios.get(url, { params: {params}})
     case 'post':
       return axios.post(url, params)
     case 'put':
