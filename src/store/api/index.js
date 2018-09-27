@@ -11,17 +11,15 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
-
 // 请求超时时间
-axios.defaults.timeout = 10000
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-// axios.defaults.withCredentials = true
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
+
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
+    config.headers.common['Authorization'] = getAccessToken()
     return config
   },
   error => {
@@ -55,19 +53,5 @@ export const request = (url, method, params = {}) => {
     loadingInstance = Loading.service({})
     delete params.globalLoading
   }
-  const realurl = getAccessToken() ? `${url}?token=${getAccessToken()}` : url
-  switch(method) {
-    case 'get':
-      return axios.get(url, { params: {...params, token: getAccessToken()} })
-    case 'post':
-      return axios.post(realurl, params)
-    case 'put':
-      return axios.put(realurl, params)
-    case 'delete':
-      return axios.delete(realurl, params)
-    case 'patch':
-      return axios.patch(realurl, params)
-    default:
-      break
-  }
+  return axios[method](url, method === 'get' ? { params } : params)
 }

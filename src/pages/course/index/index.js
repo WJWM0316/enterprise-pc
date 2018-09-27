@@ -56,7 +56,7 @@ export default class CourseList extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '上线：在员工端显示；下线：在员工端不显示'
     },
     {
       prop: 'category',
@@ -85,8 +85,9 @@ export default class CourseList extends Vue {
       prop: 'sort',
       label: '权 重',
       align: 'center',
-      showTips: 'no',
-      width: '10%'
+      showTips: 'yes',
+      width: '10%',
+      filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面'
     },
     {
       prop: 'actions',

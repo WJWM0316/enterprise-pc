@@ -18,7 +18,23 @@ const state = {
   userLists: {},
   personalInfoLessons: {},
   personalInfoStudy: {},
-  personalInfoBase: {},
+  personalInfoBase: {
+    email: null,
+    groupName: null,
+    mobile: null,
+    occupation: null,
+    realname: null,
+    uid: null,
+    wechat: null,
+    listItemCounts: {
+      jobcircleCount: 0,
+      lessonCount: 0,
+      liveCount: 0
+    },
+    avatar: {
+      smallUrl: ''
+    }
+  },
   personalInfoLives: {},
   personalInfoJobCircles: {}
 }
