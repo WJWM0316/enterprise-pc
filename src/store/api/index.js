@@ -11,7 +11,7 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
-console.log('测试30')
+console.log('测试32')
 // 请求超时时间
 // axios.defaults.timeout = 10000
 // axios.defaults.withCredentials = true
@@ -19,7 +19,7 @@ console.log('测试30')
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
-axios.defaults.headers.common['Authorization-User'] = `token=getAccessToken()`
+axios.defaults.headers.common['Authorization-User'] = `token=${getAccessToken()}`
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
