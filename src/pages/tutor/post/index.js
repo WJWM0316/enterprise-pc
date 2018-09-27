@@ -71,6 +71,8 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
+
+    console.log(this.form)
     this.$refs['form'].validate((valid) => {
       console.log(valid)
       if (valid) {
