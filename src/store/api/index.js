@@ -11,13 +11,15 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
-// 请求超时时间
-if(process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
-}
 
+// if(process.env.NODE_ENV === 'production') {
+//   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
+// }
+
+axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 // 请求拦截器
-axios.interceptors.request.use(
+axios.interceptors.request.use
+(
   config => {
     config.headers.common['Authorization'] = getAccessToken()
     return config
@@ -27,25 +29,25 @@ axios.interceptors.request.use(
   }
 )
 
-axios.interceptors.response.use(response => {
-  if (loadingInstance) {
-    loadingInstance.close()
+axios.interceptors.response.use
+(
+  res => {
+    if (loadingInstance) loadingInstance.close()
+    return res
+  },
+  err => {
+    switch(err.response.data.httpStatus) {
+      case 401:
+        router.push({name: 'login'})
+        removeAccessToken()
+        break
+      default:
+        break
+    }
+    if (loadingInstance) loadingInstance.close()
+    return Promise.reject(err.response)
   }
-  return response
-}, error => {
-
-  if (loadingInstance) {
-    loadingInstance.close()
-  }
-  if(error.response.data.httpStatus === 401) {
-    // 跳转登陆页面
-    router.push({name: 'login'})
-    // 移除本地缓存的token
-    removeAccessToken()
-  } else {
-    return Promise.reject(error.response)
-  }
-})
+)
 
 
 export const request = (url, method, params = {}) => {

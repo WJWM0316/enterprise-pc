@@ -48,7 +48,7 @@
 					<p>打卡数</p>
 				</div>
 			</div>
-			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>22.3% </span> 的同事 ~ </div>
+			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>{{Number(personalInfoStudy.surpass) * 100}}% </span> 的同事 ~ </div>
 		</div>
 	</div>
 </template>
