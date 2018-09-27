@@ -3,9 +3,7 @@ import {
   GET_JOB_CIRCLE_ORGANIZATION_LISTS,
   GET_JOB_CIRCLE_HIT_LISTS,
   GET_JOB_CIRCLE_MENBER_LISTS,
-  GET_GROUP_LISTS,
   GET_JOB_CIRCLE_MENBER_DETAILS,
-  UPDATE_GROUP_LISTS,
   GET_JOB_CIRCLE_NOTE_LISTS,
   GET_JOB_CIRCLE_COMMENT_FIRST_LISTS,
   GET_JOB_CIRCLE_COMMENT_SECOND_LISTS
@@ -19,7 +17,6 @@ import {
   putJobCircleApi,
   getJobCircleDetailsApi,
   postJobCircleApi,
-  getGroupListsApi,
   getJobCircleNoteListsApi,
   deleteJobCircleNoteApi,
   setJobCircleNotetoTopApi,
@@ -41,7 +38,6 @@ const state = {
     total: 0
   },
   jobCircleMemberLists: [],
-  groupLists: [],
   jobCircleDetails: {},
   jobCircleOrganizationLists: [],
   jobCircleHitLists: [],
@@ -66,17 +62,6 @@ const mutations = {
   },
   [GET_JOB_CIRCLE_MENBER_LISTS] (state, data) {
     state.jobCircleMemberLists = data
-  },
-  [GET_GROUP_LISTS] (state, data) {
-    data.map(field => {field.active = false})
-    state.groupLists = data
-  },
-  [UPDATE_GROUP_LISTS] (state, params) {
-    state.groupLists.map(field => {
-      if(field.groupId === params.groupId) {
-        field.active = !field.active
-      }
-    })
   },
   [GET_JOB_CIRCLE_MENBER_LISTS] (state, data) {
     state.jobCircleMemberLists = data
@@ -107,7 +92,6 @@ const mutations = {
 const getters = {
   jobCircleLists: state => state.jobCircleLists,
   jobCircleMemberLists: state => state.jobCircleMemberLists,
-  groupLists: state => state.groupLists,
   jobCircleDetails: state => state.jobCircleDetails,
   jobCircleOrganizationLists: state => state.jobCircleOrganizationLists,
   jobCircleHitLists: state => state.jobCircleHitLists,
@@ -227,31 +211,6 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
-  },
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-21
-   * @detail   获取分组列表
-   * @return   {[type]}          [description]
-   */
-  getGroupListsApi(store, params) {
-    return getGroupListsApi(params)
-      .then(res => {
-        store.commit(GET_GROUP_LISTS, res.data.data)
-        return res
-      })
-      .catch(error => {
-        return Promise.reject(error.data || {})
-      })
-  },
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-21
-   * @detail   更新分组列表
-   * @return   {[type]}          [description]
-   */
-  updateGroupListsApi(store, params) {
-    store.commit(UPDATE_GROUP_LISTS, params)
   },
   /**
    * @Author   小书包

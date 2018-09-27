@@ -70,4 +70,4 @@ export function removeAccessToken() {
   ssCache.delete(KEYS.userInfo)
 }
 
-export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 0, 'sessionStorage')
+export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 60 * 60 * 24 * 7 * 1000, 'sessionStorage')

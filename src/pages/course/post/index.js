@@ -125,12 +125,12 @@ export default class CoursePost extends Vue {
     check_group_id: [
       { required: true, message: '请选择组织', trigger: 'blur' }
     ],
-    check_members: [
-      { required: true, message: '请选择必修学员', trigger: 'blur' }
-    ],
-    check_hits: [
-      { required: true, message: '请选择不可见学员', trigger: 'blur' }
-    ],
+    // check_members: [
+    //   { required: true, message: '请选择必修学员', trigger: 'blur' }
+    // ],
+    // check_hits: [
+    //   { required: true, message: '请选择不可见学员', trigger: 'blur' }
+    // ],
     check_icon: [
       { required: true, message: '请上传课程封面图片', trigger: 'blur' }
     ],
@@ -436,7 +436,9 @@ export default class CoursePost extends Vue {
     this.models.show = false
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
-    this.$refs.form.validateField(`check_${type}`)
+    if(this.rules[`check_${type}`]) {
+      this.$refs.form.validateField(`check_${type}`)
+    }
   }
 
   /**

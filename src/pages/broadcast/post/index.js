@@ -31,7 +31,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getLiveDetailApi',
       'getLiveMenberListApi',
       'getLiveInvisibleMenberListApi',
-      'getTutorListApi'
+      'getTutorListApi',
+      'getCategoryApi'
     ])
   },
   computed: {
@@ -507,7 +508,8 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   selectCategory(item, key) {
-    this.updateCategoryListsApi({categoryId: item.categoryId})
+    this.updateCategoryListsApi({categoryId: item.categoryId, type: 'multiple'})
+    console.log(this[key])
     const data = { show: false, tem: [], value: [] }
     this[key].map((field) => {
       if(field.active) {
@@ -718,7 +720,7 @@ export default class BroadcastPost extends Vue {
         this.$refs.form.validateField('check_coverImgId')
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$message.error(`${err.msg}~`)
       })
   }
 
