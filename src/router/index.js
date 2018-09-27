@@ -17,11 +17,11 @@ const router = new Router({
   }
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (from.name !== to.name) {
-//     window.scrollTo(0, 0)
-//   }
-//   next(true)
-// })
+router.beforeEach((to, from, next) => {
+  if (from.name !== to.name) {
+    window.scrollTo(0, 0)
+  }
+  next(true)
+})
 
 export default router

@@ -19,7 +19,7 @@ export const upload_api = `${window.location.origin}/tiger/attaches`
 if(process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 }
-console.log(123)
+axios.defaults.headers.common['token'] = getAccessToken()
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
