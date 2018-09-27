@@ -28,7 +28,7 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction('lesson', props.scope.row)"
+            @click="todoAction('delete', props.scope.row)"
             >
               删除
           </el-button>

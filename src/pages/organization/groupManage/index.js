@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-//import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/organization.js'
 
 @Component({
   name: 'group-manage',
@@ -60,7 +60,7 @@ export default class groupList extends Vue {
   searchType = '1'
 
   created() {
-    this.getGroupList()
+    this.init()
   }
 
 
@@ -71,7 +71,7 @@ export default class groupList extends Vue {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { searchWord: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
-    // this.getCourseList()
+    this.getGroupList()
   }
 
   /**
@@ -87,6 +87,13 @@ export default class groupList extends Vue {
   deleteGroup(item) {
     deleteGroupApi({id: item.groupId}).then(res=>{
       console.log(res)
+      this.$message({
+        message: res.data.msg,
+        type: 'success'
+      });
+
+      this.init()
+
     })
   }
 

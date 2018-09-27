@@ -1,23 +1,23 @@
 <template>
   <div id="organization">
     <div class="page-position">组织管理</div>
-  <div class="group-type-list">
-    <el-button
-          size="large"
-          v-for="(groupItem, groupIndex) in groupList"
-          :key="groupIndex">
+    <div class="group-type-list">
+        <el-row class="organization-base " style="margin-top: 14px">
+         <el-col :span="24" class="right-content">
+          <el-button type="primary" class="click-item" @click="todoAction('set')">分组管理</el-button>
+         </el-col>
+        </el-row>
+        <el-button
+              size="large"
+              v-for="(groupItem, groupIndex) in groupList"
+              :key="groupIndex"
+              @click="selectGroup(groupItem.groupId)">
             {{groupItem.groupName}}
         </el-button>
-      <el-row class="organization-base " style="margin-top: 14px">
-         <el-col :span="12" class="left-content">
-          <el-button type="primary" class="click-item" @click="todoAction('set')">设置分组</el-button>
-         </el-col>
-      </el-row>
+        <div class="border"></div>
+    </div>
 
-      <div class="border"></div>
-  </div>
-
-  <el-row class="organization-base">
+    <el-row class="organization-base">
       <el-col :span="12" class="left-content">
         <h2 class="">
           全部成员
@@ -27,17 +27,19 @@
       <el-col :span="12" class="right-content">
         <el-button type="primary" class="click-item" @click="todoAction('add')">添加新成员</el-button>
       </el-col>
-  </el-row>
+    </el-row>
   
 
   
   <div class="dropdown-select">
-    <el-select v-model="value" placeholder="选择权限">
+        
+    <el-select v-model="rolevalue" placeholder="选择权限" @change="changeRule">
       <el-option
         v-for="item in options"
         :key="item.value"
         :label="item.label"
-        :value="item.value">
+        :value="item.value"
+        >
       </el-option>
     </el-select>
   </div>
