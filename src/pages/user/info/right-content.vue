@@ -1,21 +1,21 @@
 <template>
   <div class="user-right-content">
   	<div class="his-dynamics-tab-box">
-			<div :class="{active: 	currentType === 0}" @click="tabClick(0)">
+			<div :class="{active: 	currentType === 'getPersonalInfoLessonsApi'}" @click="tabClick('getPersonalInfoLessonsApi')">
 				<div class="cell">参与的课程</div>
-				<div class="num">(10)</div>
+				<div class="num">({{personalInfoBase.listItemCounts.lessonCount}})</div>
 			</div>
-			<div :class="{active: 	currentType === 1}" @click="tabClick(1)">
+			<div :class="{active: 	currentType === 'getPersonalInfoLivesApi'}" @click="tabClick('getPersonalInfoLivesApi')">
 				<div class="cell">参与的直播</div>
-				<div class="num">(10)</div>
+				<div class="num">({{personalInfoBase.listItemCounts.liveCount}})</div>
 			</div>
-			<div :class="{active: 	currentType === 2}" @click="tabClick(2)">
+			<div :class="{active: 	currentType === 'getPersonalInfoJobCirclesApi'}" @click="tabClick('getPersonalInfoJobCirclesApi')">
 				<div class="cell">参与的工作圈</div>
-				<div class="num">(10)</div>
+				<div class="num">({{personalInfoBase.listItemCounts.jobcircleCount}})</div>
 			</div>
   	</div>
   	<ul class="his-dynamics-ul-list">
-  		<template>
+  		<template v-if="currentType === 'getPersonalInfoLessonsApi'">
 				<li v-for="(courseItem, courseIndex) in personalInfoLessons" :key="courseIndex">
 					<div class="img-box">
 						<img :src="courseItem.courseCoverImg.smallUrl" alt="">
@@ -42,13 +42,10 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-
 @Component({
 	methods: {
 		...mapActions([
 			'getPersonalInfoLessonsApi',
-			'getPersonalInfoStudyApi',
-			'getPersonalInfoBaseApi',
 			'getPersonalInfoLivesApi',
 			'getPersonalInfoJobCirclesApi'
 		])
@@ -64,9 +61,11 @@ import Component from 'vue-class-component'
   }
 })
 export default class ComponentRight extends Vue {
-	currentType = 0
-	tabClick(num) {
-		this.currentType = num
+	currentType = 'getPersonalInfoLessonsApi'
+	tabClick(api) {
+		const params = this.$route.query
+		this[api](params)
+		this.currentType = api
 	}
 }
 </script>
@@ -109,6 +108,7 @@ export default class ComponentRight extends Vue {
 			margin-left: 10px;
 		}
 		.active{
+			pointer-events: none;
 			color: #000;
 			.cell{
 				&:before{

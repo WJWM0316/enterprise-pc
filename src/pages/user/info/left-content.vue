@@ -61,18 +61,14 @@ import Component from 'vue-class-component'
 		...mapActions([
 			'getPersonalInfoLessonsApi',
 			'getPersonalInfoStudyApi',
-			'getPersonalInfoBaseApi',
-			'getPersonalInfoLivesApi',
-			'getPersonalInfoJobCirclesApi'
+			'getPersonalInfoBaseApi'
 		])
 	},
 	computed: {
     ...mapGetters([
       'personalInfoLessons',
       'personalInfoStudy',
-      'personalInfoBase',
-      'personalInfoLives',
-      'personalInfoJobCircles'
+      'personalInfoBase'
     ])
   }
 })
@@ -82,19 +78,9 @@ export default class ComponentLeft extends Vue {
 	}
 	init() {
 		const params = this.$route.query
-		Promise.all([
-      this.getPersonalInfoLessonsApi(params),
-      this.getPersonalInfoStudyApi(params),
-      this.getPersonalInfoBaseApi(params),
-      this.getPersonalInfoLivesApi(params),
-      this.getPersonalInfoJobCirclesApi(params)
-    ])
-    .then(() => {
-      // console.log(this.personalInfoLessons)
-    })
-    .catch((err) => {
-      this.$message.error('初始化页面失败~')
-    })
+		this.getPersonalInfoStudyApi(params)
+    this.getPersonalInfoBaseApi(params)
+    this.getPersonalInfoLessonsApi(params)
 	}
 }
 </script>
