@@ -81,7 +81,7 @@ export default class ComponentLeft extends Vue {
 		this.init()
 	}
 	init() {
-		const params = this.$route.params
+		const params = this.$route.query
 		Promise.all([
       this.getPersonalInfoLessonsApi(params),
       this.getPersonalInfoStudyApi(params),
