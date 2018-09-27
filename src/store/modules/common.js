@@ -8,7 +8,9 @@ import {
   GET_CATEGORY_LIST,
   GET_MENBER_LISTS,
   UPDATE_CATEGORY_LIST,
-  GET_COMPANY_INFOS
+  GET_COMPANY_INFOS,
+  UPDATE_GROUP_LISTS,
+  GET_GROUP_LISTS
 } from '../mutation-types'
 
 import {
@@ -17,10 +19,12 @@ import {
   getCategoryListsApi,
   getMenberListsApi,
   getCategoryApi,
-  getCompanyInfoApi
+  getCompanyInfoApi,
+  getGroupListsApi
 } from 'API/common'
 
 const state = {
+  groupLists: [],
   categoryList: {},
   uploadConfig: {},
   menberLists: [],
@@ -68,9 +72,7 @@ const mutations = {
   // 更新分类列表
   [UPDATE_CATEGORY_LIST] (state, params) {
     state.categoryList.map(field => {
-      if(params.categoryId === field.categoryId) {
-        field.active = !field.active
-      }
+      field.active = params.categoryId === field.categoryId ? !field.active : false
     })
   },
   [GET_MENBER_LISTS] (state, data) {
@@ -86,10 +88,22 @@ const mutations = {
   [GET_COMPANY_INFOS] (state, data) {
     state.companyInfo = data
   },
+  [GET_GROUP_LISTS] (state, data) {
+    data.map(field => {field.active = false})
+    state.groupLists = data
+  },
+  [UPDATE_GROUP_LISTS] (state, params) {
+    state.groupLists.map(field => {
+      if(field.groupId === params.groupId) {
+        field.active = !field.active
+      }
+    })
+  },
 }
 
 const getters = {
   message: state => state.message,
+  groupLists: state => state.groupLists,
   showDialog: state => state.showDialog,
   ajaxLoading: state => state.ajaxLoading,
   openModal: state => state.openModal,
@@ -223,7 +237,32 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
-  }
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取分组列表
+   * @return   {[type]}          [description]
+   */
+  getGroupListsApi(store, params) {
+    return getGroupListsApi(params)
+      .then(res => {
+        store.commit(GET_GROUP_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateGroupListsApi(store, params) {
+    store.commit(UPDATE_GROUP_LISTS, params)
+  },
 }
 
 export default {

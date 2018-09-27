@@ -400,7 +400,7 @@ export const routes = [
     },
     children: [
       {
-        path: 'info/:id',
+        path: 'info',
         name: 'userInfos',
         component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/index.vue'),
         meta: {

@@ -40,9 +40,7 @@ const actions = {
   loginApi(store, data) {
     return loginApi(data)
       .then(res => {
-        // 有效期一天周
-        const ValidityPeriod = 60 * 60 * 24 * 7 * 1000
-        saveAccessToken(res.data.data.token, ValidityPeriod)
+        saveAccessToken(res.data.data.token, 60 * 60 * 24 * 7 * 1000)
         cachedUserInfo.save(res.data.data)
         store.commit(LOGIN, res.data.data)
         return res

@@ -14,9 +14,8 @@
         </div>
         <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
           <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
-        </div>
-        <div class="img-box" v-if="form.icon.tem">
-          <img :src="form.icon.tem" class="upload-cover">
+          <img :src="avatarUrl" class="upload-cover">
+          <div class="upload-cover-mask"></div>
         </div>
 		  </el-form-item>
 		  <el-form-item label="所属部门" prop="region">
@@ -40,6 +39,29 @@
 		  <el-form-item label="微信号" prop="name">
 		    <el-input v-model="form.name"></el-input>
 		  </el-form-item>
+      <!-- 所属组织 -->
+      <el-form-item
+        label="所属组织"
+        prop="check_group_id"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.group_id.show">
+            已选择：
+            <span
+              @click="removeMultipleCheck('group_id', groupIndex)"
+              :key="groupIndex"
+              v-for="(groupItem, groupIndex) in form.group_id.tem">
+                {{groupItem.groupName}}<i class="el-icon-close"></i>
+            </span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.group_id.show}"
+            @click="openModal('group_id')">
+              {{form.group_id.show ? '重新选择' : '点击选择'}}
+          </el-button>
+      </el-form-item>
 		  <el-form-item label="微信号" prop="name">
 		    <el-button type="primary">提交</el-button>
 		    <el-button>删除该账号</el-button>
@@ -63,219 +85,132 @@
 	      </div>
 	    </div>
 	  </div>
+    <modal-dialog
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :min-height="models.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="margin-left: 10px;">
+          <h3 class="dialog-title">
+            {{models.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html">
+          <div class="customize-html-content">
+            <!-- 组织-start -->
+            <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in tem_groupLists"
+                 @click="seleteGroup(groupItem, 'groupLists')"
+                :class="{'zike-btn-active-selected': groupItem.active}"
+                :key="groupIndex">
+                  {{groupItem.groupName}}
+              </el-button>
+              <p class="tips">
+                如果需要对部门组织进行修改，请点击左侧的
+                <router-link :to="{name: 'organization'}" class="set">【组织】</router-link>
+                进行修改；如无权限，请联系管理员修改。
+              </p>
+            </div>
+            <!-- 组织-end -->
+          </div>
+        </div>
+    </modal-dialog>
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import defaultAvatar from 'IMAGES/img_normal_head.png';
-
-@Component({
-	computed: {
-    avatarUrl() {
-      return this.form.icon.tem || defaultAvatar
-    }
-  }
-})
-export default class pageUser extends Vue {
-	form = {
-		name: '',
-		icon: {
-      value: '',
-      tem: '',
-      showError: false
-    }
-	}
-	rules = {
-		name: [
-      { required: true, message: '请输入活动名称', trigger: 'blur' },
-      { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-    ],
-    region: [
-      { required: true, message: '请选择所属部门', trigger: 'change' }
-    ]
-	}
-
-	// 初始化裁剪对象
-  cropper = null
-  // 裁剪设置
-  flag = {
-    imgHasLoad: false,
-    cropperHasInit: false,
-    btnTips: {
-      disable: false,
-      value: '裁剪完成，立即上传'
-    }
-  }
-	/**
-   * 用户点击头像
-   */
-  onSelectFile() {
-    const el = this.$refs.hiddenFile
-    if (!el) return
-    el.click()
-    el.value = ''
-  }
-
-  /**
-   * 用户选择好文件了
-   * @param  {Event} e  文件改变事件
-   */
-  onFileChange(e) {
-    const files = e.target.files
-    const len = files.length
-    const fileName = files[0].name
-    const ext = this.getFileExt(fileName)
-    this.flag.file = files[0]
-
-    // 允许上传文件尺寸上限 1M
-    const ALLOW_MAX_SIZE = 1024 * 1024
-
-    // 允许文件格式 jpg\png
-    const ALLOW_FILE_TYPE = [
-      'png',
-      'jpeg',
-      'jpg'
-    ]
-
-    // 文件数量一定要判断
-    if (len > 0) {
-      const file = files.item(0)
-      if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
-        this.$message.error('选择的文件格式不对~')
-      } else if (file.size > ALLOW_MAX_SIZE) {
-        this.$message.error('选择的文件太大啦~')
-      } else {
-        let inputImage = document.querySelector('#uplaod-file')
-        let URL = window.URL || window.webkitURL
-        let blobURL
-        blobURL = URL.createObjectURL(file)
-        this.flag.imgHasLoad = true
-
-        if (!this.flag.cropperHasInit) {
-          this.loadCropper()
-          this.cropper.replace(blobURL)
-          return
-        }
-        this.cropper.reset().replace(blobURL)
-        inputImage.value = null
-      }
-    }
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   加载裁剪工具
-   * @return   {[type]}   [description]
-   */
-  loadCropper() {
-    const image = document.querySelector('#cropperBox > img')
-    // const preview = document.querySelector('#cropperRes')
-    // const previewImage = preview.getElementsByTagName('img').item(0)
-    const options = {
-      aspectRatio: 1 / 1,
-      preview: '#cropperRes'
-    }
-    this.cropper = new Cropper(image, options)
-    this.flag.cropperHasInit = true
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   完成裁剪，并输出裁剪结果，然后上传
-   * @return   {[type]}   [description]
-   */
-  finishCropImage() {
-    this.flag.btnTips.value = '正在上传，请稍等'
-    this.flag.btnTips.disable = true
-    const croppedCanvas = this.cropper.getCroppedCanvas()
-    const croppedDataUrl = croppedCanvas.toDataURL()
-    const blob = this.dataURLtoFile(croppedDataUrl)
-    const formData = new FormData()
-    formData.append('attach_type', 'img')
-    formData.append('img1', blob)
-    this.uploadApi(formData)
-      .then((res) => {
-        const infos = res.data.data[0]
-        this.cropper.destroy()
-        this.flag.imgHasLoad = false
-        this.flag.imgHasLoad = false
-        this.flag.btnTips.value = '裁剪完成，立即上传'
-        this.flag.btnTips.disable = false
-        this.form.icon.value = infos.id
-        this.form.icon.tem = infos.url
-        this.form.check_icon = infos.id
-        this.$refs.form.validateField('check_icon')
-      })
-      .catch(err => {
-        this.$message.error(`${err.msg}~`)
-      })
-  }
-
-  // dataUrl 转 blob
-  dataURLtoBlob(dataurl) {
-    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1]
-    let bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new Blob([u8arr], { type: mime })
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-13
-   * @detail   将base64转换成file对象
-   * @return   {[type]}            [description]
-   */
-  dataURLtoFile (dataurl, filename = 'file') {
-    let arr = dataurl.split(',')
-    let mime = arr[0].match(/:(.*?);/)[1]
-    let suffix = mime.split('/')[1]
-    let bstr = atob(arr[1])
-    let n = bstr.length
-    let u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new File([u8arr], `${filename}.${suffix}`, {type: mime})
-  }
-
-  // 获取文件后缀名
-  getFileExt(filename) {
-    const tem = filename.split('.')
-    return tem[tem.length-1]
-  }
-}
+import userUpdate from './index'
+export default userUpdate
 </script>
 <style lang="scss">
 #user-post {
 	background: white;
+  .groupList-type-list {
+    margin: 20px 0px 18px 16px;
+    .tips {
+      color: #666;
+      font-size: 12px;
+      margin: 30px 0 0 0;
+    }
+    .set{
+      cursor: pointer;
+      color: #4080AD;
+    }
+    .el-button {
+      width: 128px;
+      padding: 10px 20px;
+      margin: 0px 16px 16px 0px;
+    }
+  }
+  .zike-btn-active-selected {
+    background:rgba(255,226,102,0.2);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:#D7AB70;
+    border-color: #EDEDED;
+  }
+  .selected-item {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(146,146,146,1);
+    line-height: 40px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    span {
+      background:rgba(248,248,248,1);
+      border-radius:4px;
+      border:1px solid rgba(220,220,220,1);
+      display: inline-block;
+      line-height: 1;
+      padding: 4px 8px;
+      font-size: 12px;
+      color:rgba(0,0,0,0.65);
+      margin-right: 8px;
+      i{
+        margin-left: 5px;
+      }
+    }
+  }
+  .zike-btn-selected {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
+  }
+  .zike-btn-active-selected {
+    background:rgba(255,226,102,0.2);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:#D7AB70;
+    border-color: #EDEDED;
+  }
 }
 #user-post {
   .upload-image {
-	    display: inline-block;
-	    line-height: 1;
-	    cursor: pointer;
-	    border: 1px solid #dcdfe6;
-	    color: #606266;
-	    -webkit-appearance: none;
-	    text-align: center;
-	    box-sizing: border-box;
-	    -webkit-transition: .1s;
-	    transition: .1s;
-	    font-weight: 500;
-	    padding: 12px 20px;
-	    font-size: 14px;
-	    border-radius: 4px;
-  		background-color: #FFE266;
-  		border-color: #FFE266;
-  		color:rgba(53,64,72,1);
-  		display: inline-block;
-  		vertical-align: middle;
-  		width:96px;
-  		height: 96px;
-  		border-radius: 50%;
+    cursor: pointer;
+    transition: .1s;
+		display: inline-block;
+		vertical-align: middle;
+		width:96px;
+		height: 96px;
+		border-radius: 50%;
+    &:hover{
+      .upload-cover-mask{
+        opacity: .3;
+        visibility: visible;
+      }
+    };
 	}
 	.upload-image-tips {
 		font-size:12px;
@@ -298,15 +233,33 @@ export default class pageUser extends Vue {
   		text-align: left;
   	}
   }
-  .img-box {
-  	overflow: hidden;
-  	margin-top: 15px;
-  	.upload-cover {
-  		width:96px;
-			height:96px;
-			border-radius:4px;
-			display: block;
-  	}
+  .upload-cover {
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .upload-cover-mask {
+    width:96px;
+    height:96px;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    background: black;
+    border-radius:50%;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: all ease .4s;
   }
   .upload-error-tips {
   	width:96px;
