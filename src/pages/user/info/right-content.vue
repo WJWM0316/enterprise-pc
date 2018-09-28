@@ -16,7 +16,7 @@
   	</div>
   	<ul class="his-dynamics-ul-list">
   		<template v-if="currentType === 'getPersonalInfoLessonsApi'">
-				<li v-for="(courseItem, courseIndex) in personalInfoLessons" :key="courseIndex">
+				<li v-for="(courseItem, courseIndex) in personalInfoLessons" :key="courseIndex" class="course-item">
 					<div class="img-box">
 						<img :src="courseItem.courseCoverImg.smallUrl" alt="">
 					</div>
@@ -31,6 +31,34 @@
 							<div class="line">
 								<div class="doing" :style="`width: ${courseItem.selfProcess}%`"></div>
 							</div>
+						</div>
+					</div>
+				</li>
+			</template>
+			<template v-if="currentType === 'getPersonalInfoLivesApi'">
+				<li v-for="(liveItem, liveIndex) in personalInfoLives" :key="liveIndex" class="live-item">
+					<div class="img-box">
+						<img :src="liveItem.coverImg.smallUrl" alt="">
+					</div>
+					<div class="text-content">
+						<h2>{{liveItem.title}}</h2>
+						<div class="u-info">
+							<span class="group-name">{{liveItem.masterTitle}}</span>
+							<span class="user-name">{{liveItem.masterName}}</span>
+						</div>
+					</div>
+				</li>
+			</template>
+			<template v-if="currentType === 'getPersonalInfoJobCirclesApi'">
+				<li v-for="(circleItem, circleIndex) in personalInfoJobCircles" :key="circleIndex" class="circle-item">
+					<div class="img-box">
+						<img :src="circleItem.coverImg.smallUrl" alt="">
+					</div>
+					<div class="text-content">
+						<h2>{{circleItem.name}}</h2>
+						<div class="u-info">
+							<span class="group-name">{{circleItem.ownerInfo.groupName}}</span>
+							<span class="user-name">{{circleItem.ownerInfo.realname}}</span>
 						</div>
 					</div>
 				</li>

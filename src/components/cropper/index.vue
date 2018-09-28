@@ -1,22 +1,11 @@
 <template>
 	<div id="zike-cropper">
-		<div class="upload-error-tips upload-error-tips-show" v-if="form.cover_img_id.showError">
-      <div class="tips">
-        <p><i class="el-icon-error"></i></p>
-        <p>上传失败</p>
-      </div>
-    </div>
-    <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.cover_img_id.tem}">
+    <div class="upload-image click-item" role="button" @click="onSelectFile">
       <i  class="el-icon-upload"></i> {{form.cover_img_id.tem ? '重新上传' : '上传封面'}}
       <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
     </div>
-    <div class="img-box" v-if="form.cover_img_id.tem">
-      <img :src="form.cover_img_id.tem" class="upload-cover">
-    </div>
-    <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
 		<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
 	    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
-	      <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
 	      <div class="cropper">
 	        <div class="cropper-box" id="cropperBox">
 	          <img id="uploadPreview" style="width:100px;height:100px;"/>
@@ -25,10 +14,12 @@
 	          <div class="cropper-res" id="cropperRes">
 	            <img style="width:100px;height:100px;"/>
 	          </div>
+            <p class="label-tips">头像预览</p>
 	        </div>
 	      </div>
 	      <div class="cropper-btns-wrap">
-	        <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
+          <el-button @click="flag.imgHasLoad=false">取消</el-button>
+          <el-button type="primary" :disabled="flag.btnTips.disable" @click="finishCropImage">{{ flag.btnTips.value }}</el-button>
 	      </div>
 	    </div>
 	  </div>
@@ -49,11 +40,9 @@ import Cropper from 'cropperjs'
 export default class ComponentCropper extends Vue {
 
   form = {
-    check_cover_img_id: '',
     cover_img_id: {
       value: '',
-      tem: '',
-      showError: false
+      tem: ''
     }
   }
 
@@ -65,7 +54,7 @@ export default class ComponentCropper extends Vue {
     cropperHasInit: false,
     btnTips: {
       disable: false,
-      value: '裁剪完成，立即上传'
+      value: '确定'
     }
   }
 
@@ -104,9 +93,11 @@ export default class ComponentCropper extends Vue {
     if (len > 0) {
       const file = files.item(0)
       if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
-        this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 3000 })
+        this.$emit('fail', '选择的文件格式不对')
+        console.log('选择的文件格式不对')
       } else if (file.size > ALLOW_MAX_SIZE) {
-        this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 3000 })
+        this.$emit('fail', '选择的文件太大啦')
+        console.log('选择的文件太大啦')
       } else {
         let inputImage = document.querySelector('#uplaod-file')
         let URL = window.URL || window.webkitURL
@@ -146,7 +137,7 @@ export default class ComponentCropper extends Vue {
    * @return   {[type]}   [description]
    */
   finishCropImage() {
-    this.flag.btnTips.value = '正在上传，请稍等'
+    // this.flag.btnTips.value = '正在上传，请稍等'
     this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
@@ -160,15 +151,15 @@ export default class ComponentCropper extends Vue {
         this.cropper.destroy()
         this.flag.imgHasLoad = false
         this.flag.imgHasLoad = false
-        this.flag.btnTips.value = '裁剪完成，立即上传'
+        // this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
-        this.form.cover_img_id.value = infos.id
-        this.form.cover_img_id.tem = infos.url
-        this.form.check_cover_img_id = infos.id
-        this.$refs.form.validateField('check_cover_img_id')
+        this.$emit('success', infos)
+        console.log(infos)
       })
       .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+        this.$emit('fail', err)
+        console.log(err)
+        // this.$message.error(`${err.msg}~`)
       })
   }
 
@@ -314,12 +305,12 @@ export default class ComponentCropper extends Vue {
     transition: all .3s ease;
     visibility: hidden;
     transform: scale(2);
-    padding: 30px;
+    padding: 30px 48px;
     position: fixed;
     z-index: 90;
     top: 50px;
     left: 50%;
-    margin-left: -300px;
+    margin-left: -400px;
     background-color: white;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -332,31 +323,32 @@ export default class ComponentCropper extends Vue {
   }
   .cropper {
     position: relative;
-    width: 400px;
-    height: 300px;
-    padding: 80px 150px;
-    background-color: #f8f8f8;
+    width: 310px;
+    height: 390px;
+    padding: 60px 264px 80px 0px;
+    /*background-color: #f8f8f8;*/
   }
   .cropper-box {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
   }
   .cropper-res-wrap {
     position: absolute;
-    top: 0;
+    top: 46px;
     right: 0;
-    width: 100px;
-    height: 100px;
-    padding: 15px;
-    background-color: #f8f8f8;
+    width: 96px;
+    height: 96px;
+    padding: 16px;
+    /*background-color: #f8f8f8;*/
     box-sizing: content-box;
+    text-align: center;
   }
   .cropper-res {
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
     overflow: hidden;
-    border: 1px solid #e1e1e1;
     background-color: white;
+    border-radius: 50%;
   }
   #cropper-btn{
     width: 100%;
@@ -375,6 +367,19 @@ export default class ComponentCropper extends Vue {
     text-align: center;
     border-radius: 100%;
     font-size: 20px;
+  }
+  .cropper-btns-wrap{
+    text-align: right;
+    .el-button{
+      width: 124px;
+      margin-left: 16px;
+    }
+  }
+  .label-tips{
+    font-size:14px;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height: 1;
   }
 }
 </style>

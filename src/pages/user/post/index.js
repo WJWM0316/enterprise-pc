@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import defaultAvatar from 'IMAGES/img_normal_head.png';
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import Cropper from 'cropperjs'
 
 @Component({
   methods: {
@@ -24,6 +25,21 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   }
 })
 export default class userUpdate extends Vue {
+  options5 = [
+    {
+      value: 'HTML',
+      label: 'HTML'
+    },
+    {
+      value: 'CSS',
+      label: 'CSS'
+    },
+    {
+      value: 'JAVASCRIPT',
+      label: 'JAVASCRIPT'
+    }
+  ]
+  value10 = ''
 	form = {
 		name: '',
 		icon: {
@@ -124,7 +140,9 @@ export default class userUpdate extends Vue {
     this.models.show = false
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
-    this.$refs.form.validateField(`check_${type}`)
+    if(this.rules[`check_${type}`]) {
+      this.$refs.form.validateField(`check_${type}`)
+    }
   }
 
   /**
