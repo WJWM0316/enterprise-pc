@@ -294,6 +294,14 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
+      },{
+        path: 'editMember',
+        name: 'editMember',
+        component: () => import( '@/pages/organization/memberPost/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'organization'
+        }
       }
     ]
   },
