@@ -14,3 +14,9 @@ export const getPersonalInfoBaseApi = params => request(`/personal/info/${params
 export const getPersonalInfoLivesApi = params => request(`/personal/info/${params.id}/lives`, 'get')
 // 个人空间工作圈信息接口
 export const getPersonalInfoJobCirclesApi = params => request(`/personal/info/${params.id}/jobcircles`, 'get')
+// 获取学员信息
+export const getMemberInfosApi = params => request(`/member/info/${params.id}`, 'get')
+// 编辑成员资料
+export const updateMemberInfosApi = params => request(`/member/${params.id}/edit`, 'post', Qs.stringify(params))
+// 删除成员
+export const deleteMemberApi = params => request(`/member/${params.id}`, 'delete')

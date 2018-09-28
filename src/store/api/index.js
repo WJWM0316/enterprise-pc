@@ -12,14 +12,9 @@ import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 // 请求的跟地址
 export const upload_api = `${window.location.origin}/tiger/attaches`
 
-// if(process.env.NODE_ENV === 'production') {
-//   axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
-// }
-
 axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
 // 请求拦截器
-axios.interceptors.request.use
-(
+axios.interceptors.request.use(
   config => {
     config.headers.common['Authorization'] = getAccessToken()
     return config
@@ -29,8 +24,7 @@ axios.interceptors.request.use
   }
 )
 
-axios.interceptors.response.use
-(
+axios.interceptors.response.use(
   res => {
     if (loadingInstance) loadingInstance.close()
     return res

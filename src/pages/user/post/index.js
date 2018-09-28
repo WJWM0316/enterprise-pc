@@ -9,7 +9,8 @@ import Cropper from 'cropperjs'
     ...mapActions([
       'getGroupListsApi',
       'uploadApi',
-      'updateGroupListsApi'
+      'updateGroupListsApi',
+      'getMemberInfosApi'
     ])
   },
   components: {
@@ -17,10 +18,24 @@ import Cropper from 'cropperjs'
   },
 	computed: {
     ...mapGetters([
-      'groupLists'
+      'groupLists',
+      'memberInfos'
     ]),
     avatarUrl() {
-      return this.form.icon.tem || defaultAvatar
+      return this.form.avatarId.tem.smallUrl || defaultAvatar
+    }
+  },
+  props: {
+    // 裁剪标题
+    tips: {
+      type: String,
+      default: '头像预览'
+    },
+
+    // 按钮文字
+    btnTxt: {
+      type: String,
+      default: '上传封面'
     }
   }
 })
@@ -41,24 +56,32 @@ export default class userUpdate extends Vue {
   ]
   value10 = ''
 	form = {
-		name: '',
-		icon: {
+    id: '',
+    avatarId: {
+      tem: {},
       value: '',
-      tem: '',
       showError: false
     },
-    group_id: {
+    occupation: '',
+    email: '',
+    wechat: '',
+    mobile: '',
+    password: '',
+    roleId: '',
+    contentAdminGroup: {
       tem: [],
       value: '',
       show: false
-    }
+    },
+		name: '',
+    groupId: ''
 	}
 	rules = {
 		name: [
       { required: true, message: '请输入活动名称', trigger: 'blur' },
       { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
     ],
-    region: [
+    occupation: [
       { required: true, message: '请选择所属部门', trigger: 'change' }
     ]
 	}
@@ -71,7 +94,7 @@ export default class userUpdate extends Vue {
     cropperHasInit: false,
     btnTips: {
       disable: false,
-      value: '裁剪完成，立即上传'
+      value: '确定'
     }
   }
 
@@ -87,10 +110,36 @@ export default class userUpdate extends Vue {
   tem_groupLists = []
 
   created() {
-    this.getGroupListsApi()
-        .then(() => {
-          this.tem_groupLists = [...this.groupLists]
-        })
+    const params = {id: this.$route.query.id}
+    Promise.all(
+      [
+        this.getGroupListsApi(),
+        this.getMemberInfosApi(params)
+      ]
+    )
+    .then((res) => {
+      const list = [...this.groupLists]
+      list.map(field => {
+        field.value = field.groupId
+        field.label = field.groupName
+      })
+      this.tem_groupLists = list
+      this.form.id = this.memberInfos.uid
+      this.form.avatarId.value = this.memberInfos.avatarId
+      this.form.avatarId.tem = this.memberInfos.avatar
+      this.form.email = this.memberInfos.email
+      this.form.wechat = this.memberInfos.wechat
+      this.form.password = this.memberInfos.password
+      this.form.occupation = this.memberInfos.occupation
+      this.form.name = this.memberInfos.realname
+      this.form.mobile = this.memberInfos.mobile
+    })
+    .catch((err) => {
+      this.$message.error('初始化页面失败~')
+    })
+  }
+  change(val) {
+    console.log(val)
   }
   /**
    * @Author   小书包
@@ -99,7 +148,7 @@ export default class userUpdate extends Vue {
    */
   openModal(type) {
     switch(type) {
-      case 'group_id':
+      case 'contentAdminGroup':
         this.models.title = '选择组织'
         break
       default:
@@ -126,7 +175,7 @@ export default class userUpdate extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.group_id = data
+    this.form.contentAdminGroup = data
   }
   /**
    * @Author   小书包
@@ -151,7 +200,7 @@ export default class userUpdate extends Vue {
    * @detail   弹窗关闭按钮
    */
   cancel() {
-    const type = this.models.currentModalName
+    // const type = this.models.currentModalName
     // this.form[type].value = ''
     // this.form[type].tem = []
     this.models.show = false
@@ -235,8 +284,9 @@ export default class userUpdate extends Vue {
     // const preview = document.querySelector('#cropperRes')
     // const previewImage = preview.getElementsByTagName('img').item(0)
     const options = {
-      aspectRatio: 1 / 1,
-      preview: '#cropperRes'
+      aspectRatio: 1,
+      preview: '#cropperRes',
+      viewMode: 1
     }
     this.cropper = new Cropper(image, options)
     this.flag.cropperHasInit = true
@@ -248,10 +298,11 @@ export default class userUpdate extends Vue {
    * @return   {[type]}   [description]
    */
   finishCropImage() {
-    this.flag.btnTips.value = '正在上传，请稍等'
+    // this.flag.btnTips.value = '正在上传，请稍等'
     this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
-    const croppedDataUrl = croppedCanvas.toDataURL()
+    const roundedCanvas = this.getRoundedCanvas(croppedCanvas)
+    const croppedDataUrl = roundedCanvas.toDataURL()
     const blob = this.dataURLtoFile(croppedDataUrl)
     const formData = new FormData()
     formData.append('attach_type', 'img')
@@ -262,12 +313,11 @@ export default class userUpdate extends Vue {
         this.cropper.destroy()
         this.flag.imgHasLoad = false
         this.flag.imgHasLoad = false
-        this.flag.btnTips.value = '裁剪完成，立即上传'
+        // this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
-        this.form.icon.value = infos.id
-        this.form.icon.tem = infos.url
-        this.form.check_icon = infos.id
-        this.$refs.form.validateField('check_icon')
+        this.form.avatarId.value = infos.id
+        this.form.avatarId.tem = infos.url
+        this.form.check_avatarId = infos.id
       })
       .catch(err => {
         this.$message.error(`${err.msg}~`)
@@ -307,5 +357,22 @@ export default class userUpdate extends Vue {
   getFileExt(filename) {
     const tem = filename.split('.')
     return tem[tem.length-1]
+  }
+
+  // 圆型裁剪
+  getRoundedCanvas(sourceCanvas) {
+    var canvas = document.createElement('canvas')
+    var context = canvas.getContext('2d')
+    var width = sourceCanvas.width
+    var height = sourceCanvas.height
+    canvas.width = width
+    canvas.height = height
+    context.imageSmoothingEnabled = true
+    context.drawImage(sourceCanvas, 0, 0, width, height)
+    context.globalCompositeOperation = 'destination-in'
+    context.beginPath()
+    context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true)
+    context.fill()
+    return canvas
   }
 }

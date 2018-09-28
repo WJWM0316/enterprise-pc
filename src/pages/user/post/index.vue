@@ -18,13 +18,13 @@
         <!-- 头像 start-->
   		  <el-form-item
           label="头像">
-    		    <div class="upload-error-tips upload-error-tips-show" v-if="form.icon.showError">
+    		    <div class="upload-error-tips upload-error-tips-show" v-if="form.avatarId.showError">
               <div class="tips">
                 <p><i class="el-icon-error"></i></p>
                 <p>上传失败</p>
               </div>
             </div>
-            <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.icon.tem}">
+            <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.avatarId.tem}">
               <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
               <img :src="avatarUrl" class="upload-cover">
               <div class="upload-cover-mask"></div>
@@ -34,10 +34,14 @@
         <!-- 所属部门 start-->
   		  <el-form-item
           label="所属部门"
-          prop="region">
-    		    <el-select v-model="form.region" placeholder="请选择所属部门" class="limit-width">
-    		      <el-option label="区域一" value="shanghai"></el-option>
-    		      <el-option label="区域二" value="beijing"></el-option>
+          prop="groupId">
+    		    <el-select v-model="form.groupId" placeholder="请选择所属部门" class="limit-width" @change="change">
+              <el-option
+                v-for="item in tem_groupLists"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
     		    </el-select>
   		  </el-form-item>
         <!-- 所属部门 end-->
@@ -45,23 +49,23 @@
         <!-- 职位 start-->
   		  <el-form-item
           label="职位"
-          prop="name">
-  		      <el-input v-model="form.name" class="limit-width"></el-input>
+          prop="occupation">
+  		      <el-input v-model="form.occupation" class="limit-width"></el-input>
   		  </el-form-item>
         <!-- 职位 end -->
         
         <!-- 邮箱 start -->
   		  <el-form-item
           label="邮箱"
-          prop="name">
-  		      <el-input v-model="form.name" class="limit-width"></el-input>
+          prop="email">
+  		      <el-input v-model="form.email" class="limit-width"></el-input>
   		  </el-form-item>
         <!-- 邮箱 end -->
 
         <!-- 设置密码 start-->
   		  <el-form-item
           label="设置密码"
-          prop="name">
+          prop="password">
   		      <el-button type="primary">点击修改</el-button>
   		  </el-form-item>
         <!-- 设置密码 end-->
@@ -69,14 +73,14 @@
         <!-- 手机号码 start -->
   		  <el-form-item
           label="手机号码">
-  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		      <el-input v-model="form.mobile" class="limit-width"></el-input>
   		  </el-form-item>
         <!-- 手机号码 end -->
 
         <!-- 微信号 start -->
   		  <el-form-item
           label="微信号">
-  		      <el-input v-model="form.name" class="limit-width"></el-input>
+  		      <el-input v-model="form.wechat" class="limit-width"></el-input>
   		  </el-form-item>
         <!-- 微信号 end -->
         
@@ -106,21 +110,21 @@
           label="选择管理分组"
           prop="name"
           >
-            <div class="selected-item" v-show="form.group_id.show">
+            <div class="selected-item" v-show="form.contentAdminGroup.show">
               已选择：
               <span
-                @click="removeMultipleCheck('group_id', groupIndex)"
+                @click="removeMultipleCheck('groupId', groupIndex)"
                 :key="groupIndex"
-                v-for="(groupItem, groupIndex) in form.group_id.tem">
+                v-for="(groupItem, groupIndex) in form.contentAdminGroup.tem">
                   {{groupItem.groupName}}<i class="el-icon-close"></i>
               </span>
             </div>
             <el-button
               class="click-item"
               type="primary"
-              :class="{'zike-btn-selected': form.group_id.show}"
-              @click="openModal('group_id')">
-                {{form.group_id.show ? '重新选择' : '点击选择'}}
+              :class="{'zike-btn-selected': form.groupId.show}"
+              @click="openModal('contentAdminGroup')">
+                {{form.contentAdminGroup.show ? '重新选择' : '点击选择'}}
             </el-button>
         </el-form-item>
         <!-- 选择管理分组 end-->
@@ -134,19 +138,22 @@
   	</el-form>
   	<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
 	    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
-	      <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
+        <div class="modal-position">{{tips}}</div>
+	      <i class="el-icon-close" @click="flag.imgHasLoad=false"></i>
 	      <div class="cropper">
 	        <div class="cropper-box" id="cropperBox">
-	          <img id="uploadPreview" style="width:100px;height:100px;"/>
+	          <img id="uploadPreview" style="width:96px;height:96px;"/>
 	        </div>
 	        <div class="cropper-res-wrap">
 	          <div class="cropper-res" id="cropperRes">
-	            <img style="width:100px;height:100px;"/>
+	            <img style="width:96px;height:96px;"/>
 	          </div>
+            <p class="label-tips">{{tips}}</p>
 	        </div>
 	      </div>
 	      <div class="cropper-btns-wrap">
-	        <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
+	        <el-button @click="flag.imgHasLoad=false">取消</el-button>
+          <el-button type="primary" :disabled="flag.btnTips.disable" @click="finishCropImage">{{ flag.btnTips.value }}</el-button>
 	      </div>
 	    </div>
 	  </div>
@@ -169,7 +176,7 @@
         <div slot="customize-html">
           <div class="customize-html-content">
             <!-- 组织-start -->
-            <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
+            <div class="groupList-type-list" v-if="models.currentModalName === 'contentAdminGroup'">
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in tem_groupLists"
@@ -388,7 +395,7 @@ export default userUpdate
     transition: all .3s ease;
     visibility: hidden;
     transform: scale(2);
-    padding: 30px;
+    padding: 30px 48px;
     position: fixed;
     z-index: 90;
     top: 50px;
@@ -406,31 +413,34 @@ export default userUpdate
   }
   .cropper {
     position: relative;
-    width: 400px;
-    height: 300px;
-    padding: 80px 150px;
-    background-color: #f8f8f8;
+    width: 424px;
+    height: 450px;
+    padding: 60px 150px 60px 0;
+    /*background-color: #f8f8f8;*/
   }
   .cropper-box {
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
+    border-radius: 4px;
+    overflow: hidden;
   }
   .cropper-res-wrap {
+    text-align: center;
     position: absolute;
-    top: 0;
+    top: 44px;
     right: 0;
     width: 100px;
     height: 100px;
     padding: 15px;
-    background-color: #f8f8f8;
+    /*background-color: #f8f8f8;*/
     box-sizing: content-box;
   }
   .cropper-res {
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
     overflow: hidden;
-    border: 1px solid #e1e1e1;
     background-color: white;
+    border-radius: 50%;
   }
   #cropper-btn{
     width: 100%;
@@ -449,6 +459,44 @@ export default userUpdate
     text-align: center;
     border-radius: 100%;
     font-size: 20px;
+  }
+  .el-icon-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+  .modal-position {
+    font-size: 16px;
+    color: #000;
+    line-height: 1;
+    position: relative;
+    &:before{
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 10px;
+      float: left;
+    };
+  }
+  .cropper-btns-wrap{
+    text-align: right;
+    .el-button {
+      width: 124px;
+      margin-left: 16px;
+    }
+  }
+  .label-tips{
+    font-size:14px;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height: 1;
+  }
+  .cropper-view-box,
+  .cropper-face {
+    border-radius: 50%;
   }
 }
 </style>

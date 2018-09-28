@@ -361,7 +361,7 @@ export default class WorkZonePost extends Vue {
       })
     })
     .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
+      this.$message.error('初始化页面失败~')
     })
   }
   /**
