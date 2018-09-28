@@ -3,7 +3,8 @@ import {
   GET_LIVE_MENBER_LIST,
   GET_LIVE_INVISIBLE_LIST,
   GET_LIVE_DETAILS,
-  GET_LIVE_LIST
+  GET_LIVE_LIST,
+  GET_LIVE_PROBLEM_LIST
 } from '../mutation-types'
 
 import {
@@ -14,7 +15,8 @@ import {
   getLiveMenberListApi,
   getLiveInvisibleMenberListApi,
   getLiveListApi,
-  updateLiveApi
+  updateLiveApi,
+  getLiveProblemListApi
 } from 'API/broadcast'
 
 const state = {
@@ -24,6 +26,10 @@ const state = {
   },
   liveDetails: {},
   liveLists: {
+    list: [],
+    total: 0
+  },
+  liveProblemList: {
     list: [],
     total: 0
   }
@@ -45,6 +51,10 @@ const mutations = {
   [GET_LIVE_LIST] (state, data) {
     state.liveLists.list = data.data
     state.liveLists.total = data.meta.total
+  },
+  [GET_LIVE_PROBLEM_LIST] (state, data) {
+    state.liveProblemList.list = data.data
+    state.liveProblemList.total = data.meta.total
   }
 }
 
@@ -180,7 +190,23 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
-  }
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   问答区
+   * @return   {[type]}          [description]
+   */
+  getLiveProblemListApi (store, params) {
+    return getLiveProblemListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
 }
 
 export default {

@@ -7,13 +7,14 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   name: 'lighthouse-list',
   methods: {
     ...mapActions([
-      'getLiveReviewListApi'
+      'getLiveReviewListApi',
+      'getLiveProblemListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'jobCircleLists',
-      'liveReviewList'
+      'liveReviewList',
+      'liveProblemList'
     ])
   },
   watch: {
@@ -71,15 +72,15 @@ export default class BroadcastReview extends Vue {
       [
         {
           label: '全部',
-          value: 'status-1'
+          value: 'del-3'
         },
         {
           label: '正常',
-          value: 'status-0'
+          value: 'del-1'
         },
         {
           label: '已删除',
-          value: 'status-0'
+          value: 'del-0'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -110,14 +111,15 @@ export default class BroadcastReview extends Vue {
    */
   getLiveReviewList({ page, pageSize } = {}) {
     const params = {
+      live_id: this.form.id,
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
-    if(this.form.id) {
-      params.id = this.form.id
+    if(this.form.del) {
+      params.del = Number(this.form.del) === 3 ? '' : this.form.del
     }
-    this.getLiveReviewListApi(params)
+    this.getLiveProblemListApi(params)
   }
 
   // 点击搜索时触发

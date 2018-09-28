@@ -80,7 +80,7 @@ export default class NoteList extends Vue {
           value: 'visible-1'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '隐藏该内容，除了已加入工作圈的成员和选定的成员以外的成员都不可见；隐藏后可重新公开，公开则所有成员都可见'
     },
     {
       prop: 'deletedAt',
@@ -103,7 +103,7 @@ export default class NoteList extends Vue {
           value: 'delete-1'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     },
     {
       prop: 'createdAt',
@@ -117,7 +117,7 @@ export default class NoteList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '30%',
-      filterPlacement: '吊炸天的操作~'
+      filterPlacement: '帖子的相关操作~'
     }
   ]
 
@@ -221,4 +221,17 @@ export default class NoteList extends Vue {
   }
   confirm() {}
   cancel() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-28
+   * @detail   重置单元行样式
+   * @return   {[type]}   [description]
+   */
+  tableRowClassName({row}) {
+    if(row.deletedAt === '已删除') {
+      return 'row-delete'
+    } else {
+      return 'row-exist'
+    }
+  }
 }

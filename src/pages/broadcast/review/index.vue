@@ -8,6 +8,7 @@
     :list="liveReviewList.list"
     :fields="fields"
     :total="liveReviewList.total"
+    :tableRowClassName="tableRowClassName"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -27,7 +28,15 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'content'">
-          {{props.scope.row.content}}
+          <template v-if="props.scope.row.type ==='text'">
+            {{props.scope.row.content}}
+          </template>
+          <template v-else-if="props.scope.row.type ==='audio'">
+            <audio :src="props.scope.row.file.url" controls="controls"></audio>
+          </template>
+          <template v-else>
+            <img :src="props.scope.row.file.url" alt="" style="display: inline-block;">
+          </template>
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
@@ -48,8 +57,10 @@ export default BroadcastReview
   .zike-breadcrumb {
     margin-bottom: 30px;
   }
-  .deleted {
+  .row-delete {
     background:rgba(248,250,251,1);
+    text-decoration: line-through;
+    color: #DCDCDC;
   }
 }
 </style>

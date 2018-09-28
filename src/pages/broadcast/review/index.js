@@ -37,7 +37,7 @@ export default class BroadcastReview extends Vue {
       prop: 'content',
       label: '查看内容',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       width: '40%',
       filteredValue:
       [
@@ -65,14 +65,14 @@ export default class BroadcastReview extends Vue {
       label: '发布人',
       align: 'center',
       showTips: 'no',
-      width: '10%'
+      width: '15%'
     },
     {
       prop: 'statusName',
       label: '状态',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -88,20 +88,21 @@ export default class BroadcastReview extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '正常：在前台正常露出的内容会显示该状态,已删除：被删除的内容会显示该状态，在前台将被隐藏 '
     },
     {
       prop: 'createdAt',
       label: '开始时间',
       align: 'center',
       showTips: 'no',
-      width: '20%'
+      width: '15%'
     },
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'no',
-      width: '10%'
+      showTips: 'yes',
+      width: '15%',
+      filterPlacement: '管理直播内容'
     }
   ]
 
@@ -183,6 +184,20 @@ export default class BroadcastReview extends Vue {
         break
       default:
         break
+    }
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-28
+   * @detail   重置单元行样式
+   * @return   {[type]}   [description]
+   */
+  tableRowClassName({row}) {
+    if(row.status === 0) {
+      return 'row-delete'
+    } else {
+      return 'row-exist'
     }
   }
 }

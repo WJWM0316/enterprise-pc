@@ -7,12 +7,14 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   name: 'broadcast-list',
   methods: {
     ...mapActions([
-      'getLiveListApi'
+      'getLiveListApi',
+      'getCategoryListsApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'liveLists'
+      'liveLists',
+      'categoryList'
     ])
   },
   watch: {
@@ -43,7 +45,7 @@ export default class BroadcastIndex extends Vue {
       prop: 'statusName',
       label: '状态',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       width: '10%',
       filteredValue:
       [
@@ -72,11 +74,11 @@ export default class BroadcastIndex extends Vue {
       [
         {
           label: '上线',
-          value: 'status-1'
+          value: 'isOnline-1'
         },
         {
           label: '下线',
-          value: 'status-0'
+          value: 'isOnline-0'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -85,20 +87,10 @@ export default class BroadcastIndex extends Vue {
       prop: 'categoryName',
       label: '分类',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       width: '10%',
-      filteredValue:
-      [
-        {
-          label: '上线',
-          value: 'categoryId-1'
-        },
-        {
-          label: '下线',
-          value: 'categoryId-0'
-        }
-      ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filteredValue: [],
+      filterPlacement: '测试啦'
     },
     {
       prop: 'sort',
@@ -117,8 +109,9 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'no',
-      width: '20%'
+      showTips: 'yes',
+      width: '20%',
+      filterPlacement: '管理直播内容'
     }
   ]
 
@@ -130,6 +123,18 @@ export default class BroadcastIndex extends Vue {
   init() {
     this.form = Object.assign(this.form, this.$route.query)
     this.getLiveLists()
+  }
+
+  created() {
+    this.getCategoryListsApi()
+        .then(() => {
+          this.categoryList.map(field => {
+            this.fields[3].filteredValue.push({
+              label: field.categoryName,
+              value: `categoryId-${field.categoryId}`
+            })
+          })
+        })
   }
 
   /**
@@ -149,6 +154,12 @@ export default class BroadcastIndex extends Vue {
     }
     if(this.form.status) {
       params.status = this.form.status
+    }
+    if(this.form.isOnline) {
+      params.isOnline = this.form.isOnline
+    }
+    if(this.form.categoryId) {
+      params.categoryId = this.form.categoryId
     }
     this.getLiveListApi(params)
   }
@@ -179,5 +190,21 @@ export default class BroadcastIndex extends Vue {
    */
   routeJump(id, routeName) {
     this.$router.push({name: routeName, params: {id}})
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-28
+   * @detail   重置单元行样式
+   * @return   {[type]}   [description]
+   */
+  tableRowClassName({row}) {
+    if(row.status === 1) {
+      return 'row-undo'
+    } else if(row.status === 2) {
+      return 'row-doing'
+    } else {
+      return 'row-end'
+    }
   }
 }

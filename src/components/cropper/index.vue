@@ -1,6 +1,6 @@
 <template>
 	<div id="zike-cropper">
-    <div class="upload-image click-item" role="button" @click="onSelectFile">
+    <div class="upload-image click-item" role="button" @click="onSelectFile" :class="'dddd'">
       <i  class="el-icon-upload"></i> {{ btnTxt }}
       <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
     </div>

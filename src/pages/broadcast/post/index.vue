@@ -92,10 +92,9 @@
           <el-popover
             placement="top-start"
             ref="groupList"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择此内容的管理权限所属的部门组织">
           </el-popover>
           <i class="el-icon-question" v-popover:groupList></i>
       </el-form-item>
@@ -172,15 +171,6 @@
             @click="openModal('memberList')">
               {{form.memberList.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-popover
-            placement="top-start"
-            ref="memberList"
-            title="标题"
-            width="200"
-            trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-          </el-popover>
-          <i class="el-icon-question" v-popover:memberList></i>
       </el-form-item>
 
       <!-- 对这些人不可见 -->
@@ -207,10 +197,9 @@
           <el-popover
             placement="top-start"
             ref="invisibleList"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择的学员在员工端将无法看到该内容的露出">
           </el-popover>
           <i class="el-icon-question" v-popover:invisibleList></i>
       </el-form-item>

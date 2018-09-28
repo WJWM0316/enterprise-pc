@@ -20,12 +20,14 @@ import { getListCourse } from '@/store/api/course.js'
   },
   methods: {
     ...mapActions([
-      'getCourseListsApi'
+      'getCourseListsApi',
+      'getCategoryListsApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'courseList'
+      'courseList',
+      'categoryList'
     ])
   }
 })
@@ -64,21 +66,7 @@ export default class CourseList extends Vue {
       align: 'center',
       showTips: 'yes',
       width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'type-全部'
-        },
-        {
-          label: '产品',
-          value: 'type-产品'
-        },
-        {
-          label: '运营',
-          value: 'type-运营'
-        }
-      ],
+      filteredValue: [],
       filterPlacement: '类型的提示文案'
     },
     {
@@ -110,6 +98,17 @@ export default class CourseList extends Vue {
     this.getCourseList()
   }
 
+  created() {
+    this.getCategoryListsApi()
+        .then(() => {
+          this.categoryList.map(field => {
+            this.fields[2].filteredValue.push({label: '全部', value: 'categoryId-abc'},{
+              label: field.categoryName,
+              value: `categoryId-${field.categoryId}`
+            })
+          })
+        })
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-20
@@ -126,7 +125,10 @@ export default class CourseList extends Vue {
       params.name = this.form.name
     }
     if(this.form.status) {
-      params.status = this.form.status
+      params.status = Number(this.form.status) === 3 ? '' : this.form.status
+    }
+    if(this.form.categoryId) {
+      params.categoryId = this.form.categoryId === 'abc' ? '' : this.form.categoryId
     }
     this.getCourseListsApi(params)
   }

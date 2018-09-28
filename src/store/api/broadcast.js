@@ -20,3 +20,5 @@ export const getLiveInvisibleMenberListApi = params => request(`/live/invisible/
 export const getLiveListApi = params => request(`/live`, 'get', params)
 // 更新直播状态
 export const updateLiveApi = params => request(`/live/message/${params.id}`, 'patch', params)
+// 问答区
+export const getLiveProblemListApi = params => request(`/live/problemList`, 'post', Qs.stringify(params))

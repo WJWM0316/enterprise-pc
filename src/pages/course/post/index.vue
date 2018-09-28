@@ -92,10 +92,9 @@
           <el-popover
             placement="top-start"
             ref="group_id"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择此内容的管理权限所属的部门组织">
           </el-popover>
           <i class="el-icon-question" v-popover:group_id></i>
       </el-form-item>
@@ -157,15 +156,6 @@
             @click="openModal('members')">
               {{form.members.show ? '重新选择' : '点击选择'}}
           </el-button>
-          <el-popover
-            placement="top-start"
-            ref="members"
-            title="标题"
-            width="200"
-            trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-          </el-popover>
-          <i class="el-icon-question" v-popover:members></i>
       </el-form-item>
 
       <!-- 不可见学员 -->
@@ -216,10 +206,9 @@
           <el-popover
             placement="top-start"
             ref="sort"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。">
           </el-popover>
           <i class="el-icon-question" v-popover:sort></i>
       </el-form-item>

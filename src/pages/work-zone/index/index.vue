@@ -47,11 +47,11 @@
               ref="popoverCover"
               placement="right"
               width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
+              <i class="u-image auto"><img :src="props.scope.row.coverImg.smallUrl"></i>
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
+                <img :src="props.scope.row.coverImg.smallUrl">
               </i>
             </div>
           </div>

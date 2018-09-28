@@ -10,7 +10,7 @@
           placeholder="请输入直播名称或关键词" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addBroadcast" class="click-item">新建直播</el-button>
+        <el-button type="primary" @click="addBroadcast">新建直播</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -103,9 +103,6 @@ export default BroadcastIndex
   }
   .header {
     margin: 30px 0;
-  }
-  .click-item {
-    color: #354048;
   }
   .content {
     .lalel{
