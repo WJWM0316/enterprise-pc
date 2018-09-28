@@ -86,12 +86,11 @@ export default class WorkZonePost extends Vue {
   // 确认信息弹窗
   models = {
     show: false,
-    title: '创建成功',
+    title: '选择组织',
     showClose: true,
-    minHeight: 100,
-    txt: '已经帮导师创建账号成功，可以交给导师登录了',
-    confirmText: '知道了',
-    type: 'alert'
+    confirmText: '提交',
+    currentModalName: '',
+    type: 'confirm'
   }
 
   roleList = [
@@ -211,7 +210,15 @@ export default class WorkZonePost extends Vue {
    * @detail   弹窗确定按钮
    */
   confirm() {
-    this.$router.push({ name: 'tutor'})
+    return
+    const type = this.models.currentModalName
+    this.form[type].show = this.form[type].value ? true : false
+    this.models.show = false
+    this.ownerUidName = ''
+    this.form[`check_${type}`] = this.form[type].value
+    if(this.rules[`check_${type}`]) {
+      this.$refs.form.validateField(`check_${type}`)
+    }
   }
 
   /**
@@ -260,14 +267,36 @@ export default class WorkZonePost extends Vue {
    * @detail   图片上传成功
    */
   handleImageSuccess(res) {
+    console.log(res)
     res.data[0].show = false
+    this.imageUpload.list = []
     this.imageUpload.list.push(res.data[0])
+    console.log(this.imageUpload.list.length)
   }
 
   /**
    * @detail   图片上传之前的处理
    */
   beforeImageUpload(file) {
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   选择课程组织
+   * @return   {[type]}   [description]
+   */
+  seleteGroup(item, key) {
+    //updateGroupListsApi({groupId: item.groupId})
+    const data = { show: false, tem: [], value: [] }
+    this[key].map((field) => {
+      if(field.active) {
+        data.tem.push(field)
+        data.value.push(field.groupId)
+      }
+    })
+    data.value = data.value.join(',')
+    this.form.group_id = data
   }
 
 }

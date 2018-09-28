@@ -22,15 +22,25 @@
           label="头像"
           prop="avatarId"
           class="limit-width">
-            <div  
-              @mouseover="imgOp (imgIndex,'over') "
-              @mouseout="imgOp(imgIndex,'out')" 
-             v-show="imageUpload.list.length>0">
-              <!-- <img class="" :src="imageUpload.list[0].url" alt="" >
-              <span class="deleteImg" v-if="imageUpload.list[0].show"
-                @click="imgOp(imgIndex,'delete')"
-              >删除图片</span> -->
-            </div>
+            <!-- <div class="avatar_blo"
+              v-for="item in imageUpload.list" :key="item"
+              @mouseover="imgOp (item,'over') "
+              @mouseout="imgOp(item,'out')" 
+               >
+              <img class="" :src="item.url" alt="" >
+              <span class="deleteImg" v-show="item.show" @click="imgOp(imgIndex,'delete')">删除图片</span>
+            </div> -->
+            <ul class="img-list">
+              <li class="avatar_blo" v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
+                @mouseover="imgOp (imgIndex,'over') "
+                @mouseout="imgOp(imgIndex,'out')" 
+              >
+                <img class="" :src="imgItem.url" alt="" >
+                <span class="deleteImg" v-if="imgItem.show"
+                  @click="imgOp(imgIndex,'delete')"
+                >删除图片</span>
+              </li>
+            </ul>
           <el-upload
             ref="image"
             name="image"
@@ -132,6 +142,46 @@
           <el-button type="primary" class="click-item" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
         </el-form-item>
     </el-form>
+
+
+    <modal-dialog
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :min-height="models.minHeight"
+      @confirm="confirm"
+      @cancel="cancel"
+      >
+        <div slot="title" style="margin-left: 10px;">
+          <h3 class="dialog-title">
+            {{models.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html">
+          <div class="customize-html-content">
+            <!-- 组织-start -->
+            <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
+              <el-button
+                size="large"
+                v-for="(groupItem, groupIndex) in groupList"
+                 @click="seleteGroup(groupItem, 'groupLists')"
+                :class="{'zike-btn-active-selected': groupItem.active}"
+                :key="groupIndex">
+                  {{groupItem.groupName}}
+              </el-button>
+              <p class="tips">
+                如果需要对部门组织进行修改，请点击左侧的
+                <router-link :to="{name: 'organization'}" class="set">【组织】</router-link>
+                进行修改；如无权限，请联系管理员修改。
+              </p>
+            </div>
+            <!-- 组织-end -->
+          </div>
+        </div>
+    </modal-dialog>
   </div>
 </template>
 <script>

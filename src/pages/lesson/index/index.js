@@ -106,7 +106,7 @@ export default class CourseList extends Vue {
   }
 
   lessonList = []
-
+  course_id = ''
   /**
    * 初始化表单、分页页面数据
    */
@@ -115,13 +115,15 @@ export default class CourseList extends Vue {
     const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
     this.form = Object.assign(this.initForm, form || {})
     this.pagination = Object.assign(this.pagination, pagination || {})
-    this.getWorkZoneLists()
+    this.course_id = this.$route.query.course_id
+
+    this.getLists()
   }
 
   /**
-   * 获取课程列表
+   * 获取列表
    */
-  getWorkZoneLists() {
+  getLists() {
     let data = {
       like: {
         title:this.form.name
@@ -131,7 +133,7 @@ export default class CourseList extends Vue {
         favors_count: 'DESC',
         comments_count: 'DESC'
       },
-      course_id: this.$route.params.id
+      course_id: this.course_id
     }
     let jsonDataString = JSON.stringify({search: data})
     console.log(jsonDataString)
@@ -149,7 +151,6 @@ export default class CourseList extends Vue {
 
     getLessonListsApi(param).then(res=>{
       this.lessonList = res.data.data
-      console.log(this.lessonList)
     })
   }
 
@@ -168,10 +169,17 @@ export default class CourseList extends Vue {
     console.log(item)
     switch(type) {
       case 'edit':
-        this.$router.push({ name: 'lessonEdit',query: {id: item.courseSectionId}})
+        this.$router.push(
+          { name: 'lessonEdit',
+            query: {
+              id: item.courseSectionId,
+              course_id: this.course_id
+            }
+          }
+        )
         break
       case 'add':
-        this.$router.push({ name: 'lessonAdd'})
+        this.$router.push({ name: 'lessonAdd',query:{course_id: this.course_id}})
         break
       case 'punch':
         //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })

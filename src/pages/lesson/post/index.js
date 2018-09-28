@@ -94,8 +94,7 @@ export default class WorkZonePost extends Vue {
 
   created() {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
-    this.form.course_id = this.$route.params.id
-
+    this.form.course_id = this.$route.query.course_id
     console.log(this.$route)
     if(this.action === 'add'){
       this.initPageByPost()
@@ -182,8 +181,8 @@ export default class WorkZonePost extends Vue {
           that.submitBtnClick = !that.submitBtnClick
           that.submitBtnTxt = '提交'
         }, 3000)
-        if(err.msg){
-          that.$message.error(err.msg);
+        if(err.data.msg){
+          that.$message.error(err.data.msg);
         }
       },
     }
