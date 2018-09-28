@@ -1,8 +1,7 @@
 <template>
   <div id="notice">
-		<my-cropper>
-			<div slot="uplodBtn" class="upload-btn"> </div>
-		</my-cropper>
+		<my-cropper></my-cropper>
+    <VueAudio :theUrl="url" :theControlList="controlList"/>
   </div>
 </template>
 <script>
