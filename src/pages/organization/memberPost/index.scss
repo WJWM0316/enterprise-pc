@@ -216,3 +216,21 @@
     cursor: pointer;
   }
 }
+
+.zike-btn-active-selected {
+    background:rgba(255,226,102,0.2);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:#D7AB70;
+    border-color: #EDEDED;
+  }
+
+  .zike-btn-selected {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
+  }

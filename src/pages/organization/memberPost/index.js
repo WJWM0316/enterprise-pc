@@ -60,6 +60,13 @@ export default class WorkZonePost extends Vue {
     password: '',
     // 角色ID
     roleId: '',
+
+    group_id: {
+      value: '',
+      tem: [],
+      show: false
+    },
+    contentAdminGroup: ''
   }
 
   rules = {
@@ -89,25 +96,24 @@ export default class WorkZonePost extends Vue {
     title: '选择组织',
     showClose: true,
     confirmText: '提交',
-    currentModalName: '',
     type: 'confirm'
   }
 
   roleList = [
     {
-        value: 1,
+        value: 6,
         label: '普通学员'
     },
     {
-        value: 2,
+        value: 3,
         label: '课程、直播和工作圈管理'
     },
     {
-        value: 3,
+        value: 2,
         label: '后台管理员'
     },
     {
-        value: 4,
+        value: 1,
         label: '超级管理员'
     }
   ]
@@ -120,9 +126,19 @@ export default class WorkZonePost extends Vue {
   timeout =  null
   temMenberLists = []
   groupList = []
-
   init() {
     this.getGroupList()
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-11
+   * @detail   打开弹窗model
+   */
+  openModal(type) {
+    this.models.show = true
+    this.models.width = '860px'
+    this.models.minHeight = '284px'
+    this.groupList = [...this.temMenberLists]
   }
 
   /**
@@ -131,6 +147,13 @@ export default class WorkZonePost extends Vue {
   getGroupList() {
     getGroupListApi().then(res => {
       console.log(res.data.data)
+
+      res.data.data.map((item)=>{
+        item.active = false
+      })
+
+      console.log(res.data.data)
+      this.temMenberLists = res.data.data
       this.groupList = res.data.data
     })
   }
@@ -141,6 +164,7 @@ export default class WorkZonePost extends Vue {
     }else if(type === 'out'){
       this.imageUpload.list[index].show = false
     }else if(type === 'delete'){
+      delete this.from.avatarId 
       this.imageUpload.list.splice(index,1)
     }
   }
@@ -156,7 +180,12 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'title', 'mobile', 'password']
+
+
+        if(this.form.roleId === 3){
+          this.form.contentAdminGroup = this.form.group_id.value
+        }
+        const need = ['name', 'avatarId', 'groupId', 'occupation','email','wechat','mobile','password','roleId','contentAdminGroup']
         const params = this.transformData(this.form, need)
 
         console.log(params)
@@ -172,11 +201,14 @@ export default class WorkZonePost extends Vue {
    */
   transformData(data, params) {
     const formData = {}
+    let type = ''
     params.map(field => {
-      if(typeof data[field] != 'object') {
-        formData[field] = data[field]
-      } else {
-        formData[field] = data[field].value
+      type = typeof data[field]
+      if(type != 'object' && type != 'undefined') {
+        if(type == 'string' && data[field].length<1){
+        }else {
+          formData[field] = data[field]
+        }
       }
     })
     return formData
@@ -186,11 +218,8 @@ export default class WorkZonePost extends Vue {
     let that = this
     addMemberApi(params)
       .then(res => {
-        that.models.show = true
-        setTimeout(() => {
-          this.submitBtnClick = !this.submitBtnClick
-          this.submitBtnTxt = '提交'
-        }, 3000)
+        this.$message({message: res.data.msg, type: 'success'})
+        this.$router.push({name: 'organization'})
       })
       .catch(err => {
         this.$message.error(`${err.data.msg}~`);
@@ -210,15 +239,9 @@ export default class WorkZonePost extends Vue {
    * @detail   弹窗确定按钮
    */
   confirm() {
-    return
-    const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value ? true : false
+    this.form['group_id'].show = this.form['group_id'].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
-    this.form[`check_${type}`] = this.form[type].value
-    if(this.rules[`check_${type}`]) {
-      this.$refs.form.validateField(`check_${type}`)
-    }
   }
 
   /**
@@ -269,9 +292,9 @@ export default class WorkZonePost extends Vue {
   handleImageSuccess(res) {
     console.log(res)
     res.data[0].show = false
+    this.form.avatarId = res.data[0].id
     this.imageUpload.list = []
     this.imageUpload.list.push(res.data[0])
-    console.log(this.imageUpload.list.length)
   }
 
   /**
@@ -280,16 +303,23 @@ export default class WorkZonePost extends Vue {
   beforeImageUpload(file) {
   }
 
+  removeGroupCheck(index) {
+    const value = this.form.group_id.value.split(',').splice(index, 1)
+    this.form.group_id.tem.splice(index, 1)
+    this.form.group_id.value = value.join(',')
+    this.form.group_id.show = this.form.group_id.tem <= 0 ? false : true
+  }
+
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
    * @detail   选择课程组织
    * @return   {[type]}   [description]
    */
-  seleteGroup(item, key) {
-    //updateGroupListsApi({groupId: item.groupId})
+  seleteGroup(index, key) {
+    this.groupList[index].active = !this.groupList[index].active
     const data = { show: false, tem: [], value: [] }
-    this[key].map((field) => {
+    this.groupList.map((field) => {
       if(field.active) {
         data.tem.push(field)
         data.value.push(field.groupId)
@@ -297,6 +327,8 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.group_id = data
+
+    console.log(data.value)
   }
 
 }

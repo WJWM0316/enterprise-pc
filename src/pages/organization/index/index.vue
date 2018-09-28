@@ -51,9 +51,8 @@
 
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'groupName'">
-          <img :src="props.scope.row.avatar.smallUrl">
+          <img v-if="props.scope.row&&props.scope.row.avatar && props.scope.row.avatar.smallUrl" :src="props.scope.row.avatar.smallUrl">
           {{props.scope.row.realname}}
-          <!-- {{props.scope.column.group[0].groupName}} -->
         </div>
 
         <!-- 操作行数据 -->

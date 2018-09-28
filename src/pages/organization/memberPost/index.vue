@@ -22,14 +22,6 @@
           label="头像"
           prop="avatarId"
           class="limit-width">
-            <!-- <div class="avatar_blo"
-              v-for="item in imageUpload.list" :key="item"
-              @mouseover="imgOp (item,'over') "
-              @mouseout="imgOp(item,'out')" 
-               >
-              <img class="" :src="item.url" alt="" >
-              <span class="deleteImg" v-show="item.show" @click="imgOp(imgIndex,'delete')">删除图片</span>
-            </div> -->
             <ul class="img-list">
               <li class="avatar_blo" v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
                 @mouseover="imgOp (imgIndex,'over') "
@@ -51,7 +43,10 @@
             :on-success="handleImageSuccess"
             :show-file-list="false"
             :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
-            <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+
+            <el-button slot="trigger" size="small" type="primary" :class="{'zike-btn-selected': imageUpload.list.length>0}">上传头像</el-button>
+
+
             <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
           </el-upload>
 
@@ -136,6 +131,32 @@
               </el-option>
             </el-select>
         </el-form-item>
+
+        <!-- 选择管理分组 -->
+        <el-form-item
+          label="选择管理分组"
+          prop="roleId"
+          class="limit-width"
+          v-if="form.roleId === 3">
+            <div class="selected-item" v-show="form.group_id.show"
+            >
+            >
+              已选择：
+              <span 
+                v-for="(groupItem, groupIndex) in form.group_id.tem" 
+                :key="groupIndex"
+                @click="removeGroupCheck(groupIndex)">
+                {{ groupItem.groupName }}<i class="el-icon-close"></i>
+              </span>
+            </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            @click="openModal()"
+            :class="{'zike-btn-selected': form.group_id.show}">
+              {{form.group_id.show ? '重新选择' : '点击选择'}}
+          </el-button>
+        </el-form-item>
         
         <!-- 确认提交 -->
         <el-form-item class="footer-button">
@@ -163,11 +184,11 @@
         <div slot="customize-html">
           <div class="customize-html-content">
             <!-- 组织-start -->
-            <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
+            <div class="groupList-type-list" >
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupList"
-                 @click="seleteGroup(groupItem, 'groupLists')"
+                 @click="seleteGroup(groupIndex, 'groupLists')"
                 :class="{'zike-btn-active-selected': groupItem.active}"
                 :key="groupIndex">
                   {{groupItem.groupName}}
