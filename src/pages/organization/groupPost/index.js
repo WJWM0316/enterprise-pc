@@ -214,7 +214,7 @@ export default class MenberList extends Vue {
         }, 3000)
       },
       err: (err)=>{
-        this.$message.error(`${err.msg}~`)
+        this.$message.error(`${err.data.msg}~`)
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'

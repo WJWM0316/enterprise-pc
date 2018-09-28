@@ -1,5 +1,5 @@
 <template>
-  <div id="course-post">
+  <div id="member-post">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{$route.name === 'addMember' ? '添加成员' : '编辑成员'}}</el-breadcrumb-item>
@@ -9,214 +9,129 @@
       :rules="rules"
       ref="form"
       label-width="130px">
-
-
-        <!-- 请填写课程名称 -->
+        <!-- 姓名 -->
         <el-form-item
-          label="课程名称"
-          prop="courseName"
+          label="姓名"
+          prop="name"
           class="limit-width"
           >
-            <el-input v-model="form.courseName" :maxlength="30" style="width: 380px;" />
+            <el-input style="width: 300px;" v-model="form.name" :maxlength="30" placeholder="请填写姓名"/>
+        </el-form-item>
+
+        <el-form-item
+          label="头像"
+          prop="avatarId"
+          class="limit-width">
+            <div  
+              @mouseover="imgOp (imgIndex,'over') "
+              @mouseout="imgOp(imgIndex,'out')" 
+             v-show="imageUpload.list.length>0">
+              <!-- <img class="" :src="imageUpload.list[0].url" alt="" >
+              <span class="deleteImg" v-if="imageUpload.list[0].show"
+                @click="imgOp(imgIndex,'delete')"
+              >删除图片</span> -->
+            </div>
+          <el-upload
+            ref="image"
+            name="image"
+            :accept="imageUpload.accept"
+            :data="imageUpload.params"
+            :action="imageUpload.action"
+            :before-upload="beforeImageUpload"
+            :on-success="handleImageSuccess"
+            :show-file-list="false"
+            :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
+            <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+            <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
+          </el-upload>
+
+        </el-form-item>
+
+        <!-- 所属部门 -->
+        <el-form-item
+          label="所属部门"
+          prop="groupId"
+          class="limit-width"
+          >
+          <el-select v-model="form.groupId" placeholder="请选择所属部门">
+            <el-option
+              v-for="item in groupList"
+              :key="item.groupId"
+              :label="item.groupName"
+              :value="item.groupId"
+              >
+            </el-option>
+          </el-select>
         </el-form-item>
         
-        <!-- 课程分类 -->
+        <!-- 职位 -->
         <el-form-item
-          label="课程分类"
-          prop="courseType"
+          label="职位"
+          prop="occupation"
           class="limit-width"
           >
-            <div class="selected-item">
-              已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
-            </div>
-            <el-button class="click-item" type="primary" @click="openModal('courseType')">点击选择</el-button>
+            <el-input style="width: 300px;" v-model="form.occupation" :maxlength="30" placeholder="请填写职位信息"/>
+        </el-form-item>
+
+        <!-- 邮箱 -->
+        <el-form-item
+          label="邮箱"
+          prop="email"
+          class="limit-width"
+          >
+            <el-input style="width: 300px;" v-model="form.email" :maxlength="30" placeholder="请填写邮箱" />
+        </el-form-item>
+
+        <!-- 设置密码 -->
+        <el-form-item
+          label="设置密码"
+          prop="password"
+          class="limit-width"
+          >
+            <el-input style="width: 300px;" v-model="form.password" :maxlength="30"  placeholder="请填写密码"/>
+        </el-form-item>
+
+        <!-- 手机号码 -->
+        <el-form-item
+          label="手机号码"
+          prop="mobile"
+          class="limit-width"
+          >
+            <el-input style="width: 300px;" v-model="form.mobile" :maxlength="30"  placeholder="请填写手机号码"/>
+        </el-form-item>
+
+
+        <!-- 微信号 -->
+        <el-form-item
+          label="微信号"
+          prop="wechat"
+          class="limit-width"
+          >
+            <el-input style="width: 300px;" v-model="form.wechat" :maxlength="30"  placeholder="请填写微信号"/>
+        </el-form-item>
+
+        <!-- 权限管理 -->
+        <el-form-item
+          label="权限管理"
+          prop="roleId"
+          class="limit-width"
+          >
+            <el-select v-model="form.roleId" placeholder="请选择权限">
+              <el-option
+                v-for="item in roleList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                >
+              </el-option>
+            </el-select>
         </el-form-item>
         
-        <!-- 选择导师 -->
-        <el-form-item
-          label="选择导师"
-          prop="tutor"
-          class="limit-width"
-          >
-            <div class="selected-item">
-              已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
-            </div>
-            <el-button class="click-item" type="primary" @click="openModal('tutor')">点击选择</el-button>
-        </el-form-item>
-
-        <!-- 所属组织 -->
-        <el-form-item
-          label="所属组织"
-          prop="organization"
-          class="limit-width"
-          > 
-            <div class="selected-item">
-              已选择：<span @click="removeCheck">产品<i class="el-icon-close"></i></span>
-            </div>
-            <el-button class="click-item" type="primary" @click="openModal('organizations')">点击选择</el-button>
-            <el-popover
-              placement="top-start"
-              ref="organizations"
-              title="标题"
-              width="200"
-              trigger="hover"
-              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-            </el-popover>
-            <i class="el-icon-question" v-popover:organizations></i>
-        </el-form-item>
-
-
-        <!-- 是否上线 -->
-        <el-form-item label="是否上线">
-          <el-radio v-model="form.online" :label="1">上线</el-radio>
-          <el-radio v-model="form.online" :label="0">下线</el-radio>
-        </el-form-item>
-
         <!-- 确认提交 -->
-        <el-form-item>
+        <el-form-item class="footer-button">
           <el-button type="primary" class="click-item" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
         </el-form-item>
     </el-form>
-    <modal-dialog
-      v-model="models.show"
-      :title="models.title"
-      :width="models.width"
-      :min-height="models.minHeight"
-      :show-close="models.showClose"
-      :type="models.type"
-      :confirm-text="models.confirmText"
-      @confirm="confirm"
-      >
-        <div slot="title">
-          <h3 class="dialog-title">{{models.title}}</h3>
-        </div>
-        <div slot="customize-html">
-          <div class="customize-html-content">
-            <!-- 选择分类 -start -->
-            <div class="course-type-list" v-if="models.currentModalName === 'courseType'">
-              <el-radio
-                v-model="selectedModal.courseType"
-                :label="courseItem.value"
-                v-for="(courseItem, courseIndex) in courseTypeList"
-                :key="courseIndex">
-                  {{courseItem.label}}
-                </el-radio>
-              <el-popover
-                placement="bottom"
-                width="280"
-                trigger="click"
-                :popper-class="'course-popper'"
-                v-model="showCreateCourseTypeBox">
-                <div id="create-box">
-                  <header class="create-type-header">新建分类</header>
-                  <main class="create-type-main">
-                    <el-input v-model="courseType" placeholder="分类名称最多10个字"></el-input>
-                  </main>
-                  <footer class="create-type-footer">
-                    <el-button @click="showCreateCourseTypeBox = false">取消</el-button>
-                    <el-button type="primary" @click="addCourseType">确定</el-button>
-                  </footer>
-                </div>
-                <span slot="reference" class="add-type"><i class="el-icon-plus"></i> 新建分类</span>
-              </el-popover>
-              <p class="tips">如果需要对分类进行修改，请点击<a class="set" @click="setType">【分类设置】</a>中进行修改；如无权限，请联系管理员修改。</p>
-            </div>
-            <!-- 选择分类 -end -->
-            <!-- 组织-start -->
-            <div class="organizations-type-list" v-if="models.currentModalName === 'organizations'">
-              <el-checkbox-group v-model="selectedModal.organizations">
-                <el-checkbox
-                  :label="organizationsItem.label"
-                  v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                  :key="organizationsIndex" />
-              </el-checkbox-group>
-              <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set" @click="setType">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
-            </div>
-            <!-- 组织-end -->
-            <!-- 必修学员-start -->
-            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'menberCompulsory'">
-              <div class="search-bar">
-                <input type="text" name="" class="search" placeholder="请输入搜索名称">
-                <span><i class="el-icon-search"></i></span>
-              </div>
-              <div class="group-list">
-                <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                  {{organizationsItem.label}}
-                </el-button>
-              </div>
-              <div class="menber-list">
-                <el-checkbox-group v-model="selectedModal.organizations">
-                  <el-checkbox
-                    :label="organizationsItem.label"
-                    v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                    :key="organizationsIndex" />
-                </el-checkbox-group>
-              </div>
-            </div>
-            <!-- 必修学员-end -->
-            <!-- 选择导师-start -->
-            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'tutor'">
-              <div class="search-bar">
-                <input type="text" name="" class="search" placeholder="请输入搜索名称">
-                <span><i class="el-icon-search"></i></span>
-              </div>
-              <div class="group-list">
-                <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                  {{organizationsItem.label}}
-                </el-button>
-              </div>
-              <div class="menber-list">
-                <el-checkbox-group v-model="selectedModal.organizations">
-                  <el-checkbox
-                    :label="organizationsItem.label"
-                    v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                    :key="organizationsIndex" />
-                </el-checkbox-group>
-              </div>
-            </div>
-            <!-- 选择导师-end -->
-            <!-- 选择不可见学员-start -->
-            <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'menberInvisible'">
-              <div class="search-bar">
-                <input type="text" name="" class="search" placeholder="请输入搜索名称">
-                <span><i class="el-icon-search"></i></span>
-              </div>
-              <div class="group-list">
-                <el-button size="large" v-for="(organizationsItem, organizationsIndex) in organizationsList" :key="organizationsIndex">
-                  {{organizationsItem.label}}
-                </el-button>
-              </div>
-              <div class="menber-list">
-                <el-checkbox-group v-model="selectedModal.organizations">
-                  <el-checkbox
-                    :label="organizationsItem.label"
-                    v-for="(organizationsItem, organizationsIndex) in organizationsList"
-                    :key="organizationsIndex" />
-                </el-checkbox-group>
-              </div>
-            </div>
-            <!-- 选择不可见学员-end -->
-          </div>
-        </div>
-    </modal-dialog>
-    <div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
-      <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
-        <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
-        <div class="cropper">
-          <div class="cropper-box" id="cropperBox">
-            <img id="uploadPreview" style="width:100px;height:100px;"/>
-          </div>
-          <div class="cropper-res-wrap">
-            <div class="cropper-res" id="cropperRes">
-              <img style="width:100px;height:100px;"/>
-            </div>
-          </div>
-        </div>
-        <div class="cropper-btns-wrap">
-          <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
