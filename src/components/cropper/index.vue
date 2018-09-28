@@ -1,11 +1,13 @@
 <template>
 	<div id="zike-cropper">
     <div class="upload-image click-item" role="button" @click="onSelectFile">
-      <i  class="el-icon-upload"></i> {{form.cover_img_id.tem ? '重新上传' : '上传封面'}}
+      <i  class="el-icon-upload"></i> {{ btnTxt }}
       <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
     </div>
 		<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
 	    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
+        <div class="modal-position">{{tips}}</div>
+        <i class="el-icon-close" @click="flag.imgHasLoad=false"></i>
 	      <div class="cropper">
 	        <div class="cropper-box" id="cropperBox">
 	          <img id="uploadPreview" style="width:100px;height:100px;"/>
@@ -14,7 +16,7 @@
 	          <div class="cropper-res" id="cropperRes">
 	            <img style="width:100px;height:100px;"/>
 	          </div>
-            <p class="label-tips">头像预览</p>
+            <p class="label-tips">{{tips}}</p>
 	        </div>
 	      </div>
 	      <div class="cropper-btns-wrap">
@@ -35,16 +37,35 @@ import Cropper from 'cropperjs'
     ...mapActions([
       'uploadApi'
     ])
+  },
+  props: {
+
+    // 弹窗类型
+    type: {
+      type: String,
+      default: ''
+    },
+
+    // 裁剪标题
+    tips: {
+      type: String,
+      default: '头像预览'
+    },
+
+    // 裁剪形状
+    shape: {
+      type: String,
+      default: 'square'
+    },
+
+    // 按钮文字
+    btnTxt: {
+      type: String,
+      default: '上传封面'
+    }
   }
 })
 export default class ComponentCropper extends Vue {
-
-  form = {
-    cover_img_id: {
-      value: '',
-      tem: ''
-    }
-  }
 
   // 初始化裁剪对象
   cropper = null
@@ -94,10 +115,8 @@ export default class ComponentCropper extends Vue {
       const file = files.item(0)
       if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
         this.$emit('fail', '选择的文件格式不对')
-        console.log('选择的文件格式不对')
       } else if (file.size > ALLOW_MAX_SIZE) {
         this.$emit('fail', '选择的文件太大啦')
-        console.log('选择的文件太大啦')
       } else {
         let inputImage = document.querySelector('#uplaod-file')
         let URL = window.URL || window.webkitURL
@@ -154,12 +173,9 @@ export default class ComponentCropper extends Vue {
         // this.flag.btnTips.value = '裁剪完成，立即上传'
         this.flag.btnTips.disable = false
         this.$emit('success', infos)
-        console.log(infos)
       })
       .catch(err => {
         this.$emit('fail', err)
-        console.log(err)
-        // this.$message.error(`${err.msg}~`)
       })
   }
 
@@ -220,6 +236,8 @@ export default class ComponentCropper extends Vue {
     color: #354048;
 		background-color: #FFE266;
 		border-color: #FFE266;
+    color: #354048;
+    margin-right: 8px;
   }
   .click-item {
     color: #354048;
@@ -324,13 +342,15 @@ export default class ComponentCropper extends Vue {
   .cropper {
     position: relative;
     width: 310px;
-    height: 390px;
+    height: 414px;
     padding: 60px 264px 80px 0px;
     /*background-color: #f8f8f8;*/
   }
   .cropper-box {
     width: 400px;
     height: 400px;
+    border-radius: 4px;
+    overflow: hidden;
   }
   .cropper-res-wrap {
     position: absolute;
@@ -380,6 +400,27 @@ export default class ComponentCropper extends Vue {
     font-weight:400;
     color:rgba(102,102,102,1);
     line-height: 1;
+  }
+  .el-icon-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+  .modal-position {
+    font-size: 16px;
+    color: #000;
+    line-height: 1;
+    position: relative;
+    &:before{
+      content: '';
+      height: 100%;
+      width:6px;
+      height:16px;
+      background:rgba(255,226,102,1);
+      display: inline-block;
+      margin-right: 10px;
+      float: left;
+    };
   }
 }
 </style>

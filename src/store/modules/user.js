@@ -3,7 +3,8 @@ import {
   GET_PERSONAL_INFO_STUDY,
   GET_PERSONAL_INFO_LIVES,
   GET_PERSONAL_INFO_BASE,
-  GET_PERSONAL_INFO_JOB_CIRCLES
+  GET_PERSONAL_INFO_JOB_CIRCLES,
+  GET_MEMBER_INFOS
 } from '../mutation-types'
 
 import {
@@ -11,7 +12,9 @@ import {
   getPersonalInfoStudyApi,
   getPersonalInfoBaseApi,
   getPersonalInfoLivesApi,
-  getPersonalInfoJobCirclesApi
+  getPersonalInfoJobCirclesApi,
+  getMemberInfosApi,
+  deleteMemberApi
 } from 'API/user'
 
 const state = {
@@ -36,7 +39,8 @@ const state = {
     }
   },
   personalInfoLives: {},
-  personalInfoJobCircles: {}
+  personalInfoJobCircles: {},
+  memberInfos: {}
 }
 
 const mutations = {
@@ -61,6 +65,9 @@ const mutations = {
   },
   [GET_PERSONAL_INFO_JOB_CIRCLES] (state, data) {
     state.personalInfoJobCircles = data
+  },
+  [GET_MEMBER_INFOS] (state, data) {
+    state.memberInfos = data
   }
 }
 
@@ -70,7 +77,8 @@ const getters = {
   personalInfoStudy: state => state.personalInfoStudy,
   personalInfoBase: state => state.personalInfoBase,
   personalInfoLives: state => state.personalInfoLives,
-  personalInfoJobCircles: state => state.personalInfoJobCircles
+  personalInfoJobCircles: state => state.personalInfoJobCircles,
+  memberInfos: state => state.memberInfos
 }
 
 const actions = {
@@ -150,6 +158,38 @@ const actions = {
       .then(res => {
         // console.log()
         store.commit(GET_PERSONAL_INFO_JOB_CIRCLES, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return error
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   获取学员信息
+   * @return   {[type]}          [description]
+   */
+  getMemberInfosApi (store, params) {
+    return getMemberInfosApi(params)
+      .then(res => {
+        // console.log()
+        store.commit(GET_MEMBER_INFOS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return error
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   删除成员
+   * @return   {[type]}          [description]
+   */
+  deleteMemberApi (store, params) {
+    return deleteMemberApi(params)
+      .then(res => {
         return res
       })
       .catch(error => {
