@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-// import VueAudio from '@/components/vueAudio/index.vue'
+import VueAudio from '@/components/vueAudio/index.vue'
 
 @Component({
   name: 'review-list',
@@ -28,7 +28,7 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
    components: {
     TableList,
     SearchBar,
-    // VueAudio
+    VueAudio
   }
 })
 export default class BroadcastReview extends Vue {

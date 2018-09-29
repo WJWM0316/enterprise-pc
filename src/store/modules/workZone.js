@@ -6,7 +6,8 @@ import {
   GET_JOB_CIRCLE_MENBER_DETAILS,
   GET_JOB_CIRCLE_NOTE_LISTS,
   GET_JOB_CIRCLE_COMMENT_FIRST_LISTS,
-  GET_JOB_CIRCLE_COMMENT_SECOND_LISTS
+  GET_JOB_CIRCLE_COMMENT_SECOND_LISTS,
+  GET_JOB_CIRCLE_TOP_NUM
 } from '../mutation-types'
 
 import {
@@ -28,7 +29,8 @@ import {
   recoverJobCircleCommentApi,
   setJobCircleHotCommentApi,
   cancleJobCircleHotCommentApi,
-  getJobCircleCommentSecondListsApi
+  getJobCircleCommentSecondListsApi,
+  getJobCircleTopNumApi
 } from 'API/workZone'
 
 const state = {
@@ -52,7 +54,8 @@ const state = {
   jobCircleCommentSecondLists: {
     list: [],
     total: 0
-  }
+  },
+  jobCircleTopNum: {}
 }
 
 const mutations = {
@@ -86,7 +89,10 @@ const mutations = {
   [GET_JOB_CIRCLE_COMMENT_SECOND_LISTS] (state, data) {
     state.jobCircleCommentSecondLists.list = data.data
     state.jobCircleCommentSecondLists.total = data.meta.total
-  }
+  },
+  [GET_JOB_CIRCLE_TOP_NUM] (state, data) {
+    state.jobCircleTopNum = data
+  },
 }
 
 const getters = {
@@ -97,7 +103,8 @@ const getters = {
   jobCircleHitLists: state => state.jobCircleHitLists,
   jobCircleNoteLists: state => state.jobCircleNoteLists,
   jobCircleCommentFirstLists: state => state.jobCircleCommentFirstLists,
-  jobCircleCommentSecondLists: state => state.jobCircleCommentSecondLists
+  jobCircleCommentSecondLists: state => state.jobCircleCommentSecondLists,
+  jobCircleTopNum: state => state.jobCircleTopNum
 }
 
 const actions = {
@@ -378,6 +385,22 @@ const actions = {
   cancleJobCircleHotCommentApi(store, params) {
     return cancleJobCircleHotCommentApi(params)
       .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取工作圈帖子的置顶数
+   * @return   {[type]}          [description]
+   */
+  getJobCircleTopNumApi(store, params) {
+    return getJobCircleTopNumApi(params)
+      .then(res => {
+        store.commit(GET_JOB_CIRCLE_TOP_NUM, res.data.data)
         return res
       })
       .catch(error => {

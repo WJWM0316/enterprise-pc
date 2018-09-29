@@ -54,3 +54,5 @@ export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params
 export const getJobCircleUrlsApi = params => request(`/jobcircle/urls/${params.id}`, 'get', params)
 // 工作圈帖子删除恢复
 export const recoverJobCircleNoteApi = params => request(`/jobcircle/post/recover`, 'put', params)
+// 获取工作圈帖子的置顶数
+export const getJobCircleTopNumApi = params => request(`/jobcircle/toppost/${params.id}`, 'get')

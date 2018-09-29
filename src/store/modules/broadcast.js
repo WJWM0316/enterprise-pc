@@ -53,6 +53,12 @@ const mutations = {
     state.liveLists.total = data.meta.total
   },
   [GET_LIVE_PROBLEM_LIST] (state, data) {
+    data.data.map(field => {
+      field.replyContent = field.answerInfo.content
+      field.replyMan = field.answerInfo.nickname
+      field.askContent = field.problemInfo.content
+      field.askMan = field.problemInfo.nickname
+    })
     state.liveProblemList.list = data.data
     state.liveProblemList.total = data.meta.total
   }
@@ -61,7 +67,8 @@ const mutations = {
 const getters = {
   liveReviewList: state => state.liveReviewList,
   liveLists: state => state.liveLists,
-  liveDetails: state => state.liveDetails
+  liveDetails: state => state.liveDetails,
+  liveProblemList: state => state.liveProblemList
 }
 
 const actions = {
@@ -200,7 +207,7 @@ const actions = {
   getLiveProblemListApi (store, params) {
     return getLiveProblemListApi(params)
       .then(res => {
-        store.commit(GET_LIVE_LIST, res.data)
+        store.commit(GET_LIVE_PROBLEM_LIST, res.data)
         return res
       })
       .catch(error => {

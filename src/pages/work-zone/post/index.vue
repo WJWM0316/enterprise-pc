@@ -89,10 +89,9 @@
           <el-popover
             placement="top-start"
             ref="organizations"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择此内容的管理权限所属的部门组织">
           </el-popover>
           <i class="el-icon-question" v-popover:organizations></i>
       </el-form-item>
@@ -159,10 +158,9 @@
           <el-popover
             placement="top-start"
             ref="hits"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择的学员在员工端将无法看到该内容的露出">
           </el-popover>
           <i class="el-icon-question" v-popover:hits></i>
       </el-form-item>
@@ -182,10 +180,9 @@
           <el-popover
             placement="top-start"
             ref="sort"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。">
           </el-popover>
           <i class="el-icon-question" v-popover:sort></i>
       </el-form-item>

@@ -4,16 +4,14 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
-  name: 'lighthouse-list',
+  name: 'response-list',
   methods: {
     ...mapActions([
-      'getLiveReviewListApi',
       'getLiveProblemListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'liveReviewList',
       'liveProblemList'
     ])
   },
@@ -30,40 +28,40 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     SearchBar
   }
 })
-export default class BroadcastReview extends Vue {
+export default class BroadcastReponse extends Vue {
 
   // 表格字段
   fields = [
     {
-      prop: 'content',
+      prop: 'askContent',
       label: '提问内容',
       align: 'center',
       showTips: 'no',
       width: '40%'
     },
     {
-      prop: 'fromUserNam1',
+      prop: 'askMan',
       label: '提问人',
       align: 'center',
       showTips: 'no',
       width: '10%'
     },
     {
-      prop: 'fromUserName2',
+      prop: 'replyContent',
       label: '回答内容',
       align: 'center',
       showTips: 'no',
       width: '10%'
     },
     {
-      prop: 'fromUserName3',
+      prop: 'replyMan',
       label: '回答者',
       align: 'center',
       showTips: 'no',
       width: '10%'
     },
     {
-      prop: 'statusName',
+      prop: 'status',
       label: '状态',
       align: 'center',
       showTips: 'yes',
@@ -113,8 +111,7 @@ export default class BroadcastReview extends Vue {
     const params = {
       live_id: this.form.id,
       page: page || this.form.page || 1,
-      count: this.zikeDefaultPageSize,
-      globalLoading: true
+      count: this.zikeDefaultPageSize
     }
     if(this.form.del) {
       params.del = Number(this.form.del) === 3 ? '' : this.form.del
@@ -134,5 +131,19 @@ export default class BroadcastReview extends Vue {
    */
   todoAction(item) {
     console.log(item)
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-28
+   * @detail   重置单元行样式
+   * @return   {[type]}   [description]
+   */
+  tableRowClassName({row}) {
+    if(row.status === 0) {
+      return 'row-delete'
+    } else {
+      return 'row-exist'
+    }
   }
 }

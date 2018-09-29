@@ -12,12 +12,14 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
       'deleteJobCircleNoteApi',
       'setJobCircleNotetoTopApi',
       'updateJobCircleNoteVisibleApi',
-      'recoverJobCircleNoteApi'
+      'recoverJobCircleNoteApi',
+      'getJobCircleTopNumApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'jobCircleNoteLists'
+      'jobCircleNoteLists',
+      'jobCircleTopNum'
     ])
   },
   watch: {
@@ -164,6 +166,7 @@ export default class NoteList extends Vue {
       params.keyword = this.form.keyword
     }
     this.getJobCircleNoteListsApi(params)
+    this.getJobCircleTopNumApi({id: this.form.id})
   }
 
   // 点击搜索时触发
@@ -210,6 +213,8 @@ export default class NoteList extends Vue {
             })
         break
       case 'top':
+        console.log(this.jobCircleTopNum)
+        console.log(item)
         this.setJobCircleNotetoTopApi({id: item.id})
             .then(() => {
               this.getJobCircleNoteLists()
