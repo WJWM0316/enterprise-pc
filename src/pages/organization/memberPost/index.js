@@ -5,6 +5,7 @@ import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
 import { editorRules } from 'FILTERS/rules'
 import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMemberInfoApi } from 'STORE/api/organization.js'
+import { getMemberInfosApi } from 'STORE/api/user.js'
 
 @Component({
   components: {
@@ -18,7 +19,23 @@ import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMembe
   computed: {
     ...mapGetters([
       'userInfos'
-    ])
+    ]),
+    isDelete(){
+      if(this.userInfo.roleId === 1){
+        if(this.form.roleId===1){
+          return false
+        }else {
+          return true
+        }
+      }
+      else if(this.userInfo.roleId === 2){
+        if(this.form.roleId!==1||this.form.roleId!==2){
+          return true
+        }else {
+          return false
+        }
+      }
+    }
   },
   watch: {
     '$route': {
@@ -77,7 +94,7 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请输入姓名', trigger: 'blur' }
     ],
     groupId: [
-      { required: true, message: '请输入手机号', trigger: 'blur' }
+      { required: true, message: '请选择部门', trigger: 'blur' }
     ],
     occupation: [
       { required: true, message: '请输入职位', trigger: 'blur'}
@@ -113,6 +130,19 @@ export default class WorkZonePost extends Vue {
     isHintShow:false,
   }
 
+  // 确认信息弹窗
+  delateModels = {
+    show: false,
+    title: '删除账户确认提醒',
+    txt: '删除后该账号将无法恢复，但其所有内容均会保留',
+    showClose: true,
+    confirmText: '删除',
+    type: 'confirm',
+    confirmType: 'danger',
+    width: '432px',
+    height: '192px'
+  }
+
   roleList = [
     {
         value: 6,
@@ -142,6 +172,7 @@ export default class WorkZonePost extends Vue {
   groupList = []
   pageStatus = ''  
   user_id = ''
+  userInfo = {}
 
   init() {
     console.log(this.userInfos)
@@ -192,7 +223,13 @@ export default class WorkZonePost extends Vue {
 
       this.rules.password.required = false
     })
+
+    getMemberInfoApi({id: this.userInfos.id}).then(res=>{
+      console.log('============',res.data.data)
+      this.userInfo = res.data.data
+    })
   }
+
   /**
    * @detail   打开弹窗model
    */
@@ -335,7 +372,10 @@ export default class WorkZonePost extends Vue {
 
   deleteMember(){
     deleteMemberApi({id: this.user_id}).then(res=>{
-      console.log(11111)
+      this.$message({message: res.data.msg, type: 'success'})
+      this.$router.push({name: 'organization'})
+    }).catch(err => {
+      this.$message.error(`${err.data.msg}~`);
     })
   }
 

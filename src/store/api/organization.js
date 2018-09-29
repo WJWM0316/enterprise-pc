@@ -13,7 +13,7 @@ export const addMemberApi = params => request(`/member/create`, 'post', params)
 export const editMemberApi = params => request(`/member/${params.id}/edit`, 'post',params)
 
 // 删除成员
-export const deleteMemberApi = params => request(`/member/create/${params.id}`, 'delete', params)
+export const deleteMemberApi = params => request(`/member/${params.id}`, 'delete', params)
 
 // 获取学员信息
 export const getMemberInfoApi = params => request(`/member/info/${params.id}`, 'get', params)

@@ -41,24 +41,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'title'" class="flex-box">
-          <div class="img-box">
-            <el-popover
-              ref="popoverCover"
-              placement="right"
-              width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
-            </el-popover>
-            <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img src="http://a.hiphotos.baidu.com/zhidao/pic/item/21a4462309f79052782f28490ff3d7ca7bcbd591.jpg">
-              </i>
-            </div>
-          </div>
-          <div class="content">
-            <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
-            </div>
-          </div>
+          <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
         </div>
         <div v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.status == 1? '上线':'下线' }}

@@ -34,7 +34,7 @@ export default class CourseList extends Vue {
       label: '课 节',
       align: 'center',
       showTips: 'no',
-      width: '55%'
+      width: '40%'
     },
     {
       prop: 'status',
@@ -51,6 +51,10 @@ export default class CourseList extends Vue {
         {
           label: '下线',
           value: 'status-0'
+        },
+        {
+          label: '全部',
+          value: 'status-all'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -82,7 +86,7 @@ export default class CourseList extends Vue {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
-      width: '15%',
+      width: '20%',
       filterPlacement: '类型的提示文案'
     }
   ]

@@ -170,7 +170,7 @@
         <!-- 确认提交 -->
         <el-form-item class="footer-button">
           <el-button type="primary" class="click-item" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
-          <el-button type="info" class="click-item deleteBtn" @click="deleteMember">删除该账号</el-button>
+          <el-button type="info" class="click-item deleteBtn" @click="delateModels.show=true" v-if="pageStatus==='edit' && isDelete" >删除该账号</el-button>
         </el-form-item>
     </el-form>
 
@@ -234,6 +234,28 @@
             <el-input :class="{'pw_input': passWordModel.isHintShow}" v-model="form.password" :maxlength="20"  placeholder="请输入分组名，限制20个字以内"/>
           </div>
           <p class="pw_hint" v-if="passWordModel.isHintShow">{{passWordModel.hintMsg}}</p>
+        </div>
+    </modal-dialog>
+
+    <modal-dialog
+      v-model="delateModels.show"
+      :title="delateModels.title"
+      :show-close="delateModels.showClose"
+      :confirm-text="delateModels.confirmText"
+      :type="delateModels.type"
+      :width="delateModels.width"
+      :min-height="delateModels.minHeight"
+      @confirm="deleteMember"
+      >
+        <div slot="title" style="margin-left: 22px;">
+          <h3 class="dialog-title">
+            {{delateModels.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html" style="margin-left: 40px;">
+          <div class="customize-html-content">
+            <p class="dialog_p">{{delateModels.txt}} </p>
+          </div>
         </div>
     </modal-dialog>
   </div>

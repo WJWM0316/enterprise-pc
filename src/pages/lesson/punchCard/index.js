@@ -28,44 +28,48 @@ export default class CourseList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'title',
+      prop: 'cardContent',
       label: '打卡内容',
       align: 'center',
       showTips: 'no',
-      width: '55%'
+      width: '30%'
     },
     {
-      prop: 'status',
+      prop: 'punchCardStatus',
       label: '是否上线',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
-          label: '上线',
+          label: '正常',
           value: 'status-1'
         },
         {
-          label: '下线',
+          label: '已删除',
           value: 'status-0'
+        },
+        {
+          label: '全部',
+          value: 'status-all'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
-      prop: 'sort',
+      prop: 'releaseUser',
       label: '发布者',
       align: 'center',
       showTips: 'no',
-      width: '10%'
+      width: '15%'
     },
     {
-      prop: 'sort',
+      prop: 'punchCardTime',
       label: '建立时间',
       align: 'center',
       showTips: 'no',
-      width: '10%'
+      width: '15%'
     },
     {
       prop: 'actions',
@@ -94,56 +98,53 @@ export default class CourseList extends Vue {
     total: 0
   }
 
-  lessonList = []
+  cardList = []
   course_id = ''
   /**
    * 初始化表单、分页页面数据
    */
   init() {
-    console.log('init----',this.$route)
-    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
-    this.form = Object.assign(this.initForm, form || {})
-    this.pagination = Object.assign(this.pagination, pagination || {})
+    this.form = Object.assign(this.form,this.$route.query || {})
+    console.log(this.form)
     this.course_section_id = this.$route.query.course_section_id
-
     this.getLists()
   }
 
   /**
    * 获取列表
    */
-  getLists() {
+  getLists({ page, pageSize } = {}) {
+    this.course_section_id = 13
     let data = {
-      like: {
-        title:this.form.name
-      },
-      order: {
-        update_time: 'DESC',
-        favors_count: 'DESC',
-        comments_count: 'DESC'
-      },
-      course_section_id: this.course_section_id
-    }
-    let jsonDataString = JSON.stringify({search: data})
+        search:{
+          like: {title: this.form.name},
+          order:{created_at: 'DESC'},
+          course_section_id:this.course_section_id
+        },
+        otherSearch:{ realname: this.form.name}
+      }
+    let jsonDataString = JSON.stringify(data)
     console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,
-      page: 1,
-      pageCount: 20
+      page: page || this.form.page || 1,
+      pageCount: this.zikeDefaultPageSize
     }
 
     console.log(param)
     getLessonPunchListsApi(param).then(res=>{
       console.log(res)
-      this.lessonList = res.data.data
+      this.cardList = {
+        list : res.data.data,
+        total: res.data.meta.total
+      }
     })
   }
 
   // 点击搜索时触发
   handleSearch() {
-    this.setPathQuery(this.form)
-    this.getWorkZoneLists()
+    this.getLists()
   }
 
   //设置排序
