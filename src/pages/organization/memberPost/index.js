@@ -16,6 +16,9 @@ import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMembe
     ])
   },
   computed: {
+    ...mapGetters([
+      'userInfos'
+    ])
   },
   watch: {
     '$route': {
@@ -61,7 +64,7 @@ export default class WorkZonePost extends Vue {
     // 角色ID
     roleId: '',
 
-    group_id: {
+    group_management: {
       value: '',
       tem: [],
       show: false
@@ -77,7 +80,7 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请输入手机号', trigger: 'blur' }
     ],
     occupation: [
-      { required: true, message: '请输入密码', trigger: 'blur'}
+      { required: true, message: '请输入职位', trigger: 'blur'}
     ],
     email: [
       { required: true, message: '请输入手机号', trigger: 'blur' }
@@ -97,6 +100,17 @@ export default class WorkZonePost extends Vue {
     showClose: true,
     confirmText: '提交',
     type: 'confirm'
+  }
+
+  // 修改密码确认信息弹窗
+  passWordModel = {
+    show: false,
+    title: '设置新密码',
+    showClose: true,
+    confirmText: '提交',
+    type: 'confirm',
+    hintMsg: '密码必须填写，6-20个字符',
+    isHintShow:false,
   }
 
   roleList = [
@@ -126,12 +140,60 @@ export default class WorkZonePost extends Vue {
   timeout =  null
   temMenberLists = []
   groupList = []
+  pageStatus = ''  
+  user_id = ''
+
   init() {
+    console.log(this.userInfos)
+    this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
+    if(this.pageStatus === 'add'){
+    }else {
+      this.user_id = this.$route.query.user_id
+      this.editInitMsg()
+    }
+
     this.getGroupList()
   }
+
+  //编辑时初始化
+  editInitMsg(){
+    getMemberInfoApi({id: this.user_id}).then(res=>{
+      let data = res.data.data
+      console.log(res.data.data)
+
+      this.form.name = data.realname,
+      this.form.avatarId = data.avatarId,
+      this.form.groupId =data.group.length>0?data.group[0].groupId:null,
+      this.form.occupation = data.occupation,
+      this.form.email = data.email,
+      this.form.wechat = data.wechat,
+      this.form.mobile = data.mobile,
+      this.form.roleId = 3,
+      this.form.id = this.user_id,
+      this.form.contentAdminGroup = ''
+      this.form.id = this.user_id
+
+      if(data.avatar.length>0){
+        this.imageUpload.list[0] = {
+          url: data.avatar.smallUrl,
+          show: false
+        }
+      }
+
+      if(data.contentAdminGroup){
+        let ary = []
+        data.contentAdminGroup.map(item=>{
+          ary.push(item.groupId)
+        })
+        this.form.group_management.tem = data.contentAdminGroup
+        this.form.group_management.value = ary.join(',')
+        this.form.group_management.show = true
+      }
+
+      this.rules.password.required = false
+    })
+  }
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
    * @detail   打开弹窗model
    */
   openModal(type) {
@@ -141,18 +203,21 @@ export default class WorkZonePost extends Vue {
     this.groupList = [...this.temMenberLists]
   }
 
+  openModel2(){
+    console.log(1)
+    this.passWordModel.show = true
+    this.passWordModel.width = '432px'
+    this.passWordModel.minHeight = '102px'
+  }
+
   /**
    * 获取课程列表
    */
   getGroupList() {
     getGroupListApi().then(res => {
-      console.log(res.data.data)
-
       res.data.data.map((item)=>{
         item.active = false
       })
-
-      console.log(res.data.data)
       this.temMenberLists = res.data.data
       this.groupList = res.data.data
     })
@@ -171,33 +236,28 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
-
     console.log(this.form)
     this.$refs['form'].validate((valid) => {
-      console.log(valid)
       if (valid) {
         // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
 
-
+        //权限管理是内容的话
         if(this.form.roleId === 3){
-          this.form.contentAdminGroup = this.form.group_id.value
+          this.form.contentAdminGroup = this.form.group_management.value
         }
-        const need = ['name', 'avatarId', 'groupId', 'occupation','email','wechat','mobile','password','roleId','contentAdminGroup']
+        const need = ['name', 'avatarId', 'groupId', 'occupation','email','wechat','mobile','password','roleId','contentAdminGroup','id']
         const params = this.transformData(this.form, need)
-
         console.log(params)
         this.submit(params)
       }
     })
   }
+
   /**
-   * @Author   小书包
-   * @DateTime 2018-09-12
    * @detail   获取提交参数
-   * @return   {[type]}   [description]
    */
   transformData(data, params) {
     const formData = {}
@@ -213,6 +273,7 @@ export default class WorkZonePost extends Vue {
     })
     return formData
   }
+
   // 提交表单数据
   submit(params) {
     let that = this
@@ -228,20 +289,41 @@ export default class WorkZonePost extends Vue {
           this.submitBtnTxt = '提交'
         }, 3000)
       })
+
+    editMemberApi(params)
+      .then(res => {
+        this.$message({message: res.data.msg, type: 'success'})
+        this.$router.push({name: 'organization'})
+      })
+      .catch(err => {
+        this.$message.error(`${err.data.msg}~`);
+        setTimeout(() => {
+          this.submitBtnClick = !this.submitBtnClick
+          this.submitBtnTxt = '提交'
+        }, 3000)
+      })
+
   }
-
-  // 选择搜索到的数据
-  search(type) {}
-
-  
 
   /**
    * @detail   弹窗确定按钮
    */
   confirm() {
-    this.form['group_id'].show = this.form['group_id'].value ? true : false
+    this.form['group_management'].show = this.form['group_management'].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
+  }
+
+  /**
+   * @detail   修改密码弹窗确定按钮
+   */
+  confirm2() {
+    if(this.form.password.length>20 || this.form.password.length<6){
+      this.passWordModel.isHintShow = true
+    }else {
+      this.passWordModel.isHintShow = false
+      this.passWordModel.show = false
+    }
   }
 
   /**
@@ -251,38 +333,9 @@ export default class WorkZonePost extends Vue {
     this.models.show = false
   }
 
-  todoAction(type) {}
-
-  /**
-   * @detail   编辑时初始化页面
-   */
-  initPageByUpdate() {
-    getLessonEditApi({id: this.lessonId}).then(res=>{
-      let msg = res.data.data
-
-      msg.punchCardCImgInfo.map(function(value,index){
-        value.show = false
-      })
-      
-      this.imageUpload.list = msg.punchCardCImgInfo
-      this.ContentEditor.content = msg.details
-      if(msg.av){
-        this.fileUpload.infos.name = msg.av.fileName
-        this.fileUpload.status = 'success'
-        this.fileUpload.progress = 100
-        this.fileUpload.progressText = ''
-        this.fileUpload.btnTxt = '重新上传'
-        this.fileUpload.show = true
-      }
-      this.form = {
-        course_id: msg.courseSectionId, // 课程id
-        title: msg.title, // 课节标题
-        av_id: msg.avId, // 音视频id
-        details:  msg.details, // 内容详情
-        punch_card_title:  msg.punchCardTitle, // 打卡题目
-        punch_card_img:  msg.punch_card_img, // 打卡图片
-        status:  msg.status // 状态：0下线，1上线
-      }
+  deleteMember(){
+    deleteMemberApi({id: this.user_id}).then(res=>{
+      console.log(11111)
     })
   }
 
@@ -304,10 +357,10 @@ export default class WorkZonePost extends Vue {
   }
 
   removeGroupCheck(index) {
-    const value = this.form.group_id.value.split(',').splice(index, 1)
-    this.form.group_id.tem.splice(index, 1)
-    this.form.group_id.value = value.join(',')
-    this.form.group_id.show = this.form.group_id.tem <= 0 ? false : true
+    const value = this.form.group_management.value.split(',').splice(index, 1)
+    this.form.group_management.tem.splice(index, 1)
+    this.form.group_management.value = value.join(',')
+    this.form.group_management.show = this.form.group_management.tem <= 0 ? false : true
   }
 
   /**
@@ -326,7 +379,7 @@ export default class WorkZonePost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.group_id = data
+    this.form.group_management = data
 
     console.log(data.value)
   }

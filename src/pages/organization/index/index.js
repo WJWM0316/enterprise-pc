@@ -113,20 +113,32 @@ export default class pageOrganization extends Vue {
 
     todoAction(type) {
       console.log(type)
-        switch(type) {
-          case 'set':
+
+      type = 'edit'
+      switch(type) {
+        case 'set':
+          this.$router.push({
+            name: 'groupManage'
+          })
+          break
+        case 'add':
             this.$router.push({
-              name: 'groupManage'
+              name: 'addMember'
             })
-            break
-          case 'add':
-              this.$router.push({
-                name: 'addMember'
-              })
-            break
-          default:
-            break
-        }
+          break
+
+        case 'edit':
+            this.$router.push({
+              name: 'editMember',
+              query: {
+                user_id: 108,
+              }
+            })
+          break
+
+        default:
+          break
+      }
     }
 
     selectGroup(id){

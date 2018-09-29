@@ -2,7 +2,8 @@
   <section class="page-course-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
-      <el-breadcrumb-item>课节管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'lessonList' }">课节管理</el-breadcrumb-item>
+      <el-breadcrumb-item>打卡管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
@@ -12,16 +13,11 @@
           v-model="form.name"
           placeholder="请输入关键词" />
       </el-col>
-      <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="todoAction('add')" class="click-item">新建课节</el-button>
-      </el-col>
     </el-row>
     <!-- :total="jobCircleLists.total" -->
     <table-list
-    :list="lessonList.list"
+    :list="lessonList"
     :fields="fields"
-    :total="lessonList.total"
-
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

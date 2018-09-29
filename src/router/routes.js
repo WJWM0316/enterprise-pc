@@ -442,7 +442,7 @@ export const routes = [
       keepAlive: false,
       useNav: false,
       icon: 'el-icon-success',
-      module: 'course'
+      module: 'lesson'
     },
     children: [
       {
@@ -451,7 +451,7 @@ export const routes = [
         component: () => import(/* webpackChunkName: "lessonList" */ '@/pages/lesson/index/index.vue'),
         meta: {
           keepAlive: false,
-          module: 'course'
+          module: 'lesson'
         }
       },
       {
@@ -460,17 +460,25 @@ export const routes = [
         component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
         meta: {
           keepAlive: false,
-          module: 'course'
+          module: 'lesson'
         }
       },
-
       {
         path: 'lessonAdd',
         name: 'lessonAdd',
         component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/post/index.vue'),
         meta: {
           keepAlive: false,
-          module: 'course'
+          module: 'lesson'
+        }
+      },
+      {
+        path: 'punchCard',
+        name: 'punchCard',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/punchCard/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'lesson'
         }
       }
     ]

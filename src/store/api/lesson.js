@@ -26,7 +26,7 @@ export const deleteLessonPunchCommentApi = params => request(`/coursesectioncard
 export const postLessonPunchCommentApi = params => request(`/coursesectioncard/comment/recover/${params.id}`, 'post')
 
 // 获取课程课节打卡列表
-export const getLessonPunchListsApi = params => request(`/CourseSectionCard`, 'get')
+export const getLessonPunchListsApi = params => request(`/CourseSectionCard?jsonData=${params.jsonData}&page=${params.page}&count=${params.pageCount}`, 'get')
 
 // 删除或者恢复课程课节打卡
 export const distoryAndRegaihnLessonPunchApi = params => request(`/CourseSection/CourseSectionCard/distoryAndRegaihn`, 'post')

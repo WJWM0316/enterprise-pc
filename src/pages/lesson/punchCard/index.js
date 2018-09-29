@@ -2,15 +2,13 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getLessonListsApi } from 'API/lesson'
+import { getLessonPunchListsApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
   methods: {
-    ...mapActions(['getJobCircleListsApi'])
   },
   computed: {
-    ...mapGetters(['jobCircleLists'])
   },
   watch: {
     '$route': {
@@ -31,7 +29,7 @@ export default class CourseList extends Vue {
   fields = [
     {
       prop: 'title',
-      label: '课 节',
+      label: '打卡内容',
       align: 'center',
       showTips: 'no',
       width: '55%'
@@ -57,33 +55,24 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'sort',
-      label: '权 重',
+      label: '发布者',
       align: 'center',
       showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'sort-全部'
-        },
-        {
-          label: '升序',
-          value: 'sort-升序'
-        },
-        {
-          label: '降序',
-          value: 'sort-降序'
-        }
-      ],
-      filterPlacement: '权重的提示文案'
+      width: '10%'
+    },
+    {
+      prop: 'sort',
+      label: '建立时间',
+      align: 'center',
+      showTips: 'no',
+      width: '10%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '类型的提示文案'
+      filterPlacement: '这里输入一段长文字作为视觉预览。'
     }
   ]
 
@@ -97,6 +86,14 @@ export default class CourseList extends Vue {
     name: ''
   }
 
+  // 分页信息
+  pagination = {
+    page: 1,
+    pageSize: this.zikeDefaultPageSize,
+    pageCount: 0,
+    total: 0
+  }
+
   lessonList = []
   course_id = ''
   /**
@@ -104,16 +101,18 @@ export default class CourseList extends Vue {
    */
   init() {
     console.log('init----',this.$route)
-    this.form = Object.assign(this.form, this.$route.query || {})
-    this.course_id = this.$route.query.course_id
-    console.log(this.form)
+    const { form, pagination } = this.$util.getListInitDataByQueryParams(this.form, this.$route.query, { name: 'string' })
+    this.form = Object.assign(this.initForm, form || {})
+    this.pagination = Object.assign(this.pagination, pagination || {})
+    this.course_section_id = this.$route.query.course_section_id
+
     this.getLists()
   }
 
   /**
    * 获取列表
    */
-  getLists({ page, pageSize } = {}) {
+  getLists() {
     let data = {
       like: {
         title:this.form.name
@@ -123,27 +122,21 @@ export default class CourseList extends Vue {
         favors_count: 'DESC',
         comments_count: 'DESC'
       },
-      course_id: this.course_id
+      course_section_id: this.course_section_id
     }
     let jsonDataString = JSON.stringify({search: data})
     console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,
-      page: page || this.form.page || 1,
-      pageCount: this.zikeDefaultPageSize
+      page: 1,
+      pageCount: 20
     }
 
-    /*console.log(param)
-    if(this.form.name) {
-      params.name = this.form.name
-    }*/
-
-    getLessonListsApi(param).then(res=>{
-      this.lessonList = {
-        list: res.data.data,
-        total: res.data.meta.total
-      }
+    console.log(param)
+    getLessonPunchListsApi(param).then(res=>{
+      console.log(res)
+      this.lessonList = res.data.data
     })
   }
 
@@ -175,7 +168,7 @@ export default class CourseList extends Vue {
         this.$router.push({ name: 'lessonAdd',query:{course_id: this.course_id}})
         break
       case 'punch':
-        this.$router.push({ name: 'punchCard',query:{course_section_id: item.courseSectionId}})
+        //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       default:
         break

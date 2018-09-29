@@ -92,8 +92,18 @@
           label="设置密码"
           prop="password"
           class="limit-width"
-          >
-            <el-input style="width: 300px;" v-model="form.password" :maxlength="30"  placeholder="请填写密码"/>
+          v-if="pageStatus === 'add'">
+            <el-input style="width: 300px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
+
+            <el-button v-else size="small" type="primary" class="" @click="openModel2">点击修改</el-button>
+        </el-form-item>
+        <el-form-item
+          label="设置密码"
+          class="limit-width"
+          v-else>
+            <el-input style="width: 300px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
+
+            <el-button v-else size="small" type="primary" class="" @click="openModel2">点击修改</el-button>
         </el-form-item>
 
         <!-- 手机号码 -->
@@ -138,12 +148,11 @@
           prop="roleId"
           class="limit-width"
           v-if="form.roleId === 3">
-            <div class="selected-item" v-show="form.group_id.show"
-            >
+            <div class="selected-item" v-show="form.group_management.show"
             >
               已选择：
               <span 
-                v-for="(groupItem, groupIndex) in form.group_id.tem" 
+                v-for="(groupItem, groupIndex) in form.group_management.tem" 
                 :key="groupIndex"
                 @click="removeGroupCheck(groupIndex)">
                 {{ groupItem.groupName }}<i class="el-icon-close"></i>
@@ -153,14 +162,15 @@
             class="click-item"
             type="primary"
             @click="openModal()"
-            :class="{'zike-btn-selected': form.group_id.show}">
-              {{form.group_id.show ? '重新选择' : '点击选择'}}
+            :class="{'zike-btn-selected': form.group_management.show}">
+              {{form.group_management.show ? '重新选择' : '点击选择'}}
           </el-button>
         </el-form-item>
         
         <!-- 确认提交 -->
         <el-form-item class="footer-button">
           <el-button type="primary" class="click-item" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+          <el-button type="info" class="click-item deleteBtn" @click="deleteMember">删除该账号</el-button>
         </el-form-item>
     </el-form>
 
@@ -201,6 +211,29 @@
             </div>
             <!-- 组织-end -->
           </div>
+        </div>
+    </modal-dialog>
+
+    <modal-dialog
+      v-model="passWordModel.show"
+      :title="passWordModel.title"
+      :show-close="passWordModel.showClose"
+      :confirm-text="passWordModel.confirmText"
+      :type="passWordModel.type"
+      :width="passWordModel.width"
+      :min-height="passWordModel.minHeight"
+      @confirm="confirm2"
+      >
+        <div slot="title" style="margin-left: 22px;">
+          <h3 class="passwordTitle">
+            {{passWordModel.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html" >
+          <div class="customize-html-content" style="margin-left: 18px;">
+            <el-input :class="{'pw_input': passWordModel.isHintShow}" v-model="form.password" :maxlength="20"  placeholder="请输入分组名，限制20个字以内"/>
+          </div>
+          <p class="pw_hint" v-if="passWordModel.isHintShow">{{passWordModel.hintMsg}}</p>
         </div>
     </modal-dialog>
   </div>
