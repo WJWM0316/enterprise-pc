@@ -7,7 +7,7 @@
 			    <el-input type="text" v-model="form.email" placeholder="邮箱或者手机号码"/>
 			  </el-form-item>
 			  <el-form-item  label="密码" prop="password">
-			    <el-input type="password" v-model="form.password" />
+			    <el-input type="password" v-model="form.password" placeholder="abcdefg"/>
 			  </el-form-item>
 			  <el-form-item>
 			    <el-button type="primary" @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
