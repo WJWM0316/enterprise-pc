@@ -644,6 +644,9 @@ export default class BroadcastPost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
+    this.form.coverImgId.value = ''
+    this.form.coverImgId.tem = {}
+    this.form.check_coverImgId = ''
     this.$message.error(`${res}~`)
   }
 }
