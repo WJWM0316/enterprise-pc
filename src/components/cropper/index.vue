@@ -1,7 +1,7 @@
 <template>
 	<div id="zike-cropper">
-    <div class="upload-image click-item" role="button" @click="onSelectFile" :class="'dddd'">
-      <i  class="el-icon-upload"></i> {{ btnTxt }}
+    <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': hasUploaded}">
+      <i  class="icon iconfont icon-update"></i> {{ btnTxt }}
       <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
     </div>
 		<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
@@ -49,19 +49,18 @@ import Cropper from 'cropperjs'
     // 裁剪标题
     tips: {
       type: String,
-      default: '头像预览'
-    },
-
-    // 裁剪形状
-    shape: {
-      type: String,
-      default: 'square'
+      default: '裁剪控件'
     },
 
     // 按钮文字
     btnTxt: {
       type: String,
       default: '上传封面'
+    },
+    // 按钮的状态
+    hasUploaded: {
+      type: Boolean,
+      default: false
     }
   }
 })
@@ -421,6 +420,17 @@ export default class ComponentCropper extends Vue {
       margin-right: 10px;
       float: left;
     };
+  }
+  .icon-update {
+    font-size: 14px;
+  }
+  .zike-btn-selected {
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    border-color: rgba(237,237,237,1);
   }
 }
 </style>

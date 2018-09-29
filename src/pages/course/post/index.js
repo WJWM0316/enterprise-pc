@@ -5,12 +5,14 @@ import Editor from 'COMPONENTS/editor'
 import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import MyCropper from 'COMPONENTS/cropper/index.vue'
 
 @Component({
   components: {
     ModalDialog,
     Editor,
-    SearchBar
+    SearchBar,
+    MyCropper
   },
   methods: {
     ...mapActions([
