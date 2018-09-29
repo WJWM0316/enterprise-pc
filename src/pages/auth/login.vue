@@ -3,8 +3,8 @@
   	<div class="mask"></div>
   	<div class="login-box">
   		<el-form :model="form" ref="form" label-width="80px" :rules="rules">
-			  <el-form-item label="用户名" prop="email" placeholder="邮箱或者手机号码">
-			    <el-input type="text" v-model="form.email" />
+			  <el-form-item label="用户名" prop="email">
+			    <el-input type="text" v-model="form.email" placeholder="邮箱或者手机号码"/>
 			  </el-form-item>
 			  <el-form-item  label="密码" prop="password">
 			    <el-input type="password" v-model="form.password" />
