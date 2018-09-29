@@ -2,7 +2,7 @@
 <div id="broadcast-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'broadcastPost' ? '新建直播' : '更新直播'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'broadcastPost' ? '新建直播' : '编辑直播'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
@@ -19,7 +19,7 @@
         prop="liveName"
         class="limit-width"
         >
-          <el-input v-model="form.liveName" :maxlength="30" style="width: 380px;" />
+          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" />
       </el-form-item>
       
       <!-- 直播分类 -->

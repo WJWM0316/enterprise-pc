@@ -181,10 +181,9 @@
           <el-popover
             placement="top-start"
             ref="hits"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="选择的学员在员工端将无法看到该内容的露出">
           </el-popover>
           <i class="el-icon-question" v-popover:hits></i>
       </el-form-item>

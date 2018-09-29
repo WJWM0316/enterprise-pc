@@ -32,8 +32,8 @@
             {{props.scope.row.content}} 
           </template>
           <template v-else-if="props.scope.row.type ==='audio'">
-            <!-- <audio :src="props.scope.row.file.url" controls="controls"></audio> -->
-            <vue-audio :theUrl="props.scope.row.file.url" />
+            <audio :src="props.scope.row.file.url" controls="controls"></audio>
+            <!-- <vue-audio :theUrl="props.scope.row.file.url" /> -->
           </template>
           <template v-else>
             <img :src="props.scope.row.file.url" alt="" style="display: inline-block;">

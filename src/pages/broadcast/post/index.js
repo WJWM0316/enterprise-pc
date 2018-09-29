@@ -509,7 +509,6 @@ export default class BroadcastPost extends Vue {
    */
   selectCategory(item, key) {
     this.updateCategoryListsApi({categoryId: item.categoryId, type: 'multiple'})
-    console.log(this[key])
     const data = { show: false, tem: [], value: [] }
     this[key].map((field) => {
       if(field.active) {
@@ -616,7 +615,7 @@ export default class BroadcastPost extends Vue {
         .catch(err => {
           this.categoryModal.loading = false
           this.categoryModal.show = false
-          this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
+          this.$message.error(`${err.msg}~`)
         })
   }
   /**

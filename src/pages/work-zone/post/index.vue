@@ -1,8 +1,8 @@
 <template>
 <div id="work-zone-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
-    <el-breadcrumb-item :to="{ name: 'course' }">工作圈管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'coursePost' ? '新建工作圈' : '更新工作圈'}}</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'workZonePost' ? '新建工作圈' : '更新工作圈'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
