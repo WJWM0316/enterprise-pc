@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getLessonPunchListsApi } from 'API/lesson'
+import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,deleteLessonPunchCommentApi ,postLessonPunchCommentApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -19,6 +20,7 @@ import { getLessonPunchListsApi } from 'API/lesson'
     }
   },
    components: {
+    ModalDialog,
     TableList,
     SearchBar
   }
@@ -98,6 +100,19 @@ export default class CourseList extends Vue {
     total: 0
   }
 
+  // 确认信息弹窗
+  model = {
+    show: false,
+    title: '提示',
+    txt: '删除后该导师将无法进入，但其所有内容均会保留',
+    showClose: true,
+    confirmText: '确定',
+    type: 'confirm',
+    confirmType: 'danger',
+    width: '432px',
+    height: '192px',
+    confirm: ''
+  }
   cardList = []
   course_id = ''
   /**
@@ -110,6 +125,10 @@ export default class CourseList extends Vue {
     this.getLists()
   }
 
+  confirm(){
+    console.log(this[this.model.confirm])
+    this[this.model.confirm]()
+  }
   /**
    * 获取列表
    */
@@ -147,26 +166,73 @@ export default class CourseList extends Vue {
     this.getLists()
   }
 
-  //设置排序
-  setSort(){
-    
+  //【课节打卡】删除评论
+  deleteComment(){
+
+    deleteLessonPunchCommentApi({commentId: this.model.itemSel.commentId}).then(res=>{
+      console.log(res)
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
+  }
+
+  //【课节打卡】取消设置热评
+  cancelExcellent(){
+
+    deleteLessonPunchApi({commentId: this.model.itemSel.commentId}).then(res=>{
+      console.log(res)
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
+  }
+
+  //【课节打卡】设置热评
+  putLessonPunch(){
+
+    putLessonPunchApi({commentId: this.model.itemSel.commentId}).then(res=>{
+      console.log(res)
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
+  }
+
+  //【课节打卡】恢复已删除的评论
+  recover(){
+    postLessonPunchCommentApi({commentId: this.model.itemSel.commentId}).then(res=>{
+      console.log(res)
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
   }
 
   todoAction(type, item) {
     console.log(item)
+
+    this.model.show = true
+    this.model.itemSel = item 
     switch(type) {
-      case 'edit':
-        this.$router.push(
-          { name: 'lessonEdit',
-            query: {
-              id: item.courseSectionId,
-              course_id: this.course_id
-            }
-          }
-        )
+      case 'delete':
+        this.model.txt = '删除后的内容前台不可见'
+        this.model.confirm = 'deleteComment'
+        //this.deleteComment(item)
         break
-      case 'add':
-        this.$router.push({ name: 'lessonAdd',query:{course_id: this.course_id}})
+      case 'cancelExcellent':
+        this.model.txt = '把该打卡取消优秀打卡'
+        this.model.confirm = 'cancelExcellent'
+
+        //this.cancelExcellent(item)
+        break
+      case 'excellent':
+        this.model.txt = '把该打卡设为优秀打卡'
+        this.model.confirm = 'putLessonPunch'
+
+        //this.putLessonPunch(item)
+        break
+      case 'recover':
+        this.model.txt = '恢复后内容前台可见'
+        this.model.confirm = 'recover'
+
+        //this.recover(item)
         break
       case 'punch':
         //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })

@@ -32,12 +32,12 @@
                 @click="todoAction('delete', props.scope.row)">
                   删除
                 </el-button>
-              <el-button
+              <!-- <el-button
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
                 @click="todoAction('comment', props.scope.row)">
                   评论
-                </el-button>
+                </el-button> -->
 
                <el-button
               type="text"
@@ -77,6 +77,28 @@
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
+
+    <modal-dialog
+      v-model="model.show"
+      :title="model.title"
+      :show-close="model.showClose"
+      :confirm-text="model.confirmText"
+      :type="model.type"
+      :width="model.width"
+      :min-height="model.minHeight"
+      @confirm="confirm"
+      >
+        <div slot="title" style="margin-left: 22px;">
+          <h3 class="dialog-title">
+            {{model.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html" style="margin-left: 40px;">
+          <div class="customize-html-content">
+            <p class="dialog_p">{{model.txt}} </p>
+          </div>
+        </div>
+    </modal-dialog>
   </section>
 </template>
 
