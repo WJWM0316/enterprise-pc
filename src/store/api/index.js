@@ -8,11 +8,11 @@ import router from '@/router/index'
 let loadingInstance = null
 // import store from '@/store'
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
-
+export const API_ROOT = 'http://web.xplus.ziwork.com/tiger'
 // 请求的跟地址
-export const upload_api = `${window.location.origin}/tiger/attaches`
+export const upload_api = `${API_ROOT}/attaches`
 
-axios.defaults.baseURL = 'http://web.xplus.ziwork.com/tiger/'
+axios.defaults.baseURL = API_ROOT
 // 请求拦截器
 axios.interceptors.request.use(
   config => {

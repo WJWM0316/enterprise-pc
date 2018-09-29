@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
-import VueAudio from 'COMPONENTS/VueAudio/index.vue'
+import VueAudio from 'COMPONENTS/vueAudio/index.vue'
 @Component({
 	components: {
     MyCropper,

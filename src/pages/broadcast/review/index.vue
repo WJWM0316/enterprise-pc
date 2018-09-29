@@ -27,12 +27,13 @@
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'content'">
+        <div v-else-if="props.scope.column.property === 'content'" class="limit-row-num-3">
           <template v-if="props.scope.row.type ==='text'">
-            {{props.scope.row.content}}
+            {{props.scope.row.content}} 
           </template>
           <template v-else-if="props.scope.row.type ==='audio'">
-            <audio :src="props.scope.row.file.url" controls="controls"></audio>
+            <!-- <audio :src="props.scope.row.file.url" controls="controls"></audio> -->
+            <VueAudio :theUrl="props.scope.row.file.url" style="color: red;" />
           </template>
           <template v-else>
             <img :src="props.scope.row.file.url" alt="" style="display: inline-block;">
@@ -61,6 +62,21 @@ export default BroadcastReview
     background:rgba(248,250,251,1);
     text-decoration: line-through;
     color: #DCDCDC;
+  }
+  .zike-audio {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .limit-row-num-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    line-height: 1.4;
   }
 }
 </style>

@@ -47,6 +47,10 @@ export default class WorkzoneList extends Vue {
       filteredValue:
       [
         {
+          label: '全部',
+          value: 'status-3'
+        },
+        {
           label: '上线',
           value: 'status-1'
         },
@@ -118,7 +122,7 @@ export default class WorkzoneList extends Vue {
       params.name = this.form.name
     }
     if(this.form.status) {
-      params.status = this.form.status
+      params.status = Number(this.form.status) === 3 ? '' : this.form.status
     }
     this.getJobCircleListsApi(params)
   }
