@@ -1,5 +1,5 @@
 <template>
-  <div class="zike-audio">
+  <div class="zike-audio" :class="{'zike-audio-disable': disabled}">
     <audio ref="audio"
       :src="url" :preload="audio.preload"
       @play="onPlay" 
@@ -48,6 +48,10 @@ import Component from 'vue-class-component'
     theControlList: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   }
 })
@@ -79,21 +83,6 @@ export default class ComponentAudio extends Vue {
     // 不要快进按钮
     noSpeed: false
   }
-  created() {
-    // this.setControlList()
-  }
-  get currentlength() {
-    // let length = (parseInt(this.audio.currentTime) / this.audio.maxTime) * 100
-    // return length < 10 ? length + 10 : length
-  }
-  setControlList () {
-    let controlList = this.theControlList.split(' ')
-    controlList.forEach((item) => {
-      if(this.controlList[item] !== undefined){
-        this.controlList[item] = true
-      }
-    })
-  }
   changeSpeed() {
     let index = this.speeds.indexOf(this.audio.speed) + 1
     this.audio.speed = this.speeds[index % this.speeds.length]
@@ -122,6 +111,7 @@ export default class ComponentAudio extends Vue {
     this.$refs.audio.currentTime = parseInt(index / 100 * this.audio.maxTime)
   }
   startPlayOrPause() {
+    if(this.disabled) return
     return this.audio.playing ? this.pausePlay() : this.startPlay()
   }
   // 开始播放
@@ -266,5 +256,8 @@ export default class ComponentAudio extends Vue {
       }
     }
   }
+}
+.zike-audio-disable {
+  opacity: .5;
 }
 </style>

@@ -33,7 +33,7 @@
           </template>
           <template v-else-if="props.scope.row.type ==='audio'">
             <!-- <audio :src="props.scope.row.file.url" controls="controls"></audio> -->
-            <my-audio :theUrl="props.scope.row.file.url" />
+            <my-audio :theUrl="props.scope.row.file.url" :disabled="!props.scope.row.status" />
           </template>
           <template v-else>
             <img :src="props.scope.row.file.url" alt="" style="display: inline-block;">
