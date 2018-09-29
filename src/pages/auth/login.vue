@@ -23,6 +23,19 @@ import Component from 'vue-class-component'
 @Component({
   methods: {
     ...mapActions(['showMsg', 'loginApi'])
+  },
+  computed: {
+    ...mapGetters([
+      'token'
+    ])
+  },
+  watch: {
+    'token': {
+      handler() {
+        this.$router.push({name: 'dashboard'})
+      },
+      immediate: true
+    }
   }
 })
 export default class pageLogin extends Vue {
@@ -49,19 +62,32 @@ export default class pageLogin extends Vue {
   		this.submitBtnTxt = '正在登录'
   		this.loginApi(this.form)
       	.then(res => {
-      		this.showMsg({ content: res.data.msg, type: 'success', duration: 3000 })
-      		setTimeout(() => {
-      			this.$router.push({name: 'dashboard'})
-      		}, 3000)
+	      	this.$message({message: '正在前往工作台~', type: 'success'})
       	})
       	.catch(error => {
       		setTimeout(() => {
       			this.submitBtnClick = !this.submitBtnClick
       			this.submitBtnTxt = '登陆'
-      		}, 5000)
-      		this.showMsg({ content: error.msg, type: 'error', duration: 3000 })
+      		}, 3000)
+      		this.$message.error(`${error.msg}~`);
       	})
   	})
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   回车键登录
+   * @return   {[type]}          [description]
+   */
+  onEnterLogin() {
+  	document.onkeydown = () => {
+     if (event.keyCode === 13 && this.submitBtnClick) this.submit()
+    }
+  }
+
+  mounted() {
+  	this.onEnterLogin()
   }
 }
 </script>

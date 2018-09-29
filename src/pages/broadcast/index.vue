@@ -6,33 +6,9 @@ export default {}
 </script>
 <style lang="scss">
 #broadcast-post {
-  .upload-image {
-    display: inline-block;
-    line-height: 1;
-    cursor: pointer;
-    border: 1px solid #dcdfe6;
-    color: #606266;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    -webkit-transition: .1s;
-    transition: .1s;
-    font-weight: 500;
-    padding: 12px 20px;
-    font-size: 14px;
-    border-radius: 4px;
-    color: #354048;
-		background-color: #FFE266;
-		border-color: #FFE266;
-  }
   .click-item {
     color: #354048;
     margin-right: 8px;
-  }
-  .btn-done {
-    background: rgba(237,237,237,1);
-    border-color: rgba(237,237,237,1);
-    color:rgba(146,146,146,1);
   }
   .quanzhong {
     .el-input__inner {
@@ -41,7 +17,7 @@ export default {}
   }
   .img-box {
     overflow: hidden;
-    margin-top: 15px;
+    margin-bottom: 15px;
     .upload-cover {
       width:96px;
       height:96px;
@@ -57,17 +33,17 @@ export default {}
     margin-top: 10px;
   }
   .upload-error-tips {
-    width:96px;
-    height:96px;
+    width:0;
+    height:0;
     background:rgba(237,237,237,1);
     border-radius:4px;
-    display: inline-block;
     vertical-align: middle;
     margin-right: 16px;
-    opacity: 0;
-    visibility: 0;
     transition: all ease .4s;
     position: relative;
+    margin: 16px 0;
+    transform: scale(0);
+    transform-origin: 100% 100%;
     .tips {
       position: absolute;
       left: 0;
@@ -85,8 +61,9 @@ export default {}
     }
   }
   .upload-error-tips-show {
-    opacity: 1;
-    visibility: visible;
+    transform: scale(1);
+    width:96px;
+    height:96px;
   }
 }
 </style>

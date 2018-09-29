@@ -104,20 +104,22 @@
         prop="check_cover_img_id"
         class="limit-width"
         >
-        <div class="upload-error-tips upload-error-tips-show" v-if="form.cover_img_id.showError">
+        <div class="img-box" v-if="form.cover_img_id.tem && !imageUpload.showError">
+          <img :src="form.cover_img_id.tem" class="upload-cover">
+        </div>
+        <my-cropper
+          :hasUploaded="imageUpload.hasUploaded"
+          :btnTxt="imageUpload.btnTxt"
+          :accept="imageUpload.accept"
+          @success="imageUploadSuccess"
+          @fail="imageUploadFail"></my-cropper>
+        <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
           <div class="tips">
             <p><i class="el-icon-error"></i></p>
             <p>上传失败</p>
           </div>
         </div>
-        <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': form.cover_img_id.tem}">
-          <i  class="el-icon-upload"></i> {{form.cover_img_id.tem ? '重新上传' : '上传封面'}}
-          <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
-        </div>
-        <div class="img-box" v-if="form.cover_img_id.tem">
-          <img :src="form.cover_img_id.tem" class="upload-cover">
-        </div>
-        <div class="upload-image-tips">建议尺寸160X160px ，JPG、PNG格式，图片小于5M</div>
+        <div class="upload-image-tips">{{imageUpload.tips}}</div>
       </el-form-item>
       
       <el-form-item
@@ -328,24 +330,6 @@
         </div>
       </div>
   </modal-dialog>
-  <div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
-    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
-      <i class="el-icon-circle-close" @click="flag.imgHasLoad=false"></i>
-      <div class="cropper">
-        <div class="cropper-box" id="cropperBox">
-          <img id="uploadPreview" style="width:100px;height:100px;"/>
-        </div>
-        <div class="cropper-res-wrap">
-          <div class="cropper-res" id="cropperRes">
-            <img style="width:100px;height:100px;"/>
-          </div>
-        </div>
-      </div>
-      <div class="cropper-btns-wrap">
-        <button id="cropper-btn" @click="finishCropImage" :disabled="flag.btnTips.disable">{{ flag.btnTips.value }}</button>
-      </div>
-    </div>
-  </div>
 </div>
 </template>
 <script>
@@ -353,7 +337,6 @@ import WorkZonePost from './index'
 export default WorkZonePost
 </script>
 <style lang="scss">
-@import "~cropperjs/dist/cropper.min.css";
 #work-zone-post {
   background: white;
   .el-form {
@@ -543,91 +526,64 @@ export default WorkZonePost
       display: inline-block;
     }
   }
-}
-
-#work-zone-post {
-  .cropper-alert-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 90;
-    background: rgba(black, .5);
-    visibility: hidden;
-    height: 0;
-    transition: all .3s ease;
+  .click-item {
+    color: #354048;
+    margin-right: 8px;
   }
-  .cropper-alert-mask.show {
-    visibility: visible;
-    height: 100%;
-  }
-  .cropper-alert {
-    opacity: 0;
-    transition: all .3s ease;
-    visibility: hidden;
-    transform: scale(2);
-    padding: 30px;
-    position: fixed;
-    z-index: 90;
-    top: 50px;
-    left: 50%;
-    margin-left: -300px;
-    background-color: white;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    overflow: hidden;
-    &.show {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1);
+  .quanzhong {
+    .el-input__inner {
+      text-align: left;
     }
   }
-  .cropper {
-    position: relative;
-    width: 400px;
-    height: 300px;
-    padding: 80px 150px;
-    background-color: #f8f8f8;
-  }
-  .cropper-box {
-    width: 300px;
-    height: 300px;
-  }
-  .cropper-res-wrap {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    padding: 15px;
-    background-color: #f8f8f8;
-    box-sizing: content-box;
-  }
-  .cropper-res {
-    width: 100px;
-    height: 100px;
+  .img-box {
     overflow: hidden;
-    border: 1px solid #e1e1e1;
-    background-color: white;
+    margin-bottom: 15px;
+    .upload-cover {
+      width:96px;
+      height:96px;
+      border-radius:4px;
+      display: block;
+    }
   }
-  #cropper-btn{
-    width: 100%;
-    height: 30px;
-    background: white;
-    border: 1px solid #e1e1e1;
-    color: #646464;
+  .upload-image-tips {
+    font-size:12px;
+    font-weight:400;
+    color:rgba(188,188,188,1);
+    line-height:1;
+    margin-top: 10px;
   }
-  .head-pic {
-    width: 80px;
-    height: 80px;
+  .upload-error-tips {
+    width:0;
+    height:0;
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    vertical-align: middle;
+    margin-right: 16px;
+    transition: all ease .4s;
     position: relative;
-    background: rgba(0,0,0,.1);
-    overflow: hidden;
-    line-height: 80px;
-    text-align: center;
-    border-radius: 100%;
-    font-size: 20px;
+    margin: 16px 0;
+    transform: scale(0);
+    transform-origin: 100% 100%;
+    .tips {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color:rgba(146,146,146,1);
+    }
+    p {
+      line-height: 1.5;
+      margin: 0;
+      text-align: center;
+      width: 100%;
+    }
+  }
+  .upload-error-tips-show {
+    transform: scale(1);
+    width:96px;
+    height:96px;
   }
 }
 </style>

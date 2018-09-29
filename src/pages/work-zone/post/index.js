@@ -5,12 +5,14 @@ import Editor from 'COMPONENTS/editor'
 import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import MyCropper from 'COMPONENTS/cropper/index.vue'
 
 @Component({
   components: {
     ModalDialog,
     Editor,
-    SearchBar
+    SearchBar,
+    MyCropper
   },
   methods: {
     ...mapActions([
@@ -88,16 +90,12 @@ export default class WorkZonePost extends Vue {
     sort: ''
   }
 
-  // 初始化裁剪对象
-  cropper = null
-  // 裁剪设置
-  flag = {
-    imgHasLoad: false,
-    cropperHasInit: false,
-    btnTips: {
-      disable: false,
-      value: '裁剪完成，立即上传'
-    }
+  imageUpload = {
+    hasUploaded: false,
+    btnTxt: '上传封面',
+    tips: '建议尺寸160X160px ，JPG、PNG格式，图片小于5M',
+    showError: false,
+    accept: '.jpeg, .png, .jpg'
   }
 
   rules = {
@@ -323,6 +321,8 @@ export default class WorkZonePost extends Vue {
       this.form.owner_uid.value = jobCircleDetails.ownerUid
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
+      this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
       this.form.id = jobCircleDetails.id
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
 
@@ -513,143 +513,33 @@ export default class WorkZonePost extends Vue {
     }
     // this.showCreateCourseTypeBox = !this.showCreateCourseTypeBox
   }
-  /**
-   * 用户点击头像
-   */
-  onSelectFile() {
-    const el = this.$refs.hiddenFile
-    if (!el) return
-    el.click()
-    el.value = ''
-  }
 
-  /**
-   * 用户选择好文件了
-   * @param  {Event} e  文件改变事件
-   */
-  onFileChange(e) {
-    const files = e.target.files
-    const len = files.length
-    const fileName = files[0].name
-    const ext = this.getFileExt(fileName)
-    this.flag.file = files[0]
-
-    // 允许上传文件尺寸上限 1M
-    const ALLOW_MAX_SIZE = 1024 * 1024
-
-    // 允许文件格式 jpg\png
-    const ALLOW_FILE_TYPE = [
-      'png',
-      'jpeg',
-      'jpg'
-    ]
-
-    // 文件数量一定要判断
-    if (len > 0) {
-      const file = files.item(0)
-      if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
-        this.showMsg({ content: '选择的文件格式不对~', type: 'error', duration: 3000 })
-      } else if (file.size > ALLOW_MAX_SIZE) {
-        this.showMsg({ content: '选择的文件太大啦~', type: 'error', duration: 3000 })
-      } else {
-        let inputImage = document.querySelector('#uplaod-file')
-        let URL = window.URL || window.webkitURL
-        let blobURL
-        blobURL = URL.createObjectURL(file)
-        this.flag.imgHasLoad = true
-
-        if (!this.flag.cropperHasInit) {
-          this.loadCropper()
-          this.cropper.replace(blobURL)
-          return
-        }
-        this.cropper.reset().replace(blobURL)
-        inputImage.value = null
-      }
-    }
-  }
   /**
    * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   加载裁剪工具
-   * @return   {[type]}   [description]
+   * @DateTime 2018-09-29
+   * @detail   图片上传成功
+   * @return   {[type]}       [description]
    */
-  loadCropper() {
-    const image = document.querySelector('#cropperBox > img')
-    // const preview = document.querySelector('#cropperRes')
-    // const previewImage = preview.getElementsByTagName('img').item(0)
-    const options = {
-      aspectRatio: 1 / 1,
-      preview: '#cropperRes'
-    }
-    this.cropper = new Cropper(image, options)
-    this.flag.cropperHasInit = true
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   完成裁剪，并输出裁剪结果，然后上传
-   * @return   {[type]}   [description]
-   */
-  finishCropImage() {
-    this.flag.btnTips.value = '正在上传，请稍等'
-    this.flag.btnTips.disable = true
-    const croppedCanvas = this.cropper.getCroppedCanvas()
-    const croppedDataUrl = croppedCanvas.toDataURL()
-    const blob = this.dataURLtoFile(croppedDataUrl)
-    const formData = new FormData()
-    formData.append('attach_type', 'img')
-    formData.append('img1', blob)
-    this.uploadApi(formData)
-      .then((res) => {
-        const infos = res.data.data[0]
-        this.cropper.destroy()
-        this.flag.imgHasLoad = false
-        this.flag.imgHasLoad = false
-        this.flag.btnTips.value = '裁剪完成，立即上传'
-        this.flag.btnTips.disable = false
-        this.form.cover_img_id.value = infos.id
-        this.form.cover_img_id.tem = infos.url
-        this.form.check_cover_img_id = infos.id
-        this.$refs.form.validateField('check_cover_img_id')
-      })
-      .catch(err => {
-        this.showMsg({ content: `${err.msg}~`, type: 'error', duration: 3000 })
-      })
-  }
-
-  // dataUrl 转 blob
-  dataURLtoBlob(dataurl) {
-    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1]
-    let bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new Blob([u8arr], { type: mime })
+  imageUploadSuccess(res) {
+    this.form.cover_img_id.value = res.id
+    this.form.cover_img_id.tem = res.url
+    this.form.check_cover_img_id = res.id
+    this.imageUpload.hasUploaded = true
+    this.imageUpload.btnTxt = '重新上传'
+    this.imageUpload.showError = false
+    this.$refs.form.validateField('check_cover_img_id')
   }
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-13
-   * @detail   将base64转换成file对象
-   * @return   {[type]}            [description]
+   * @DateTime 2018-09-29
+   * @detail   图片上传是被
+   * @return   {[type]}       [description]
    */
-  dataURLtoFile (dataurl, filename = 'file') {
-    let arr = dataurl.split(',')
-    let mime = arr[0].match(/:(.*?);/)[1]
-    let suffix = mime.split('/')[1]
-    let bstr = atob(arr[1])
-    let n = bstr.length
-    let u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new File([u8arr], `${filename}.${suffix}`, {type: mime})
-  }
-
-  // 获取文件后缀名
-  getFileExt(filename) {
-    const tem = filename.split('.')
-    return tem[tem.length-1]
+  imageUploadFail(res) {
+    this.imageUpload.hasUploaded = false
+    this.imageUpload.btnTxt = '重新上传'
+    this.imageUpload.showError = true
+    this.$message.error(`${res}~`)
   }
 }

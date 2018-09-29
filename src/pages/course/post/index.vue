@@ -46,9 +46,9 @@
           </el-button>
       </el-form-item>
       
-      <!-- 课程导师 -->
+      <!-- 选择导师 -->
       <el-form-item
-        label="课程导师"
+        label="选择导师"
         prop="check_master_uid"
         class="limit-width"
         > 
@@ -107,10 +107,15 @@
         prop="check_icon"
         class="limit-width"
         >
-        <my-cropper :hasUploaded="imageUpload.hasUploaded" :btnTxt="imageUpload.btnTxt" @success="imageUploadSuccess" @fail="imageUploadFail"></my-cropper>
         <div class="img-box" v-if="form.icon.tem && !imageUpload.showError">
           <img :src="form.icon.tem" class="upload-cover">
         </div>
+        <my-cropper
+          :hasUploaded="imageUpload.hasUploaded"
+          :btnTxt="imageUpload.btnTxt"
+          :accept="imageUpload.accept"
+          @success="imageUploadSuccess"
+          @fail="imageUploadFail"></my-cropper>
         <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
           <div class="tips">
             <p><i class="el-icon-error"></i></p>
@@ -273,7 +278,7 @@
             </div>
           </div>
           <!-- 课程分类-end -->
-          <!-- 选择课程导师-start -->
+          <!-- 选择导师-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'master_uid'">
             <div style="margin: 30px 0;">
               <search-bar
@@ -561,7 +566,7 @@ export default CoursePost
     border-radius:4px;
     font-size:14px;
     font-weight:400;
-    color:rgba(146,146,146,1);
+    color:#929292 !important;
     border-color: rgba(237,237,237,1);
   }
   .zike-btn-active-selected {
@@ -613,6 +618,64 @@ export default CoursePost
     width: 128px;
     padding: 10px 20px;
     margin: 0px 16px 16px 0px;
+  }
+  .upload-image-tips {
+    font-size:12px;
+    font-weight:400;
+    color:rgba(188,188,188,1);
+    line-height:1;
+  }
+  .click-item {
+    margin-right: 8px;
+    color:rgba(53,64,72,1);
+  }
+  .quanzhong {
+    .el-input__inner {
+      text-align: left;
+    }
+  }
+  .img-box {
+    overflow: hidden;
+    margin-bottom: 15px;
+    .upload-cover {
+      width:96px;
+      height:96px;
+      border-radius:4px;
+      display: block;
+    }
+  }
+  .upload-error-tips {
+    width:0;
+    height:0;
+    background:rgba(237,237,237,1);
+    border-radius:4px;
+    vertical-align: middle;
+    margin-right: 16px;
+    transition: all ease .4s;
+    position: relative;
+    margin: 16px 0;
+    transform: scale(0);
+    transform-origin: 100% 100%;
+    .tips {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color:rgba(146,146,146,1);
+    }
+    p {
+      line-height: 1.5;
+      margin: 0;
+      text-align: center;
+      width: 100%;
+    }
+  }
+  .upload-error-tips-show {
+    transform: scale(1);
+    width:96px;
+    height:96px;
   }
 }
 .my-popover0001 {

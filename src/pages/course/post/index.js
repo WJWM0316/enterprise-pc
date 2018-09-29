@@ -109,7 +109,8 @@ export default class CoursePost extends Vue {
     hasUploaded: false,
     btnTxt: '上传封面',
     tips: '建议尺寸160X160px ，JPG、PNG格式，图片小于5M',
-    showError: false
+    showError: false,
+    accept: '.jpeg, .png, .jpg'
   }
 
   rules = {
@@ -360,6 +361,7 @@ export default class CoursePost extends Vue {
       this.form.icon.tem = courseDetail.coverImg
       this.form.check_icon = courseDetail.icon
       this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
       this.ContentEditor.content = courseDetail.intro
       this.temcategoryList = [...this.categoryList]
       this.temMenberLists = [...this.menberLists]
@@ -643,5 +645,6 @@ export default class CoursePost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
+    this.$message.error(`${res}~`)
   }
 }

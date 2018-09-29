@@ -2,7 +2,7 @@
 	<div id="zike-cropper">
     <div class="upload-image click-item" role="button" @click="onSelectFile" :class="{'zike-btn-selected': hasUploaded}">
       <i  class="icon iconfont icon-update"></i> {{ btnTxt }}
-      <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" />
+      <input type="file" id="uplaod-file" ref="hiddenFile" name="file" @change="onFileChange" style="display: none;" :accept="accept"/>
     </div>
 		<div class="cropper-alert-mask" :class="{show: flag.imgHasLoad}">
 	    <div class="cropper-alert" :class="{show: flag.imgHasLoad}">
@@ -61,6 +61,11 @@ import Cropper from 'cropperjs'
     hasUploaded: {
       type: Boolean,
       default: false
+    },
+    // 允许上传的类型
+    accept: {
+      type: String,
+      default: ''
     }
   }
 })
