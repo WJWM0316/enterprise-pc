@@ -69,7 +69,9 @@ export default {}
 		opacity: 0;
 		visibility: 0;
 		transition: all ease .4s;
+		display: none;
 		position: relative;
+		margin-top: 16px;
 		.tips {
 			position: absolute;
 			left: 0;
@@ -89,6 +91,7 @@ export default {}
   .upload-error-tips-show {
   	opacity: 1;
   	visibility: visible;
+  	display: block;
   }
 }
 </style>

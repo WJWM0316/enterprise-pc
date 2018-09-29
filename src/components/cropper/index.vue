@@ -277,10 +277,9 @@ export default class ComponentCropper extends Vue {
     display: inline-block;
     vertical-align: middle;
     margin-right: 16px;
-    opacity: 0;
-    visibility: 0;
     transition: all ease .4s;
     position: relative;
+    margin-top: 16px;
     .tips {
       position: absolute;
       left: 0;
@@ -296,10 +295,6 @@ export default class ComponentCropper extends Vue {
       text-align: center;
       width: 100%;
     }
-  }
-  .upload-error-tips-show {
-    opacity: 1;
-    visibility: visible;
   }
   .cropper-alert-mask {
     position: fixed;
