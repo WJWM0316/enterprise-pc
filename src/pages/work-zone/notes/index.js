@@ -13,7 +13,8 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
       'setJobCircleNotetoTopApi',
       'updateJobCircleNoteVisibleApi',
       'recoverJobCircleNoteApi',
-      'getJobCircleTopNumApi'
+      'getJobCircleTopNumApi',
+      'cancleJobCircleNotetoTopApi'
     ])
   },
   computed: {
@@ -213,12 +214,29 @@ export default class NoteList extends Vue {
             })
         break
       case 'top':
-        console.log(this.jobCircleTopNum)
-        console.log(item)
+        if(this.jobCircleTopNum.topNum === 3 && item.isTop) {
+          this.$confirm('设置这条内容为置顶后，最早的一条置顶内容将自动取消~', '置顶超过3条后', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+          .then(() => {
+            this.cancleJobCircleNotetoTopApi({id: item.id})
+                .then(() => {
+                  this.getJobCircleNoteLists()
+                  this.getJobCircleTopNumApi({id: this.form.id})
+                })
+          })
+          .catch(action => {
+            this.$message({type: 'info', message: '用户取消~'})
+          })
+          return
+        }
         this.setJobCircleNotetoTopApi({id: item.id})
-            .then(() => {
-              this.getJobCircleNoteLists()
-            })
+          .then(() => {
+            this.getJobCircleNoteLists()
+            this.getJobCircleTopNumApi({id: this.form.id})
+          })
         break
       default:
         break

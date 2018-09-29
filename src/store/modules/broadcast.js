@@ -16,7 +16,9 @@ import {
   getLiveInvisibleMenberListApi,
   getLiveListApi,
   updateLiveApi,
-  getLiveProblemListApi
+  getLiveProblemListApi,
+  recoverLiveProblemCommentApi,
+  deleteLiveProblemCommentApi
 } from 'API/broadcast'
 
 const state = {
@@ -208,6 +210,36 @@ const actions = {
     return getLiveProblemListApi(params)
       .then(res => {
         store.commit(GET_LIVE_PROBLEM_LIST, res.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+   /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   更新直播消息状态
+   * @return   {[type]}          [description]
+   */
+  deleteLiveProblemCommentApi (store, params) {
+    return deleteLiveProblemCommentApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+   /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   更新直播消息状态
+   * @return   {[type]}          [description]
+   */
+  recoverLiveProblemCommentApi (store, params) {
+    return recoverLiveProblemCommentApi(params)
+      .then(res => {
         return res
       })
       .catch(error => {

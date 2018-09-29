@@ -7,7 +7,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   name: 'response-list',
   methods: {
     ...mapActions([
-      'getLiveProblemListApi'
+      'getLiveProblemListApi',
+      'recoverLiveProblemCommentApi',
+      'deleteLiveProblemCommentApi'
     ])
   },
   computed: {
@@ -101,13 +103,13 @@ export default class BroadcastReponse extends Vue {
    */
   init() {
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
-    this.getLiveReviewList()
+    this.getLiveProblemList()
   }
 
   /**
    * 获取课程列表
    */
-  getLiveReviewList({ page, pageSize } = {}) {
+  getLiveProblemList({ page, pageSize } = {}) {
     const params = {
       live_id: this.form.id,
       page: page || this.form.page || 1,
@@ -129,8 +131,43 @@ export default class BroadcastReponse extends Vue {
    * @DateTime 2018-09-21
    * @detail   列表待办项
    */
-  todoAction(item) {
-    console.log(item)
+  todoAction(type, item) {
+    switch(type) {
+      case 'delete':
+        this.$confirm('是否删除该评论, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.deleteLiveProblemCommentApi({problem_id: item.id, globalLoading: true})
+              .then(() => {
+                this.getLiveProblemList()
+              })
+        })
+        .catch(action => {
+          this.$message({type: 'info', message: '取消操作~'})
+        })
+        break
+      case 'recover':
+        this.$confirm('是否恢复该评论, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.recoverLiveProblemCommentApi({problem_id: item.id, globalLoading: true})
+              .then(() => {
+                this.getLiveProblemList()
+              })
+        })
+        .catch(action => {
+          this.$message({type: 'info', message: '取消操作~'})
+        })
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -140,7 +177,7 @@ export default class BroadcastReponse extends Vue {
    * @return   {[type]}   [description]
    */
   tableRowClassName({row}) {
-    if(row.status === 0) {
+    if(row.status !== '正常') {
       return 'row-delete'
     } else {
       return 'row-exist'

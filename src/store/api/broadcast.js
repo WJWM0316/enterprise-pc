@@ -22,3 +22,7 @@ export const getLiveListApi = params => request(`/live`, 'get', params)
 export const updateLiveApi = params => request(`/live/message/${params.id}`, 'patch', params)
 // 问答区
 export const getLiveProblemListApi = params => request(`/live/problemList`, 'post', Qs.stringify(params))
+// 删除评论
+export const deleteLiveProblemCommentApi = params => request(`/live/delProblem`, 'post', params)
+// 恢复评论
+export const recoverLiveProblemCommentApi = params => request(`/live/restoreProblem`, 'post', params)

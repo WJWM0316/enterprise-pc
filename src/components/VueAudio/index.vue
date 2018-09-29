@@ -51,7 +51,7 @@ import Component from 'vue-class-component'
     }
   }
 })
-export default class pageSystem extends Vue {
+export default class ComponentAudio extends Vue {
   url = this.theUrl
   audio = {
     currentTime: 0,

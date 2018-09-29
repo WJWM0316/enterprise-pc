@@ -15,9 +15,15 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            :disabled="props.scope.row.isDeleted === 1 ? true : false"
-            @click="todoAction(props.scope.row)">
+            v-if="props.scope.row.status === '正常'"
+            @click="todoAction('delete', props.scope.row)">
               删除
+          </el-button>
+          <el-button
+            type="text"
+            v-if="props.scope.row.status !== '正常'"
+            @click="todoAction('recover', props.scope.row)">
+              恢复
           </el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
@@ -43,8 +49,10 @@ export default BroadcastReview
   .zike-breadcrumb {
     margin-bottom: 30px;
   }
-  .row-deleted {
+  .row-delete {
     background:rgba(248,250,251,1);
+    text-decoration: line-through;
+    color: #DCDCDC;
   }
   .limit-row-num-3 {
     overflow: hidden;

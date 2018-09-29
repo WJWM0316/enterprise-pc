@@ -118,8 +118,9 @@ export default class CoursePost extends Vue {
   rules = {
     title: [
       { required: true, message: '请输入课程名称', trigger: 'blur' },
-      { pattern: /^\s*|\s*$/, message: '不能输入空白符' }
-      // { pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线'}
+      { validator: this.checkBlankCharacter,  trigger: 'blur' }
+      // { pattern: /^[\s]*$/, message: '不能输入空白符', trigger: 'change' },
+      // { pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线', trigger: 'change'}
     ],
     check_category_id: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
@@ -127,12 +128,6 @@ export default class CoursePost extends Vue {
     check_group_id: [
       { required: true, message: '请选择组织', trigger: 'blur' }
     ],
-    // check_members: [
-    //   { required: true, message: '请选择必修学员', trigger: 'blur' }
-    // ],
-    // check_hits: [
-    //   { required: true, message: '请选择不可见学员', trigger: 'blur' }
-    // ],
     check_icon: [
       { required: true, message: '请上传课程封面图片', trigger: 'blur' }
     ],

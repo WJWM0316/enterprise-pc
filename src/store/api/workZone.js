@@ -38,8 +38,10 @@ export const deleteJobCircleCommentApi = params => request(`/jobcircle/comment/$
 export const recoverJobCircleCommentApi = params => request(`/jobcircle/comment/recover/${params.id}`, 'post', params)
 // 【工作圈】删除帖子
 export const deleteJobCircleNoteApi = params => request(`/jobcircle/post/${params.id}`, 'delete')
-// 【工作圈】删除帖子
+// 【工作圈】设置置顶帖子
 export const setJobCircleNotetoTopApi = params => request(`/jobcircle/post/stick`, 'put', params)
+// 【工作圈】取消置顶帖子
+export const cancleJobCircleNotetoTopApi = params => request(`/jobcircle/post/nostick`, 'put', params)
 // 获取工作圈帖子详情
 export const getJobCircleNoteDetailApi = params => request(`/jobcircle/post/${params.id}`, 'get')
 // 添加工作圈帖子
