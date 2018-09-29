@@ -1,6 +1,6 @@
 <template>
   <div class="zike-audio">
-    <audio ref="audio" class="dn" 
+    <audio ref="audio"
       :src="url" :preload="audio.preload"
       @play="onPlay" 
       @error="onError"
@@ -11,17 +11,18 @@
       @loadedmetadata="onLoadedmetadata">
     </audio>
     <div>
-      <i class="icon iconfont icon-video_sound" @click="startPlayOrPause"></i>
-        <div class="progress">
-          <div class="bg"></div>
-          <div class="mask" :style="`width: ${(parseInt(audio.currentTime) / audio.maxTime) * 100}%`">
-            <div
-              class="circle"
-              :class="{ 'a-r' : ((parseInt(audio.currentTime) / audio.maxTime) * 100) < 50, 'b-r': ((parseInt(audio.currentTime) / audio.maxTime) * 100) >= 50 }">
-              <div class="tips" v-show="audio.currentTime > 1">{{ parseInt(audio.currentTime) }}</div>
-            </div>
+      <i class="icon iconfont icon-voicecontrol" @click="startPlayOrPause"></i>
+      <!-- <i class="active-btn"></i> -->
+      <div class="progress">
+        <div class="bg"></div>
+        <div class="mask" :style="`width: ${(parseInt(audio.currentTime) / audio.maxTime) * 100}%`">
+          <div
+            class="circle"
+            :class="{ 'a-r' : ((parseInt(audio.currentTime) / audio.maxTime) * 100) < 50, 'b-r': ((parseInt(audio.currentTime) / audio.maxTime) * 100) >= 50 }">
+            <div class="tips" v-show="audio.currentTime > 1">{{ parseInt(audio.currentTime) }}</div>
           </div>
         </div>
+      </div>
       <span class="total">{{ audio.maxTime }}s</span>
     </div>
   </div>
@@ -51,7 +52,7 @@ import Component from 'vue-class-component'
   }
 })
 export default class pageSystem extends Vue {
-  url = this.theUrl || 'http://devtest.qiniudn.com/secret base~.mp3'
+  url = this.theUrl
   audio = {
     currentTime: 0,
     maxTime: 0,

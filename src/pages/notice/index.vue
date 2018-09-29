@@ -1,7 +1,6 @@
 <template>
   <div id="notice">
 		<my-cropper></my-cropper>
-    <VueAudio :theUrl="url" :theControlList="controlList"/>
   </div>
 </template>
 <script>
