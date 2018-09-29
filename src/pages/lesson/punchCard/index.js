@@ -133,7 +133,7 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
-    this.course_section_id = 13
+    //this.course_section_id = 13
     let data = {
         search:{
           like: {title: this.form.name},
