@@ -117,7 +117,9 @@ export default class CoursePost extends Vue {
 
   rules = {
     title: [
-      { required: true, message: '请输入课程名称', trigger: 'blur' }
+      { required: true, message: '请输入课程名称', trigger: 'blur' },
+      { pattern: /^\s*|\s*$/, message: '不能输入空白符' }
+      // { pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线'}
     ],
     check_category_id: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
