@@ -30,6 +30,7 @@ export const HIDE_MSG = 'commom/HIDE_MSG'
 export const LOGIN = 'commom/LOGIN'
 export const LOGOUT = 'commom/LOGOUT'
 export const GET_UPLOAD_CONFIG = 'commom/GET_UPLOAD_CONFIG'
+export const SELECT_ALL_MENBER_LISTS = 'commom/SELECT_ALL_MENBER_LISTS'
 
 // 导师模块
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'

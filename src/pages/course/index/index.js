@@ -68,7 +68,7 @@ export default class CourseList extends Vue {
       prop: 'category',
       label: '类 型',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       width: '10%',
       filteredValue: [],
       filterPlacement: '类型的提示文案'
@@ -106,11 +106,12 @@ export default class CourseList extends Vue {
     this.getCategoryListsApi()
         .then(() => {
           this.categoryList.map(field => {
-            this.fields[2].filteredValue.push({label: '全部', value: 'categoryId-abc'},{
+            this.fields[2].filteredValue.push({
               label: field.categoryName,
               value: `categoryId-${field.categoryId}`
             })
           })
+          this.fields[2].filteredValue.unshift({label: '全部', value: 'categoryId-abc'})
         })
   }
   /**
