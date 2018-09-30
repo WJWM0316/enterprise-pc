@@ -42,9 +42,15 @@
           </el-button>
           <el-button
             type="text"
-            v-if="props.scope.row.deletedAt !== '已删除'"
+            v-if="props.scope.row.deletedAt !== '已删除' && props.scope.row.isTop"
+            @click="todoAction('notop', props.scope.row)">
+              取消置顶
+          </el-button>
+          <el-button
+            type="text"
+            v-if="props.scope.row.deletedAt !== '已删除' && !props.scope.row.isTop"
             @click="todoAction('top', props.scope.row)">
-              {{props.scope.row.isTop ? '取消置顶' : '设置置顶'}}
+              设置置顶
           </el-button>
           <el-button
             type="text"

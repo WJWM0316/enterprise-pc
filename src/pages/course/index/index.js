@@ -50,6 +50,10 @@ export default class CourseList extends Vue {
       filteredValue:
       [
         {
+          label: '全部',
+          value: 'status-3'
+        },
+        {
           label: '上线',
           value: 'status-1'
         },
@@ -82,7 +86,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '10%',
-      filterPlacement: '操作的提示'
+      filterPlacement: '编辑相关详细内容'
     }
   ]
 
