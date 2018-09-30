@@ -6,7 +6,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: '/tiger',
+  base: '/test',
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

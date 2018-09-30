@@ -8,7 +8,7 @@ import router from '@/router/index'
 let loadingInstance = null
 // import store from '@/store'
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
-export const API_ROOT = 'http://web.xplus.ziwork.com/tiger'
+export const API_ROOT = 'http://web.xplus.ziwork.com/test'
 // console.log('text')
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
