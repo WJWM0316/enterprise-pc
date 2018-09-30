@@ -11,45 +11,19 @@
     }
   }
   .logo {
-    height: 150px;
+    height: 130px;
     text-align: center;
     position: relative;
     .avatar-uploader {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      width: 100%;
-      height: 100%;
-      width: 80px;
-      height: 80px;
-      border-radius: 100%;
-      display: inline-block;
-      vertical-align: middle;
-      background: #fff;
       transform: translate(-50%, -50%);
       position: absolute;
       left: 50%;
       top: 50%;
-      overflow: hidden;
       &:hover{
         .company-logo {
           opacity: 1;
         }
       }
-    }
-    img {
-      width: 80px;
-      height: 80px;
-      border-radius: 100%;
-      display: inline-block;
-      vertical-align: middle;
-      // border: 1px solid #666;
-      background: #fff;
-      transform: translate(-50%, -50%);
-      position: absolute;
-      left: 50%;
-      top: 50%;
     }
     .company-logo {
       position: absolute;
@@ -151,8 +125,6 @@
     text-align: center;
   }
   .avatar {
-    width: 80px;
-    height: 80px;
     display: block;
   }
   .mask {
