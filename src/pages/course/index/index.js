@@ -94,9 +94,6 @@ export default class CourseList extends Vue {
   form = {
     name: ''
   }
-
-  searchType = '1'
-
   init() {
     this.form = Object.assign(this.form, this.$route.query)
     this.getCourseList()
@@ -108,10 +105,10 @@ export default class CourseList extends Vue {
           this.categoryList.map(field => {
             this.fields[2].filteredValue.push({
               label: field.categoryName,
-              value: `categoryId-${field.categoryId}`
+              value: `category_id-${field.categoryId}`
             })
           })
-          this.fields[2].filteredValue.unshift({label: '全部', value: 'categoryId-abc'})
+          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
         })
   }
   /**
@@ -132,8 +129,8 @@ export default class CourseList extends Vue {
     if(this.form.status) {
       params.status = Number(this.form.status) === 3 ? '' : this.form.status
     }
-    if(this.form.categoryId) {
-      params.categoryId = this.form.categoryId === 'abc' ? '' : this.form.categoryId
+    if(this.form.category_id) {
+      params.category_id = this.form.category_id === 'abc' ? '' : this.form.category_id
     }
     this.getCourseListsApi(params)
   }

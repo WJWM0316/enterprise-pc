@@ -88,8 +88,9 @@ export default class BroadcastReponse extends Vue {
     {
       prop: 'actions',
       label: '操 作',
-      showTips: 'no',
-      width: '50%'
+      showTips: 'yes',
+      width: '50%',
+      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]
 

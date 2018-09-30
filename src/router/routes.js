@@ -493,5 +493,16 @@ export const routes = [
       keepAlive: false,
       useNav: false
     }
+  },
+  // 帮助页面
+  {
+    path: '/help',
+    name: 'help',
+    title: '帮助页',
+    component: () => import(/* webpackChunkName: "help" */ '@/pages/help/index.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: false
+    }
   }
 ]

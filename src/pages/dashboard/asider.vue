@@ -2,7 +2,7 @@
 	<div class="asider-bar">
 		<section class="contact-box">
 			<header class="contact-box-header">客服电话</header>
-			<section class="company-phone-box"><i class="el-icon-phone"></i>020-2816-3063 </section>
+			<section class="company-phone-box"><i class="icon iconfont icon-phone"></i>020-2816-3063 </section>
 		</section>
 		<section class="using-help-box">
 			<header class="using-help-box-header">使用帮助<button class="view click-item">查看更多</button></header>
@@ -61,7 +61,9 @@ export default class pageDashboard extends Vue {}
 		line-height: 80px;
 		text-align: center;
 		i{
-			margin-right: 10px;
+			margin-right: 16px;
+			font-size: 24px;
+			color: #BCBCBC;
 		}
 	}
 	.using-help-box {

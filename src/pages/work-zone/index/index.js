@@ -59,37 +59,22 @@ export default class WorkzoneList extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '上线：在员工端显示；下线：在员工端不显示'
     },
     {
       prop: 'sort',
       label: '权 重',
       align: 'center',
-      showTips: 'no',
+      showTips: 'yes',
       width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'sort-全部'
-        },
-        {
-          label: '升序',
-          value: 'sort-升序'
-        },
-        {
-          label: '降序',
-          value: 'sort-降序'
-        }
-      ],
-      filterPlacement: '权重的提示文案'
+      filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '吊炸天的操作~'
+      filterPlacement: '编辑相关详细内容'
     }
   ]
 

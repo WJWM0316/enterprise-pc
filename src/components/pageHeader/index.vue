@@ -3,7 +3,7 @@
 		<section>
 			<ul class="navigation">
 				<li>
-					<i class="icon iconfont icon-message"></i>
+					<i class="el-icon-bell"></i>
 				</li>
 				<li>
 					<el-dropdown trigger="hover" @command="logout" placement="bottom">
@@ -33,6 +33,9 @@
 	left: 200px;
 	right: 0;
 	z-index: 2;
+	.el-icon-bell{
+		font-size: 18px;
+	}
 	section {
 		position: fixed;
 		height: 60px;

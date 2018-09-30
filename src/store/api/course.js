@@ -10,7 +10,7 @@ export const postCourseApi = data => request('/course/addCourse', 'post', Qs.str
 // 编辑课程
 export const putCourseApi = data => request('/course/editCourse', 'post', Qs.stringify(data))
 // 获取课程列表
-export const getCourseListsApi = data => request('/course/listCourse', 'post', Qs.stringify(data))
+export const getCourseListsApi = data => request('/course/listCourse', 'post', data)
 // 获取课程详情
 export const getCourseDetailApi = data => request('/course/infoCourse', 'post', Qs.stringify(data))
 // 获取课程学员

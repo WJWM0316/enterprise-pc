@@ -52,21 +52,21 @@
 			</div>
 		</section>
 		<section class="actions-flex-box">
-			<div>
+			<div @click="routeJump('addMember')">
 				<i class="icon-zike icon-add-menber"></i>
 				<p>添加成员</p>
 			</div>
-			<div>
-				<i class="icon-zike icon-add-notice"></i>
-				<p>新建通知</p>
-			</div>
 			<div @click="routeJump('coursePost')">
-				<i class="icon-zike icon-add-course"></i>
+				<i class="icon-zike icon-add-notice"></i>
 				<p>新建课程</p>
 			</div>
 			<div @click="routeJump('broadcastPost')">
-				<i class="icon-zike icon-add-broadcast"></i>
+				<i class="icon-zike icon-add-course"></i>
 				<p>新建直播</p>
+			</div>
+			<div @click="routeJump('workZonePost')">
+				<i class="icon-zike icon-add-broadcast"></i>
+				<p>新建工作圈</p>
 			</div>
 		</section>
 		<section class="notice-flex-box">
@@ -358,28 +358,28 @@ export default class pageDashboard extends Vue {
 			vertical-align: middle;
 		}
 		i {
-			width: 45px;
-			height: 45px;
+			width: 58px;
+			height: 58px;
 			background: rgba(0,0,0,.1);
 			border-radius: 50%;
 			display: inline-block;
 			vertical-align: middle;
-			margin-right: 20px;
+			margin-right: 10px;
 		}
 		.icon-add-menber {
-			background: url('~IMAGES/pc_home_btn_add.png') no-repeat center center;
+			background: url('~IMAGES/pc_home_btn_add@3x.png') no-repeat center center;
 			background-size: 100%;
 		}
 		.icon-add-notice {
-			background: url('~IMAGES/pc_hone_btn_newnotice.png') no-repeat center center;
+			background: url('~IMAGES/pc_home_btn_newclass@3x.png') no-repeat center center;
 			background-size: 100%;
 		}
 		.icon-add-course {
-			background: url('~IMAGES/pc_hone_btn_newclass.png') no-repeat center center;
+			background: url('~IMAGES/pc_home_btn_newlive@3x.png') no-repeat center center;
 			background-size: 100%;
 		}
 		.icon-add-broadcast {
-			background: url('~IMAGES/pc_hone_btn_newlive.png') no-repeat center center;
+			background: url('~IMAGES/pc_home_btn_newgroup@3x.png') no-repeat center center;
 			background-size: 100%;
 		}
 	}
