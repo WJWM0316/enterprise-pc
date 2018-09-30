@@ -84,4 +84,12 @@ export function removeAccessToken() {
   ssCache.delete(KEYS.userInfo)
 }
 
+export function saveUserInfo(userInfos, expiredIn) {
+  lsCache.set(KEYS.userInfo, userInfos, { exp: expiredIn })
+}
+
+export function getUserInfo(userInfos, expiredIn) {
+  return lsCache.get(KEYS.userInfo)
+}
+
 export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 60 * 60 * 24 * 7 * 1000, 'sessionStorage')

@@ -13,21 +13,24 @@ import {
   logoutApi
 } from 'API/auth'
 
-import { saveAccessToken, removeAccessToken, cachedUserInfo, getAccessToken } from '@/store/cacheService'
+import { saveAccessToken, removeAccessToken, getAccessToken, getUserInfo, saveUserInfo } from '@/store/cacheService'
 
 const state = {
-  userInfos: cachedUserInfo.load() || null,
-  token: getAccessToken()
+  userInfos: getUserInfo() || null,
+  token: getAccessToken(),
+  loginValidTime: 60 * 60 * 24 * 7 * 1000
 }
 
 const mutations = {
-  [LOGIN] (status, data) {
+  [LOGIN] (state, data) {
+    saveAccessToken(data.token, state.loginValidTime)
+    saveUserInfo(data, state.loginValidTime)
     state.userInfos = data
     state.token = data.token
   },
-  [LOGOUT] (status, data) {
-    state.userInfos = {}
-    state.token = ''
+  [LOGOUT] (state) {
+    state.userInfos = null
+    state.token = null
   }
 }
 
@@ -40,8 +43,6 @@ const actions = {
   loginApi(store, data) {
     return loginApi(data)
       .then(res => {
-        saveAccessToken(res.data.data.token, 60 * 60 * 24 * 7 * 1000)
-        cachedUserInfo.save(res.data.data)
         store.commit(LOGIN, res.data.data)
         return res
       })
