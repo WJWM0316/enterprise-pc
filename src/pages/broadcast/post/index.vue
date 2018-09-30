@@ -76,7 +76,7 @@
           <div class="selected-item" v-show="form.groupList.show">
             已选择：
             <span
-              @click="removeMultipleCheck('groupList', groupIndex)"
+              @click="removeMultipleCheck('groupList', groupIndex, groupItem)"
               :key="groupIndex"
               v-for="(groupItem, groupIndex) in form.groupList.tem">
                 {{groupItem.groupName}}<i class="el-icon-close"></i>
@@ -223,10 +223,9 @@
           <el-popover
             placement="top-start"
             ref="sort"
-            title="标题"
             width="200"
             trigger="hover"
-            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            content="权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。">
           </el-popover>
           <i class="el-icon-question" v-popover:sort></i>
       </el-form-item>
@@ -260,12 +259,13 @@
       </div>
       <div slot="customize-html">
         <div class="customize-html-content">
+
           <!-- 直播分类-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'categoryList'">
             <div class="group-list">
               <el-button
                 size="large"
-                v-for="(cateItem, cateIndex) in temcategoryList"
+                v-for="(cateItem, cateIndex) in categoryList"
                 :key="cateIndex"
                 :class="{'zike-btn-active-selected': cateItem.active}"
                 @click="selectCategory(cateItem, 'categoryList')">
@@ -295,6 +295,7 @@
             </div>
           </div>
           <!-- 直播分类-end -->
+
           <!-- 选择直播导师-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'uid'">
             <div style="margin: 30px 0;">
@@ -326,11 +327,12 @@
             </div>
           </div>
           <!-- 选择直播成员-end -->
+
           <!-- 组织-start -->
           <div class="groupList-type-list" v-if="models.currentModalName === 'groupList'">
             <el-button
               size="large"
-              v-for="(groupItem, groupIndex) in tem_groupLists"
+              v-for="(groupItem, groupIndex) in groupLists"
                @click="seleteGroup(groupItem, 'groupLists')"
               :class="{'zike-btn-active-selected': groupItem.active}"
               :key="groupIndex">
@@ -343,6 +345,7 @@
             </p>
           </div>
           <!-- 组织-end -->
+
           <!-- 参与直播学员-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'memberList'">
             <div style="margin: 30px 0;">
@@ -350,15 +353,15 @@
                 width="464px"
                 @search="handleSearch"
                 v-model="ownerUidName"
-                placeholder="请输入导师名称" />
+                placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="memberClassification('uid', 'all')">所有人</el-button>
+              <el-button size="large" @click="filterMenber('uid', 'all')">所有人</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
+                @click="filterMenber('groupList', groupItem)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -368,11 +371,12 @@
                   :label="menberItem.realname"
                   :key="menberIndex"
                   @change="multipleSelection('memberList', menberItem)"
-                  v-for="(menberItem, menberIndex) in temMenberLists" />
+                  v-for="(menberItem, menberIndex) in menberLists" />
               </el-checkbox-group>
             </div>
           </div>
           <!-- 参与直播学员-end -->
+
            <!-- 对这些人不可见-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'invisibleList'">
             <div style="margin: 30px 0;">
@@ -380,15 +384,15 @@
                 width="464px"
                 @search="handleSearch"
                 v-model="ownerUidName"
-                placeholder="请输入导师名称" />
+                placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="memberClassification('uid', 'all')">所有人</el-button>
+              <el-button size="large" @click="filterMenber('uid', 'all')">所有人</el-button>
               <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterWorkZoneMenber('groupList', groupItem.groupId)">
+                @click="filterMenber('groupList', groupItem)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -398,7 +402,7 @@
                   :label="menberItem.realname"
                   :key="menberIndex"
                   @change="multipleSelection('invisibleList', menberItem)"
-                  v-for="(menberItem, menberIndex) in temMenberLists" />
+                  v-for="(menberItem, menberIndex) in menberLists" />
               </el-checkbox-group>
             </div>
           </div>

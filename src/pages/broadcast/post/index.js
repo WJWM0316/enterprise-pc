@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -78,7 +77,7 @@ export default class BroadcastPost extends Vue {
     // 直播成员
     check_uid: '',
     uid: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
@@ -154,12 +153,7 @@ export default class BroadcastPost extends Vue {
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
-  restaurants = []
-  timeout =  null
-  temMenberLists = []
-  temcategoryList = []
   temTutorLists = []
-  tem_groupLists = []
   // 导师名称
   ownerUidName = ''
   visible2 = false
@@ -263,9 +257,9 @@ export default class BroadcastPost extends Vue {
   handleSearch() {
     // 获取成员列表
     this.getMenberListsApi({name: this.ownerUidName})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
+        .then(() => {
+          this.ownerUidName = ''
+        })
   }
 
   created() {
@@ -301,7 +295,6 @@ export default class BroadcastPost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.temMenberLists = [...this.menberLists]
     this.models.show = true
   }
   /**
@@ -313,16 +306,13 @@ export default class BroadcastPost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
-      this.getGroupListsApi(),
+      this.getGroupListsApi({isHaveMember: 1}),
       this.getMenberListsApi(),
       this.getCategoryListsApi(),
-      this.getTutorListApi()
+      this.getTutorListApi({type: 2})
     ])
     .then(() => {
-      this.temMenberLists = [...this.menberLists]
-      this.temcategoryList = [...this.categoryList]
-      this.temTutorLists = [...this.tutorLists]
-      this.tem_groupLists = [...this.groupLists]
+      this.temTutorLists = this.tutorLists
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -342,10 +332,10 @@ export default class BroadcastPost extends Vue {
         this.getLiveDetailApi(params),
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
-        this.getGroupListsApi(),
+        this.getGroupListsApi({isHaveMember: 1}),
         this.getMenberListsApi(),
         this.getCategoryListsApi(),
-        this.getTutorListApi()
+        this.getTutorListApi({type: 2})
       ]
     )
     .then((res) => {
@@ -409,6 +399,7 @@ export default class BroadcastPost extends Vue {
       this.form.memberList.value = this.form.memberList.value.join(',')
       this.form.check_memberList = this.form.memberList.value
       this.ContentEditor.content = info.intro
+      this.temTutorLists = this.tutorLists
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -422,11 +413,13 @@ export default class BroadcastPost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value ? true : false
+    this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.models.show = false
-    this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
-    this.$refs.form.validateField(`check_${type}`)
+    if(this.rules[`check_${type}`]) {
+      this.$refs.form.validateField(`check_${type}`)
+    }
+    console.log(this.form[type])
   }
 
   /**
@@ -435,11 +428,10 @@ export default class BroadcastPost extends Vue {
    * @detail   弹窗关闭按钮
    */
   cancel() {
-    const type = this.models.currentModalName
-    this.form[type].value = ''
-    this.form[type].tem = []
+    // const type = this.models.currentModalName
+    // this.form[type].value = ''
+    // this.form[type].tem = []
     this.models.show = false
-    this.ownerUidName = ''
   }
 
   /**
@@ -459,11 +451,14 @@ export default class BroadcastPost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index) {
+  removeMultipleCheck(type, index, item) {
     const value = this.form[type].value.split(',').splice(index, 1)
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    if(type === 'groupList') {
+      this.updateGroupListsApi({groupId: item.groupId})
+    }
   }
 
   /**
@@ -472,12 +467,10 @@ export default class BroadcastPost extends Vue {
    * @detail  刷选组员数据
    * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(type, id) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(id)
-    })
-    this.temMenberLists = menberLists
+  filterMenber(type, item) {
+    Object.prototype.toString.call(item) === '[object String]'
+    ? this.getMenberListsApi({selectAll: 1})
+    : this.getMenberListsApi({groupId: item.groupId})
   }
 
   /**
@@ -487,17 +480,17 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    let list = [...this.tutorLists]
     if(Object.prototype.toString.call(item) === '[object String]') {
-      list = list.filter(field => {
-        return !field.group
-      })
+      this.getTutorListApi({type: 2})
+          .then(() => {
+            this.temTutorLists = this.tutorLists
+          })
     } else {
-      list = list.filter(field => {
-        return field.group && field.selfGroup.includes(item.groupId)
-      })
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            this.temTutorLists = this.menberLists
+          })
     }
-    this.temTutorLists = list
   }
 
 
@@ -567,36 +560,6 @@ export default class BroadcastPost extends Vue {
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   成员分类
-   * @return   {[type]}   [description]
-   */
-  memberClassification(type, groupId) {
-    const tem = []
-    const value = []
-    const data = {
-      tem: [],
-      value: []
-    }
-    let menberLists = [...this.menberLists]
-    menberLists.map(field => {
-      if(field.selfGroup.includes(groupId)) {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      }
-    })
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      })
-    }
-    data.value = data.value.join(',')
-    this.form[type] = data
-  }
-
-  /**
-   * @Author   小书包
    * @DateTime 2018-09-20
    * @detail   添加分类
    * @return   {[type]}   [description]
@@ -609,7 +572,6 @@ export default class BroadcastPost extends Vue {
               .then(() => {
                 this.categoryModal.loading = false
                 this.categoryModal.show = false
-                this.temcategoryList = [...this.categoryList]
               })
         })
         .catch(err => {
