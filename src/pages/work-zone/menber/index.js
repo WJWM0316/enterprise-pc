@@ -73,14 +73,11 @@ export default class MenberList extends Vue {
     const params = {
       id: this.$route.params.id
     }
-    const data = {
-      tem: [],
-      value: []
-    }
+    const data = { tem: [], value: [] }
     Promise.all(
       [
         this.getGroupListsApi({isHaveMember: 1}),
-        this.getMenberListsApi(),
+        this.getMenberListsApi({selectAll: 1}),
         this.getJobCircleMemberListsApi(params),
         this.getJobCircleDetailsApi(params),
         this.getJobCircleHitListsApi(params),
@@ -150,34 +147,6 @@ export default class MenberList extends Vue {
     })
     this.checkList.value = value
     this.form.members = value.join(',')
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   成员分类
-   * @return   {[type]}   [description]
-   */
-  memberClassification(groupId) {
-    const data = {
-      tem: [],
-      value: []
-    }
-    const menberLists = [...this.menberLists]
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      })
-    } else {
-      menberLists.map(field => {
-        if(field.selfGroup.includes(groupId)) {
-          data.tem.push(field.realname)
-          data.value.push(field.uid)
-        }
-      })
-    }
-    this.checkList = data
   }
 
   /**
