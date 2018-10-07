@@ -79,7 +79,7 @@ export default class CoursePost extends Vue {
     // 课程导师
     check_master_uid: '',
     master_uid: {
-      value: '',
+      value: [],
       tem: [],
       show: false
     },
@@ -134,7 +134,15 @@ export default class CoursePost extends Vue {
     ],
     startTime: [
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
-    ]
+    ],
+    intro: [
+      {
+        required: true,
+        message: '请填写课程介绍',
+        trigger: 'blur',
+        validator: editorRules.validator
+      }
+    ],
   }
 
   // 确认信息弹窗
@@ -158,10 +166,7 @@ export default class CoursePost extends Vue {
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
-  temMenberLists = []
-  temcategoryList = []
   temTutorLists = []
-  tem_groupLists = []
   // 导师名称
   ownerUidName = ''
   // 分类弹窗显示
@@ -177,7 +182,6 @@ export default class CoursePost extends Vue {
    * @detail   检测提交的参数
    */
   checkSubmit() {
-    // console.log(Date.parse(new Date(this.form.startTime))/ 1000)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -261,11 +265,11 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    // 获取成员列表
     this.getMenberListsApi({name: this.ownerUidName})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
+        .then(() => {
+          // 清空搜索栏
+          this.ownerUidName = ''
+        })
   }
 
   created() {
@@ -301,7 +305,6 @@ export default class CoursePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.temMenberLists = [...this.menberLists]
     this.models.show = true
   }
   /**
@@ -313,16 +316,13 @@ export default class CoursePost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'coursePost') return
     Promise.all([
-      this.getGroupListsApi(),
+      this.getGroupListsApi({isHaveMember: 1}),
       this.getMenberListsApi(),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 1})
     ])
     .then(() => {
-      this.temMenberLists = [...this.menberLists]
-      this.temcategoryList = [...this.categoryList]
       this.temTutorLists = [...this.tutorLists]
-      this.tem_groupLists = [...this.groupLists]
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')
@@ -345,7 +345,7 @@ export default class CoursePost extends Vue {
         this.getCourseCategoryApi(params),
         this.getCoursePeopleHitsApi(params),
         this.getMenberListsApi(),
-        this.getGroupListsApi(),
+        this.getGroupListsApi({isHaveMember: 1}),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]
@@ -363,11 +363,7 @@ export default class CoursePost extends Vue {
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
       this.ContentEditor.content = courseDetail.intro
-      this.temcategoryList = [...this.categoryList]
-      this.temMenberLists = [...this.menberLists]
-      this.temcategoryList = [...this.categoryList]
       this.temTutorLists = [...this.tutorLists]
-      this.tem_groupLists = [...this.groupLists]
 
       // 组织的遍历
       this.groupLists.map(field => {
@@ -429,9 +425,8 @@ export default class CoursePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value ? true : false
+    this.form[type].show = this.form[type].value.length ? true : false
     this.models.show = false
-    this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
     if(this.rules[`check_${type}`]) {
       this.$refs.form.validateField(`check_${type}`)
@@ -444,11 +439,7 @@ export default class CoursePost extends Vue {
    * @detail   弹窗关闭按钮
    */
   cancel() {
-    const type = this.models.currentModalName
-    // this.form[type].value = ''
-    // this.form[type].tem = []
     this.models.show = false
-    this.ownerUidName = ''
   }
 
   /**
@@ -468,11 +459,14 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index) {
+  removeMultipleCheck(type, index, item) {
     const value = this.form[type].value.split(',').splice(index, 1)
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    if(type === 'group_id') {
+      this.updateGroupListsApi({groupId: item.groupId})
+    }
   }
 
   /**
@@ -481,12 +475,10 @@ export default class CoursePost extends Vue {
    * @detail  刷选组员数据
    * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(type, id) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(id)
-    })
-    this.temMenberLists = menberLists
+  filterMenber(type, item) {
+    Object.prototype.toString.call(item) === '[object String]'
+    ? this.getMenberListsApi({selectAll: 1})
+    : this.getMenberListsApi({groupId: item.groupId})
   }
 
   /**
@@ -495,12 +487,18 @@ export default class CoursePost extends Vue {
    * @detail   导师分类
    * @return   {[type]}   [description]
    */
-  tutorClassification(type, item) {
-    let list = [...this.tutorLists]
-    list = Object.prototype.toString.call(item) === '[object String]' 
-        ? list.filter(field => { return !field.group })
-        : list.filter(field => { return field.group && field.selfGroup.includes(item.groupId) })
-    this.temTutorLists = list
+  tutorClassification(item) {
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getTutorListApi({type: 2})
+          .then(() => {
+            this.temTutorLists = this.tutorLists
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            this.temTutorLists = this.menberLists
+          })
+    }
   }
 
   /**
@@ -512,7 +510,7 @@ export default class CoursePost extends Vue {
   selectCategory(item, key) {
     this.updateCategoryListsApi({categoryId: item.categoryId})
     const data = { show: false, tem: [], value: [] }
-    this[key].map((field) => {
+    this['categoryList'].map((field) => {
       if(field.active) {
         data.tem.push(field)
         data.value.push(field.categoryId)
@@ -567,36 +565,6 @@ export default class CoursePost extends Vue {
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   成员分类
-   * @return   {[type]}   [description]
-   */
-  memberClassification(type, groupId) {
-    const tem = []
-    const value = []
-    const data = {
-      tem: [],
-      value: []
-    }
-    let menberLists = [...this.menberLists]
-    menberLists.map(field => {
-      if(field.selfGroup.includes(groupId)) {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      }
-    })
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      })
-    }
-    data.value = data.value.join(',')
-    this.form[type] = data
-  }
-
-  /**
-   * @Author   小书包
    * @DateTime 2018-09-20
    * @detail   添加分类
    * @return   {[type]}   [description]
@@ -609,7 +577,6 @@ export default class CoursePost extends Vue {
               .then(() => {
                 this.categoryModal.loading = false
                 this.categoryModal.show = false
-                this.temcategoryList = [...this.categoryList]
               })
         })
         .catch(err => {

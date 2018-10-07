@@ -1,7 +1,7 @@
 <template>
   <section id="zike-backend">
     <page-aside v-if="!shouldFloatingBoxShown()" />
-    <main>
+    <main :class="{'offset-left': !shouldFloatingBoxShown()}">
       <page-header v-if="!shouldFloatingBoxShown()" />
       <transition name="fade">
         <router-view class="pages" />
@@ -47,7 +47,8 @@ export default class App extends Vue {
   // 白名单模式，下面路由不显示管理页面的侧边栏,和顶部的导航栏
   shouldFloatingBoxShown() {
     return [
-      '/login'
+      '/login',
+      '/help'
     ].includes(this.$route.path)
   }
 }

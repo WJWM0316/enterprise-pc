@@ -61,7 +61,7 @@
           <div class="content">
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
-                <div class="tutor-name">导师名称-组织架构</div>
+                <div class="tutor-name">{{props.scope.row.realname}}-{{props.scope.row.groupName}}</div>
             </div>
           </div>
         </div>

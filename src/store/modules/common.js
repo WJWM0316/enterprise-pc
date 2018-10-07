@@ -10,7 +10,8 @@ import {
   UPDATE_CATEGORY_LIST,
   GET_COMPANY_INFOS,
   UPDATE_GROUP_LISTS,
-  GET_GROUP_LISTS
+  GET_GROUP_LISTS,
+  SELECT_ALL_MENBER_LISTS
 } from '../mutation-types'
 
 import {
@@ -83,6 +84,9 @@ const mutations = {
       })
     })
     state.menberLists = data
+  },
+  [SELECT_ALL_MENBER_LISTS] (state, data) {
+    state.menberLists.map(field => {})
   },
   // 获取公司信息
   [GET_COMPANY_INFOS] (state, data) {

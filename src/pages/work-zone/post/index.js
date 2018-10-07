@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -22,7 +21,6 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'showMsg',
       'getGroupListsApi',
       'getMenberListsApi',
-      'postUploadConfigApi',
       'uploadApi',
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
@@ -35,7 +33,6 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'groupLists',
       'jobCircleMemberLists',
       'menberLists',
-      'uploadConfig',
       'jobCircleDetails',
       'jobCircleOrganizationLists',
       'jobCircleHitLists'
@@ -100,7 +97,8 @@ export default class WorkZonePost extends Vue {
 
   rules = {
     name: [
-      { required: true, message: '请输入工作圈名称', trigger: 'blur' }
+      { required: true, message: '请输入工作圈名称', trigger: 'blur' },
+      { min: 1, max: 25, message: '工作圈名称长度在1-25位数字', trigger: 'change' }
     ],
     check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
@@ -140,10 +138,6 @@ export default class WorkZonePost extends Vue {
   submitBtnClick = true
   // 默认提交按钮的文案
   submitBtnTxt = '提交'
-  restaurants = []
-  timeout =  null
-  temMenberLists = []
-  tem_groupLists = []
   // 导师名称
   ownerUidName = ''
 
@@ -229,11 +223,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    // 获取成员列表
     this.getMenberListsApi({name: this.ownerUidName})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
   }
 
   created() {
@@ -250,10 +240,10 @@ export default class WorkZonePost extends Vue {
   openModal(type) {
   	switch(type) {
   		case 'owner_uid':
-  			this.models.title = '选择工作圈圈主'
+  			this.models.title = '选择圈主'
   			break
   		case 'members':
-  			this.models.title = '选择工作圈成员'
+  			this.models.title = '选择成员'
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
@@ -270,7 +260,6 @@ export default class WorkZonePost extends Vue {
      // 获取成员列表
     this.getMenberListsApi()
       .then(() => {
-        this.temMenberLists = [...this.menberLists]
         this.models.show = true
       })
   }
@@ -284,12 +273,7 @@ export default class WorkZonePost extends Vue {
     if(this.$route.name !== 'workZonePost') return
     // 获取组列表
     this.getGroupListsApi()
-    // 获取成员列表
     this.getMenberListsApi()
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-        this.tem_groupLists = [...this.groupLists]
-      })
   }
   /**
    * @Author   小书包
@@ -312,28 +296,16 @@ export default class WorkZonePost extends Vue {
     )
     .then((res) => {
       const jobCircleDetails = {...this.jobCircleDetails}
-      this.tem_groupLists = [...this.groupLists]
-      this.form.name = jobCircleDetails.name
-      this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
-      this.form.sort = jobCircleDetails.sort
-      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.owner_uid.value = jobCircleDetails.ownerUid
-      this.form.cover_img_id.value = jobCircleDetails.coverImgId
-      this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
-      this.imageUpload.hasUploaded = true
-      this.imageUpload.btnTxt = '重新上传'
-      this.form.id = jobCircleDetails.id
-      this.form.check_cover_img_id = jobCircleDetails.coverImgId
-
       // 成员列表的遍历
       this.menberLists.map(field => {
+
         // 导师的筛选
         if(field.uid === jobCircleDetails.ownerUid) {
           this.form.owner_uid.tem = field
           this.form.owner_uid.show = true
           this.form.check_owner_uid = field.uid
         }
+
         // 工作圈成员
         if(this.jobCircleMemberLists.includes(field.uid)) {
           this.form.members.value += '' + field.uid
@@ -341,6 +313,7 @@ export default class WorkZonePost extends Vue {
           this.form.members.show = true
           this.form.check_members += '' + field.uid
         }
+
         // 不可见学员
         if(this.jobCircleHitLists.includes(field.uid)) {
           this.form.hits.value += '' + field.uid
@@ -359,6 +332,19 @@ export default class WorkZonePost extends Vue {
           this.form.check_organizations += '' + field.groupId
         }
       })
+
+      this.form.name = jobCircleDetails.name
+      this.form.content = jobCircleDetails.content
+      this.ContentEditor.content = jobCircleDetails.content
+      this.form.sort = jobCircleDetails.sort
+      this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
+      this.form.owner_uid.value = jobCircleDetails.ownerUid
+      this.form.cover_img_id.value = jobCircleDetails.coverImgId
+      this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
+      this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
+      this.form.id = jobCircleDetails.id
+      this.form.check_cover_img_id = jobCircleDetails.coverImgId
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')
@@ -386,8 +372,6 @@ export default class WorkZonePost extends Vue {
    */
   cancel() {
     const type = this.models.currentModalName
-    this.form[type].value = ''
-    this.form[type].tem = []
     this.models.show = false
     this.ownerUidName = ''
   }
@@ -419,15 +403,12 @@ export default class WorkZonePost extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
-   * @detail  刷选组员数据
+   * @detail  分类获取成员数据
    * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(item) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.groupId)
-    })
-    this.temMenberLists = menberLists
+  filterMenber(item) {
+    const params = Object.prototype.toString.call(item) === '[object String]' ? {} : {groupId: item.groupId}
+    this.getMenberListsApi(params)
   }
 
   /**
@@ -473,33 +454,6 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.organizations = data
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   成员分类
-   * @return   {[type]}   [description]
-   */
-  memberClassification(type, groupId) {
-    const tem = []
-    const value = []
-    const menberLists = [...this.menberLists]
-    menberLists.map(field => {
-      if(field.selfGroup.includes(groupId)) {
-        tem.push(field.realname)
-        value.push(field.uid)
-      }
-    })
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        tem.push(field.realname)
-        value.push(field.uid)
-      })
-    }
-    this.form[type] = {
-      value: value.join(','),
-      tem: tem
-    }
   }
 
   // 添加课程分类

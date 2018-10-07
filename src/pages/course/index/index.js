@@ -50,6 +50,10 @@ export default class CourseList extends Vue {
       filteredValue:
       [
         {
+          label: '全部',
+          value: 'status-3'
+        },
+        {
           label: '上线',
           value: 'status-1'
         },
@@ -64,7 +68,7 @@ export default class CourseList extends Vue {
       prop: 'category',
       label: '类 型',
       align: 'center',
-      showTips: 'yes',
+      showTips: 'no',
       width: '10%',
       filteredValue: [],
       filterPlacement: '类型的提示文案'
@@ -82,7 +86,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '10%',
-      filterPlacement: '操作的提示'
+      filterPlacement: '编辑相关详细内容'
     }
   ]
 
@@ -90,9 +94,6 @@ export default class CourseList extends Vue {
   form = {
     name: ''
   }
-
-  searchType = '1'
-
   init() {
     this.form = Object.assign(this.form, this.$route.query)
     this.getCourseList()
@@ -102,11 +103,12 @@ export default class CourseList extends Vue {
     this.getCategoryListsApi()
         .then(() => {
           this.categoryList.map(field => {
-            this.fields[2].filteredValue.push({label: '全部', value: 'categoryId-abc'},{
+            this.fields[2].filteredValue.push({
               label: field.categoryName,
-              value: `categoryId-${field.categoryId}`
+              value: `category_id-${field.categoryId}`
             })
           })
+          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
         })
   }
   /**
@@ -127,8 +129,8 @@ export default class CourseList extends Vue {
     if(this.form.status) {
       params.status = Number(this.form.status) === 3 ? '' : this.form.status
     }
-    if(this.form.categoryId) {
-      params.categoryId = this.form.categoryId === 'abc' ? '' : this.form.categoryId
+    if(this.form.category_id) {
+      params.category_id = this.form.category_id === 'abc' ? '' : this.form.category_id
     }
     this.getCourseListsApi(params)
   }

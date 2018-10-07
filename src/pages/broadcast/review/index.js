@@ -104,7 +104,7 @@ export default class BroadcastReview extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '管理直播内容'
+      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]
 

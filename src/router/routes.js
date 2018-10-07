@@ -225,18 +225,18 @@ export const routes = [
       }
     ]
   },
-  {
-    path: '/notice',
-    name: 'notice',
-    title: '通知',
-    component: () => import(/* webpackChunkName: "notice" */ '@/pages/notice/index.vue'),
-    meta: {
-      keepAlive: false,
-      useNav: true,
-      icon: 'icon-message',
-      module: 'notice'
-    }
-  },
+  // {
+  //   path: '/notice',
+  //   name: 'notice',
+  //   title: '通知',
+  //   component: () => import(/* webpackChunkName: "notice" */ '@/pages/notice/index.vue'),
+  //   meta: {
+  //     keepAlive: false,
+  //     useNav: true,
+  //     icon: 'icon-message',
+  //     module: 'notice'
+  //   }
+  // },
   {
     path: '/organization',
     name: 'organization',
@@ -270,7 +270,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'addGroup',
         name: 'addGroup',
         component: () => import( '@/pages/organization/groupPost/index.vue'),
@@ -278,7 +279,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'editGroup/:groupId',
         name: 'editGroup',
         component: () => import( '@/pages/organization/groupPost/index.vue'),
@@ -286,7 +288,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'addMember',
         name: 'addMember',
         component: () => import( '@/pages/organization/memberPost/index.vue'),
@@ -294,7 +297,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'editMember',
         name: 'editMember',
         component: () => import( '@/pages/organization/memberPost/index.vue'),
@@ -329,7 +333,8 @@ export const routes = [
           keepAlive: false,
           module: 'tutor'
         }
-      },{
+      },
+      {
         path: 'post',
         name: 'tutorPost',
         component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
@@ -340,31 +345,31 @@ export const routes = [
       }
     ]
   },
-  {
-    path: '/work-book',
-    name: 'work-book',
-    title: '职场书',
-    component: () => import(/* webpackChunkName: "work-book" */ '@/pages/work-book/index.vue'),
-    meta: {
-      keepAlive: false,
-      useNav: true,
-      icon: 'el-icon-remove',
-      module: 'work-book'
-    }
-  },
+  // {
+  //   path: '/work-book',
+  //   name: 'work-book',
+  //   title: '职场书',
+  //   component: () => import(/* webpackChunkName: "work-book" */ '@/pages/work-book/index.vue'),
+  //   meta: {
+  //     keepAlive: false,
+  //     useNav: true,
+  //     icon: 'el-icon-remove',
+  //     module: 'work-book'
+  //   }
+  // },
   // 数据统计
-  {
-    path: '/statistics',
-    name: 'statistics',
-    title: '统计',
-    component: () => import(/* webpackChunkName: "statistics" */ '@/pages/statistics/index.vue'),
-    meta: {
-      keepAlive: false,
-      useNav: true,
-      icon: 'icon-statistics',
-      module: 'statistics'
-    }
-  },
+  // {
+  //   path: '/statistics',
+  //   name: 'statistics',
+  //   title: '统计',
+  //   component: () => import(/* webpackChunkName: "statistics" */ '@/pages/statistics/index.vue'),
+  //   meta: {
+  //     keepAlive: false,
+  //     useNav: true,
+  //     icon: 'icon-statistics',
+  //     module: 'statistics'
+  //   }
+  // },
   // 设置路由
   {
     path: '/setting',
@@ -493,5 +498,16 @@ export const routes = [
       keepAlive: false,
       useNav: false
     }
+  },
+  // 帮助页面
+  {
+    path: '/help',
+    name: 'help',
+    title: '帮助页',
+    component: () => import(/* webpackChunkName: "help" */ '@/pages/help/index.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: false
+    },
   }
 ]

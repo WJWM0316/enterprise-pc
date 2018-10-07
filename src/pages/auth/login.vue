@@ -32,7 +32,7 @@ import Component from 'vue-class-component'
   watch: {
     'token': {
       handler() {
-        this.$router.push({name: 'dashboard'})
+        // this.$router.push({name: 'dashboard'})
       },
       immediate: true
     }
@@ -40,8 +40,8 @@ import Component from 'vue-class-component'
 })
 export default class pageLogin extends Vue {
 	form = {
-		email: '',
-		password: ''
+		email: '15876550627',
+		password: '123456'
 	}
 	rules = {
 		email: [
@@ -63,6 +63,9 @@ export default class pageLogin extends Vue {
   		this.loginApi(this.form)
       	.then(res => {
 	      	this.$message({message: '正在前往工作台~', type: 'success'})
+          setTimeout(() => {
+            this.$router.push({name: 'dashboard'})
+          }, 2000)
       	})
       	.catch(error => {
       		setTimeout(() => {
