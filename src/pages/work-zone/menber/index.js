@@ -61,7 +61,6 @@ export default class MenberList extends Vue {
     value: []
   }
 
-  temMenberLists = []
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -80,7 +79,7 @@ export default class MenberList extends Vue {
     }
     Promise.all(
       [
-        this.getGroupListsApi(),
+        this.getGroupListsApi({isHaveMember: 1}),
         this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params),
         this.getJobCircleDetailsApi(params),
@@ -89,7 +88,6 @@ export default class MenberList extends Vue {
       ]
     )
     .then((res) => {
-      this.temMenberLists = [...this.menberLists]
       const jobCircleDetails = this.jobCircleDetails
       this.form = {
         id: jobCircleDetails.id,
@@ -125,24 +123,18 @@ export default class MenberList extends Vue {
   handleSearch() {
     // 获取成员列表
     this.getMenberListsApi({name: this.searchName})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
    * @detail  刷选组员数据
+   * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(item) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.id)
-    })
-    this.temMenberLists = menberLists
+  filterMenber(item) {
+    Object.prototype.toString.call(item) === '[object String]'
+    ? this.getMenberListsApi({selectAll: 1})
+    : this.getMenberListsApi({groupId: item.groupId})
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
