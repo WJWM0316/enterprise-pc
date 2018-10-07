@@ -12,8 +12,9 @@
   }
   > main {
     position: relative;
-    margin-left: 200px;
-    overflow: hidden;
+  }
+  .offset-left {
+    margin-left: 200px
   }
 }
 

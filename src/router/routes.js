@@ -270,7 +270,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'addGroup',
         name: 'addGroup',
         component: () => import( '@/pages/organization/groupPost/index.vue'),
@@ -278,7 +279,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'editGroup/:groupId',
         name: 'editGroup',
         component: () => import( '@/pages/organization/groupPost/index.vue'),
@@ -286,7 +288,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'addMember',
         name: 'addMember',
         component: () => import( '@/pages/organization/memberPost/index.vue'),
@@ -294,7 +297,8 @@ export const routes = [
           keepAlive: false,
           module: 'organization'
         }
-      },{
+      },
+      {
         path: 'editMember',
         name: 'editMember',
         component: () => import( '@/pages/organization/memberPost/index.vue'),
@@ -329,7 +333,8 @@ export const routes = [
           keepAlive: false,
           module: 'tutor'
         }
-      },{
+      },
+      {
         path: 'post',
         name: 'tutorPost',
         component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
@@ -503,6 +508,6 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: false
-    }
+    },
   }
 ]
