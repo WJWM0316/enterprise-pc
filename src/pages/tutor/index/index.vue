@@ -31,30 +31,27 @@
           <el-button type="text" :disabled="props.scope.row.isDeleted === 1 ? true : false" @click="showDeleteHint(props.scope.row)">移除导师</el-button>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
-        <div v-else-if="props.scope.column.property === 'courseName'" class="flex-box">
+        <div v-else-if="props.scope.column.property === 'realname'" class="flex-box">
           <div class="img-box">
             <el-popover
               ref="popoverCover"
               placement="right"
               width="400">
-              <i class="u-image auto"><img :src="props.scope.row.img"></i>
+              <i class="u-image auto"><img :src="props.scope.row.avatar.smallUrl"></i>
             </el-popover>
             <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img :src="props.scope.row.img">
+              <i class="cover u-image auto radius" v-popover:popoverCover>
+                <img :src="props.scope.row.avatar.smallUrl">
               </i>
             </div>
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.courseName}} </div>
-                <div class="tutor-name">导师名称-组织架构</div>
+                <div class="limit-row-num-2"> {{ props.scope.row.realname}} </div>
+                <div class="tutor-name">{{ props.scope.row.title}}</div>
             </div>
           </div>
-        </div>
-        <div v-else-if="props.scope.column.property === 'online'">
-          {{ props.scope.row.online == 0 ? '下线' : '上线' }}
-        </div>
+        </div>        
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
@@ -211,6 +208,8 @@ export default CourseList
       border-radius: 50%;
       background: rgba(0,0,0,.1);
       margin-right: 16px;
+
+      
     }
     .text-inner-content{
       flex-grow: 1;
@@ -290,4 +289,11 @@ export default CourseList
     color:rgba(102,102,102,1);
     line-height:22px;
   }
+
+    .radius {
+      img {
+      border-radius: 50%;
+        
+      }
+    }
 </style>

@@ -175,7 +175,7 @@ export default class WorkZonePost extends Vue {
   userInfo = {}
 
   init() {
-    console.log(this.userInfos)
+    console.log('===',this.$route.name)
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
     }else {

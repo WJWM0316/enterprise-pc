@@ -17,7 +17,7 @@
       prop="name"
       class="limit-width"
       >
-        <el-input v-model="form.name" :maxlength="30" style="width: 380px;" />
+        <el-input v-model="form.name" :maxlength="10" style="width: 380px;" />
     </el-form-item>
     
     <!-- 导师头衔 -->
@@ -26,7 +26,7 @@
       prop="title"
       class="limit-width"
       >
-        <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
+        <el-input v-model="form.title" :maxlength="25" style="width: 380px;" />
     </el-form-item>
     
     <!-- 手机号 -->
@@ -44,7 +44,7 @@
       prop="password"
       class="limit-width"
       >
-        <el-input v-model="form.password" :maxlength="30" style="width: 380px;" />
+        <el-input v-model="form.password" :minlength="6" :maxlength="20" style="width: 380px;" />
     </el-form-item>
 
     <!-- 确认提交 -->
