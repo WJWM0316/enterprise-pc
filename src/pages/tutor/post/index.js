@@ -29,7 +29,7 @@ export default class WorkZonePost extends Vue {
     // 手机号
     mobile: '',
     // 设置密码
-    password: '',
+    password: '123456',
   }
 
   // 初始化裁剪对象
