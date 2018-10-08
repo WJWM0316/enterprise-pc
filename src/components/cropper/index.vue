@@ -105,7 +105,7 @@ export default class ComponentCropper extends Vue {
     this.flag.file = files[0]
 
     // 允许上传文件尺寸上限 10M
-    const ALLOW_MAX_SIZE = 1024 * 1024 * 20
+    const ALLOW_MAX_SIZE = 1024 * 1024 * 10
 
     // 允许文件格式 jpg\png
     const ALLOW_FILE_TYPE = [

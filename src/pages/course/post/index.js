@@ -146,7 +146,8 @@ export default class CoursePost extends Vue {
   rules = {
     title: [
       { required: true, message: '请输入课程名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '课程名称最多25个字', trigger: 'blur' }
     ],
     check_category_id: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
@@ -689,6 +690,10 @@ export default class CoursePost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }

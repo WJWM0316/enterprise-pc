@@ -143,7 +143,8 @@ export default class BroadcastPost extends Vue {
   rules = {
     liveName: [
       { required: true, message: '请输入直播名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '直播名称最多25个字', trigger: 'blur' }
     ],
     check_categoryList: [
       { required: true, message: '请选择直播分类', trigger: 'blur' }
@@ -682,6 +683,10 @@ export default class BroadcastPost extends Vue {
     this.form.coverImgId.value = ''
     this.form.coverImgId.tem = {}
     this.form.check_coverImgId = ''
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }
