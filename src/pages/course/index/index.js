@@ -85,7 +85,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '10%',
-      filterPlacement: '编辑：编辑相关详细内容 课节：进入课节管理页面'
+      filterPlacement: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
     }
   ]
 

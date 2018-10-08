@@ -297,11 +297,23 @@ export default class CoursePost extends Vue {
   handleSearch() {
     this.getMenberListsApi({name: this.ownerUidName})
         .then(() => {
-          // 清空搜索栏
           this.ownerUidName = ''
         })
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-08
+   * @detail   搜索导师
+   * @return   {[type]}   [description]
+   */
+  handleSearchTutor() {
+    this.getTutorListApi({name: this.ownerUidName})
+        .then(() => {
+          this.searchField = ''
+          this.temTutorLists = this.tutorLists
+        })
+  }
   created() {
     this.initPageByPost()
     this.initPageByUpdate()
