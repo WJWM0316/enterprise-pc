@@ -6,7 +6,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: '/tiger',
+  base: process.env.NODE_ENV === 'production' ? '/tiger' : '/',
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
