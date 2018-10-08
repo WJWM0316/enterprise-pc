@@ -35,7 +35,8 @@ export default class WorkZonePost extends Vue {
   // 验证规则
   rules = {
     title: [
-      { required: true, message: '请填写课节标题', trigger: 'blur' }
+      { required: true, message: '请填写课节标题', trigger: 'blur' },
+      { validator: this.checkBlankCharacter,  trigger: 'blur' }
     ]
   }
 
@@ -46,8 +47,8 @@ export default class WorkZonePost extends Vue {
     limit: 9,
     accept: '.png,.jpg',
     tips: 'JPG、PNG格式',
-    btnTxt: '上传头像',
-    hintTxt:'设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工额通过自由发布打卡内容来解锁下一节课。',
+    btnTxt: '选择图片',
+    hintTxt:'设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工通过自由发布打卡内容来解锁下一节课。',
     params: {
       token: getAccessToken(),
       attach_type: 'img',
@@ -114,6 +115,17 @@ export default class WorkZonePost extends Vue {
     }else if(type === 'delete'){
       this.imageUpload.list.splice(index,1)
     }
+  }
+
+  toLessonList(){
+    console.log(111)
+    this.$router.push(
+      { name: 'lessonList',
+        query: {
+          course_id: this.form.course_id
+        }
+      }
+    )
   }
 
   /**
@@ -303,6 +315,12 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
+    console.log(11111,file)
+    this.fileUpload.status = ''
+    this.fileUpload.progress = 0
+    this.fileUpload.progressText = ''
+
+
     this.fileUpload.infos = file
     this.fileUpload.show = true
     this.fileUpload.btnTxt = '重新上传'

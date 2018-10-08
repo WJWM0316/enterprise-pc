@@ -118,6 +118,7 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
+    console.log('11111======',this.course_id)
     let data = {
       like: {
         title:this.form.name
@@ -163,7 +164,7 @@ export default class CourseList extends Vue {
   }
 
   todoAction(type, item) {
-    console.log(item)
+    console.log(type,item)
     switch(type) {
       case 'edit':
         this.$router.push(
