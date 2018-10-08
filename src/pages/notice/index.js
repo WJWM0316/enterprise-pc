@@ -34,7 +34,7 @@ export default class pageNotice extends Vue {
     }
     if (this.dragEl != this) {
       this.dragEl.innerHTML = e.target.innerHTML
-      this.innerHTML = e.dataTransfer.getData('text/html')
+      this.dragEl.innerHTML = e.dataTransfer.getData('text/html')
     }
 	}
 

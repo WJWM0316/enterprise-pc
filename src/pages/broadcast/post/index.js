@@ -57,7 +57,12 @@ export default class BroadcastPost extends Vue {
     categoryList: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
     startTime: '',
     // 课程所属组织
@@ -65,21 +70,36 @@ export default class BroadcastPost extends Vue {
     groupList: {
       tem: [],
       value: [],
-      show: false
+      show: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
     // 直播封面的id
     check_coverImgId: '',
     coverImgId: {
       value: '',
       tem: '',
-      showError: false
+      showError: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
     // 直播成员
     check_uid: '',
     uid: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
     // 请填写直播介绍
     intro: '',
@@ -88,16 +108,25 @@ export default class BroadcastPost extends Vue {
     memberList: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
     // 不可见直播成员
     check_invisibleList: '',
     invisibleList: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        tem: [],
+        value: [],
+        show: false
+      }
     },
-    // 课程是否上线 1->上线 0->下线
     isOnline: 1,
     // 权重
     sort: ''
@@ -155,9 +184,7 @@ export default class BroadcastPost extends Vue {
   submitBtnTxt = '提交'
   temTutorLists = []
   // 导师名称
-  ownerUidName = ''
-  visible2 = false
-  input = ''
+  searchField = ''
   // 分类弹窗显示
   categoryModal = {
     show: false,
@@ -256,9 +283,23 @@ export default class BroadcastPost extends Vue {
    */
   handleSearch() {
     // 获取成员列表
-    this.getMenberListsApi({name: this.ownerUidName})
+    this.getMenberListsApi({name: this.searchField})
         .then(() => {
-          this.ownerUidName = ''
+          this.searchField = ''
+        })
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-08
+   * @detail   搜索导师
+   * @return   {[type]}   [description]
+   */
+  handleSearchTutor() {
+    this.getTutorListApi({name: this.searchField})
+        .then(() => {
+          this.searchField = ''
+          this.temTutorLists = this.tutorLists
         })
   }
 
@@ -346,6 +387,9 @@ export default class BroadcastPost extends Vue {
         this.form.categoryList.tem.push(field)
         this.form.categoryList.value.push(field.categoryId)
         this.form.categoryList.show = true
+        this.form.categoryList.noEdit.tem.push(field)
+        this.form.categoryList.noEdit.value.push(field.categoryId)
+        this.form.categoryList.noEdit.show = true
       })
 
       // 不可见学员
@@ -353,6 +397,9 @@ export default class BroadcastPost extends Vue {
         this.form.invisibleList.tem.push(field.realname)
         this.form.invisibleList.value.push(field.uid)
         this.form.invisibleList.show = true
+        this.form.invisibleList.noEdit.tem.push(field.realname)
+        this.form.invisibleList.noEdit.value.push(field.uid)
+        this.form.invisibleList.noEdit.show = true
       })
 
       // 必修学员
@@ -360,6 +407,9 @@ export default class BroadcastPost extends Vue {
         this.form.memberList.tem.push(field.realname)
         this.form.memberList.value.push(field.uid)
         this.form.memberList.show = true
+        this.form.memberList.noEdit.tem.push(field.realname)
+        this.form.memberList.noEdit.value.push(field.uid)
+        this.form.memberList.noEdit.show = true
       })
 
       // 组织的遍历
@@ -367,6 +417,9 @@ export default class BroadcastPost extends Vue {
         this.form.groupList.tem.push(field)
         this.form.groupList.value.push(field.groupId)
         this.form.groupList.show = true
+        this.form.groupList.noEdit.tem.push(field)
+        this.form.groupList.noEdit.value.push(field.groupId)
+        this.form.groupList.noEdit.show = true
       })
 
       // 导师的遍历
@@ -375,7 +428,9 @@ export default class BroadcastPost extends Vue {
           this.form.uid.value = field.uid
           this.form.uid.tem = field
           this.form.uid.show = true
-          this.form.check_uid = field.uid
+          this.form.uid.noEdit.value = field.uid
+          this.form.uid.noEdit.tem = field
+          this.form.uid.noEdit.show = true
         }
       })
 
@@ -400,6 +455,7 @@ export default class BroadcastPost extends Vue {
       this.form.check_memberList = this.form.memberList.value
       this.ContentEditor.content = info.intro
       this.temTutorLists = this.tutorLists
+      this.form.check_uid = this.form.uid.value
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -419,6 +475,10 @@ export default class BroadcastPost extends Vue {
     if(this.rules[`check_${type}`]) {
       this.$refs.form.validateField(`check_${type}`)
     }
+    // 已经确定编辑
+    this.form[type].noEdit.value = this.form[type].value
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.show = this.form[type].show
     console.log(this.form[type])
   }
 
@@ -428,10 +488,13 @@ export default class BroadcastPost extends Vue {
    * @detail   弹窗关闭按钮
    */
   cancel() {
-    // const type = this.models.currentModalName
-    // this.form[type].value = ''
-    // this.form[type].tem = []
+    const type = this.models.currentModalName
     this.models.show = false
+    // 没有点击确定按钮
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
+    console.log(this.form[type])
   }
 
   /**
@@ -502,7 +565,7 @@ export default class BroadcastPost extends Vue {
    */
   selectCategory(item, key) {
     this.updateCategoryListsApi({categoryId: item.categoryId, type: 'multiple'})
-    const data = { show: false, tem: [], value: [] }
+    const data = { show: true, tem: [], value: [] }
     this[key].map((field) => {
       if(field.active) {
         data.tem.push(field)
@@ -510,7 +573,7 @@ export default class BroadcastPost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.categoryList = data
+    this.form.categoryList = Object.assign(this.form.categoryList, data)
   }
 
   /**
@@ -521,7 +584,7 @@ export default class BroadcastPost extends Vue {
    */
   seleteGroup(item, key) {
     this.updateGroupListsApi({groupId: item.groupId})
-    const data = { show: false, tem: [], value: [] }
+    const data = { show: true, tem: [], value: [] }
     this[key].map((field) => {
       if(field.active) {
         data.tem.push(field)
@@ -529,7 +592,7 @@ export default class BroadcastPost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.groupList = data
+    this.form.groupList = Object.assign(this.form.groupList, data)
   }
 
   /**

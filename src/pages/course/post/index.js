@@ -57,31 +57,51 @@ export default class CoursePost extends Vue {
     // 课程分类
     check_category_id: '',
     category_id: {
-      value: '',
+      value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     startTime: '',
     // 课程所属组织
     check_group_id: '',
     group_id: {
       tem: [],
-      value: '',
-      show: false
+      value: [],
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     // 课程封面的id
     check_icon: '',
     icon: {
-      value: '',
+      value: [],
       tem: '',
-      showError: false
+      showError: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     // 课程导师
     check_master_uid: '',
     master_uid: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     // 课程介绍
     intro: '',
@@ -90,14 +110,24 @@ export default class CoursePost extends Vue {
     members: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     // 不可见课程成员
     check_hits: '',
     hits: {
       value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false
+      }
     },
     // 课程是否上线 1->上线 0->下线
     status: 1,
@@ -352,6 +382,65 @@ export default class CoursePost extends Vue {
     )
     .then((res) => {
       const courseDetail = this.courseDetail
+
+      // 组织的遍历
+      this.groupLists.map(field => {
+        if(this.courseOrganizations.includes(field.groupId)) {
+          this.form.group_id.value.push(field.groupId)
+          this.form.group_id.tem.push(field)
+          this.form.group_id.show = true
+          this.form.group_id.noEdit.value.push(field.groupId)
+          this.form.group_id.noEdit.tem.push(field)
+          this.form.group_id.noEdit.show = true
+        }
+      })
+
+      // 导师的遍历
+      this.tutorLists.map(field => {
+        if(field.uid === courseDetail.masterUid) {
+          this.form.master_uid.value = field.uid
+          this.form.master_uid.tem = field
+          this.form.master_uid.show = true
+          this.form.master_uid.noEdit.value = field.uid
+          this.form.master_uid.noEdit.tem = field
+          this.form.master_uid.noEdit.show = true
+        }
+      })
+
+      // 分类的遍历
+      this.categoryList.map(field => {
+        if(field.categoryId === this.courseCategory.id) {
+          this.form.category_id.value = field.categoryId
+          this.form.category_id.tem.push(field)
+          this.form.category_id.show = true
+          this.form.check_category_id = field.categoryId
+          this.form.category_id.noEdit.value = field.categoryId
+          this.form.category_id.noEdit.tem.push(field)
+          this.form.category_id.noEdit.show = true
+        }
+      })
+
+      // 学员的遍历
+      this.menberLists.map(field => {
+        // 必修学员
+        if(this.coursePeaple.includes(field.uid)) {
+          this.form.members.value.push(field.uid)
+          this.form.members.tem.push(field.realname)
+          this.form.members.show = true
+          this.form.members.noEdit.value.push(field.uid)
+          this.form.members.noEdit.tem.push(field.realname)
+          this.form.members.noEdit.show = true
+        }
+        // 不可见学员
+        if(this.coursePeapleHits.includes(field.uid)) {
+          this.form.hits.value.push(field.uid)
+          this.form.hits.tem.push(field.realname)
+          this.form.hits.show = true
+          this.form.hits.noEdit.value.push(field.uid)
+          this.form.hits.noEdit.tem.push(field.realname)
+          this.form.hits.noEdit.show = true
+        }
+      })
       this.form.id = courseDetail.id
       this.form.title = courseDetail.title
       this.form.intro = courseDetail.intro
@@ -364,54 +453,16 @@ export default class CoursePost extends Vue {
       this.imageUpload.btnTxt = '重新上传'
       this.ContentEditor.content = courseDetail.intro
       this.temTutorLists = [...this.tutorLists]
-
-      // 组织的遍历
-      this.groupLists.map(field => {
-        if(this.courseOrganizations.includes(field.groupId)) {
-          this.form.group_id.value += '' + field.groupId
-          this.form.group_id.tem.push(field)
-          this.form.group_id.show = true
-          this.form.check_group_id += '' + field.groupId
-        }
-      })
-
-      // 导师的遍历
-      this.tutorLists.map(field => {
-        if(field.uid === courseDetail.masterUid) {
-          this.form.master_uid.value = field.uid
-          this.form.master_uid.tem = field
-          this.form.master_uid.show = true
-          this.form.check_master_uid = field.uid
-        }
-      })
-
-      // 分类的遍历
-      this.categoryList.map(field => {
-        if(field.categoryId === this.courseCategory.id) {/*   */
-          this.form.category_id.value = field.categoryId
-          this.form.category_id.tem.push(field)
-          this.form.category_id.show = true
-          this.form.check_category_id = field.categoryId
-        }
-      })
-
-      // 学员的遍历
-      this.menberLists.map(field => {
-        if(this.coursePeaple.includes(field.uid)) {
-          this.form.members.value.push(field.uid)
-          this.form.members.tem.push(field.realname)
-          this.form.members.show = true
-          this.form.check_members +=  field.uid
-        }
-        if(this.coursePeapleHits.includes(field.uid)) {
-          this.form.hits.value.push(field.uid)
-          this.form.hits.tem.push(field.realname)
-          this.form.hits.show = true
-          this.form.check_hits += '' + field.uid
-        }
-      })
       this.form.members.value = this.form.members.value.join(',')
+      this.form.members.noEdit.value = this.form.members.noEdit.value.join(',')
       this.form.hits.value = this.form.hits.value.join(',')
+      this.form.hits.noEdit.value = this.form.hits.noEdit.value.join(',')
+      this.form.check_members = this.form.members.value
+      this.form.check_hits = this.form.hits.value
+      this.form.check_master_uid = this.form.master_uid.value
+      this.form.check_group_id = this.form.group_id.value
+      this.form.group_id.value = this.form.group_id.value.join(',')
+      this.form.group_id.noEdit.value = this.form.group_id.noEdit.value.join(',')
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -425,12 +476,16 @@ export default class CoursePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value.length ? true : false
+    this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.models.show = false
     this.form[`check_${type}`] = this.form[type].value
     if(this.rules[`check_${type}`]) {
       this.$refs.form.validateField(`check_${type}`)
     }
+    // 已经确定编辑
+    this.form[type].noEdit.value = this.form[type].value
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.show = this.form[type].show
   }
 
   /**
@@ -439,7 +494,12 @@ export default class CoursePost extends Vue {
    * @detail   弹窗关闭按钮
    */
   cancel() {
+    const type = this.models.currentModalName
     this.models.show = false
+    // 没有点击确定按钮
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
   }
 
   /**
@@ -509,7 +569,7 @@ export default class CoursePost extends Vue {
    */
   selectCategory(item, key) {
     this.updateCategoryListsApi({categoryId: item.categoryId})
-    const data = { show: false, tem: [], value: [] }
+    const data = { show: true, tem: [], value: [] }
     this['categoryList'].map((field) => {
       if(field.active) {
         data.tem.push(field)
@@ -517,7 +577,7 @@ export default class CoursePost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.category_id = data
+    this.form.category_id = Object.assign(this.form.category_id, data)
   }
 
   /**
@@ -528,7 +588,7 @@ export default class CoursePost extends Vue {
    */
   seleteGroup(item, key) {
     this.updateGroupListsApi({groupId: item.groupId})
-    const data = { show: false, tem: [], value: [] }
+    const data = { show: true, tem: [], value: [] }
     this[key].map((field) => {
       if(field.active) {
         data.tem.push(field)
@@ -536,7 +596,7 @@ export default class CoursePost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.group_id = data
+    this.form.group_id = Object.assign(this.form.group_id, data)
   }
 
   /**
