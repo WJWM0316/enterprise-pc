@@ -414,18 +414,6 @@ export default class CoursePost extends Vue {
         }
       })
 
-      // 导师的遍历
-      this.tutorLists.map(field => {
-        if(field.uid === courseDetail.masterUid) {
-          this.form.master_uid.value = field.uid
-          this.form.master_uid.tem = field
-          this.form.master_uid.show = true
-          this.form.master_uid.noEdit.value = field.uid
-          this.form.master_uid.noEdit.tem = field
-          this.form.master_uid.noEdit.show = true
-        }
-      })
-
       // 分类的遍历
       this.categoryList.map(field => {
         if(field.categoryId === this.courseCategory.id) {
@@ -482,6 +470,13 @@ export default class CoursePost extends Vue {
       this.form.check_group_id = this.form.group_id.value
       this.form.group_id.value = this.form.group_id.value.join(',')
       this.form.group_id.noEdit.value = this.form.group_id.noEdit.value.join(',')
+      this.form.master_uid.value = courseDetail.masterUid
+      this.form.master_uid.tem = { realname: courseDetail.realname }
+      this.form.master_uid.show = true
+      this.form.master_uid.noEdit.value = courseDetail.masterUid
+      this.form.master_uid.noEdit.tem = { realname: courseDetail.realname }
+      this.form.master_uid.noEdit.show = true
+      this.form.check_master_uid = courseDetail.masterUid
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
