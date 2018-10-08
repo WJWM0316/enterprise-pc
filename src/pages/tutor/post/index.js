@@ -46,11 +46,23 @@ export default class WorkZonePost extends Vue {
         { required: true, message: '请输入手机号',trigger: 'blur' },
         { type: 'number', message: '手机号必须为数字'}
     ],
-    password: [
+    password: /*[
       { required: true, message: '请输入密码', trigger: 'blur'},
       { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
+    ]*/
 
-    ]
+    [{
+        required: true,
+        message: '请输入密码',
+        trigger: 'blur'
+    }, {
+        min: 6,
+        max: 25,
+        message: '长度在 6 到 25 个字符'
+    }, {
+        pattern: /^(\w){6,20}$/,
+        message: '只能输入6-20个字母、数字、下划线'
+    }]
   }
 
   // 确认信息弹窗

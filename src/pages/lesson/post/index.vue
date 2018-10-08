@@ -2,8 +2,8 @@
 <div id="lesson-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'course' }">课程管理</el-breadcrumb-item>
-    <el-breadcrumb-item :to="{ name: 'lessonList' }">课节管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'lessonPost' ? '新建课节' : '更新课节'}}</el-breadcrumb-item>
+    <el-breadcrumb-item :to="`/lesson/index?course_id=${form.course_id}`">课节管理</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'lessonAdd' ? '新建课节' : '更新课节'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"
@@ -18,7 +18,7 @@
         prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.title" :maxlength="30" style="width: 380px;" />
+          <el-input v-model="form.title" :maxlength="25" style="width: 380px;" />
       </el-form-item>
       <!-- 请填写课节名 end-->
       

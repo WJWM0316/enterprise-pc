@@ -489,7 +489,6 @@ export default class BroadcastPost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
-    console.log(this.form[type])
   }
 
   /**
@@ -504,7 +503,6 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    console.log(this.form[type])
   }
 
   /**
@@ -514,6 +512,9 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    if(type === 'categoryList') {
+      this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId, type: 'multiple'})
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -620,15 +621,14 @@ export default class BroadcastPost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    const menberLists = [...this.menberLists]
     const value = []
-    menberLists.map(field => {
+    this.menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
-
     this.form[type].value = value.join(',')
+    console.log(type)
   }
 
   /**

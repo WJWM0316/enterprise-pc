@@ -38,7 +38,7 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'punchCardStatus',
-      label: '是否上线',
+      label: '状态',
       align: 'center',
       showTips: 'yes',
       width: '15%',

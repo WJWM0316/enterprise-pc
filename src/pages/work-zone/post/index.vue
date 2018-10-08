@@ -19,7 +19,7 @@
         prop="name"
         class="limit-width"
         >
-          <el-input v-model="form.name" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
+          <el-input v-model="form.name" :maxlength="25" style="width: 380px;" placeholder="最多25个字" />
       </el-form-item>
       
       <!-- 选择圈主 -->

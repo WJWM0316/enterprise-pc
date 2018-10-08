@@ -8,6 +8,7 @@ import {
   GET_CATEGORY_LIST,
   GET_MENBER_LISTS,
   UPDATE_CATEGORY_LIST,
+  UPDATE_CATEGORY_LIST_BY_ID,
   GET_COMPANY_INFOS,
   UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
@@ -72,6 +73,12 @@ const mutations = {
   },
   // 更新分类列表
   [UPDATE_CATEGORY_LIST] (state, params) {
+    state.categoryList.map(field => {
+      field.active = params.categoryId === field.categoryId ? !field.active : false
+    })
+  },
+   // 更新分类列表
+  [UPDATE_CATEGORY_LIST_BY_ID] (state, params) {
     state.categoryList.map(field => {
       field.active = params.categoryId === field.categoryId ? !field.active : false
     })
