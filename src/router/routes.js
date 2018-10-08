@@ -225,18 +225,18 @@ export const routes = [
       }
     ]
   },
-  // {
-  //   path: '/notice',
-  //   name: 'notice',
-  //   title: '通知',
-  //   component: () => import(/* webpackChunkName: "notice" */ '@/pages/notice/index.vue'),
-  //   meta: {
-  //     keepAlive: false,
-  //     useNav: true,
-  //     icon: 'icon-message',
-  //     module: 'notice'
-  //   }
-  // },
+  {
+    path: '/notice',
+    name: 'notice',
+    title: '通知',
+    component: () => import(/* webpackChunkName: "notice" */ '@/pages/notice/index.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: true,
+      icon: 'icon-message',
+      module: 'notice'
+    }
+  },
   {
     path: '/organization',
     name: 'organization',

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getListCourse } from '@/store/api/course.js'
 
 @Component({
   name: 'course-list',
