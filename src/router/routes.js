@@ -509,5 +509,15 @@ export const routes = [
       keepAlive: false,
       useNav: false
     },
+  },
+  {
+    path: '*',
+    redirect: {
+      name: 'dashboard'
+    },
+    meta: {
+      keepAlive: false,
+      useNav: false
+    }
   }
 ]

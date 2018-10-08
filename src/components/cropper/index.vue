@@ -367,7 +367,7 @@ export default class ComponentCropper extends Vue {
     height: 96px;
     overflow: hidden;
     background-color: white;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
   }
   #cropper-btn{
     width: 100%;

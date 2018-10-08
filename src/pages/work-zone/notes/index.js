@@ -186,7 +186,7 @@ export default class NoteList extends Vue {
         this.$router.push({name: 'commentList', params: {id: item.id}})
         break
       case 'delete':
-        this.$confirm('此操作将永久删除该帖子, 是否继续?', '提示', {
+        this.$confirm('删除后前台不可见, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

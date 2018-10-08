@@ -19,7 +19,7 @@
         prop="liveName"
         class="limit-width"
         >
-          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" />
+          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
       </el-form-item>
       
       <!-- 直播分类 -->
@@ -301,8 +301,8 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearch"
-                v-model="ownerUidName"
+                @search="handleSearchTutor"
+                v-model="searchField"
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
@@ -352,7 +352,7 @@
               <search-bar
                 width="464px"
                 @search="handleSearch"
-                v-model="ownerUidName"
+                v-model="searchField"
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
@@ -383,7 +383,7 @@
               <search-bar
                 width="464px"
                 @search="handleSearch"
-                v-model="ownerUidName"
+                v-model="searchField"
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">

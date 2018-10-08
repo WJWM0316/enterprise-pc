@@ -19,7 +19,7 @@
         prop="name"
         class="limit-width"
         >
-          <el-input v-model="form.name" :maxlength="25" style="width: 380px;" />
+          <el-input v-model="form.name" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
       </el-form-item>
       
       <!-- 选择圈主 -->
@@ -290,13 +290,6 @@
               :key="groupIndex">
                 {{groupItem.groupName}}
             </el-button>
-            <!-- <el-checkbox-group v-model="form.organizations.tem">
-              <el-checkbox
-                :label="groupItem.groupName"
-                v-for="(groupItem, groupIndex) in groupLists"
-                :key="groupIndex"
-                @change="seleteGroup('organizations', groupItem)" />
-            </el-checkbox-group> -->
             <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
           </div>
           <!-- 组织-end -->

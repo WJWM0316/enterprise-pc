@@ -19,7 +19,7 @@
         prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.title" :maxlength="25" style="width: 380px;" />
+          <el-input v-model="form.title" :value="form.title" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
       </el-form-item>
       
       <!-- 课程分类 -->
@@ -286,7 +286,7 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearch"
+                @search="handleSearchTutor"
                 v-model="ownerUidName"
                 placeholder="请输入导师名称" />
             </div>

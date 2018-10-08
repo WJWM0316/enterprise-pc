@@ -49,37 +49,62 @@ export default class WorkZonePost extends Vue {
     owner_uid: {
       value: '',
       tem: {},
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false,
+      }
     },
     // 课程所属组织
     check_organizations: '',
     organizations: {
       tem: [],
-      value: '',
-      show: false
+      value: [],
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false,
+      }
     },
     // 工作圈封面的id
     check_cover_img_id: '',
     cover_img_id: {
       value: '',
       tem: '',
-      showError: false
+      showError: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false,
+      }
     },
     // 工作圈成员
     check_members: '',
     members: {
-      value: '',
+      value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false,
+      }
     },
     // 请填写工作圈介绍
     content: '',
     // 不可见工作圈成员
     check_hits: '',
     hits: {
-      value: '',
+      value: [],
       tem: [],
-      show: false
+      show: false,
+      noEdit: {
+        value: [],
+        tem: [],
+        show: false,
+      }
     },
     // 课程是否上线 1->上线 0->下线
     status: 1,
@@ -98,7 +123,7 @@ export default class WorkZonePost extends Vue {
   rules = {
     name: [
       { required: true, message: '请输入工作圈名称', trigger: 'blur' },
-      { min: 1, max: 25, message: '工作圈名称长度在1-25位数字', trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' }
     ],
     check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
@@ -141,6 +166,15 @@ export default class WorkZonePost extends Vue {
   // 导师名称
   ownerUidName = ''
 
+  // 不能输入空白符
+  validateBlankCharacter(rule, value, callback) {
+    if(!value){
+      callback(new Error('工作圈名称不能输入空白符'))
+    } else {
+      callback()
+    }
+    this.form.name = value.replace(/\s*/g, '')
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17
@@ -296,6 +330,7 @@ export default class WorkZonePost extends Vue {
     )
     .then((res) => {
       const jobCircleDetails = {...this.jobCircleDetails}
+
       // 成员列表的遍历
       this.menberLists.map(field => {
 
@@ -308,17 +343,22 @@ export default class WorkZonePost extends Vue {
 
         // 工作圈成员
         if(this.jobCircleMemberLists.includes(field.uid)) {
-          this.form.members.value += '' + field.uid
+          this.form.members.value.push(field.uid)
           this.form.members.tem.push(field.realname)
           this.form.members.show = true
-          this.form.check_members += '' + field.uid
+          this.form.members.noEdit.value.push(field.uid)
+          this.form.members.noEdit.tem.push(field.realname)
+          this.form.members.noEdit.show = true
         }
 
         // 不可见学员
         if(this.jobCircleHitLists.includes(field.uid)) {
-          this.form.hits.value += '' + field.uid
+          this.form.hits.value.push(field.uid)
           this.form.hits.tem.push(field.realname)
           this.form.hits.show = true
+          this.form.hits.noEdit.value.push(field.uid)
+          this.form.hits.noEdit.tem.push(field.realname)
+          this.form.hits.noEdit.show = true
         }
       })
 
@@ -326,10 +366,12 @@ export default class WorkZonePost extends Vue {
       this.groupLists.map(field => {
         // 工作圈组织
         if(this.jobCircleOrganizationLists.includes(field.groupId)) {
-          this.form.organizations.value += '' + field.groupId
+          this.form.organizations.value.push(field.groupId)
           this.form.organizations.tem.push(field.groupName)
           this.form.organizations.show = true
-          this.form.check_organizations += '' + field.groupId
+          this.form.organizations.noEdit.value.push(field.groupId)
+          this.form.organizations.noEdit.tem.push(field.groupName)
+          this.form.organizations.noEdit.show = true
         }
       })
 
@@ -345,6 +387,14 @@ export default class WorkZonePost extends Vue {
       this.imageUpload.btnTxt = '重新上传'
       this.form.id = jobCircleDetails.id
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
+      this.form.members.value = this.form.members.value.join(',')
+      this.form.members.noEdit.value = this.form.members.noEdit.value.join(',')
+      this.form.check_members = this.form.members.value
+      this.form.hits.value = this.form.hits.value.join(',')
+      this.form.hits.noEdit.value = this.form.hits.noEdit.value.join(',')
+      this.form.organizations.value = this.form.organizations.value.join(',')
+      this.form.organizations.noEdit.value = this.form.organizations.noEdit.value.join(',')
+      this.form.check_organizations = this.form.organizations.value
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')
@@ -363,6 +413,10 @@ export default class WorkZonePost extends Vue {
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
     this.$refs.form.validateField(`check_${type}`)
+    // 已经确定编辑
+    this.form[type].noEdit.value = this.form[type].value
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.show = this.form[type].show
   }
 
   /**
@@ -373,7 +427,10 @@ export default class WorkZonePost extends Vue {
   cancel() {
     const type = this.models.currentModalName
     this.models.show = false
-    this.ownerUidName = ''
+    // 没有点击确定按钮
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
   }
 
   /**
@@ -445,15 +502,15 @@ export default class WorkZonePost extends Vue {
    */
   seleteGroup(item, key) {
     this.updateGroupListsApi({groupId: item.groupId})
-    const data = { show: false, tem: [], value: [] }
-    this[key].map((field) => {
+    const data = { show: true, tem: [], value: [] }
+    this['groupLists'].map(field => {
       if(field.active) {
         data.tem.push(field.groupName)
         data.value.push(field.groupId)
       }
     })
     data.value = data.value.join(',')
-    this.form.organizations = data
+    this.form.organizations = Object.assign(this.form.organizations, data)
   }
 
   // 添加课程分类

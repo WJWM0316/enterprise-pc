@@ -4,7 +4,7 @@ const resolve  = dir => { return path.join(__dirname, dir) }
 
 module.exports = {
   lintOnSave: true,
-  baseUrl: process.env.NODE_ENV === 'production' ? '/tiger/' : '/',
+  baseUrl: process.env.NODE_ENV === 'production' ? '/tiger' : '/',
   configureWebpack: {
   	entry: {
 	    vendors: [
@@ -65,3 +65,5 @@ module.exports = {
     }
   }
 }
+
+console.log(process.env.NODE_ENV)
