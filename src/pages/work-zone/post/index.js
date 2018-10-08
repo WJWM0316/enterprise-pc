@@ -441,6 +441,13 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    switch(type) {
+      case 'owner_uid':
+        this.form.check_owner_uid = ''
+        break
+      default:
+        break
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -451,11 +458,21 @@ export default class WorkZonePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index) {
+  removeMultipleCheck(type, index, item) {
     const value = this.form[type].value.split(',').splice(index, 1)
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    // switch(type) {
+    //   case 'organizations':
+    //     this.updateGroupListsApi({groupId: item.groupId})
+    //     if(this.form.organizations.tem <= 0) {
+    //       this.form.check_organizations = ''
+    //     }
+    //     break
+    //   default:
+    //     break
+    // }
   }
 
   /**

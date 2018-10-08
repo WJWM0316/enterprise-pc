@@ -40,7 +40,7 @@ export const GET_TUTOR_OUTER_LIST = 'tutor/GET_TUTOR_OUTER_LIST'
 // 直播模块
 export const GET_CATEGORY_LIST = 'broadcast/GET_CATEGORY_LIST'
 export const UPDATE_CATEGORY_LIST = 'broadcast/UPDATE_CATEGORY_LIST'
-export const UPDATE_CATEGORY_LIST_BY_ID = 'broadcast/UPDATE_CATEGORY_LIST_BY_ID'
+export const UPDATE_CATEGORY_LIST_NO_CHECKED = 'broadcast/UPDATE_CATEGORY_LIST_NO_CHECKED'
 export const GET_LIVE_REVIEW_LIST = 'broadcast/GET_LIVE_REVIEW_LIST'
 export const GET_LIVE_DETAILS = 'broadcast/GET_LIVE_DETAILS'
 export const GET_LIVE_MENBER_LIST = 'broadcast/GET_LIVE_MENBER_LIST'

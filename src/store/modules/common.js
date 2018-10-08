@@ -8,7 +8,7 @@ import {
   GET_CATEGORY_LIST,
   GET_MENBER_LISTS,
   UPDATE_CATEGORY_LIST,
-  UPDATE_CATEGORY_LIST_BY_ID,
+  UPDATE_CATEGORY_LIST_NO_CHECKED,
   GET_COMPANY_INFOS,
   UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
@@ -74,14 +74,12 @@ const mutations = {
   // 更新分类列表
   [UPDATE_CATEGORY_LIST] (state, params) {
     state.categoryList.map(field => {
-      field.active = params.categoryId === field.categoryId ? !field.active : false
+      field.active = params.categoryId === field.categoryId ? true : false
     })
   },
    // 更新分类列表
-  [UPDATE_CATEGORY_LIST_BY_ID] (state, params) {
-    state.categoryList.map(field => {
-      field.active = params.categoryId === field.categoryId ? !field.active : false
-    })
+  [UPDATE_CATEGORY_LIST_NO_CHECKED] (state) {
+    state.categoryList.map(field => field.active = false)
   },
   [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
@@ -201,6 +199,15 @@ const actions = {
    */
   updateCategoryListsApi (store, params) {
     store.commit(UPDATE_CATEGORY_LIST, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
+   * @detail   都不选
+   * @return   {[type]}          [description]
+   */
+  noCheckedCategoryListsApi (store, params) {
+    store.commit(UPDATE_CATEGORY_LIST_NO_CHECKED)
   },
   /**
    * @Author   小书包

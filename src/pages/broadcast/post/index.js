@@ -25,6 +25,7 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCategoryListsApi',
       'getTutorListApi',
       'updateGroupListsApi',
+      'noCheckedCategoryListsApi',
       'updateCategoryListsApi',
       'postLiveApi',
       'putLiveApi',
@@ -328,6 +329,9 @@ export default class BroadcastPost extends Vue {
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
+        this.form[type].tem.length
+          ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+          : this.noCheckedCategoryListsApi()
   			break
   		case 'uid':
   			this.models.title = '选择导师'
@@ -513,8 +517,13 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
-    if(type === 'categoryList') {
-      this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId, type: 'multiple'})
+    switch(type) {
+      case 'categoryList':
+        this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+        this.form.check_categoryList = ''
+        break
+      default:
+        break
     }
     this.form[type].value = ''
     this.form[type].tem = []
@@ -531,8 +540,15 @@ export default class BroadcastPost extends Vue {
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
-    if(type === 'groupList') {
-      this.updateGroupListsApi({groupId: item.groupId})
+    switch(type) {
+      case 'groupList':
+        this.updateGroupListsApi({groupId: item.groupId})
+        if(this.form.groupList.tem <= 0) {
+          this.form.check_groupList = ''
+        }
+        break
+      default:
+        break
     }
   }
 
