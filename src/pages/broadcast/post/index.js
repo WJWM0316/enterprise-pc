@@ -142,7 +142,8 @@ export default class BroadcastPost extends Vue {
   
   rules = {
     liveName: [
-      { required: true, message: '请输入直播名称', trigger: 'blur' }
+      { required: true, message: '请输入直播名称', trigger: 'blur' },
+      { validator: this.validateBlankCharacter, trigger: 'change' }
     ],
     check_categoryList: [
       { required: true, message: '请选择直播分类', trigger: 'blur' }
@@ -192,6 +193,15 @@ export default class BroadcastPost extends Vue {
     loading: false
   }
 
+  // 不能输入空白符
+  validateBlankCharacter(rule, value, callback) {
+    if(!value){
+      callback(new Error('直播名称不能输入空白符'))
+    } else {
+      callback()
+    }
+    this.form.liveName = value.replace(/\s*/g, '')
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17

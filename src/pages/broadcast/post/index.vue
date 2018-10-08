@@ -19,7 +19,7 @@
         prop="liveName"
         class="limit-width"
         >
-          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" />
+          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
       </el-form-item>
       
       <!-- 直播分类 -->

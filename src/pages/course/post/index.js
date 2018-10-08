@@ -146,9 +146,7 @@ export default class CoursePost extends Vue {
   rules = {
     title: [
       { required: true, message: '请输入课程名称', trigger: 'blur' },
-      { validator: this.checkBlankCharacter,  trigger: 'blur' }
-      // { pattern: /^[\s]*$/, message: '不能输入空白符', trigger: 'change' },
-      // { pattern:/^[a-zA-Z]w{1,4}$/, message: '以字母开头，长度在2-5之间， 只能包含字符、数字和下划线', trigger: 'change'}
+      { validator: this.validateBlankCharacter, trigger: 'change' }
     ],
     check_category_id: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
@@ -206,6 +204,15 @@ export default class CoursePost extends Vue {
     loading: false
   }
 
+  // 不能输入空白符
+  validateBlankCharacter(rule, value, callback) {
+    if(!value){
+      callback(new Error('课程名称不能输入空白符'))
+    } else {
+      callback()
+    }
+    this.form.title = value.replace(/\s*/g, '')
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17

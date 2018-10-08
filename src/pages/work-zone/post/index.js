@@ -123,7 +123,7 @@ export default class WorkZonePost extends Vue {
   rules = {
     name: [
       { required: true, message: '请输入工作圈名称', trigger: 'blur' },
-      { min: 1, max: 25, message: '工作圈名称长度在1-25位数字', trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' }
     ],
     check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
@@ -166,6 +166,15 @@ export default class WorkZonePost extends Vue {
   // 导师名称
   ownerUidName = ''
 
+  // 不能输入空白符
+  validateBlankCharacter(rule, value, callback) {
+    if(!value){
+      callback(new Error('工作圈名称不能输入空白符'))
+    } else {
+      callback()
+    }
+    this.form.name = value.replace(/\s*/g, '')
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17
