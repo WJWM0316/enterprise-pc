@@ -6,11 +6,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-<<<<<<< HEAD
-  base: '/test',
-=======
   base: process.env.NODE_ENV === 'production' ? '/tiger' : '/',
->>>>>>> master
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
