@@ -114,7 +114,6 @@ export default class pageOrganization extends Vue {
     todoAction(type) {
       console.log(type)
 
-      type = 'edit'
       switch(type) {
         case 'set':
           this.$router.push({

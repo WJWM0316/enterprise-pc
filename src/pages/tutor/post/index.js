@@ -29,7 +29,7 @@ export default class WorkZonePost extends Vue {
     // 手机号
     mobile: '',
     // 设置密码
-    password: '',
+    password: '123456',
   }
 
   // 初始化裁剪对象
@@ -43,10 +43,13 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请输入导师头衔', trigger: 'blur' }
     ],
     mobile: [
-      { required: true, message: '请输入手机号', trigger: 'blur' }
+        { required: true, message: '请输入手机号',trigger: 'blur' },
+        { type: 'number', message: '手机号必须为数字'}
     ],
     password: [
-      { required: true, message: '请输入密码', trigger: 'blur'}
+      { required: true, message: '请输入密码', trigger: 'blur'},
+      { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
+
     ]
   }
 

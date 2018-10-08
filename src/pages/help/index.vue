@@ -1,32 +1,36 @@
 <template>
-  <div id="notice">
-		<my-cropper></my-cropper>
+  <div id="help">
+    <page-header />
+    <section class="help-section">
+			<page-asider />
+			<page-content />
+    </section>
   </div>
 </template>
 <script>
-import pageNotice from './index'
-export default pageNotice
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import PageHeader from './pageHeader/index.vue'
+import PageContent from './content/index.vue'
+import PageAsider from './asider/index.vue'
+
+@Component({
+	components: {
+    PageHeader,
+    PageContent,
+    PageAsider
+  }
+})
+export default class pageHelp extends Vue {}
 </script>
 <style lang="scss">
-.upload-btn {
-	display: inline-block;
-  line-height: 1;
-  cursor: pointer;
-  border: 1px solid #dcdfe6;
-  color: #606266;
-  -webkit-appearance: none;
-  text-align: center;
-  box-sizing: border-box;
-  -webkit-transition: .1s;
-  transition: .1s;
-  font-weight: 500;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 4px;
-  color: #354048;
-	background-color: #FFE266;
-	border-color: #FFE266;
-	color: #354048;
-  margin-right: 8px;
+#help {
+  margin: -60px 0 0 0;
+  padding: 0;
+  border-radius: 0;
+  .help-section {
+    background: #fff;
+    margin: 20px 150px;
+  }
 }
 </style>

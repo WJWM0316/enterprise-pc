@@ -61,7 +61,6 @@ export default class MenberList extends Vue {
     value: []
   }
 
-  temMenberLists = []
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -74,14 +73,11 @@ export default class MenberList extends Vue {
     const params = {
       id: this.$route.params.id
     }
-    const data = {
-      tem: [],
-      value: []
-    }
+    const data = { tem: [], value: [] }
     Promise.all(
       [
-        this.getGroupListsApi(),
-        this.getMenberListsApi(),
+        this.getGroupListsApi({isHaveMember: 1}),
+        this.getMenberListsApi({selectAll: 1}),
         this.getJobCircleMemberListsApi(params),
         this.getJobCircleDetailsApi(params),
         this.getJobCircleHitListsApi(params),
@@ -89,7 +85,6 @@ export default class MenberList extends Vue {
       ]
     )
     .then((res) => {
-      this.temMenberLists = [...this.menberLists]
       const jobCircleDetails = this.jobCircleDetails
       this.form = {
         id: jobCircleDetails.id,
@@ -125,24 +120,18 @@ export default class MenberList extends Vue {
   handleSearch() {
     // 获取成员列表
     this.getMenberListsApi({name: this.searchName})
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
-      })
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
    * @detail  刷选组员数据
+   * @return   {[type]}      [description]
    */
-  filterWorkZoneMenber(item) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.id)
-    })
-    this.temMenberLists = menberLists
+  filterMenber(item) {
+    Object.prototype.toString.call(item) === '[object String]'
+    ? this.getMenberListsApi({selectAll: 1})
+    : this.getMenberListsApi({groupId: item.groupId})
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
@@ -158,34 +147,6 @@ export default class MenberList extends Vue {
     })
     this.checkList.value = value
     this.form.members = value.join(',')
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-11
-   * @detail   成员分类
-   * @return   {[type]}   [description]
-   */
-  memberClassification(groupId) {
-    const data = {
-      tem: [],
-      value: []
-    }
-    const menberLists = [...this.menberLists]
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      })
-    } else {
-      menberLists.map(field => {
-        if(field.selfGroup.includes(groupId)) {
-          data.tem.push(field.realname)
-          data.value.push(field.uid)
-        }
-      })
-    }
-    this.checkList = data
   }
 
   /**

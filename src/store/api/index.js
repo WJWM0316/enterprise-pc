@@ -31,13 +31,11 @@ axios.interceptors.response.use(
     return res
   },
   err => {
-    switch(err.response.data.httpStatus) {
-      case 401:
-        router.push({name: 'login'})
-        removeAccessToken()
-        break
-      default:
-        break
+    // 登陆过期或者未登录
+    if(err.response.data.httpStatus === 401) {
+      router.push({name: 'login'})
+      removeAccessToken()
+      return
     }
     if (loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)

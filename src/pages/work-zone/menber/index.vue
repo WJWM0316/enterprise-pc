@@ -14,13 +14,13 @@
       </el-col>
     </el-row>
     <div>
-      <el-button size="large" @click="memberClassification('all')" class="list-item" v-if="groupLists.length > 0">所有人</el-button>
+      <el-button size="large" @click="filterMenber('all')" class="list-item" v-if="groupLists.length > 0">所有人</el-button>
       <el-button
         size="large"
         v-for="(groupItem, groupIndex) in groupLists"
         :key="groupIndex"
         class="list-item"
-        @click="memberClassification(groupItem.groupId)">
+        @click="filterMenber(groupItem)">
           {{groupItem.groupName}}
       </el-button>
     </div>
@@ -30,7 +30,7 @@
           :label="menberItem.realname"
           :key="menberIndex"
           @change="multipleSelection"
-          v-for="(menberItem, menberIndex) in temMenberLists" />
+          v-for="(menberItem, menberIndex) in menberLists" />
       </el-checkbox-group>
     </div>
     <div class="footer-button">

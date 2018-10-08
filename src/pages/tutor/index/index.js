@@ -39,20 +39,24 @@ export default class CourseList extends Vue {
     {
       prop: 'realname',
       label: '导师资料',
+      width: '40%',
       align: 'center'
     },
     {
       prop: 'mobile',
       label: '手机号',
+      width: '20%',
       align: 'center'
     },
     {
       prop: 'communityCount',
       label: 'TA的课程',
+      width: '15%',
       align: 'center',
     },
     {
       prop: 'liveCount',
+      width: '15%',
       label: 'TA的直播',
       align: 'center',
     }
@@ -62,25 +66,30 @@ export default class CourseList extends Vue {
     {
       prop: 'realname',
       label: '导师资料',
+      width: '40%',
       align: 'center'
     },
     {
       prop: 'mobile',
+      width: '20%',
       label: '手机号',
       align: 'center'
     },
     {
       prop: 'communityCount',
+      width: '10%',
       label: 'TA的课程',
       align: 'center',
     },
     {
       prop: 'liveCount',
+      width: '10%',
       label: 'TA的直播',
       align: 'center',
     },
     {
       prop: 'actions',
+      width: '10%',
       label: '操 作',
       showTips: 'yes',
     }

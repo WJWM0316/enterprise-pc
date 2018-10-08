@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getListCourse } from '@/store/api/course.js'
 
 @Component({
   name: 'course-list',
@@ -86,7 +85,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '10%',
-      filterPlacement: '编辑相关详细内容'
+      filterPlacement: '编辑：编辑相关详细内容 课节：进入课节管理页面'
     }
   ]
 
