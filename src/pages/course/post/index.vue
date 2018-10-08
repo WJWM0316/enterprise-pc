@@ -19,7 +19,7 @@
         prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.title" :value="form.title" :maxlength="25" style="width: 380px;" placeholder="最多25个字" />
+          <el-input v-model="form.title" :value="form.title" style="width: 380px;" placeholder="最多25个字" />
       </el-form-item>
       
       <!-- 课程分类 -->

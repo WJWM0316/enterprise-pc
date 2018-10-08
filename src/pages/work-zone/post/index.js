@@ -123,7 +123,8 @@ export default class WorkZonePost extends Vue {
   rules = {
     name: [
       { required: true, message: '请输入工作圈名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '工作圈名称最多25个字', trigger: 'blur' }
     ],
     check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
@@ -551,6 +552,10 @@ export default class WorkZonePost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }
