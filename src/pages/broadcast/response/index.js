@@ -83,7 +83,7 @@ export default class BroadcastReponse extends Vue {
           value: 'del-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '在前台正常露出的内容会显示该状态 <br/> 已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
       prop: 'actions',

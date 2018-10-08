@@ -286,7 +286,7 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearch"
+                @search="handleSearchTutor"
                 v-model="ownerUidName"
                 placeholder="请输入导师名称" />
             </div>
