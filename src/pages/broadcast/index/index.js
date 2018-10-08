@@ -96,8 +96,9 @@ export default class BroadcastIndex extends Vue {
       prop: 'sort',
       label: '权 重',
       align: 'center',
-      showTips: 'no',
-      width: '10%'
+      showTips: 'yes',
+      width: '10%',
+      filterPlacement: '排序的序号数字越小，在员工端排在越前面；反之，在员工端排在越后面'
     },
     {
       prop: 'expectedStartTime',

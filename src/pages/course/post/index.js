@@ -523,6 +523,9 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    if(type === 'category_id') {
+      this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId, type: 'multiple'})
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false

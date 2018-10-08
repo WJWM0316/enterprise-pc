@@ -19,7 +19,7 @@
         prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.title" :value="form.title" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
+          <el-input v-model="form.title" :value="form.title" :maxlength="25" style="width: 380px;" placeholder="最多25个字" />
       </el-form-item>
       
       <!-- 课程分类 -->
@@ -31,7 +31,7 @@
           <div class="selected-item" v-show="form.category_id.show">
             已选择：
             <span
-              @click="removeMultipleCheck('category_id', cateIndex)"
+              @click="removeSingleChecked('category_id')"
               :key="cateIndex"
               v-for="(cateItem, cateIndex) in form.category_id.tem">
                 {{ cateItem.categoryName }}<i class="el-icon-close"></i>
@@ -709,6 +709,11 @@ export default CoursePost
     height: 36px;
     line-height: 36px;
     font-size: 12px;
+  }
+  .el-button:focus, .el-button:hover {
+    color: unset;
+    border-color: unset;
+    background-color: unset;
   }
 }
 </style>
