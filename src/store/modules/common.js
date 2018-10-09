@@ -11,6 +11,7 @@ import {
   UPDATE_CATEGORY_LIST_NO_CHECKED,
   GET_COMPANY_INFOS,
   UPDATE_GROUP_LISTS,
+  NO_CHECK_UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
   SELECT_ALL_MENBER_LISTS
 } from '../mutation-types'
@@ -102,12 +103,23 @@ const mutations = {
     state.groupLists = data
   },
   [UPDATE_GROUP_LISTS] (state, params) {
-    state.groupLists.map(field => {
-      if(field.groupId === params.groupId) {
-        field.active = !field.active
-      }
-    })
+    if(!params.list) {
+      state.groupLists.map(field => {
+        if(field.groupId === params.groupId) {
+          field.active = !field.active
+        }
+      })
+    } else {
+      state.groupLists.map(field => {
+        field.active = params.list.includes(String(field.groupId)) ? true : false
+      })
+    }
   },
+  [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
+    state.groupLists.map(field => {
+      field.active = false
+    })
+  }
 }
 
 const getters = {
@@ -281,6 +293,15 @@ const actions = {
   updateGroupListsApi(store, params) {
     store.commit(UPDATE_GROUP_LISTS, params)
   },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   分组全不选
+   * @return   {[type]}          [description]
+   */
+  noCheckGroupListsApi(store) {
+    store.commit(NO_CHECK_UPDATE_GROUP_LISTS)
+  }
 }
 
 export default {

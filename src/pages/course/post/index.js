@@ -33,7 +33,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCoursePeopleApi',
       'getCourseOrganizationsApi',
       'getCourseCategoryApi',
-      'getCoursePeopleHitsApi'
+      'getCoursePeopleHitsApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -516,9 +517,11 @@ export default class CoursePost extends Vue {
     const type = this.models.currentModalName
     this.models.show = false
     // 没有点击确定按钮
-    this.form[type].value = this.form[type].noEdit.value
-    this.form[type].tem = this.form[type].noEdit.tem
-    this.form[type].show = this.form[type].noEdit.show
+    if(this.models.show) {
+      this.form[type].value = this.form[type].noEdit.value
+      this.form[type].tem = this.form[type].noEdit.tem
+      this.form[type].show = this.form[type].noEdit.show
+    }
   }
 
   /**
@@ -557,6 +560,7 @@ export default class CoursePost extends Vue {
     switch(type) {
       case 'group_id':
         if(this.form.group_id.tem <= 0) {
+          this.noCheckGroupListsApi()
           this.form.check_group_id = ''
         }
         break
