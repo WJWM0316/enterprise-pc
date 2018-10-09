@@ -61,7 +61,13 @@
           <div class="content">
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
-                <div class="tutor-name">{{props.scope.row.realname}}-{{props.scope.row.groupName}}</div>
+                <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 4">
+                  <span class="inner-tutor-groupname">{{props.scope.row.realname}}</span>
+                  <span class="inner-tutor-realname">{{props.scope.row.groupName}}</span>
+                </div>
+                <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 5">
+                  <span>{{props.scope.row.realname}}</span>
+                </div>
             </div>
           </div>
         </div>
@@ -93,48 +99,22 @@ export default CourseList
   .search-zone {
     display: flex;
   }
-  .search-bar {
-    border-radius: 4px;
-    border: 1px solid rgba(220,223,230,1);
-    box-sizing: border-box;
-    color: #606266;
-    display: inline-block;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 15px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    input {
-      width: 100%;
-      height: calc(100% - 2px);
-      position: absolute;
-      left: 0;
-      top: 0;
-      outline: none;
-      border: none;
-      display: block;
-      box-sizing: border-box;
-      padding: 0 10px;
-    }
-    span {
-      width: 40px;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      outline: none;
-      border: none;
-      display: block;
-      box-sizing: border-box;
-      padding: 0 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-  }
   .tutor-name {
     color: #929292;
+  }
+  .inner-tutor-groupname {
+    background:rgba(53,64,72,1);
+    font-size:12px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    padding: 2px 4px;
+  }
+  .inner-tutor-realname {
+    background:#FFF9D9;
+    font-size:12px;
+    font-weight:400;
+    color:#D7AB70;
+    padding: 2px 4px;
   }
 }
 </style>

@@ -274,6 +274,7 @@ export default class WorkZonePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    console.log(this.form.organizations)
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
@@ -283,7 +284,9 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
-        this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
+        if(this.form.organizations.value.length) {
+          this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
+        }
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'

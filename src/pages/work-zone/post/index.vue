@@ -390,6 +390,8 @@ export default WorkZonePost
       width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .zike-btn-active-selected {
@@ -447,6 +449,8 @@ export default WorkZonePost
       width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .el-radio {

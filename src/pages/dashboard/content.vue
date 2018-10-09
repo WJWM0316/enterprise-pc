@@ -91,7 +91,7 @@
 				</div>
 				<div class="card-content">
 					<div class="img-box">
-						<img :src="desktopNewestLiveInfo.cover.smallUrl" alt="">
+						<img :src="desktopNewestLiveInfo.coverImg" alt="" v-if="desktopNewestLiveInfo.coverImg">
 					</div>
 					<div class="text-content">
 						<h2>{{desktopNewestLiveInfo.liveName}}</h2>
@@ -112,8 +112,8 @@
 				</button>
 			</header>
 			<ul>
-				<li v-for="(memberItem, memberIndex) in memberDynamics" :key="memberIndex" @click="viewMenberInfo(memberItem.uid)">
-					<div class="img-box">
+				<li v-for="(memberItem, memberIndex) in memberDynamics" :key="memberIndex">
+					<div class="img-box" @click="viewMenberInfo(memberItem.uid)">
 						<img :src="memberItem.avatarInfo.smallUrl">
 					</div>
 					<div class="content">
@@ -476,6 +476,7 @@ export default class pageDashboard extends Vue {
 			background: rgba(0,0,0,.03);
 			margin-right: 16px;
 			position: relative;
+			cursor: pointer;
 			img{
 				width: 100%;
 				height: 100%;
