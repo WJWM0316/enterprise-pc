@@ -25,7 +25,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
       'getJobCircleOrganizationListsApi',
-      'updateGroupListsApi'
+      'updateGroupListsApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -282,6 +283,7 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
+        this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
@@ -430,9 +432,11 @@ export default class WorkZonePost extends Vue {
     const type = this.models.currentModalName
     this.models.show = false
     // 没有点击确定按钮
-    this.form[type].value = this.form[type].noEdit.value
-    this.form[type].tem = this.form[type].noEdit.tem
-    this.form[type].show = this.form[type].noEdit.show
+    if(this.models.show) {
+      this.form[type].value = this.form[type].noEdit.value
+      this.form[type].tem = this.form[type].noEdit.tem
+      this.form[type].show = this.form[type].noEdit.show
+    }
   }
 
   /**
@@ -473,6 +477,7 @@ export default class WorkZonePost extends Vue {
         break
       case 'organizations':
         if(this.form.organizations.tem <= 0) {
+          this.noCheckGroupListsApi()
           this.form.check_organizations = ''
         }
         break

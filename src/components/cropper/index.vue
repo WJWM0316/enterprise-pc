@@ -159,7 +159,7 @@ export default class ComponentCropper extends Vue {
    * @return   {[type]}   [description]
    */
   finishCropImage() {
-    // this.flag.btnTips.value = '正在上传，请稍等'
+    this.flag.btnTips.value = '正在上传'
     this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
@@ -179,6 +179,9 @@ export default class ComponentCropper extends Vue {
       })
       .catch(err => {
         this.$emit('fail', err)
+        this.flag.btnTips.disable = false
+        this.flag.imgHasLoad = false
+        this.flag.btnTips.value = '确定'
       })
   }
 

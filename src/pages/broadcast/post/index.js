@@ -34,7 +34,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getLiveMenberListApi',
       'getLiveInvisibleMenberListApi',
       'getTutorListApi',
-      'getCategoryApi'
+      'getCategoryApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -329,8 +330,8 @@ export default class BroadcastPost extends Vue {
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
-        this.form[type].tem.length
-          ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+        this.form.categoryList.tem.length
+          ? this.updateCategoryListsApi({categoryId: this.form.categoryList.tem[0].categoryId})
           : this.noCheckedCategoryListsApi()
   			break
   		case 'uid':
@@ -338,6 +339,9 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
+        this.form.groupList.value
+          ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
+          : this.noCheckGroupListsApi()
   			break
   		case 'memberList':
   			this.models.title = '参与直播学员'
@@ -461,6 +465,7 @@ export default class BroadcastPost extends Vue {
       this.form.liveName = info.liveName
       this.form.intro = info.intro
       this.form.groupList.value = this.form.groupList.value.join(',')
+      this.form.groupList.noEdit.value = this.form.groupList.noEdit.value.join(',')
       this.form.check_groupList = this.form.groupList.value
       this.form.categoryList.value = this.form.categoryList.value.join(',')
       this.form.check_categoryList = this.form.categoryList.value
@@ -505,9 +510,11 @@ export default class BroadcastPost extends Vue {
     const type = this.models.currentModalName
     this.models.show = false
     // 没有点击确定按钮
-    this.form[type].value = this.form[type].noEdit.value
-    this.form[type].tem = this.form[type].noEdit.tem
-    this.form[type].show = this.form[type].noEdit.show
+    if(this.models.show) {
+      this.form[type].value = this.form[type].noEdit.value
+      this.form[type].tem = this.form[type].noEdit.tem
+      this.form[type].show = this.form[type].noEdit.show
+    }
   }
 
   /**
@@ -536,14 +543,16 @@ export default class BroadcastPost extends Vue {
    * @detail   移除多选
    */
   removeMultipleCheck(type, index, item) {
-    const value = this.form[type].value.split(',').splice(index, 1)
+    const temArray = this.form[type].value.split(',')
+    temArray.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = value.join(',')
+    this.form[type].value = temArray.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
     switch(type) {
       case 'groupList':
         this.updateGroupListsApi({groupId: item.groupId})
         if(this.form.groupList.tem <= 0) {
+          this.noCheckGroupListsApi()
           this.form.check_groupList = ''
         }
         break
@@ -621,6 +630,7 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.groupList = Object.assign(this.form.groupList, data)
+    console.log(this.form.groupList)
   }
 
   /**
@@ -645,7 +655,6 @@ export default class BroadcastPost extends Vue {
       }
     })
     this.form[type].value = value.join(',')
-    console.log(type)
   }
 
   /**
