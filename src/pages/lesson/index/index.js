@@ -158,11 +158,11 @@ export default class CourseList extends Vue {
 
     sortUpdateApi(data).then(res=>{
       console.log(res.data)
-        this.$message({
-          message: '成功',
-          type: 'success'
-        })
-      this.getGroupList()
+      this.$message({
+        message: '成功',
+        type: 'success'
+      })
+      this.getLists()
     }).catch(err => {
       this.$message.error(err.data.msg);
     })
