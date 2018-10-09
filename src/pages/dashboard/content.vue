@@ -1,22 +1,22 @@
 <template>
 	<div class="left-content">
 		<section class="company-infos">
-			<h1>{{companyInfo.companyName}}</h1>
+			<h1>{{desktopInfos.company}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
-				<button class="click-item time-button">有限期 7 天</button>
-				<button class="click-item todo-action" @click="openModal">前往开通正式版</button>
+				<button class="click-item time-button" v-if="!desktopVerInfo.isOfficial">试用期：{{desktopVerInfo.remainDay}} 天</button>
+				<button class="click-item todo-action" @click="openModal" v-if="!desktopVerInfo.isOfficial">{{desktopVerInfo.tip}}</button>
 
 				<!-- 已付费，显示对应版本标识，目前有VIP和SVIP -->
-				<!-- <button class="time-button">VIP</button> -->
+				<button class="time-button" v-if="desktopVerInfo.isOfficial">VIP</button>
 
 				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
-				<!-- <button class="time-button">VIP,60天后过期</button> -->
-				<!-- <button class="todo-action" @click="openModal">续费</button> -->
+				<button class="time-button" v-if="desktopVerInfo.isOfficial">VIP,60天后过期</button>
+				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
 			<div class="statistics-flex-box">
 				<div>
-					<strong>55</strong>
+					<strong>{{desktopStudyInfo.yesterdayStudyPersonCount}}</strong>
 					<p>昨日学习人数</p>
 					<el-popover
 				    placement="top-start"
@@ -27,7 +27,7 @@
 				  </el-popover>
 				</div>
 				<div>
-					<strong>55</strong>
+					<strong>{{desktopStudyInfo.yesterdayStudyTimeCount}}</strong>
 					<p>昨日学习时长</p>
 					<el-popover
 				    placement="top-start"
@@ -38,15 +38,15 @@
 				  </el-popover>
 				</div>
 				<div>
-					<strong>55</strong>
+					<strong>{{desktopStudyInfo.onlineCourseCount}}</strong>
 					<p>在线课程数</p>
 				</div>
 				<div>
-					<strong>55</strong>
+					<strong>{{desktopStudyInfo.onlineLiveCount}}</strong>
 					<p>在线直播数</p>
 				</div>
 				<div>
-					<strong>55</strong>
+					<strong>{{desktopStudyInfo.onlineJobCircleCount}}</strong>
 					<p>在线工作圈</p>
 				</div>
 			</div>
@@ -75,11 +75,13 @@
 					最新课程
 				</div>
 				<div class="card-content">
-					<div class="img-box"></div>
+					<div class="img-box">
+						<img :src="desktopNewestCourseInfo.coverImg" alt="">
+					</div>
 					<div class="text-content">
-						<h2>金牌主持人亲带：公众演说时训营...</h2>
-						<p>学习人数：188</p>
-						<p>完成打卡：188</p>
+						<h2>{{desktopNewestCourseInfo.title}}</h2>
+						<p>学习人数：{{desktopNewestCourseInfo.peopleCount}}</p>
+						<p>完成打卡：{{desktopNewestCourseInfo.sessionCardCount}}</p>
 					</div>
 				</div>
 			</div>
@@ -88,13 +90,15 @@
 					最新直播
 				</div>
 				<div class="card-content">
-					<div class="img-box"></div>
+					<div class="img-box">
+						<img :src="desktopNewestLiveInfo.cover.smallUrl" alt="">
+					</div>
 					<div class="text-content">
-						<h2>金牌主持人亲带：公众演说时训营...</h2>
-						<p>学习人数：188</p>
-						<!-- <p class="punch">完成打卡：188</p> -->
-						<p class="doing">正在直播</p>
-						<!-- <p class="end">直播已结束</p> -->
+						<h2>{{desktopNewestLiveInfo.liveName}}</h2>
+						<p>学习人数：{{desktopNewestLiveInfo.peopleCount}}</p>
+						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime}}</p>
+						<p class="doing" v-if="desktopNewestLiveInfo.status === 2">正在直播</p>
+						<p class="end" v-if="desktopNewestLiveInfo.status === 3">直播已结束</p>
 					</div>
 				</div>
 			</div>
@@ -108,18 +112,18 @@
 				</button>
 			</header>
 			<ul>
-				<li v-for="(userItem, userIndex) in dashboardUserLists" :key="userIndex">
+				<li v-for="(memberItem, memberIndex) in memberDynamics" :key="memberIndex" @click="viewMenberInfo(memberItem.uid)">
 					<div class="img-box">
-						<img :src="userItem.avatarInfo.smallUrl" alt="">
+						<img :src="memberItem.avatarInfo.smallUrl">
 					</div>
 					<div class="content">
 						<div class="ceil">
-							<span class="username">{{userItem.realname}}</span>
-							<span class="degree">产品组 | 产品经理</span>
-							<time>2018-08-02 18:00</time>
+							<span class="username">{{memberItem.realname}}</span>
+							<span class="degree">{{memberItem.groupName}} | {{memberItem.occupation}}</span>
+							<time>{{memberItem.createdAt}}</time>
 						</div>
 						<div class="floor">
-							完成了课程《课程名字课程名字课程名字课程名字课程名字课》打卡
+							{{memberItem.content}}
 						</div>
 					</div>
 				</li>
@@ -142,7 +146,7 @@
         <div slot="customize-html">
           <div class="customize-html-content">
           	<h2 class="dashboard-open-business">开通、续费请联系客服开通</h2>
-          	<p class="dashboard-open-business-phone">客服电话：020-2816-3063</p>
+          	<p class="dashboard-open-business-phone">客服电话：{{desktopInfos.customerServicePhone}}</p>
           </div>
         </div>
     </modal-dialog>
@@ -158,20 +162,30 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 		...mapActions([
 			'showMsg',
 			'getUserListsApi',
-			'getCompanyInfoApi'
+			'getCompanyInfoApi',
+			'getMemberCheckNewDynamicsApi'
 		])
 	},
 	components: {
 		ModalDialog
 	},
-	 computed: {
+	computed: {
     ...mapGetters([
       'dashboardUserLists',
-      'companyInfo'
+      'companyInfo',
+      'desktopInfos',
+      'desktopStudyInfo',
+      'desktopNewestCourseInfo',
+      'desktopNewestLiveInfo',
+      'desktopVerInfo',
+      'memberDynamics'
     ])
   }
 })
 export default class pageDashboard extends Vue {
+
+	// 是否有新的成员动态
+	isHaveNew = 0
 	// 确认信息弹窗
   models = {
     show: false,
@@ -229,8 +243,27 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}        [description]
    */
   routeJump(name) {
-  	this.$router.push({name})
+  	this.$router.push({ name })
   }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   查看个人信息
+   * @return   {[type]}        [description]
+   */
+  viewMenberInfo(id) {
+		this.$router.push({ name: 'userInfos', params: { id }})
+	}
+
+	mounted() {
+		const timer = setInterval(() =>{                    
+		  this.getMemberCheckNewDynamicsApi({timestamp: Date.parse(new Date())})
+		  		.then(res => {
+		  			this.isHaveNew = res.data.data.isHaveNew
+		  		})
+		}, 1000 * 60 * 5)
+		this.$once('hook:beforeDestroy', () => { clearInterval(timer) })
+	}
 }
 </script>
 <style lang="scss">
@@ -440,7 +473,7 @@ export default class pageDashboard extends Vue {
 		.img-box {
 			width: 64px;
 			height: 64px;
-			background: pink;
+			background: rgba(0,0,0,.03);
 			margin-right: 16px;
 			position: relative;
 			img{

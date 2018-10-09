@@ -32,6 +32,7 @@ export const UPDATE_GROUP_LISTS = 'commom/UPDATE_GROUP_LISTS'
 export const NO_CHECK_UPDATE_GROUP_LISTS = 'commom/NO_CHECK_UPDATE_GROUP_LISTS'
 export const GET_GROUP_LISTS = 'commom/GET_GROUP_LISTS'
 export const GET_MENBER_LISTS = 'commom/GET_MENBER_LISTS'
+export const GET_MENBER_DYNAMICS_LIST = 'commom/GET_MENBER_DYNAMICS_LIST'
 
 // 导师模块
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
@@ -61,6 +62,8 @@ export const GET_COURSE_CATAGORY = 'course/GET_COURSE_CATAGORY'
 // 工作台模块
 export const GET_COMPANY_INFOS = 'common/GET_COMPANY_INFOS'
 export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'
+export const GET_DESKINFOS = 'dashboard/GET_DESKINFOS'
+
 
 // 用户模块
 export const GET_PERSONAL_INFO_LESSONS = 'user/GET_PERSONAL_INFO_LESSONS'

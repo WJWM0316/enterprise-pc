@@ -17,19 +17,21 @@ import MainContent from './content.vue'
 	},
 	methods: {
 		...mapActions([
-			'showMsg',
-			'getCompanyInfoApi'
+			'getDesktopInfosApi',
+			'getMemberDynamicsListApi'
 		])
 	},
 	computed: {
     ...mapGetters([
-      'companyInfo'
+      'companyInfo',
+      'desktopInfos'
     ])
   }
 })
 export default class pageDashboard extends Vue {
 	created() {
-		this.getCompanyInfoApi()
+		this.getDesktopInfosApi()
+		this.getMemberDynamicsListApi({page: 1, count: 20})
 	}
 }
 </script>

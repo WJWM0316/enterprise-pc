@@ -38,10 +38,10 @@
 			<template v-if="currentType === 'getPersonalInfoLivesApi'">
 				<li v-for="(liveItem, liveIndex) in personalInfoLives" :key="liveIndex" class="live-item">
 					<div class="img-box">
-						<img :src="liveItem.coverImg.smallUrl" alt="">
+						<img :src="liveItem.cover.smallUrl" alt="">
 					</div>
 					<div class="text-content">
-						<h2>{{liveItem.title}}</h2>
+						<h2>{{liveItem.liveName}}</h2>
 						<div class="u-info">
 							<span class="group-name">{{liveItem.masterTitle}}</span>
 							<span class="user-name">{{liveItem.masterName}}</span>
@@ -57,8 +57,8 @@
 					<div class="text-content">
 						<h2>{{circleItem.name}}</h2>
 						<div class="u-info">
-							<span class="group-name">{{circleItem.ownerInfo.groupName}}</span>
-							<span class="user-name">{{circleItem.ownerInfo.realname}}</span>
+							<span class="group-name">{{circleItem.groupName}}</span>
+							<span class="user-name">{{circleItem.realname}}</span>
 						</div>
 					</div>
 				</li>
@@ -180,7 +180,14 @@ export default class ComponentRight extends Vue {
 			font-weight:bold;
 			color:rgba(53,64,72,1);
 			margin: 10px 0;
-			line-height: 1;
+			overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      color: #354048;
+      font-size: 14px;
+      line-height: 1.4;
 		}
 		.group-name{
 			background:rgba(53,64,72,1);
