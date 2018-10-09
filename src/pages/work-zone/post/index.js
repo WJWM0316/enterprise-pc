@@ -175,7 +175,7 @@ export default class WorkZonePost extends Vue {
     } else {
       callback()
     }
-    this.form.name = value.replace(/\s*/g, '')
+    this.form.name = value.trim()
   }
   /**
    * @Author   小书包
@@ -284,6 +284,7 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
+        this.getGroupListsApi()
         if(this.form.organizations.value.length) {
           this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
         }
