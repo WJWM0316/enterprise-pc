@@ -106,7 +106,7 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请输入密码', trigger: 'blur'}
     ],
     roleId: [
-      { required: true, message: '请输入手机号', trigger: 'blur' }
+      { required: true, message: '请选择权限', trigger: 'blur' }
     ]
   }
 
@@ -178,6 +178,7 @@ export default class WorkZonePost extends Vue {
     console.log('===',this.$route.name)
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
+      this.form.password = '123456'
     }else {
       this.user_id = this.$route.query.user_id
       this.editInitMsg()
