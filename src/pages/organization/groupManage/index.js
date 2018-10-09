@@ -68,13 +68,13 @@ export default class groupList extends Vue {
     console.log(item)
     let data = {
       id: item.groupId,
-      sort: '1'
+      type: 1
     }
     if(type==='up'){
-      data.sort='1'
+      data.type = 1
 
     }else if(type==='down'){
-      data.sort='2'
+      data.type = 2
     }
 
     putGroupApi(data).then(res=>{

@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
+import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,postLessonPunchCommentApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -41,7 +41,7 @@ export default class CourseList extends Vue {
       label: '状态',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -71,7 +71,7 @@ export default class CourseList extends Vue {
       label: '建立时间',
       align: 'center',
       showTips: 'no',
-      width: '20%'
+      width: '15%'
     },
     {
       prop: 'actions',
@@ -137,7 +137,7 @@ export default class CourseList extends Vue {
     //this.course_section_id = 13
     let data = {
         search:{
-          like: {card_content: this.form.name},
+          like: {title: this.form.name},
           order:{created_at: 'DESC'},
           course_section_id:this.course_section_id
         },
@@ -176,9 +176,6 @@ export default class CourseList extends Vue {
     console.log(111111,data)
 
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       console.log(err)
@@ -193,9 +190,6 @@ export default class CourseList extends Vue {
       is_pusnch_card: 1
     }
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       console.log(err)
@@ -211,9 +205,6 @@ export default class CourseList extends Vue {
       is_set_excellent_card: 0
     }
     setExcellentCourseCardApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
@@ -227,9 +218,6 @@ export default class CourseList extends Vue {
       is_set_excellent_card: 1
     }
     setExcellentCourseCardApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
@@ -241,36 +229,34 @@ export default class CourseList extends Vue {
   todoAction(type, item) {
     console.log(item)
 
-    if(type!=='comment'){
-      this.model.show = true
-    }
+    this.model.show = true
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
         this.model.txt = '删除后的内容前台不可见'
         this.model.confirm = 'deleteComment'
+        //this.deleteComment(item)
         break
       case 'cancelExcellent':
         this.model.txt = '把该打卡取消优秀打卡'
         this.model.confirm = 'cancelExcellent'
+
+        //this.cancelExcellent(item)
         break
       case 'excellent':
         this.model.txt = '把该打卡设为优秀打卡'
         this.model.confirm = 'putLessonPunch'
+
+        //this.putLessonPunch(item)
         break
       case 'recover':
         this.model.txt = '恢复后内容前台可见'
         this.model.confirm = 'recover'
+
+        //this.recover(item)
         break
-      case 'comment':
-        this.$router.push(
-          { name: 'comment',
-            query: {
-              id: item.courseSectionId,
-              course_id: this.course_id
-            }
-          }
-        )
+      case 'punch':
+        //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       default:
         break
