@@ -314,32 +314,34 @@ export default class WorkZonePost extends Vue {
   // 提交表单数据
   submit(params) {
     let that = this
-    addMemberApi(params)
-      .then(res => {
-        this.$message({message: res.data.msg, type: 'success'})
-        this.$router.push({name: 'organization'})
-      })
-      .catch(err => {
-        this.$message.error(`${err.data.msg}~`);
-        setTimeout(() => {
-          this.submitBtnClick = !this.submitBtnClick
-          this.submitBtnTxt = '提交'
-        }, 3000)
-      })
 
-    editMemberApi(params)
-      .then(res => {
-        this.$message({message: res.data.msg, type: 'success'})
-        this.$router.push({name: 'organization'})
-      })
-      .catch(err => {
-        this.$message.error(`${err.data.msg}~`);
-        setTimeout(() => {
-          this.submitBtnClick = !this.submitBtnClick
-          this.submitBtnTxt = '提交'
-        }, 3000)
-      })
-
+    if(this.pageStatus === 'add'){
+      addMemberApi(params)
+        .then(res => {
+          this.$message({message: res.data.msg, type: 'success'})
+          this.$router.push({name: 'organization'})
+        })
+        .catch(err => {
+          this.$message.error(`${err.data.msg}~`);
+          setTimeout(() => {
+            this.submitBtnClick = !this.submitBtnClick
+            this.submitBtnTxt = '提交'
+          }, 3000)
+        })
+      }else {
+        editMemberApi(params)
+          .then(res => {
+            this.$message({message: res.data.msg, type: 'success'})
+            this.$router.push({name: 'organization'})
+          })
+          .catch(err => {
+            this.$message.error(`${err.data.msg}~`);
+            setTimeout(() => {
+              this.submitBtnClick = !this.submitBtnClick
+              this.submitBtnTxt = '提交'
+            }, 3000)
+          })
+      }
   }
 
   /**
