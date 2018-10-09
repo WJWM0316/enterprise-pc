@@ -3,7 +3,8 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
+
+import { getLessonSearchCommentListsApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -31,17 +32,24 @@ export default class CourseList extends Vue {
   fields = [
     {
       prop: 'cardContent',
-      label: '打卡内容',
+      label: '评论内容',
       align: 'center',
       showTips: 'no',
       width: '30%'
+    },
+    {
+      prop: 'releaseUser',
+      label: '发布者',
+      align: 'center',
+      showTips: 'no',
+      width: '15%'
     },
     {
       prop: 'punchCardStatus',
       label: '状态',
       align: 'center',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -60,25 +68,18 @@ export default class CourseList extends Vue {
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
-      prop: 'releaseUser',
-      label: '发布者',
-      align: 'center',
-      showTips: 'no',
-      width: '15%'
-    },
-    {
       prop: 'punchCardTime',
       label: '建立时间',
       align: 'center',
       showTips: 'no',
-      width: '20%'
+      width: '15%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>优秀打卡/取消优秀：把打卡内容设置为优秀打卡或者取消优秀打卡<br/>评论：进入评论内容管理页面'
+      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>热门评论/取消热门：把打卡内容设置为热门评论或者取消热门评论<br/>评论：进入评论内容管理页面'
     }
   ]
 
@@ -113,7 +114,7 @@ export default class CourseList extends Vue {
     height: '192px',
     confirm: ''
   }
-  cardList = []
+  commentList = []
   course_id = ''
   /**
    * 初始化表单、分页页面数据
@@ -121,8 +122,10 @@ export default class CourseList extends Vue {
   init() {
     this.form = Object.assign(this.form,this.$route.query || {})
     console.log(this.form)
-    this.course_section_id = this.$route.query.course_section_id
-    this.course_id = this.$route.query.course_id
+    this.postId = this.$route.query.postId
+
+    //测试结束删除
+    this.postId = 5 
     this.getLists()
   }
 
@@ -137,7 +140,7 @@ export default class CourseList extends Vue {
     //this.course_section_id = 13
     let data = {
         search:{
-          like: {card_content: this.form.name},
+          like: {title: this.form.name},
           order:{created_at: 'DESC'},
           course_section_id:this.course_section_id
         },
@@ -153,9 +156,9 @@ export default class CourseList extends Vue {
     }
 
     console.log(param)
-    getLessonPunchListsApi(param).then(res=>{
+    getLessonSearchCommentListsApi(param).then(res=>{
       console.log(res)
-      this.cardList = {
+      this.commentList = {
         list : res.data.data,
         total: res.data.meta.total
       }
@@ -176,9 +179,6 @@ export default class CourseList extends Vue {
     console.log(111111,data)
 
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       console.log(err)
@@ -193,9 +193,6 @@ export default class CourseList extends Vue {
       is_pusnch_card: 1
     }
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       console.log(err)
@@ -211,9 +208,6 @@ export default class CourseList extends Vue {
       is_set_excellent_card: 0
     }
     setExcellentCourseCardApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
@@ -227,9 +221,6 @@ export default class CourseList extends Vue {
       is_set_excellent_card: 1
     }
     setExcellentCourseCardApi(data).then(res=>{
-      this.model.show = false
-      this.getLists()
-
       console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
@@ -241,35 +232,34 @@ export default class CourseList extends Vue {
   todoAction(type, item) {
     console.log(item)
 
-    if(type!=='comment'){
-      this.model.show = true
-    }
+    this.model.show = true
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
         this.model.txt = '删除后的内容前台不可见'
         this.model.confirm = 'deleteComment'
+        //this.deleteComment(item)
         break
       case 'cancelExcellent':
         this.model.txt = '把该打卡取消优秀打卡'
         this.model.confirm = 'cancelExcellent'
+
+        //this.cancelExcellent(item)
         break
       case 'excellent':
         this.model.txt = '把该打卡设为优秀打卡'
         this.model.confirm = 'putLessonPunch'
+
+        //this.putLessonPunch(item)
         break
       case 'recover':
         this.model.txt = '恢复后内容前台可见'
         this.model.confirm = 'recover'
+
+        //this.recover(item)
         break
-      case 'comment':
-        this.$router.push(
-          { name: 'comment',
-            query: {
-              postId: this.item.courseSectionCardId
-            }
-          }
-        )
+      case 'punch':
+        //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
         break
       default:
         break

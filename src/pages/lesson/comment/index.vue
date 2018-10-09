@@ -3,7 +3,7 @@
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="`/lesson/index?course_id=${course_id}`">课节管理</el-breadcrumb-item>
-      <el-breadcrumb-item>打卡管理</el-breadcrumb-item>
+      <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
       <el-col :span="12" class="search-zone">
@@ -41,12 +41,12 @@
               type="text"
               v-if="props.scope.row.isExcellentCard==1"
               @click="todoAction('cancelExcellent', props.scope.row)">
-                取消优秀
+                取消热门
               </el-button>
                <el-button
               type="text" v-else
               @click="todoAction('excellent', props.scope.row)">
-                优秀打卡
+                热门评论
               </el-button>
             </div>
             <div v-else>
@@ -58,19 +58,18 @@
             </div>
         </div>
         <div v-else-if="props.scope.column.property === 'cardContent'" class="flex-box">
-          <div class="content" :class="{'delet': props.scope.row.punchCardStatus != 1}">
-            {{ props.scope.row.cardContent}}
+          <div class="content">
+            <div>
+                <div class="limit-row-num-2"> {{ props.scope.row.cardContent}} </div>
+            </div>
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'releaseUser'" class="flex-box" :class="{'delet': props.scope.row.punchCardStatus != 1}">
+        <div v-else-if="props.scope.column.property === 'releaseUser'" class="flex-box">
              {{props.scope.row.releaseUser.nickname}}
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'punchCardStatus'" :class="{'delet': props.scope.row.punchCardStatus != 1}">
+        <div v-else-if="props.scope.column.property === 'punchCardStatus'">
           {{ props.scope.row.punchCardStatus == 1? '正常':'已删除' }}
-        </div>
-        <div v-else-if="props.scope.column.property === 'punchCardTime'" :class="{'delet': props.scope.row.punchCardStatus != 1}">
-          {{props.scope.row.punchCardTime}}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

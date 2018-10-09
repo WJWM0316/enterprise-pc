@@ -484,6 +484,15 @@ export const routes = [
           keepAlive: false,
           module: 'lesson'
         }
+      },
+      {
+        path: 'comment',
+        name: 'comment',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/comment/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'lesson'
+        }
       }
     ]
   },

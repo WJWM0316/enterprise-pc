@@ -137,7 +137,7 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-    this.setPathQuery(this.form)
+    this.setPathQuery({name: this.form.name})
   }
 
   /**

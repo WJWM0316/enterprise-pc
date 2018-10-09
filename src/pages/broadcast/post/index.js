@@ -339,7 +339,7 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
-        this.form.groupList.value
+        this.form.groupList.value.length
           ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
           : this.noCheckGroupListsApi()
   			break
@@ -528,6 +528,9 @@ export default class BroadcastPost extends Vue {
       case 'categoryList':
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
         this.form.check_categoryList = ''
+        break
+      case 'uid':
+        this.form.check_uid = ''
         break
       default:
         break

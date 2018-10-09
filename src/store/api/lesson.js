@@ -29,10 +29,10 @@ export const postLessonPunchCommentApi = params => request(`/coursesectioncard/c
 export const getLessonPunchListsApi = params => request(`/CourseSectionCard?jsonData=${params.jsonData}&page=${params.page}&count=${params.pageCount}`, 'get')
 
 // 删除或者恢复课程课节打卡
-export const distoryAndRegaihnLessonPunchApi = params => request(`/CourseSection/CourseSectionCard/distoryAndRegaihn`, 'post')
+export const distoryAndRegaihnLessonPunchApi = params => request(`/CourseSection/CourseSectionCard/distoryAndRegain`, 'post', params)
 
 // 设置或者删除课程课节优秀打卡
-export const setExcellentCourseCardApi = params => request(`/CourseSection/CourseSectionCard/setExcellentCourseCard`, 'post')
+export const setExcellentCourseCardApi = params => request(`/CourseSection/CourseSectionCard/setExcellentCourseCard`, 'post',params)
 
 // 获取课程课节列表
 export const getLessonListsApi = params => request(`/CourseSection`, 'get', params)

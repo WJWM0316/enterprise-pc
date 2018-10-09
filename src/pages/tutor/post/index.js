@@ -43,8 +43,13 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请输入导师头衔', trigger: 'blur' }
     ],
     mobile: [
-        { required: true, message: '请输入手机号',trigger: 'blur' },
-        { type: 'number', message: '手机号必须为数字'}
+        { required: true, message: '请输入手机号',trigger: 'blur' }, 
+        {
+          max: 11,
+          min: 11,
+          trigger: 'blur',
+          message: '请输入正确的手机号'
+        }
     ],
     password: /*[
       { required: true, message: '请输入密码', trigger: 'blur'},
