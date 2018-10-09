@@ -4,14 +4,98 @@
 			<h1>{{desktopInfos.company}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
-				<button class="click-item time-button" v-if="!desktopVerInfo.isOfficial">试用期：{{desktopVerInfo.remainDay}} 天</button>
-				<button class="click-item todo-action" @click="openModal" v-if="!desktopVerInfo.isOfficial">{{desktopVerInfo.tip}}</button>
+				<el-popover
+			    placement="bottom"
+			    width="158"
+			    content="dddddddd"
+			    trigger="hover">
+			    <div class="my-popover123456">
+			    	<h2>{{desktopVerInfo.name}}</h2>
+			    	<div class="walk">
+			    		<span>可用员工数：</span>
+			    		<strong>{{desktopVerInfo.enable.staffCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建课程数：</span>
+			    		<strong>{{desktopVerInfo.enable.courseCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建直播数：</span>
+			    		<strong>{{desktopVerInfo.enable.liveCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建工作圈数：</span>
+			    		<strong>{{desktopVerInfo.enable.jobCircleCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可存储文件量：</span>
+			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
+			    	</div>
+			    </div>
+			    <button class="click-item time-button" v-if="!desktopVerInfo.isOfficial" slot="reference">试用期：{{desktopVerInfo.remainDay}} 天</button>
+			  </el-popover>
+				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
 
 				<!-- 已付费，显示对应版本标识，目前有VIP和SVIP -->
-				<button class="time-button" v-if="desktopVerInfo.isOfficial">VIP</button>
-
+				<el-popover
+			    placement="bottom"
+			    width="158"
+			    trigger="hover">
+			    <div class="my-popover123456">
+			    	<h2>{{desktopVerInfo.name}}</h2>
+			    	<div class="walk">
+			    		<span>可用员工数：</span>
+			    		<strong>{{desktopVerInfo.enable.staffCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建课程数：</span>
+			    		<strong>{{desktopVerInfo.enable.courseCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建直播数：</span>
+			    		<strong>{{desktopVerInfo.enable.liveCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建工作圈数：</span>
+			    		<strong>{{desktopVerInfo.enable.jobCircleCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可存储文件量：</span>
+			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
+			    	</div>
+			    </div>
+			    <button class="time-button" v-if="desktopVerInfo.isOfficial" slot="reference">VIP</button>
+			  </el-popover>
 				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
-				<button class="time-button" v-if="desktopVerInfo.isOfficial">VIP,60天后过期</button>
+				<el-popover
+			    placement="bottom"
+			    width="158"
+			    trigger="hover">
+			    <div class="my-popover123456">
+			    	<h2>{{desktopVerInfo.name}}</h2>
+			    	<div class="walk">
+			    		<span>可用员工数：</span>
+			    		<strong>{{desktopVerInfo.enable.staffCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建课程数：</span>
+			    		<strong>{{desktopVerInfo.enable.courseCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建直播数：</span>
+			    		<strong>{{desktopVerInfo.enable.liveCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可创建工作圈数：</span>
+			    		<strong>{{desktopVerInfo.enable.jobCircleCount}}</strong>
+			    	</div>
+			    	<div class="walk">
+			    		<span>可存储文件量：</span>
+			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
+			    	</div>
+			    </div>
+			    <button class="time-button" v-if="desktopVerInfo.isOfficial">VIP,60天后过期</button>
+			  </el-popover>
 				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
 			<div class="statistics-flex-box">
@@ -613,6 +697,27 @@ export default class pageDashboard extends Vue {
 		color:rgba(102,102,102,1);
 		margin: 0;
 		line-height: 1;
+	}
+}
+.my-popover123456 {
+	h2{
+		font-size:16px;
+		font-weight: 500;
+		color:rgba(53,64,72,1);
+		margin: 0;
+		line-height: 1;
+		margin-bottom: 15px;
+	}
+	.walk {
+		font-size:14px;
+		font-weight:300;
+		color:rgba(53,64,72,1);
+		margin-bottom: 5px;
+	}
+	strong{
+		font-size:14px;
+		font-weight:500;
+		color:rgba(215,171,112,1);
 	}
 }
 </style>

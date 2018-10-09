@@ -33,7 +33,15 @@ const state = {
     },
     expectedStartTime: ''
   },
-  desktopVerInfo: {}
+  desktopVerInfo: {
+    enable: {
+      courseCount: 0,
+      jobCircleCount: 0,
+      liveCount: 0,
+      staffCount: 0,
+      storageSpaceCount: '0G'
+    }
+  }
 }
 
 const mutations = {
