@@ -7,28 +7,29 @@
 					<img :src="personalInfoBase.avatar.smallUrl" alt="" v-if="personalInfoBase.avatar">
 				</div>
 			</div>
-			<ul class="user-his-infos">
-				<li>
+			<ul class="user-his-infos" v-if="!personalInfoBase.isExternalTutor">
+				<li v-if="personalInfoBase.occupation">
 					<i class="icon iconfont icon-post"></i>
 					<span>{{personalInfoBase.occupation}}</span>
 				</li>
-				<li>
+				<li v-if="personalInfoBase.groupName">
 					<i class="icon iconfont icon-organization"></i>
 					<span>{{personalInfoBase.groupName}}</span>
 				</li>
-				<li>
+				<li v-if="personalInfoBase.mobile">
 					<i class="icon iconfont icon-phone"></i>
 					<span>{{personalInfoBase.mobile}}</span>
 				</li>
-				<li>
+				<li v-if="personalInfoBase.email">
 					<i class="icon iconfont icon-email"></i>
 					<span>{{personalInfoBase.email}}</span>
 				</li>
-				<li>
+				<li v-if="personalInfoBase.wechat">
 					<i class="icon iconfont icon-WeChat"></i>
-					<span>WeChat1234</span>
+					<span>{{personalInfoBase.wechat}}</span>
 				</li>
 			</ul>
+			<ul class="user-his-infos" v-else></ul>
 			<div class="edit-enter">
 				<router-link :to="{name: 'organization'}" class="set">编辑</router-link>
 			</div>
@@ -48,7 +49,7 @@
 					<p>打卡数</p>
 				</div>
 			</div>
-			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>{{Number(personalInfoStudy.surpass) * 100}}% </span> 的同事 ~ </div>
+			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>{{ personalInfoStudy.surpass }}% </span> 的同事 ~ </div>
 		</div>
 	</div>
 </template>
@@ -74,10 +75,7 @@ import Component from 'vue-class-component'
 })
 export default class ComponentLeft extends Vue {
 	created() {
-		this.init()
-	}
-	init() {
-		const params = this.$route.query
+		const params = this.$route.params
 		this.getPersonalInfoStudyApi(params)
     this.getPersonalInfoBaseApi(params)
     this.getPersonalInfoLessonsApi(params)

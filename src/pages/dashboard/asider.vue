@@ -2,12 +2,12 @@
 	<div class="asider-bar">
 		<section class="contact-box">
 			<header class="contact-box-header">客服电话</header>
-			<section class="company-phone-box"><i class="icon iconfont icon-phone"></i>020-2816-3063 </section>
+			<section class="company-phone-box"><i class="icon iconfont icon-phone"></i>{{desktopInfos.customerServicePhone}}</section>
 		</section>
 		<section class="using-help-box">
 			<header class="using-help-box-header">使用帮助<button class="view click-item">查看更多</button></header>
 			<ul>
-				<li v-for="item in 8" :key="item">如何新建课程</li>
+				<li v-for="(helpItem, helpIndex) in desktopInfos.helpList" :key="helpIndex">{{helpItem.title}}</li>
 			</ul>
 		</section>
 	</div>
@@ -16,7 +16,13 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-@Component({})
+@Component({
+	computed: {
+    ...mapGetters([
+      'desktopInfos'
+    ])
+  }
+})
 export default class pageDashboard extends Vue {}
 </script>
 <style lang="scss">

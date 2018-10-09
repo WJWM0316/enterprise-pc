@@ -13,7 +13,8 @@ import {
   UPDATE_GROUP_LISTS,
   NO_CHECK_UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
-  SELECT_ALL_MENBER_LISTS
+  SELECT_ALL_MENBER_LISTS,
+  GET_MENBER_DYNAMICS_LIST
 } from '../mutation-types'
 
 import {
@@ -23,7 +24,9 @@ import {
   getMenberListsApi,
   getCategoryApi,
   getCompanyInfoApi,
-  getGroupListsApi
+  getGroupListsApi,
+  getMemberDynamicsListApi,
+  getMemberCheckNewDynamicsApi
 } from 'API/common'
 
 const state = {
@@ -39,7 +42,8 @@ const state = {
   showDialog: false,
   ajaxLoading: false,
   openModal: false, // 是否处于打开modal层状态
-  companyInfo: {}
+  companyInfo: {},
+  memberDynamics: {}
 }
 
 const mutations = {
@@ -119,6 +123,10 @@ const mutations = {
     state.groupLists.map(field => {
       field.active = false
     })
+  },
+  // 获取成员动态
+  [GET_MENBER_DYNAMICS_LIST] (state, data) {
+    state.memberDynamics = data
   }
 }
 
@@ -131,7 +139,8 @@ const getters = {
   uploadConfig: state => state.uploadConfig,
   menberLists: state => state.menberLists,
   categoryList: state => state.categoryList,
-  companyInfo: state => state.companyInfo
+  companyInfo: state => state.companyInfo,
+  memberDynamics: state => state.memberDynamics
 }
 
 const actions = {
@@ -301,6 +310,38 @@ const actions = {
    */
   noCheckGroupListsApi(store) {
     store.commit(NO_CHECK_UPDATE_GROUP_LISTS)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取分组列表
+   * @return   {[type]}          [description]
+   */
+  getMemberDynamicsListApi(store, params) {
+    return getMemberDynamicsListApi(params)
+      .then(res => {
+        store.commit(GET_MENBER_DYNAMICS_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取分组列表
+   * @return   {[type]}          [description]
+   */
+  getMemberCheckNewDynamicsApi(store, params) {
+    return getMemberCheckNewDynamicsApi(params)
+      .then(res => {
+        // store.commit(GET_MENBER_DYNAMICS_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
   }
 }
 
