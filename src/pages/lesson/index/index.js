@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getLessonListsApi } from 'API/lesson'
+import { getLessonListsApi, sortUpdateApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -70,7 +70,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '20%',
-      filterPlacement: '类型的提示文案'
+      filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
     }
   ]
 
@@ -144,12 +144,28 @@ export default class CourseList extends Vue {
   }
 
   //设置排序
-  setSort(type){
-    if(type==='up'){
-
-    }else if(type==='down'){
-      
+  setSort(type,item){
+    console.log(type)
+    let data = {
+      course_section_id: item.courseSectionId,
+      isUp: ''
     }
+    if(type==='up'){
+      data.isUp=1
+    }else if(type==='down'){
+      data.isUp=0
+    }
+
+    sortUpdateApi(data).then(res=>{
+      console.log(res.data)
+        this.$message({
+          message: '成功',
+          type: 'success'
+        })
+      this.getGroupList()
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
   }
 
   todoAction(type, item) {

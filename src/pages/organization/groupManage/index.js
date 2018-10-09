@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, deleteGroupApi, putGroupApi } from '@/store/api/organization.js'
 
 @Component({
   name: 'group-manage',
@@ -63,13 +63,29 @@ export default class groupList extends Vue {
     this.init()
   }
 
-  //设置排序
-  setSort(type){
+  // 设置排序
+  setSort(type,item){
+    console.log(item)
+    let data = {
+      id: item.groupId,
+      sort: '1'
+    }
     if(type==='up'){
+      data.sort='1'
 
     }else if(type==='down'){
-      
+      data.sort='2'
     }
+
+    putGroupApi(data).then(res=>{
+      this.$message({
+          message: '成功',
+          type: 'success'
+        })
+      this.getGroupList()
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
   }
 
 
@@ -97,6 +113,11 @@ export default class groupList extends Vue {
     
     getGroupListApi(data).then(res => {
       console.log(res.data.data)
+
+      res.data.data.map(function(value,index){
+          value.sort="1"
+          value.index = index
+      })
       this.groupList = {
         list: res.data.data,
         total: res.data.meta.total

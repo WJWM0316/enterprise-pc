@@ -38,11 +38,11 @@
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
 
-          <div class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></div>
-          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up')" v-else />
+          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></img>
+          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up', props.scope.row)" v-else />
 
-          <div class="sort_blo up forbid" v-if="groupList.list.length < zikeDefaultPageSize && props.scope.row.index=== groupList.list.length-1"></div>
-          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down')" v-else />
+          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="groupList.list.length < zikeDefaultPageSize && props.scope.row.index=== groupList.list.length-1"></img>
+          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down', props.scope.row)" v-else />
         </div>
 
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
