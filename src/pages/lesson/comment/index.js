@@ -3,7 +3,8 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,postLessonPunchCommentApi } from 'API/lesson'
+
+import { getLessonSearchCommentListsApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -31,10 +32,17 @@ export default class CourseList extends Vue {
   fields = [
     {
       prop: 'cardContent',
-      label: '打卡内容',
+      label: '评论内容',
       align: 'center',
       showTips: 'no',
       width: '30%'
+    },
+    {
+      prop: 'releaseUser',
+      label: '发布者',
+      align: 'center',
+      showTips: 'no',
+      width: '15%'
     },
     {
       prop: 'punchCardStatus',
@@ -60,13 +68,6 @@ export default class CourseList extends Vue {
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
-      prop: 'releaseUser',
-      label: '发布者',
-      align: 'center',
-      showTips: 'no',
-      width: '15%'
-    },
-    {
       prop: 'punchCardTime',
       label: '建立时间',
       align: 'center',
@@ -78,7 +79,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>优秀打卡/取消优秀：把打卡内容设置为优秀打卡或者取消优秀打卡<br/>评论：进入评论内容管理页面'
+      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>热门评论/取消热门：把打卡内容设置为热门评论或者取消热门评论<br/>评论：进入评论内容管理页面'
     }
   ]
 
@@ -113,7 +114,7 @@ export default class CourseList extends Vue {
     height: '192px',
     confirm: ''
   }
-  cardList = []
+  commentList = []
   course_id = ''
   /**
    * 初始化表单、分页页面数据
@@ -121,8 +122,10 @@ export default class CourseList extends Vue {
   init() {
     this.form = Object.assign(this.form,this.$route.query || {})
     console.log(this.form)
-    this.course_section_id = this.$route.query.course_section_id
-    this.course_id = this.$route.query.course_id
+    this.postId = this.$route.query.postId
+
+    //测试结束删除
+    this.postId = 5 
     this.getLists()
   }
 
@@ -153,9 +156,9 @@ export default class CourseList extends Vue {
     }
 
     console.log(param)
-    getLessonPunchListsApi(param).then(res=>{
+    getLessonSearchCommentListsApi(param).then(res=>{
       console.log(res)
-      this.cardList = {
+      this.commentList = {
         list : res.data.data,
         total: res.data.meta.total
       }

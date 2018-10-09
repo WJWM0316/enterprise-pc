@@ -41,12 +41,12 @@
               type="text"
               v-if="props.scope.row.isExcellentCard==1"
               @click="todoAction('cancelExcellent', props.scope.row)">
-                取消优秀
+                取消热门
               </el-button>
                <el-button
               type="text" v-else
               @click="todoAction('excellent', props.scope.row)">
-                优秀打卡
+                热门评论
               </el-button>
             </div>
             <div v-else>
