@@ -17,3 +17,7 @@ export const getMenberListsApi = params => request('/member', 'get', params)
 export const getCompanyInfoApi = params => request('/company', 'get')
 // 获取分组成员列表
 export const getGroupListsApi = params => request('/group', 'get', params)
+//获取成员动态
+export const getMemberDynamicsListApi = params => request('/member/dynamics', 'get', params)
+//获取是否有最新动态
+export const getMemberCheckNewDynamicsApi = params => request(`/member/checkNewDynamics/${params.timestamp}`, 'get')

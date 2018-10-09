@@ -25,7 +25,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getJobCircleDetailsApi',
       'getJobCircleHitListsApi',
       'getJobCircleOrganizationListsApi',
-      'updateGroupListsApi'
+      'updateGroupListsApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -282,6 +283,7 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
+        this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
@@ -418,6 +420,7 @@ export default class WorkZonePost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    console.log(this.form[type])
   }
 
   /**
@@ -429,9 +432,11 @@ export default class WorkZonePost extends Vue {
     const type = this.models.currentModalName
     this.models.show = false
     // 没有点击确定按钮
-    this.form[type].value = this.form[type].noEdit.value
-    this.form[type].tem = this.form[type].noEdit.tem
-    this.form[type].show = this.form[type].noEdit.show
+    if(this.models.show) {
+      this.form[type].value = this.form[type].noEdit.value
+      this.form[type].tem = this.form[type].noEdit.tem
+      this.form[type].show = this.form[type].noEdit.show
+    }
   }
 
   /**
@@ -441,6 +446,13 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    switch(type) {
+      case 'owner_uid':
+        this.form.check_owner_uid = ''
+        break
+      default:
+        break
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -451,11 +463,27 @@ export default class WorkZonePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index) {
-    const value = this.form[type].value.split(',').splice(index, 1)
+  removeMultipleCheck(type, index, item) {
+    const temArray = this.form[type].value.split(',')
+    temArray.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = value.join(',')
+    this.form[type].value = temArray.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    switch(type) {
+      case 'members':
+        if(this.form.members.tem <= 0) {
+          this.form.check_members = ''
+        }
+        break
+      case 'organizations':
+        if(this.form.organizations.tem <= 0) {
+          this.noCheckGroupListsApi()
+          this.form.check_organizations = ''
+        }
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -484,15 +512,16 @@ export default class WorkZonePost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    const menberLists = [...this.menberLists]
     const value = []
-    menberLists.map(field => {
+    this.menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
-
     this.form[type].value = value.join(',')
+    console.log(value)
+    console.log(type)
+    console.log(this.form[type])
   }
 
   /**

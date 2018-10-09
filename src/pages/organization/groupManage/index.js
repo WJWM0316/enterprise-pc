@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getMemberListApi, getGroupListApi, deleteGroupApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, deleteGroupApi, putGroupApi } from '@/store/api/organization.js'
 
 @Component({
   name: 'group-manage',
@@ -63,6 +63,31 @@ export default class groupList extends Vue {
     this.init()
   }
 
+  // 设置排序
+  setSort(type,item){
+    console.log(item)
+    let data = {
+      id: item.groupId,
+      sort: '1'
+    }
+    if(type==='up'){
+      data.sort='1'
+
+    }else if(type==='down'){
+      data.sort='2'
+    }
+
+    putGroupApi(data).then(res=>{
+      this.$message({
+          message: '成功',
+          type: 'success'
+        })
+      this.getGroupList()
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
+  }
+
 
   /**
    * 初始化表单、分页页面数据
@@ -75,12 +100,28 @@ export default class groupList extends Vue {
   }
 
   /**
-   * 获取课程列表
+   * 获取列表
    */
-  getGroupList() {
-    getGroupListApi().then(res => {
+  getGroupList({ page, pageSize } = {}) {
+    let data = {
+      isHaveMember: 0,
+      page: page || this.form.page || 1,
+      pageCount: this.zikeDefaultPageSize
+    }
+
+    this.form.page = data.page
+    
+    getGroupListApi(data).then(res => {
       console.log(res.data.data)
-      this.groupList = res.data.data
+
+      res.data.data.map(function(value,index){
+          value.sort="1"
+          value.index = index
+      })
+      this.groupList = {
+        list: res.data.data,
+        total: res.data.meta.total
+      }
     })
   }
 
@@ -91,9 +132,7 @@ export default class groupList extends Vue {
         message: res.data.msg,
         type: 'success'
       });
-
       this.init()
-
     })
   }
 

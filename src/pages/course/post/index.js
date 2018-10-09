@@ -24,6 +24,7 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getTutorListApi',
       'updateGroupListsApi',
       'updateCategoryListsApi',
+      'noCheckedCategoryListsApi',
       'getCategoryApi',
       'postCourseApi',
       'putCourseApi',
@@ -32,7 +33,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCoursePeopleApi',
       'getCourseOrganizationsApi',
       'getCourseCategoryApi',
-      'getCoursePeopleHitsApi'
+      'getCoursePeopleHitsApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -336,6 +338,9 @@ export default class CoursePost extends Vue {
   	switch(type) {
   		case 'category_id':
   			this.models.title = '选择分类'
+        this.form[type].tem.length
+          ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+          : this.noCheckedCategoryListsApi()
   			break
   		case 'master_uid':
   			this.models.title = '选择导师'
@@ -512,9 +517,11 @@ export default class CoursePost extends Vue {
     const type = this.models.currentModalName
     this.models.show = false
     // 没有点击确定按钮
-    this.form[type].value = this.form[type].noEdit.value
-    this.form[type].tem = this.form[type].noEdit.tem
-    this.form[type].show = this.form[type].noEdit.show
+    if(this.models.show) {
+      this.form[type].value = this.form[type].noEdit.value
+      this.form[type].tem = this.form[type].noEdit.tem
+      this.form[type].show = this.form[type].noEdit.show
+    }
   }
 
   /**
@@ -524,8 +531,16 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
-    if(type === 'category_id') {
-      this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId, type: 'multiple'})
+    switch(type) {
+      case 'category_id':
+        this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+        this.form.check_category_id = ''
+        break
+      case 'master_uid':
+        this.form.check_master_uid = ''
+        break
+      default:
+        break
     }
     this.form[type].value = ''
     this.form[type].tem = []
@@ -537,13 +552,20 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index, item) {
+  removeMultipleCheck(type, index, item) {   
     const value = this.form[type].value.split(',').splice(index, 1)
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
-    if(type === 'group_id') {
-      this.updateGroupListsApi({groupId: item.groupId})
+    switch(type) {
+      case 'group_id':
+        if(this.form.group_id.tem <= 0) {
+          this.noCheckGroupListsApi()
+          this.form.check_group_id = ''
+        }
+        break
+      default:
+        break
     }
   }
 

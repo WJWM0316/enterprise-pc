@@ -73,7 +73,7 @@
           <div class="selected-item" v-show="form.organizations.show">
             已选择：
             <span
-              @click="removeMultipleCheck('organizations', oIndex)"
+              @click="removeMultipleCheck('organizations', oIndex, oItem)"
               :key="oIndex"
               v-for="(oItem, oIndex) in form.organizations.tem">
                 {{oItem}}<i class="el-icon-close"></i>

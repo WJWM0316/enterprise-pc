@@ -38,4 +38,22 @@
       color:rgba(215,171,112,1);
     }
   }
+  .sort {
+    .sort_blo {
+      width:14px;
+      height:10px;
+      display: block;
+      margin: 0 auto;
+      cursor: pointer;
+      //background:rgba(188,188,188,1);
+      &.up {
+        margin-bottom: 8px;
+      }
+      &.forbid {
+        cursor:inherit;
+        //background:rgba(237,237,237,1);
+      }
+    }
+  }
 }
+

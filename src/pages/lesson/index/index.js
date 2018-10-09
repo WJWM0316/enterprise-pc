@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getLessonListsApi } from 'API/lesson'
+import { getLessonListsApi, sortUpdateApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -61,39 +61,22 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'sort',
-      label: '权 重',
+      label: '排序',
       align: 'center',
-      showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'sort-全部'
-        },
-        {
-          label: '升序',
-          value: 'sort-升序'
-        },
-        {
-          label: '降序',
-          value: 'sort-降序'
-        }
-      ],
-      filterPlacement: '权重的提示文案'
+      width: '10%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       width: '20%',
-      filterPlacement: '类型的提示文案'
+      filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
     }
   ]
 
   // 搜索表单
   form = {
-    name: ''
+    name: '',
   }
 
   // 初始化的搜索表单
@@ -139,12 +122,14 @@ export default class CourseList extends Vue {
       pageCount: this.zikeDefaultPageSize
     }
 
-    /*console.log(param)
-    if(this.form.name) {
-      params.name = this.form.name
-    }*/
-
+    //排序判断用
+    this.form.page = param.page
     getLessonListsApi(param).then(res=>{
+
+      res.data.data.map(function(value,index){
+          value.sort="1"
+          value.index = index
+      })
       this.lessonList = {
         list: res.data.data,
         total: res.data.meta.total
@@ -159,8 +144,28 @@ export default class CourseList extends Vue {
   }
 
   //设置排序
-  setSort(){
-    
+  setSort(type,item){
+    console.log(type)
+    let data = {
+      course_section_id: item.courseSectionId,
+      isUp: ''
+    }
+    if(type==='up'){
+      data.isUp=1
+    }else if(type==='down'){
+      data.isUp=0
+    }
+
+    sortUpdateApi(data).then(res=>{
+      console.log(res.data)
+      this.$message({
+        message: '成功',
+        type: 'success'
+      })
+      this.getLists()
+    }).catch(err => {
+      this.$message.error(err.data.msg);
+    })
   }
 
   todoAction(type, item) {
@@ -180,7 +185,13 @@ export default class CourseList extends Vue {
         this.$router.push({ name: 'lessonAdd',query:{course_id: this.course_id}})
         break
       case 'punch':
-        this.$router.push({ name: 'punchCard',query:{course_section_id: item.courseSectionId}})
+        this.$router.push({ 
+          name: 'punchCard',
+          query:{
+            course_section_id: item.courseSectionId,
+            course_id:  this.course_id
+          }
+        })
         break
       default:
         break

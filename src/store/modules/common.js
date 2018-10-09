@@ -8,11 +8,13 @@ import {
   GET_CATEGORY_LIST,
   GET_MENBER_LISTS,
   UPDATE_CATEGORY_LIST,
-  UPDATE_CATEGORY_LIST_BY_ID,
+  UPDATE_CATEGORY_LIST_NO_CHECKED,
   GET_COMPANY_INFOS,
   UPDATE_GROUP_LISTS,
+  NO_CHECK_UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
-  SELECT_ALL_MENBER_LISTS
+  SELECT_ALL_MENBER_LISTS,
+  GET_MENBER_DYNAMICS_LIST
 } from '../mutation-types'
 
 import {
@@ -22,7 +24,9 @@ import {
   getMenberListsApi,
   getCategoryApi,
   getCompanyInfoApi,
-  getGroupListsApi
+  getGroupListsApi,
+  getMemberDynamicsListApi,
+  getMemberCheckNewDynamicsApi
 } from 'API/common'
 
 const state = {
@@ -38,7 +42,8 @@ const state = {
   showDialog: false,
   ajaxLoading: false,
   openModal: false, // 是否处于打开modal层状态
-  companyInfo: {}
+  companyInfo: {},
+  memberDynamics: {}
 }
 
 const mutations = {
@@ -74,14 +79,12 @@ const mutations = {
   // 更新分类列表
   [UPDATE_CATEGORY_LIST] (state, params) {
     state.categoryList.map(field => {
-      field.active = params.categoryId === field.categoryId ? !field.active : false
+      field.active = params.categoryId === field.categoryId ? true : false
     })
   },
    // 更新分类列表
-  [UPDATE_CATEGORY_LIST_BY_ID] (state, params) {
-    state.categoryList.map(field => {
-      field.active = params.categoryId === field.categoryId ? !field.active : false
-    })
+  [UPDATE_CATEGORY_LIST_NO_CHECKED] (state) {
+    state.categoryList.map(field => field.active = false)
   },
   [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
@@ -104,12 +107,27 @@ const mutations = {
     state.groupLists = data
   },
   [UPDATE_GROUP_LISTS] (state, params) {
+    if(!params.list) {
+      state.groupLists.map(field => {
+        if(field.groupId === params.groupId) {
+          field.active = !field.active
+        }
+      })
+    } else {
+      state.groupLists.map(field => {
+        field.active = params.list.includes(String(field.groupId)) ? true : false
+      })
+    }
+  },
+  [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
     state.groupLists.map(field => {
-      if(field.groupId === params.groupId) {
-        field.active = !field.active
-      }
+      field.active = false
     })
   },
+  // 获取成员动态
+  [GET_MENBER_DYNAMICS_LIST] (state, data) {
+    state.memberDynamics = data
+  }
 }
 
 const getters = {
@@ -121,7 +139,8 @@ const getters = {
   uploadConfig: state => state.uploadConfig,
   menberLists: state => state.menberLists,
   categoryList: state => state.categoryList,
-  companyInfo: state => state.companyInfo
+  companyInfo: state => state.companyInfo,
+  memberDynamics: state => state.memberDynamics
 }
 
 const actions = {
@@ -205,6 +224,15 @@ const actions = {
   /**
    * @Author   小书包
    * @DateTime 2018-09-20
+   * @detail   都不选
+   * @return   {[type]}          [description]
+   */
+  noCheckedCategoryListsApi (store, params) {
+    store.commit(UPDATE_CATEGORY_LIST_NO_CHECKED)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-20
    * @detail   上传文件
    * @return   {[type]}          [description]
    */
@@ -274,6 +302,47 @@ const actions = {
   updateGroupListsApi(store, params) {
     store.commit(UPDATE_GROUP_LISTS, params)
   },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   分组全不选
+   * @return   {[type]}          [description]
+   */
+  noCheckGroupListsApi(store) {
+    store.commit(NO_CHECK_UPDATE_GROUP_LISTS)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取分组列表
+   * @return   {[type]}          [description]
+   */
+  getMemberDynamicsListApi(store, params) {
+    return getMemberDynamicsListApi(params)
+      .then(res => {
+        store.commit(GET_MENBER_DYNAMICS_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取分组列表
+   * @return   {[type]}          [description]
+   */
+  getMemberCheckNewDynamicsApi(store, params) {
+    return getMemberCheckNewDynamicsApi(params)
+      .then(res => {
+        // store.commit(GET_MENBER_DYNAMICS_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

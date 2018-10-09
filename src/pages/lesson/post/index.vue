@@ -53,10 +53,12 @@
             :before-upload="beforeFileUpload"
             :on-error="handleFileError"
             :on-success="handleFileSuccess"
+            :on-change="on_change"
             :show-file-list="false"
             :limit="fileUpload.limit"
-            :multiple="true"
+            :multiple="false"
             :on-progress="uploadFileProcess">
+
             <el-button slot="trigger" size="large" type="primary" :class="{'btn-change': fileUpload.show}">{{fileUpload.btnTxt}}</el-button>
           </el-upload>
           <div class="tips">{{fileUpload.tips}}</div>

@@ -399,7 +399,6 @@ export const routes = [
   // 个人中心路由
   {
     path: '/user',
-    name: 'user',
     title: '个人中心',
     component: () => import(/* webpackChunkName: "user" */ '@/pages/user/index.vue'),
     redirect: {
@@ -413,7 +412,7 @@ export const routes = [
     },
     children: [
       {
-        path: 'info',
+        path: 'info/:id',
         name: 'userInfos',
         component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/index.vue'),
         meta: {

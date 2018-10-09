@@ -12,10 +12,12 @@
       </el-col>
     </el-row>
     <table-list
-    :list="groupList"
+    :list="groupList.list"
     :fields="fields"
+    :total="groupList.total"
     >
       <template scope="props" slot="columns">
+
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
@@ -32,6 +34,15 @@
             >
               删除
           </el-button>
+        </div>
+        <!-- 排序 -->
+        <div v-else-if="props.scope.column.property === 'sort'" class="sort">
+
+          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></img>
+          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up', props.scope.row)" v-else />
+
+          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="groupList.list.length < zikeDefaultPageSize && props.scope.row.index=== groupList.list.length-1"></img>
+          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down', props.scope.row)" v-else />
         </div>
 
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
@@ -101,6 +112,22 @@ export default CourseList
   }
   .tutor-name {
     color: #929292;
+  }
+
+  .sort {
+    .sort_blo {
+      width:14px;
+      height:10px;
+      display: block;
+      margin: 0 auto;
+      //background:rgba(188,188,188,1);
+      &.up {
+        margin-bottom: 8px;
+      }
+      &.forbid {
+        //background:rgba(237,237,237,1);
+      }
+    }
   }
 }
 </style>

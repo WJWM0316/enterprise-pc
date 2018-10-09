@@ -51,4 +51,8 @@ export const getLessonEditApi = params => request(`/CourseSection/${params.id}/e
 //编辑课程课节
 export const lessonEditApi = params => request(`/CourseSection/${params.lessonId}`, 'put', params)
 
+//课程课节列表-修改排序
+export const sortUpdateApi = params => request(`/CourseSection/sortUpdate`, 'post', params)
+
+
 
