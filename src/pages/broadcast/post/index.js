@@ -633,7 +633,6 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.groupList = Object.assign(this.form.groupList, data)
-    console.log(this.form.groupList)
   }
 
   /**

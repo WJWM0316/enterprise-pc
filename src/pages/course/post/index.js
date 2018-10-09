@@ -677,6 +677,7 @@ export default class CoursePost extends Vue {
               .then(() => {
                 this.categoryModal.loading = false
                 this.categoryModal.show = false
+                this.categoryModal.name = ''
               })
         })
         .catch(err => {
