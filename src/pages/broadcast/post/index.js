@@ -339,6 +339,7 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
+        this.getGroupListsApi()
         this.form.groupList.value.length
           ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
           : this.noCheckGroupListsApi()

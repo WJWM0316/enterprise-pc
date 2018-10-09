@@ -347,6 +347,7 @@ export default class CoursePost extends Vue {
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
+        this.getGroupListsApi()
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
