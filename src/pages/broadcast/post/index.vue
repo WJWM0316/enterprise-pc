@@ -19,7 +19,7 @@
         prop="liveName"
         class="limit-width"
         >
-          <el-input v-model="form.liveName" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
+          <el-input v-model="form.liveName" style="width: 380px;" placeholder="最多25个字" />
       </el-form-item>
       
       <!-- 直播分类 -->
@@ -31,7 +31,7 @@
           <div class="selected-item" v-show="form.categoryList.show">
             已选择：
             <span
-              @click="removeMultipleCheck('categoryList', cateIndex)"
+              @click="removeSingleChecked('categoryList')"
               :key="cateIndex"
               v-for="(cateItem, cateIndex) in form.categoryList.tem">
                 {{ cateItem.categoryName }}<i class="el-icon-close"></i>
@@ -340,7 +340,7 @@
             </el-button>
             <p class="tips">
               如果需要对部门组织进行修改，请点击左侧的
-              <router-link :to="{name: 'organization'}" class="set">【组织】</router-link>
+              <router-link :to="{name: 'organization'}" class="set" target="_blank">【组织】</router-link>
               进行修改；如无权限，请联系管理员修改。
             </p>
           </div>

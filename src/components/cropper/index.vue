@@ -110,7 +110,6 @@ export default class ComponentCropper extends Vue {
     // 允许文件格式 jpg\png
     const ALLOW_FILE_TYPE = [
       'png',
-      'jpeg',
       'jpg'
     ]
 
@@ -120,7 +119,7 @@ export default class ComponentCropper extends Vue {
       if (ALLOW_FILE_TYPE.indexOf(ext) === -1) {
         this.$emit('fail', '选择的文件格式不对')
       } else if (file.size > ALLOW_MAX_SIZE) {
-        this.$emit('fail', '选择的文件太大啦')
+        this.$emit('fail', '上传文件大小不符，文件不能超过 20 MB')
       } else {
         let inputImage = document.querySelector('#uplaod-file')
         let URL = window.URL || window.webkitURL

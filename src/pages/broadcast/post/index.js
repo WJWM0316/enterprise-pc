@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import { editorRules } from 'FILTERS/rules'
+// import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
 
@@ -25,6 +25,7 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCategoryListsApi',
       'getTutorListApi',
       'updateGroupListsApi',
+      'noCheckedCategoryListsApi',
       'updateCategoryListsApi',
       'postLiveApi',
       'putLiveApi',
@@ -143,7 +144,8 @@ export default class BroadcastPost extends Vue {
   rules = {
     liveName: [
       { required: true, message: '请输入直播名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '直播名称最多25个字', trigger: 'blur' }
     ],
     check_categoryList: [
       { required: true, message: '请选择直播分类', trigger: 'blur' }
@@ -327,6 +329,9 @@ export default class BroadcastPost extends Vue {
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
+        this.form[type].tem.length
+          ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+          : this.noCheckedCategoryListsApi()
   			break
   		case 'uid':
   			this.models.title = '选择导师'
@@ -489,7 +494,6 @@ export default class BroadcastPost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
-    console.log(this.form[type])
   }
 
   /**
@@ -504,7 +508,6 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    console.log(this.form[type])
   }
 
   /**
@@ -514,6 +517,14 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    switch(type) {
+      case 'categoryList':
+        this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+        this.form.check_categoryList = ''
+        break
+      default:
+        break
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -529,8 +540,15 @@ export default class BroadcastPost extends Vue {
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
-    if(type === 'groupList') {
-      this.updateGroupListsApi({groupId: item.groupId})
+    switch(type) {
+      case 'groupList':
+        this.updateGroupListsApi({groupId: item.groupId})
+        if(this.form.groupList.tem <= 0) {
+          this.form.check_groupList = ''
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -620,15 +638,14 @@ export default class BroadcastPost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    const menberLists = [...this.menberLists]
     const value = []
-    menberLists.map(field => {
+    this.menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
-
     this.form[type].value = value.join(',')
+    console.log(type)
   }
 
   /**
@@ -682,6 +699,10 @@ export default class BroadcastPost extends Vue {
     this.form.coverImgId.value = ''
     this.form.coverImgId.tem = {}
     this.form.check_coverImgId = ''
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }

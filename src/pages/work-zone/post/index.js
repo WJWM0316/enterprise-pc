@@ -123,7 +123,8 @@ export default class WorkZonePost extends Vue {
   rules = {
     name: [
       { required: true, message: '请输入工作圈名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '工作圈名称最多25个字', trigger: 'blur' }
     ],
     check_owner_uid: [
       { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
@@ -417,6 +418,7 @@ export default class WorkZonePost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    console.log(this.form[type])
   }
 
   /**
@@ -440,6 +442,13 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    switch(type) {
+      case 'owner_uid':
+        this.form.check_owner_uid = ''
+        break
+      default:
+        break
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -450,11 +459,26 @@ export default class WorkZonePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index) {
-    const value = this.form[type].value.split(',').splice(index, 1)
+  removeMultipleCheck(type, index, item) {
+    const temArray = this.form[type].value.split(',')
+    temArray.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = value.join(',')
+    this.form[type].value = temArray.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    switch(type) {
+      case 'members':
+        if(this.form.members.tem <= 0) {
+          this.form.check_members = ''
+        }
+        break
+      case 'organizations':
+        if(this.form.organizations.tem <= 0) {
+          this.form.check_organizations = ''
+        }
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -483,15 +507,16 @@ export default class WorkZonePost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item) {
-    const menberLists = [...this.menberLists]
     const value = []
-    menberLists.map(field => {
+    this.menberLists.map(field => {
       if(this.form[type].tem.includes(field.realname)) {
         value.push(field.uid)
       }
     })
-
     this.form[type].value = value.join(',')
+    console.log(value)
+    console.log(type)
+    console.log(this.form[type])
   }
 
   /**
@@ -551,6 +576,10 @@ export default class WorkZonePost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }

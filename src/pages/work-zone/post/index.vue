@@ -19,7 +19,7 @@
         prop="name"
         class="limit-width"
         >
-          <el-input v-model="form.name" :maxlength="25" style="width: 380px;" placeholder="最多25字" />
+          <el-input v-model="form.name" style="width: 380px;" placeholder="最多25个字" />
       </el-form-item>
       
       <!-- 选择圈主 -->
@@ -73,7 +73,7 @@
           <div class="selected-item" v-show="form.organizations.show">
             已选择：
             <span
-              @click="removeMultipleCheck('organizations', oIndex)"
+              @click="removeMultipleCheck('organizations', oIndex, oItem)"
               :key="oIndex"
               v-for="(oItem, oIndex) in form.organizations.tem">
                 {{oItem}}<i class="el-icon-close"></i>

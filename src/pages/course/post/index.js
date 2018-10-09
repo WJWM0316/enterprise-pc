@@ -24,6 +24,7 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getTutorListApi',
       'updateGroupListsApi',
       'updateCategoryListsApi',
+      'noCheckedCategoryListsApi',
       'getCategoryApi',
       'postCourseApi',
       'putCourseApi',
@@ -146,7 +147,8 @@ export default class CoursePost extends Vue {
   rules = {
     title: [
       { required: true, message: '请输入课程名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
+      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { min: 1, max: 25, message: '课程名称最多25个字', trigger: 'blur' }
     ],
     check_category_id: [
       { required: true, message: '请选择课程分类', trigger: 'blur' }
@@ -335,6 +337,9 @@ export default class CoursePost extends Vue {
   	switch(type) {
   		case 'category_id':
   			this.models.title = '选择分类'
+        this.form[type].tem.length
+          ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+          : this.noCheckedCategoryListsApi()
   			break
   		case 'master_uid':
   			this.models.title = '选择导师'
@@ -523,6 +528,17 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   removeSingleChecked(type) {
+    switch(type) {
+      case 'category_id':
+        this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
+        this.form.check_category_id = ''
+        break
+      case 'master_uid':
+        this.form.check_master_uid = ''
+        break
+      default:
+        break
+    }
     this.form[type].value = ''
     this.form[type].tem = []
     this.form[type].show = false
@@ -533,13 +549,19 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index, item) {
+  removeMultipleCheck(type, index, item) {   
     const value = this.form[type].value.split(',').splice(index, 1)
     this.form[type].tem.splice(index, 1)
     this.form[type].value = value.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
-    if(type === 'group_id') {
-      this.updateGroupListsApi({groupId: item.groupId})
+    switch(type) {
+      case 'group_id':
+        if(this.form.group_id.tem <= 0) {
+          this.form.check_group_id = ''
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -686,6 +708,10 @@ export default class CoursePost extends Vue {
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true
-    this.$message.error(`${res}~`)
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 }
