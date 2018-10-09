@@ -122,6 +122,7 @@ export default class CourseList extends Vue {
     this.form = Object.assign(this.form,this.$route.query || {})
     console.log(this.form)
     this.course_section_id = this.$route.query.course_section_id
+    this.course_id = this.$route.query.course_id
     this.getLists()
   }
 

@@ -2,7 +2,7 @@
   <section class="page-course-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'lessonList' }">课节管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="`/lesson/index?course_id=${course_id}`">课节管理</el-breadcrumb-item>
       <el-breadcrumb-item>打卡管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">

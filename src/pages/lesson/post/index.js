@@ -326,6 +326,11 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.btnTxt = '重新上传'
     this.fileUpload.params.attach_type = file.type.split('/')[0]
   }
+
+
+  on_change(file){
+    console.log(file)
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -343,6 +348,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileError(err, file, fileList) {
+    console.log(err,file)
+
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'

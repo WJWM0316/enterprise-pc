@@ -39,6 +39,15 @@
               打卡管理
             </el-button>
         </div>
+        <!-- 排序 -->
+        <div v-else-if="props.scope.column.property === 'sort'" class="sort">
+
+          <div class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></div>
+          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up')" v-else />
+
+          <div class="sort_blo up forbid" v-if="lessonList.list.length < zikeDefaultPageSize && props.scope.row.index===lessonList.list.length-1"></div>
+          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down')" v-else />
+        </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'title'" class="flex-box">
           <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>

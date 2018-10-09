@@ -61,26 +61,9 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'sort',
-      label: '权 重',
+      label: '排序',
       align: 'center',
-      showTips: 'no',
-      width: '10%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'sort-全部'
-        },
-        {
-          label: '升序',
-          value: 'sort-升序'
-        },
-        {
-          label: '降序',
-          value: 'sort-降序'
-        }
-      ],
-      filterPlacement: '权重的提示文案'
+      width: '10%'
     },
     {
       prop: 'actions',
@@ -93,7 +76,7 @@ export default class CourseList extends Vue {
 
   // 搜索表单
   form = {
-    name: ''
+    name: '',
   }
 
   // 初始化的搜索表单
@@ -139,12 +122,14 @@ export default class CourseList extends Vue {
       pageCount: this.zikeDefaultPageSize
     }
 
-    /*console.log(param)
-    if(this.form.name) {
-      params.name = this.form.name
-    }*/
-
+    //排序判断用
+    this.form.page = param.page
     getLessonListsApi(param).then(res=>{
+
+      res.data.data.map(function(value,index){
+          value.sort="1"
+          value.index = index
+      })
       this.lessonList = {
         list: res.data.data,
         total: res.data.meta.total
@@ -159,8 +144,12 @@ export default class CourseList extends Vue {
   }
 
   //设置排序
-  setSort(){
-    
+  setSort(type){
+    if(type==='up'){
+
+    }else if(type==='down'){
+      
+    }
   }
 
   todoAction(type, item) {
@@ -180,7 +169,13 @@ export default class CourseList extends Vue {
         this.$router.push({ name: 'lessonAdd',query:{course_id: this.course_id}})
         break
       case 'punch':
-        this.$router.push({ name: 'punchCard',query:{course_section_id: item.courseSectionId}})
+        this.$router.push({ 
+          name: 'punchCard',
+          query:{
+            course_section_id: item.courseSectionId,
+            course_id:  this.course_id
+          }
+        })
         break
       default:
         break

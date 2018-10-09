@@ -63,6 +63,15 @@ export default class groupList extends Vue {
     this.init()
   }
 
+  //设置排序
+  setSort(type){
+    if(type==='up'){
+
+    }else if(type==='down'){
+      
+    }
+  }
+
 
   /**
    * 初始化表单、分页页面数据
@@ -75,12 +84,23 @@ export default class groupList extends Vue {
   }
 
   /**
-   * 获取课程列表
+   * 获取列表
    */
-  getGroupList() {
-    getGroupListApi().then(res => {
+  getGroupList({ page, pageSize } = {}) {
+    let data = {
+      isHaveMember: 0,
+      page: page || this.form.page || 1,
+      pageCount: this.zikeDefaultPageSize
+    }
+
+    this.form.page = data.page
+    
+    getGroupListApi(data).then(res => {
       console.log(res.data.data)
-      this.groupList = res.data.data
+      this.groupList = {
+        list: res.data.data,
+        total: res.data.meta.total
+      }
     })
   }
 
@@ -91,9 +111,7 @@ export default class groupList extends Vue {
         message: res.data.msg,
         type: 'success'
       });
-
       this.init()
-
     })
   }
 
