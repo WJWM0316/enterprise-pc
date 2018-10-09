@@ -175,7 +175,7 @@ export default class WorkZonePost extends Vue {
     } else {
       callback()
     }
-    this.form.name = value.replace(/\s*/g, '')
+    this.form.name = value.trim()
   }
   /**
    * @Author   小书包

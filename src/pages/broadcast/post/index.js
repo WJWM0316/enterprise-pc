@@ -203,7 +203,7 @@ export default class BroadcastPost extends Vue {
     } else {
       callback()
     }
-    this.form.liveName = value.replace(/\s*/g, '')
+    this.form.liveName = value.trim()
   }
   /**
    * @Author   小书包

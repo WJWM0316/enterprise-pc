@@ -214,7 +214,7 @@ export default class CoursePost extends Vue {
     } else {
       callback()
     }
-    this.form.title = value.replace(/\s*/g, '')
+    this.form.title = value.trim()
   }
   /**
    * @Author   小书包
