@@ -118,7 +118,6 @@ export default class WorkZonePost extends Vue {
   }
 
   toLessonList(){
-    console.log(111)
     this.$router.push(
       { name: 'lessonList',
         query: {

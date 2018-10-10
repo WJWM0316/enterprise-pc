@@ -4,17 +4,18 @@
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item>设置</el-breadcrumb-item>
     </el-breadcrumb>
-    <p>* 这里的排序会影响员工端的分类排序。</p>
 
     <el-row class="header">
-      <el-col :span="24" class="right-content">
+      <el-col :span="12" class="left-content">
+        <p style="color:rgba(188,188,188,1);font-size:12px;">* 这里的排序会影响员工端的分类排序。</p>
+      </el-col>
+      <el-col :span="12" class="right-content">
         <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right">新建分类</el-button>
       </el-col>
     </el-row>
     <table-list
-    :list="groupList.list"
+    :list="classifyList.list"
     :fields="fields"
-    :total="groupList.total"
     >
       <template scope="props" slot="columns">
 
@@ -41,7 +42,7 @@
           <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></img>
           <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up', props.scope.row)" v-else />
 
-          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="groupList.list.length < zikeDefaultPageSize && props.scope.row.index=== groupList.list.length-1"></img>
+          <img src="~IMAGES/icon_down_dis.png" class="sort_blo up forbid" v-if="props.scope.row.index-0+1 === classifyList.list.length"></img>
           <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down', props.scope.row)" v-else />
         </div>
 
@@ -49,6 +50,35 @@
 
       </template>
     </table-list>
+
+    <modal-dialog
+      v-model="model.show"
+      :title="model.title"
+      :show-close="model.showClose"
+      :confirm-text="model.confirmText"
+      :type="model.type"
+      :width="model.width"
+      :min-height="model.minHeight"
+      @confirm="confirm"
+      >
+        <div slot="title" style="margin-left: 22px;">
+          <h3 class="dialog-title">
+            {{model.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html"  :class="{'txt': model.txt.length>0}">
+          <div class="customize-html-content">
+            <p class="dialog_p" v-if="model.txt.length>0">{{model.txt}} </p>
+            <div class="mode_input" v-else >
+              <el-input v-model="form.name" placeholder="请输入分类名，限制10个字以内" :maxlength="10" style="width: 348px;margin-top: 10px;margin-left: 20px;" />
+              <p class="model_hint" v-show="form.hintTXt.length>0">
+                {{form.hintTXt}}
+              </p>
+            </div>
+            
+          </div>
+        </div>
+    </modal-dialog>
   </section>
 </template>
 
@@ -129,5 +159,22 @@ export default CourseList
       }
     }
   }
+  .txt {
+    margin-left: 40px;
+  }
+  .mode_input {
+    position: relative;
+    .model_hint {
+      font-size:14px;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(255,52,52,1);
+      margin-left: 20px;
+      position: absolute;
+      left: 0;
+      bottom: -40px;
+    }
+  }
+  
 }
 </style>

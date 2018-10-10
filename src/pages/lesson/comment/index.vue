@@ -93,6 +93,7 @@
         <div slot="customize-html" style="margin-left: 40px;">
           <div class="customize-html-content">
             <p class="dialog_p">{{model.txt}} </p>
+            
           </div>
         </div>
     </modal-dialog>
