@@ -2,7 +2,7 @@
   <section class="page-course-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="`/lesson/index?course_id=${course_id}`">课节管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="`/lesson/index?course_id=${pageData.course_id}&course_section_id=${pageData.course_section_id}`">打卡管理</el-breadcrumb-item>
       <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
@@ -16,14 +16,14 @@
     </el-row>
     <!-- :total="jobCircleLists.total" -->
     <table-list
-    :list="cardList.list"
+    :list="commentList.list"
     :fields="fields"
-    :total="cardList.total"
+    :total="commentList.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-            <div v-if="props.scope.row.punchCardStatus==1">
+            <div v-if="props.scope.row.status==1">
               <el-button
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
@@ -33,8 +33,8 @@
               <el-button
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
-                @click="todoAction('comment', props.scope.row)">
-                  评论
+                @click="todoAction('comment', props.scope.row)" v-show="props.scope.row.replyCount>1">
+                  二级评论
                 </el-button>
 
                <el-button
@@ -57,19 +57,18 @@
                 </el-button>
             </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'cardContent'" class="flex-box">
-          <div class="content">
-            <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.cardContent}} </div>
-            </div>
+        <div v-else-if="props.scope.column.property === 'content'" :class="{'delet': props.scope.row.status != 1}" class="flex-box">
+            <div class="limit-row-num-2"> {{ props.scope.row.content}} </div>
+        </div>
+        <div v-else-if="props.scope.column.property === 'userName'" :class="{'delet': props.scope.row.status != 1}" class="flex-box">
+             {{props.scope.row.userName}}
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'releaseUser'" class="flex-box">
-             {{props.scope.row.releaseUser.nickname}}
-          </div>
+        <div v-else-if="props.scope.column.property === 'updatedAt'" :class="{'delet': props.scope.row.status != 1}">
+          {{props.scope.row.updatedAt}}
         </div>
-        <div v-else-if="props.scope.column.property === 'punchCardStatus'">
-          {{ props.scope.row.punchCardStatus == 1? '正常':'已删除' }}
+        <div v-else-if="props.scope.column.property === 'status'" :class="{'delet': props.scope.row.status != 1}">
+          {{ props.scope.row.status == 1? '正常':'已删除' }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

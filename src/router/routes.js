@@ -518,6 +518,17 @@ export const routes = [
       useNav: false
     },
   },
+  // 排序设置管理
+  {
+    path: '/setSort',
+    name: 'setSort',
+    title: '排序设置',
+    component: () => import(/* webpackChunkName: "setSort" */ '@/pages/setSort/index.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: false
+    },
+  },
   {
     path: '*',
     redirect: {

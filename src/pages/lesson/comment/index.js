@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
-import { getLessonSearchCommentListsApi } from 'API/lesson'
+import { getSearchCommentListsApi, putLessonPunchApi, cancelLessonPunchApi, deleteLessonPunchCommentApi, postLessonPunchCommentApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -31,21 +31,21 @@ export default class CourseList extends Vue {
   // 表格字段
   fields = [
     {
-      prop: 'cardContent',
+      prop: 'content',
       label: '评论内容',
       align: 'center',
       showTips: 'no',
       width: '30%'
     },
     {
-      prop: 'releaseUser',
+      prop: 'userName',
       label: '发布者',
       align: 'center',
       showTips: 'no',
       width: '15%'
     },
     {
-      prop: 'punchCardStatus',
+      prop: 'status',
       label: '状态',
       align: 'center',
       showTips: 'yes',
@@ -68,7 +68,7 @@ export default class CourseList extends Vue {
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
-      prop: 'punchCardTime',
+      prop: 'updatedAt',
       label: '建立时间',
       align: 'center',
       showTips: 'no',
@@ -116,16 +116,19 @@ export default class CourseList extends Vue {
   }
   commentList = []
   course_id = ''
+
+  pageData={
+  }
   /**
    * 初始化表单、分页页面数据
    */
   init() {
     this.form = Object.assign(this.form,this.$route.query || {})
-    console.log(this.form)
-    this.postId = this.$route.query.postId
+    console.log(this.form,this.$route.query)
 
+    this.pageData = Object.assign(this.$route.query || {})
     //测试结束删除
-    this.postId = 5 
+    //this.pageData.postId = 5 
     this.getLists()
   }
 
@@ -138,25 +141,23 @@ export default class CourseList extends Vue {
    */
   getLists({ page, pageSize } = {}) {
     //this.course_section_id = 13
-    let data = {
-        search:{
-          like: {title: this.form.name},
-          order:{created_at: 'DESC'},
-          course_section_id:this.course_section_id
-        },
-        otherSearch:{ realname: this.form.name}
-      }
-    let jsonDataString = JSON.stringify(data)
-    console.log(jsonDataString)
-    let UrlString = encodeURIComponent(jsonDataString)
     let param = {
-      jsonData: UrlString,
+      postId: this.pageData.postId,
+      keyword:this.form.name,
+      /*withReply: 1,
+      replyNum: 3,*/
       page: page || this.form.page || 1,
-      pageCount: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize,
+      sort: 'asc'
+    }
+
+    param.keyword.replace(/\s*/g,"")
+    if(param.keyword.length<1){
+      delete param.keyword
     }
 
     console.log(param)
-    getLessonSearchCommentListsApi(param).then(res=>{
+    getSearchCommentListsApi(param).then(res=>{
       console.log(res)
       this.commentList = {
         list : res.data.data,
@@ -173,13 +174,15 @@ export default class CourseList extends Vue {
   //【课节打卡】删除评论
   deleteComment(){
     let data = {
-      course_section_card_id: this.model.itemSel.courseSectionCardId,
+      id: this.model.itemSel.id,
       is_pusnch_card: 0
     }
     console.log(111111,data)
 
-    distoryAndRegaihnLessonPunchApi(data).then(res=>{
+    deleteLessonPunchCommentApi(data).then(res=>{
       console.log(res)
+      this.getLists()
+      this.model.show = false
     }).catch(err => {
       console.log(err)
       //this.$message.error(err.data.msg);
@@ -189,11 +192,12 @@ export default class CourseList extends Vue {
   //【课节打卡】恢复已删除的评论
   recover(){
     let data = {
-      course_section_card_id: this.model.itemSel.courseSectionCardId,
-      is_pusnch_card: 1
+      id: this.model.itemSel.id,
     }
-    distoryAndRegaihnLessonPunchApi(data).then(res=>{
+    postLessonPunchCommentApi(data).then(res=>{
       console.log(res)
+      this.getLists()
+      this.model.show = false
     }).catch(err => {
       console.log(err)
 
@@ -202,26 +206,28 @@ export default class CourseList extends Vue {
   }
 
   //【课节打卡】取消设置热评
-  cancelExcellent(){
+  cancelHot(){
     let data = {
-      course_section_card_id: this.model.itemSel.courseSectionCardId,
-      is_set_excellent_card: 0
+      id: this.model.itemSel.id,
     }
-    setExcellentCourseCardApi(data).then(res=>{
+    cancelLessonPunchApi(data).then(res=>{
       console.log(res)
+      this.getLists()
+      this.model.show = false
     }).catch(err => {
       this.$message.error(err.data.msg);
     })
   }
 
   //【课节打卡】设置热评
-  putLessonPunch(){
+  putHot(){
     let data = {
-      course_section_card_id: this.model.itemSel.courseSectionCardId,
-      is_set_excellent_card: 1
+      id: this.model.itemSel.id,
     }
-    setExcellentCourseCardApi(data).then(res=>{
+    putLessonPunchApi(data).then(res=>{
       console.log(res)
+      this.getLists()
+      this.model.show = false
     }).catch(err => {
       this.$message.error(err.data.msg);
     })
@@ -232,34 +238,29 @@ export default class CourseList extends Vue {
   todoAction(type, item) {
     console.log(item)
 
-    this.model.show = true
+    if(type!=='comment'){
+      this.model.show = true
+    }
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
         this.model.txt = '删除后的内容前台不可见'
         this.model.confirm = 'deleteComment'
-        //this.deleteComment(item)
         break
       case 'cancelExcellent':
-        this.model.txt = '把该打卡取消优秀打卡'
-        this.model.confirm = 'cancelExcellent'
-
-        //this.cancelExcellent(item)
+        this.model.txt = '把该打卡取消热门评论'
+        this.model.confirm = 'cancelHot'
         break
       case 'excellent':
-        this.model.txt = '把该打卡设为优秀打卡'
-        this.model.confirm = 'putLessonPunch'
-
-        //this.putLessonPunch(item)
+        this.model.txt = '把该打卡设为热门评论'
+        this.model.confirm = 'putHot'
         break
       case 'recover':
         this.model.txt = '恢复后内容前台可见'
         this.model.confirm = 'recover'
-
-        //this.recover(item)
         break
-      case 'punch':
-        //this.showMsg({ content: '开发中~', type: 'error', duration: 3000 })
+
+      case 'comment':
         break
       default:
         break

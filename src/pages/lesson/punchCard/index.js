@@ -266,7 +266,9 @@ export default class CourseList extends Vue {
         this.$router.push(
           { name: 'comment',
             query: {
-              postId: this.item.courseSectionCardId
+              course_section_id: this.$route.query.course_section_id,
+              course_id: this.$route.query.course_id,
+              postId: item.courseSectionCardId
             }
           }
         )
