@@ -132,12 +132,17 @@ export default class CourseList extends Vue {
       params.category_id = this.form.category_id === 'abc' ? '' : this.form.category_id
     }
     this.getCourseListsApi(params)
+        .then(() => {
+          this.form.name = ''
+          delete this.form.status
+          delete this.form.category_id
+        })
   }
 
 
   // 点击搜索时触发
   handleSearch () {
-    this.setPathQuery(this.form)
+    this.setPathQuery({name: this.form.name})
   }
 
   /**

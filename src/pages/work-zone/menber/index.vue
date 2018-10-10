@@ -54,6 +54,8 @@ export default MenberList
   .list-item {
     width: 128px;
     padding: 10px 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .el-checkbox {
     margin-top: 0px !important;

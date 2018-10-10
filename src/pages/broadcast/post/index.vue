@@ -474,6 +474,8 @@ export default BroadcastPost
       width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
   .menber-compulsory-type-list {
@@ -523,6 +525,8 @@ export default BroadcastPost
       width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .tips {
       font-size:12px;

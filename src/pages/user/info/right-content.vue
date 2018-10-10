@@ -3,28 +3,31 @@
   	<div class="his-dynamics-tab-box">
 			<div :class="{active: 	currentType === 'getPersonalInfoLessonsApi'}" @click="tabClick('getPersonalInfoLessonsApi')">
 				<div class="cell">参与的课程</div>
-				<div class="num">({{personalInfoBase.listItemCounts.lessonCount}})</div>
+				<div class="num" v-if="!personalInfoBase.isExternalTutor">({{personalInfoBase.listItemCounts.lessonCount}})</div>
 			</div>
 			<div :class="{active: 	currentType === 'getPersonalInfoLivesApi'}" @click="tabClick('getPersonalInfoLivesApi')">
 				<div class="cell">参与的直播</div>
-				<div class="num">({{personalInfoBase.listItemCounts.liveCount}})</div>
+				<div class="num" v-if="!personalInfoBase.isExternalTutor">({{personalInfoBase.listItemCounts.liveCount}})</div>
 			</div>
-			<div :class="{active: 	currentType === 'getPersonalInfoJobCirclesApi'}" @click="tabClick('getPersonalInfoJobCirclesApi')">
+			<div :class="{active: 	currentType === 'getPersonalInfoJobCirclesApi'}" @click="tabClick('getPersonalInfoJobCirclesApi')" v-if="!personalInfoBase.isExternalTutor">
 				<div class="cell">参与的工作圈</div>
-				<div class="num">({{personalInfoBase.listItemCounts.jobcircleCount}})</div>
+				<div class="num" v-if="!personalInfoBase.isExternalTutor">({{personalInfoBase.listItemCounts.jobcircleCount}})</div>
 			</div>
   	</div>
   	<ul class="his-dynamics-ul-list">
   		<template v-if="currentType === 'getPersonalInfoLessonsApi'">
 				<li v-for="(courseItem, courseIndex) in personalInfoLessons" :key="courseIndex" class="course-item">
 					<div class="img-box">
-						<img :src="courseItem.courseCoverImg.smallUrl" alt="">
+						<img :src="courseItem.coverImg" alt="">
 					</div>
 					<div class="text-content">
-						<h2>{{courseItem.courseTitle}}</h2>
-						<div class="u-info">
-							<span class="group-name">{{courseItem.masterTitle}}</span>
-							<span class="user-name">{{courseItem.masterName}}</span>
+						<h2>{{courseItem.title}}</h2>
+						<div class="u-info" v-if="courseItem.masterInfo.roleId == 4">
+							<span class="group-name">{{courseItem.groupName}}</span>
+							<span class="user-name">{{courseItem.realname}}</span>
+						</div>
+						<div class="u-info" v-if="courseItem.masterInfo.roleId == 5">
+							<span class="user-name">{{courseItem.realname}}</span>
 						</div>
 						<div class="progress">
 							<div class="learn-rate-text">已学习<span> {{courseItem.selfProcess}}% </span></div>
@@ -38,13 +41,16 @@
 			<template v-if="currentType === 'getPersonalInfoLivesApi'">
 				<li v-for="(liveItem, liveIndex) in personalInfoLives" :key="liveIndex" class="live-item">
 					<div class="img-box">
-						<img :src="liveItem.cover.smallUrl" alt="">
+						<img :src="liveItem.coverImg.smallUrl" alt="">
 					</div>
 					<div class="text-content">
-						<h2>{{liveItem.liveName}}</h2>
-						<div class="u-info">
-							<span class="group-name">{{liveItem.masterTitle}}</span>
-							<span class="user-name">{{liveItem.masterName}}</span>
+						<h2>{{liveItem.name}}</h2>
+						<div class="u-info" v-if="liveItem.roleId == 4">
+							<span class="group-name">{{liveItem.groupName}}</span>
+							<span class="user-name">{{liveItem.realname}}</span>
+						</div>
+						<div class="u-info" v-if="liveItem.roleId == 5">
+							<span class="user-name">{{liveItem.realname}}</span>
 						</div>
 					</div>
 				</li>
@@ -91,7 +97,7 @@ import Component from 'vue-class-component'
 export default class ComponentRight extends Vue {
 	currentType = 'getPersonalInfoLessonsApi'
 	tabClick(api) {
-		const params = this.$route.query
+		const params = this.$route.params
 		this[api](params)
 		this.currentType = api
 	}

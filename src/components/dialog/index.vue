@@ -21,10 +21,8 @@
             </template>
             <template v-else-if="type === 'confirm'">
               <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
-
               <el-button type="danger" plain size="large" @click="handleConfirm" v-text="confirmText" v-if="confirmType==='danger'"></el-button>
               <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" v-else></el-button>
-
             </template>
           </slot>
         </div>
@@ -50,7 +48,7 @@ export default ComponentDialog
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: 2011;
+    z-index: 5;
     opacity: 0;
     visibility: hidden;
     transition: all ease .4s;
@@ -68,7 +66,7 @@ export default ComponentDialog
     position: fixed;
     left: 50%;
     top: 50%;
-    z-index: 2012;
+    z-index: 6;
     opacity: 0;
     visibility: hidden;
     transform: translate(-50%, -50%);

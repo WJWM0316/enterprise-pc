@@ -203,7 +203,7 @@ export default class BroadcastPost extends Vue {
     } else {
       callback()
     }
-    this.form.liveName = value.replace(/\s*/g, '')
+    this.form.liveName = value.trim()
   }
   /**
    * @Author   小书包
@@ -339,7 +339,8 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
-        this.form.groupList.value
+        this.getGroupListsApi()
+        this.form.groupList.value.length
           ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
           : this.noCheckGroupListsApi()
   			break
@@ -529,6 +530,9 @@ export default class BroadcastPost extends Vue {
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
         this.form.check_categoryList = ''
         break
+      case 'uid':
+        this.form.check_uid = ''
+        break
       default:
         break
     }
@@ -630,7 +634,6 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.groupList = Object.assign(this.form.groupList, data)
-    console.log(this.form.groupList)
   }
 
   /**
