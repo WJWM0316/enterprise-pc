@@ -6,6 +6,7 @@ import MyAudio from 'COMPONENTS/myAudio/index.vue'
 import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
 import ImagesViewer from 'COMPONENTS/imagesViewer/index.vue'
 import FileViewer from 'COMPONENTS/fileViewer/index.vue'
+import VideoViewer from 'COMPONENTS/videoViewer/index.vue'
 
 @Component({
   name: 'review-list',
@@ -34,7 +35,8 @@ import FileViewer from 'COMPONENTS/fileViewer/index.vue'
     MyAudio,
     LinkViewer,
     ImagesViewer,
-    FileViewer
+    FileViewer,
+    VideoViewer
   }
 })
 export default class BroadcastReview extends Vue {
@@ -117,6 +119,11 @@ export default class BroadcastReview extends Vue {
   // 搜索表单
   form = {
     status: ''
+  }
+
+  // 查看视屏
+  videoViewer = {
+    show: false
   }
 
   // 查看图片

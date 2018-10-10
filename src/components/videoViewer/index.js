@@ -13,7 +13,24 @@ import Component from 'vue-class-component'
       default: 'http://www.w3school.com.cn/i/movie.ogg'
     }
   },
+  model: {
+    prop: 'show',
+    event: 'input'
+  },
   watch: {
+    show: {
+      handler(show) {
+        this.visiable = show
+      },
+      immediate: true
+    },
+    visiable: {
+      handler(visiable) {
+        if (!visiable) {
+          this.$emit('input')
+        }
+      }
+    },
     videoLink: {
       handler (videoLink) {
         this.videoLink = videoLink
@@ -24,8 +41,9 @@ import Component from 'vue-class-component'
 })
 export default class ComponentVideoViewer extends Vue {
 
-	close() {
-    this.show = !this.show
+	visiable = false
+  close() {
+    this.visiable = false
   }
 
   download() {
