@@ -24,7 +24,7 @@ import {
 const state = {
   liveReviewList: {
     list: [],
-    total: 50
+    total: 0
   },
   liveDetails: {},
   liveLists: {

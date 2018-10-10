@@ -33,6 +33,7 @@ export const NO_CHECK_UPDATE_GROUP_LISTS = 'commom/NO_CHECK_UPDATE_GROUP_LISTS'
 export const GET_GROUP_LISTS = 'commom/GET_GROUP_LISTS'
 export const GET_MENBER_LISTS = 'commom/GET_MENBER_LISTS'
 export const GET_MENBER_DYNAMICS_LIST = 'commom/GET_MENBER_DYNAMICS_LIST'
+export const UPDATE_MENBER_LISTS = 'commom/UPDATE_MENBER_LISTS'
 
 // 导师模块
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'

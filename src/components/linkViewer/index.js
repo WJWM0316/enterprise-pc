@@ -14,7 +14,24 @@ import Clipboard from 'clipboard'
       default: 'http://www.w3school.com.cn/i/movie.ogg'
     }
   },
+  model: {
+    prop: 'show',
+    event: 'input'
+  },
   watch: {
+    show: {
+      handler(show) {
+        this.visiable = show
+      },
+      immediate: true
+    },
+    visiable: {
+      handler(visiable) {
+        if (!visiable) {
+          this.$emit('input')
+        }
+      }
+    },
     fileLink: {
       handler (fileLink) {
         this.fileLink = fileLink
@@ -28,18 +45,21 @@ import Clipboard from 'clipboard'
 })
 export default class ComponentLinkViewer extends Vue {
 
-	close() {
-    this.show = !this.show
+	visiable = false
+
+  close() {
+    this.visiable = false
   }
 
   copy(e) {
-    const clipboard = new Clipboard('.btn')
+    const clipboard = new Clipboard('.filelink')
+    console.log(11)
     clipboard.on('success', (e) => {
-      this.showMsg({ content: '复制成功~', type: 'success', duration: 5000 })
+      this.$message({message: '复制成功~', type: 'success'})
       e.clearSelection();
     })
     clipboard.on('error', (e) => {
-      this.showMsg({ content: '复制失败~', type: 'error', duration: 5000 })
+      this.$message.error('您的浏览器不支持复制~');
     })
   }
 }

@@ -88,7 +88,7 @@ export default class pageDashboard extends Vue {}
 		li{
 			font-size:14px;
 			font-weight:300;
-			color:rgba(102,102,102,1);
+			color:#1D2D35;
 			padding: 10px 20px;
 			transition: all ease .4s;
 			cursor: pointer;

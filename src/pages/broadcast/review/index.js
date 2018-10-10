@@ -3,6 +3,9 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyAudio from 'COMPONENTS/myAudio/index.vue'
+import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
+import ImagesViewer from 'COMPONENTS/imagesViewer/index.vue'
+import FileViewer from 'COMPONENTS/fileViewer/index.vue'
 
 @Component({
   name: 'review-list',
@@ -28,7 +31,10 @@ import MyAudio from 'COMPONENTS/myAudio/index.vue'
    components: {
     TableList,
     SearchBar,
-    MyAudio
+    MyAudio,
+    LinkViewer,
+    ImagesViewer,
+    FileViewer
   }
 })
 export default class BroadcastReview extends Vue {
@@ -113,6 +119,20 @@ export default class BroadcastReview extends Vue {
     status: ''
   }
 
+  // 查看图片
+  imagesViewer = {
+    show: false
+  }
+
+  // 查看连接
+  linkViewer = {
+    show: false
+  }
+
+  // 查看文件
+  fileViewer = {
+    show: false
+  }
   /**
    * 初始化表单、分页页面数据
    */
@@ -155,8 +175,7 @@ export default class BroadcastReview extends Vue {
       case 'delete':
         this.$confirm('是否删除该评论, 是否继续?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         })
         .then(() => {
           this.updateLiveApi({id: item.messageId, status: 0, globalLoading: true})
@@ -171,8 +190,7 @@ export default class BroadcastReview extends Vue {
       case 'recover':
         this.$confirm('是否恢复该评论, 是否继续?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         })
         .then(() => {
           this.updateLiveApi({id: item.messageId, status : 1, globalLoading: true})
@@ -201,5 +219,14 @@ export default class BroadcastReview extends Vue {
     } else {
       return 'row-exist'
     }
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-10
+   * @detail   查看图片
+   * @return   {[type]}   [description]
+   */
+  cancel(type) {
+    this.imagesViewer.show = true
   }
 }

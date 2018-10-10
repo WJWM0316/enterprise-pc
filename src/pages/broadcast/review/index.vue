@@ -26,23 +26,23 @@
               恢复
           </el-button>
         </div>
-        <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'content'" class="limit-row-num-3">
           <template v-if="props.scope.row.type ==='text'">
             {{props.scope.row.content}} 
           </template>
           <template v-else-if="props.scope.row.type ==='audio'">
-            <!-- <audio :src="props.scope.row.file.url" controls="controls"></audio> -->
             <my-audio :theUrl="props.scope.row.file.url" :disabled="!props.scope.row.status" />
           </template>
           <template v-else>
-            <img :src="props.scope.row.file.url" alt="" style="display: inline-block;">
+            <img :src="props.scope.row.file.url" alt="" style="display: inline-block;" @click="cancel">
           </template>
         </div>
-        <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
+    <images-viewer v-model="imagesViewer.show" @cancel="cancel" />
+    <file-viewer v-model="fileViewer.show"  @cancel="cancel" />
+    <link-viewer v-model="linkViewer.show"  @cancel="cancel" />
   </section>
 </template>
 

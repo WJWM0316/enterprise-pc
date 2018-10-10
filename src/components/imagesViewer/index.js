@@ -4,34 +4,47 @@ import Swiper from 'swiper'
 
 @Component({
   props: {
-    // 是否显示
     show: {
       type: Boolean,
       default: true
     }
+  },
+  model: {
+    prop: 'show',
+    event: 'input'
+  },
+  watch: {
+    show: {
+      handler(show) {
+        this.visiable = show
+      },
+      immediate: true
+    },
+    visiable: {
+      handler(visiable) {
+        if (!visiable) {
+          this.$emit('input')
+        }
+      }
+    }
   }
 })
 export default class ComponentImagesViewer extends Vue {
+  swiper1 = null
+  visiable = false
   mounted() {
-    const galleryTop = new Swiper('.gallery-top', {
-      spaceBetween: 10,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+    this.$nextTick(function() {
+      this.swiper1 = new Swiper('.swiper-container', {
+        navigation: {
+          nextEl: '.my-btn-next',
+          prevEl: '.my-btn-prev',
+        },
+        observer:true
+      })
     })
-    const galleryThumbs = new Swiper('.gallery-thumbs', {
-      spaceBetween: 10,
-      centeredSlides: true,
-      slidesPerView: 'auto',
-      touchRatio: 0.2,
-      slideToClickedSlide: true,
-    });
-    galleryTop.controller.control = galleryThumbs
-    galleryThumbs.controller.control = galleryTop
   }
 
   close() {
-    this.show = !this.show
+    this.visiable = false
   }
 }

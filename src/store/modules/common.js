@@ -14,7 +14,8 @@ import {
   NO_CHECK_UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
   SELECT_ALL_MENBER_LISTS,
-  GET_MENBER_DYNAMICS_LIST
+  GET_MENBER_DYNAMICS_LIST,
+  UPDATE_MENBER_LISTS
 } from '../mutation-types'
 
 import {
@@ -88,12 +89,18 @@ const mutations = {
   },
   [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
+      field.myActive = false
       field.selfGroup = []
       field.group.map(val => {
         field.selfGroup.push(val.groupId)
       })
     })
     state.menberLists = data
+  },
+  [UPDATE_MENBER_LISTS] (state, params) {
+    state.menberLists.map((field, i) => {
+      if(params.index === i) field.myActive = !field.myActive
+    })
   },
   [SELECT_ALL_MENBER_LISTS] (state, data) {
     state.menberLists.map(field => {})
@@ -301,6 +308,15 @@ const actions = {
    */
   updateGroupListsApi(store, params) {
     store.commit(UPDATE_GROUP_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateMenberListsApi(store, params) {
+    store.commit(UPDATE_MENBER_LISTS, params)
   },
   /**
    * @Author   小书包

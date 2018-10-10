@@ -276,7 +276,9 @@
               </el-popover>
             </div>
             <div class="tips">
-              如果需要对部门组织进行修改，请点击<span>【分类设置】</span>进行修改；如无权限，请联系管理员修改。
+              如果需要对部门组织进行修改，请点击
+              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
           <!-- 课程分类-end -->
@@ -386,7 +388,9 @@
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
-                  @change="multipleSelection('hits', menberItem)"
+                  :checked="menberItem.myActive"
+                  :ddd="menberItem.myActive ? 1 : 0"
+                  @change="multipleSelection('hits', menberItem, menberIndex)"
                   v-for="(menberItem, menberIndex) in menberLists" />
               </el-checkbox-group>
             </div>
@@ -457,7 +461,7 @@ export default CoursePost
       color: #4080AD;
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -508,7 +512,7 @@ export default CoursePost
       }
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -536,7 +540,7 @@ export default CoursePost
   }
   .el-radio__label {
     box-sizing: border-box;
-    width: 70px;
+    min-width: 70px;
     padding-left: 5px;
     display: inline-block; 
   }
@@ -718,6 +722,9 @@ export default CoursePost
     color: unset;
     border-color: unset;
     background-color: unset;
+  }
+  .el-checkbox__label{
+    min-width: 70px;
   }
 }
 </style>

@@ -34,7 +34,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCourseOrganizationsApi',
       'getCourseCategoryApi',
       'getCoursePeopleHitsApi',
-      'noCheckGroupListsApi'
+      'noCheckGroupListsApi',
+      'updateMenberListsApi'
     ])
   },
   computed: {
@@ -318,7 +319,7 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getTutorListApi({name: this.ownerUidName})
+    this.getTutorListApi({selectAll: 2, name: this.ownerUidName})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = this.tutorLists
@@ -654,12 +655,38 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-10
    * @detail   多选
    */
-  multipleSelection(type, item) {
+  multipleSelection(type, item, index) {
     const value = []
+    // switch(type) {
+    //   case 'members':
+    //     this.updateMenberListsApi({ index })
+    //     if(this.form.hits.tem.includes(item.realname)) {
+    //       this.$alert('必修学员和不可见学员重复，请重新选择', '提示', {
+    //         confirmButtonText: '我知道了',
+    //         callback: action => {
+    //           this.updateMenberListsApi({ index })
+    //         }
+    //       })
+    //       return
+    //     }
+    //     break
+    //   case 'hits':
+    //     this.updateMenberListsApi({ index })
+    //     if(this.form.members.tem.includes(item.realname)) {
+    //       this.$alert('不可见学员和必修学员重复，请重新选择', '提示', {
+    //         confirmButtonText: '我知道了',
+    //         callback: action => {
+    //           this.updateMenberListsApi({ index })
+    //         }
+    //       })
+    //       return
+    //     }
+    //     break
+    //   default:
+    //     break
+    // }
     this.menberLists.map(field => {
-      if(this.form[type].tem.includes(field.realname)) {
-        value.push(field.uid)
-      }
+      if(this.form[type].tem.includes(field.realname)) value.push(field.uid)
     })
     this.form[type].value = value.join(',')
   }
@@ -674,6 +701,7 @@ export default class CoursePost extends Vue {
     this.categoryModal.loading = true
     this.getCategoryApi({name: this.categoryModal.name})
         .then(() => {
+          this.categoryModal.name = ''
           this.getCategoryListsApi()
               .then(() => {
                 this.categoryModal.loading = false
@@ -685,6 +713,7 @@ export default class CoursePost extends Vue {
           this.categoryModal.loading = false
           this.categoryModal.show = false
           this.$message.error(`${err.msg}~`)
+          this.categoryModal.name = ''
         })
   }
 
