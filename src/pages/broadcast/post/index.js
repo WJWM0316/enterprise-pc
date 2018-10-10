@@ -309,7 +309,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getTutorListApi({name: this.searchField})
+    this.getTutorListApi({selectAll: 2, name: this.searchField})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = this.tutorLists
@@ -329,6 +329,7 @@ export default class BroadcastPost extends Vue {
   openModal(type) {
   	switch(type) {
   		case 'categoryList':
+        this.models.show = true
   			this.models.title = '选择分类'
         this.form.categoryList.tem.length
           ? this.updateCategoryListsApi({categoryId: this.form.categoryList.tem[0].categoryId})
@@ -336,8 +337,13 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'uid':
   			this.models.title = '选择导师'
+        this.getGroupListsApi({isHaveMember: 1})
+            .then(() => {
+              this.models.show = true
+            })
   			break
   		case 'groupList':
+      this.models.show = true
   			this.models.title = '选择组织'
         this.getGroupListsApi()
         this.form.groupList.value.length
@@ -346,9 +352,11 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'memberList':
   			this.models.title = '参与直播学员'
+        this.models.show = true
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
+        this.models.show = true
         break
   		default:
   			break
@@ -356,7 +364,6 @@ export default class BroadcastPost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.models.show = true
   }
   /**
    * @Author   小书包
@@ -396,7 +403,7 @@ export default class BroadcastPost extends Vue {
         this.getGroupListsApi({isHaveMember: 1}),
         this.getMenberListsApi(),
         this.getCategoryListsApi(),
-        this.getTutorListApi({type: 2})
+        this.getTutorListApi()
       ]
     )
     .then((res) => {

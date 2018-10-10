@@ -457,7 +457,7 @@ export default CoursePost
       color: #4080AD;
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -508,7 +508,7 @@ export default CoursePost
       }
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -536,7 +536,7 @@ export default CoursePost
   }
   .el-radio__label {
     box-sizing: border-box;
-    width: 70px;
+    min-width: 70px;
     padding-left: 5px;
     display: inline-block; 
   }

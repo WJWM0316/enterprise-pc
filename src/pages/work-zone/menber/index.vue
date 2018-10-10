@@ -52,7 +52,7 @@ export default MenberList
     margin: 30px 0;
   }
   .list-item {
-    width: 128px;
+    min-width: 128px;
     padding: 10px 20px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -64,7 +64,7 @@ export default MenberList
     margin-right: 10px !important;
   }
   .el-checkbox__label {
-    width: 100px;
+    min-width: 100px;
   }
   .menber-list {
     margin-top: 30px;

@@ -291,7 +291,9 @@
               </el-popover>
             </div>
             <div class="tips">
-              如果需要对部门组织进行修改，请点击<span>【分类设置】</span>进行修改；如无权限，请联系管理员修改。
+              如果需要对部门组织进行修改，请点击
+              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
           <!-- 直播分类-end -->
@@ -471,7 +473,7 @@ export default BroadcastPost
       color: #4080AD;
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       text-overflow: ellipsis;
@@ -506,7 +508,7 @@ export default BroadcastPost
         box-sizing: border-box;
         padding: 0 10px;
       }
-      span {
+      a {
         width: 40px;
         height: 100%;
         position: absolute;
@@ -522,7 +524,7 @@ export default BroadcastPost
       }
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -550,7 +552,7 @@ export default BroadcastPost
   }
   .el-radio__label {
     box-sizing: border-box;
-    width: 70px;
+    min-width: 70px;
     padding-left: 5px;
     display: inline-block; 
   }
@@ -728,6 +730,9 @@ export default BroadcastPost
     height: 36px;
     line-height: 36px;
     font-size: 12px;
+  }
+  .el-checkbox__label{
+    min-width: 70px;
   }
 }
 </style>
