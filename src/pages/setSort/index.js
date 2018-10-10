@@ -24,7 +24,7 @@ export default class groupList extends Vue {
   fields = [
     {
       prop: 'groupName',
-      label: '分组',
+      label: '课程、直播的分类',
       align: 'center'
     },
     {

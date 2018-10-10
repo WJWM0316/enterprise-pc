@@ -1,14 +1,14 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-classify-list">
 
     <el-breadcrumb separator=">" class="zike-breadcrumb">
-      <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
-      <el-breadcrumb-item>分组管理</el-breadcrumb-item>
+      <el-breadcrumb-item>设置</el-breadcrumb-item>
     </el-breadcrumb>
+    <p>* 这里的排序会影响员工端的分类排序。</p>
 
     <el-row class="header">
       <el-col :span="24" class="right-content">
-        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right">新建分组</el-button>
+        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right">新建分类</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -59,7 +59,7 @@ export default CourseList
 
 <style lang="scss">
 @import "~COLORS/variables";
-.page-course-list {
+.page-classify-list {
   background: white;
   .action-zone {
     text-align: right;

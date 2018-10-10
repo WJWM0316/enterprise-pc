@@ -11,7 +11,7 @@ export const getCommentListsApi = params => request(`/coursesectioncard/comment/
 export const getSearchCommentListsApi = params => request('/coursesectioncard/searchComment', 'get', params)
 
 // 【课节打卡】获取二级评论（测试commentId可使用202）
-export const getLessonCommentSecondListsApi = params => request(`/coursesectioncard/comment/replyList/${params.id}`, 'get', params)
+export const getCommentSecondListsApi = params => request(`/coursesectioncard/comment/replyList/${params.id}`, 'get', params)
 
 // 【课节打卡】设置热评
 export const putLessonPunchApi = params => request(`/coursesectioncard/comment/hot/${params.id}`, 'put')
