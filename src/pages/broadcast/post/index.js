@@ -677,6 +677,7 @@ export default class BroadcastPost extends Vue {
     this.categoryModal.loading = true
     this.getCategoryApi({name: this.categoryModal.name})
         .then(() => {
+          this.categoryModal.name = ''
           this.getCategoryListsApi()
               .then(() => {
                 this.categoryModal.loading = false
@@ -687,6 +688,7 @@ export default class BroadcastPost extends Vue {
           this.categoryModal.loading = false
           this.categoryModal.show = false
           this.$message.error(`${err.msg}~`)
+          this.categoryModal.name = ''
         })
   }
   /**

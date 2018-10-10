@@ -124,12 +124,21 @@ export default class CourseList extends Vue {
     }
     if(this.form.name) {
       params.name = this.form.name
+      params.page = 1
+      delete params.status
+      delete params.category_id
     }
     if(this.form.status) {
       params.status = Number(this.form.status) === 3 ? '' : this.form.status
+      params.page = 1
+      delete params.category_id
+      delete params.name
     }
     if(this.form.category_id) {
       params.category_id = this.form.category_id === 'abc' ? '' : this.form.category_id
+      params.page = 1
+      delete params.status
+      delete params.name
     }
     this.getCourseListsApi(params)
         .then(() => {
