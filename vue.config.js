@@ -1,10 +1,10 @@
 const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
-console.log(process.env.VUE_APP_CURRENTMODE)
+console.log(process.env.COMPANY, 'dd')
 module.exports = {
   lintOnSave: true,
-  baseUrl: process.env.NODE_ENV === 'production' ? `/${process.env.VUE_APP_CURRENTMODE}` : '/',
+  baseUrl: process.env.NODE_ENV === 'production' ? `/${process.env.COMPANY}` : '/',
   configureWebpack: {
   	entry: {
 	    vendors: [
