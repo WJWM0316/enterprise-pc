@@ -1,10 +1,10 @@
 const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
-console.log(process.env.COMPANY, 'dd')
+
 module.exports = {
   lintOnSave: true,
-  baseUrl: process.env.NODE_ENV === 'production' ? `/${process.env.COMPANY}` : '/',
+  baseUrl: process.env.NODE_ENV === 'production' ? '/tiger' : '/',
   configureWebpack: {
   	entry: {
 	    vendors: [
