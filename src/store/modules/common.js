@@ -90,6 +90,7 @@ const mutations = {
   [UPDATE_CATEGORY_LIST_NO_CHECKED] (state) {
     state.categoryList.map(field => field.active = false)
   },
+  // 获取成员列表
   [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
       field.active = false
@@ -100,26 +101,31 @@ const mutations = {
     })
     state.menberLists = data
   },
+  // 更新成员列表
   [UPDATE_MENBER_LISTS] (state, params) {
     state.menberLists.map((field, i) => {
       if(params.index === i) field.active = !field.active
     })
   },
+  // 更新所有成员列表
   [UPDATE_MENBER_LISTS_All] (state, params) {
     state.menberLists.map(field => {
       field.active = params.bool
     })
   },
+  // 通过uid更新成员列表
   [UPDATE_MENBER_LISTS_BY_ID] (state, params) {
     state.menberLists.map(field => {
       field.active = params.uid === field.uid ? !field.active : false
     })
   },
+  // 批量更新成员列表
   [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
     state.menberLists.map(field => {
       if(params.list.includes(String(field.uid))) field.active = true
     })
   },
+  // 选择所用成员列表
   [SELECT_ALL_MENBER_LISTS] (state, data) {
     state.menberLists.map(field => field.active = false)
   },
@@ -127,10 +133,12 @@ const mutations = {
   [GET_COMPANY_INFOS] (state, data) {
     state.companyInfo = data
   },
+  // 获取组列表
   [GET_GROUP_LISTS] (state, data) {
     data.map(field => {field.active = false})
     state.groupLists = data
   },
+  // 更新组列表
   [UPDATE_GROUP_LISTS] (state, params) {
     if(!params.list) {
       state.groupLists.map(field => {
@@ -144,6 +152,7 @@ const mutations = {
       })
     }
   },
+  // 取消圈闭选中
   [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
     state.groupLists.map(field => {
       field.active = false

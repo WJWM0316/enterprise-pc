@@ -317,7 +317,7 @@ export default class BroadcastPost extends Vue {
     this.getMenberListsApi({selectAll: 2, name: this.searchField})
         .then(() => {
           this.searchField = ''
-          this.temTutorLists = this.tutorLists
+          this.temTutorLists = [...this.menberLists]
         })
   }
 
@@ -353,6 +353,7 @@ export default class BroadcastPost extends Vue {
         this.form.groupList.value.length
           ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
           : this.noCheckGroupListsApi()
+          console.log(this.groupLists)
   			break
   		case 'memberList':
   			this.models.title = '参与直播学员'

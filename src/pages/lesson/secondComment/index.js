@@ -139,7 +139,6 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
-    //this.course_section_id = 13
     let param = {
       id: this.pageData.commentId,
       page: page || this.form.page || 1,

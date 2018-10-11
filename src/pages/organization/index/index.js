@@ -47,9 +47,10 @@ export default class pageOrganization extends Vue {
   ]
     rolevalue = ''
     // 表单数据
-    courseList = [
-
-    ]
+    courseList = {
+      list: [],
+      total: 0
+    }
     // 表格字段
     fields = [
         {
@@ -94,7 +95,8 @@ export default class pageOrganization extends Vue {
     ]
     memberData = {
         selectAll: 1,
-        count: 20
+        count: 20,
+        page: 1,
     }
 
     created(){
@@ -126,7 +128,7 @@ export default class pageOrganization extends Vue {
       getMemberListApi(this.memberData).then( res => {
         this.courseList = {
           list : res.data.data,
-          total: res.data.meta.total
+          total: res.data.meta&&res.data.meta.total?res.data.meta.total:0
         }
       })
     }
