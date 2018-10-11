@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import Cropper from 'cropperjs'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -171,12 +170,7 @@ export default class CoursePost extends Vue {
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ],
     intro: [
-      {
-        required: true,
-        message: '请填写课程介绍',
-        trigger: 'blur',
-        validator: editorRules.validator
-      }
+      {required: true, message: '请填写课程介绍', trigger: 'blur', validator: editorRules.validator }
     ],
   }
 
@@ -356,19 +350,17 @@ export default class CoursePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
-        let memberList = Object.prototype.toString.call(this.form.members.value) === '[object Array]'
-          ? this.form.members.value
-          : this.form.members.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: memberList})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+        })
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
-        let hitsList = Object.prototype.toString.call(this.form.hits.value) === '[object Array]'
-          ? this.form.hits.value
-          : this.form.hits.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: hitsList})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+        })
         break
   		default:
   			break
@@ -512,41 +504,13 @@ export default class CoursePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    const data = { show: true, tem: [], value: [] }
-    this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.models.show = false
+    this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.form[`check_${type}`] = this.form[type].value
-    if(this.rules[`check_${type}`]) {
-      this.$refs.form.validateField(`check_${type}`)
-    }
-    // 已经确定编辑
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
-    // switch(type) {
-    //   case 'members':
-    //     this.menberLists.map(field => {
-    //       if(field.active) {
-    //         data.value.push(field.uid)
-    //         data.tem.push(field)
-    //       }
-    //     })
-    //     data.value = data.value.join(',')
-    //     this.form.members = Object.assign(this.form.members, data)
-    //     break
-    //   case 'hits':
-    //     this.menberLists.map(field => {
-    //       if(field.active) {
-    //         data.value.push(field.uid)
-    //         data.tem.push(field)
-    //       }
-    //     })
-    //     data.value = data.value.join(',')
-    //     this.form.hits = Object.assign(this.form.hits, data)
-    //     break
-    //   default:
-    //     break
-    // }
+    if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
   /**

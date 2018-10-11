@@ -355,20 +355,18 @@ export default class BroadcastPost extends Vue {
           : this.noCheckGroupListsApi()
   			break
   		case 'memberList':
-        let memberList = Object.prototype.toString.call(this.form.memberList.value) === '[object Array]'
-          ? this.form.memberList.value
-          : this.form.memberList.value.split(',')
   			this.models.title = '参与直播学员'
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: memberList})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
+        })
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
-        let invisibleList = Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]'
-          ? this.form.invisibleList.value
-          : this.form.invisibleList.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: invisibleList})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
+        })
         break
   		default:
   			break
@@ -515,13 +513,10 @@ export default class BroadcastPost extends Vue {
     this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.models.show = false
     this.form[`check_${type}`] = this.form[type].value
-    if(this.rules[`check_${type}`]) {
-      this.$refs.form.validateField(`check_${type}`)
-    }
-    // 已经确定编辑
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
   /**
