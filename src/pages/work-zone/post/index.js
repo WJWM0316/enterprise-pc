@@ -26,7 +26,12 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getJobCircleHitListsApi',
       'getJobCircleOrganizationListsApi',
       'updateGroupListsApi',
-      'noCheckGroupListsApi'
+      'noCheckGroupListsApi',
+      'updateMenberListsByIdApi',
+      'updateMenberListsApi',
+      'updateMenberListsByIdApi',
+      'updateMenberListsAllApi',
+      'updateMultipleMenberListsApi'
     ])
   },
   computed: {
@@ -274,13 +279,14 @@ export default class WorkZonePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
-    console.log(this.form.organizations)
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
   			break
   		case 'members':
   			this.models.title = '选择成员'
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.members.value.split(',')})
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
@@ -291,6 +297,8 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.hits.value.split(',')})
   			break
   		default:
   			break
@@ -346,25 +354,28 @@ export default class WorkZonePost extends Vue {
           this.form.owner_uid.tem = field
           this.form.owner_uid.show = true
           this.form.check_owner_uid = field.uid
+          this.form.owner_uid.noEdit.value = field.uid
+          this.form.owner_uid.noEdit.tem = field
+          this.form.owner_uid.noEdit.show = true
         }
 
         // 工作圈成员
         if(this.jobCircleMemberLists.includes(field.uid)) {
           this.form.members.value.push(field.uid)
-          this.form.members.tem.push(field.realname)
+          this.form.members.tem.push(field)
           this.form.members.show = true
           this.form.members.noEdit.value.push(field.uid)
-          this.form.members.noEdit.tem.push(field.realname)
+          this.form.members.noEdit.tem.push(field)
           this.form.members.noEdit.show = true
         }
 
         // 不可见学员
         if(this.jobCircleHitLists.includes(field.uid)) {
           this.form.hits.value.push(field.uid)
-          this.form.hits.tem.push(field.realname)
+          this.form.hits.tem.push(field)
           this.form.hits.show = true
           this.form.hits.noEdit.value.push(field.uid)
-          this.form.hits.noEdit.tem.push(field.realname)
+          this.form.hits.noEdit.tem.push(field)
           this.form.hits.noEdit.show = true
         }
       })
@@ -424,7 +435,6 @@ export default class WorkZonePost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
-    console.log(this.form[type])
   }
 
   /**
@@ -435,12 +445,9 @@ export default class WorkZonePost extends Vue {
   cancel() {
     const type = this.models.currentModalName
     this.models.show = false
-    // 没有点击确定按钮
-    if(this.models.show) {
-      this.form[type].value = this.form[type].noEdit.value
-      this.form[type].tem = this.form[type].noEdit.tem
-      this.form[type].show = this.form[type].noEdit.show
-    }
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
   }
 
   /**
@@ -453,6 +460,9 @@ export default class WorkZonePost extends Vue {
     switch(type) {
       case 'owner_uid':
         this.form.check_owner_uid = ''
+        this.form.owner_uid.noEdit.value = ''
+        this.form.owner_uid.noEdit.tem = []
+        this.form.owner_uid.noEdit.show = false
         break
       default:
         break
@@ -477,12 +487,26 @@ export default class WorkZonePost extends Vue {
       case 'members':
         if(this.form.members.tem <= 0) {
           this.form.check_members = ''
+          this.form.members.noEdit.value = ''
+          this.form.members.noEdit.tem = []
+          this.form.members.noEdit.show = false
+        }
+        break
+      case 'hits':
+        if(this.form.hits.tem <= 0) {
+          this.form.check_hits = ''
+          this.form.hits.noEdit.value = ''
+          this.form.hits.noEdit.tem = []
+          this.form.hits.noEdit.show = false
         }
         break
       case 'organizations':
         if(this.form.organizations.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_organizations = ''
+          this.form.organizations.noEdit.value = ''
+          this.form.organizations.noEdit.tem = []
+          this.form.organizations.noEdit.show = false
         }
         break
       default:
@@ -504,10 +528,19 @@ export default class WorkZonePost extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-09-10
-   * @detail   单选
+   * @detail   选择圈主
    */
-  singleSelection(type, item) {
-    this.form[type].tem = item
+  seleteOwnerUid(item) {
+    const data = { show: true, tem: [], value: [] }
+    this.updateMenberListsByIdApi({uid: item.uid})
+    this.form.owner_uid.tem = item
+    this.menberLists.map(field => {
+      if(field.active) {
+        data.value = field.uid
+        data.tem = item
+      }
+    })
+    this.form.owner_uid = Object.assign(this.form.owner_uid, data)
   }
 
   /**
@@ -515,17 +548,41 @@ export default class WorkZonePost extends Vue {
    * @DateTime 2018-09-10
    * @detail   多选
    */
-  multipleSelection(type, item) {
-    const value = []
+  multipleSelection(type, item, index) {
+    const data = { show: true, tem: [], value: [] }
+    this.updateMenberListsApi({ index })
     this.menberLists.map(field => {
-      if(this.form[type].tem.includes(field.realname)) {
-        value.push(field.uid)
+      if(field.active) {
+        data.value.push(field.uid)
+        data.tem.push(field)
       }
     })
-    this.form[type].value = value.join(',')
-    console.log(value)
-    console.log(type)
-    console.log(this.form[type])
+    data.value = data.value.join(',')
+    this.form[type] = Object.assign(this.form[type], data)
+    switch(type) {
+      case 'members':
+        if(this.form.hits.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      case 'hits':
+        if(this.form.members.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -537,7 +594,7 @@ export default class WorkZonePost extends Vue {
   seleteGroup(item, key) {
     this.updateGroupListsApi({groupId: item.groupId})
     const data = { show: true, tem: [], value: [] }
-    this['groupLists'].map(field => {
+    this.groupLists.map(field => {
       if(field.active) {
         data.tem.push(field.groupName)
         data.value.push(field.groupId)
@@ -556,7 +613,6 @@ export default class WorkZonePost extends Vue {
     if(bool) {
       this.showMsg({ content: '请不要重复添加~', type: 'error', duration: 3000 })
     }
-    // this.showCreateCourseTypeBox = !this.showCreateCourseTypeBox
   }
 
   /**

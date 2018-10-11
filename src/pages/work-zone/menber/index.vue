@@ -14,24 +14,26 @@
       </el-col>
     </el-row>
     <div>
-      <el-button size="large" @click="filterMenber('all')" class="list-item" v-if="groupLists.length > 0">所有人</el-button>
-      <el-button
-        size="large"
+      <button class="common-btn" @click="filterMenber('all')" v-if="groupLists.length > 0">所有人</button>
+      <button
+        class="common-btn"
         v-for="(groupItem, groupIndex) in groupLists"
         :key="groupIndex"
-        class="list-item"
         @click="filterMenber(groupItem)">
-          {{groupItem.groupName}}
-      </el-button>
+        {{groupItem.groupName}}
+      </button>
     </div>
     <div class="menber-list">
-      <el-checkbox-group v-model="checkList.tem">
-        <el-checkbox
-          :label="menberItem.realname"
-          :key="menberIndex"
-          @change="multipleSelection"
-          v-for="(menberItem, menberIndex) in menberLists" />
-      </el-checkbox-group>
+      <div
+        v-for="(menberItem, menberIndex) in menberLists"
+        :key="menberIndex"
+        @click="multipleSelection(menberItem, menberIndex)"
+        :class="{'common-checkbox-active': menberItem.active}"
+        class="common-checkbox">
+        <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+        <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+        <span>{{menberItem.realname}}</span>
+      </div>
     </div>
     <div class="footer-button">
       <el-button type="primary" @click="submit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>

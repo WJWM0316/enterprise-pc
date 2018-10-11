@@ -112,9 +112,7 @@ const mutations = {
   },
   [UPDATE_MENBER_LISTS_BY_ID] (state, params) {
     state.menberLists.map(field => {
-      if(params.uid === field.uid) {
-        field.active = !field.active
-      }
+      field.active = params.uid === field.uid ? !field.active : false
     })
   },
   [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
