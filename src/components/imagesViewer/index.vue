@@ -5,28 +5,19 @@
     <button class="my-btn2018 my-btn-prev"><i class="el-icon-arrow-left"></i></button>
     <button class="my-btn2018 my-btn-next"><i class="el-icon-arrow-right"></i></button>
     <div class="box">
-      <div class="swiper-container">
+      <div class="swiper-container gallery-top">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          <div class="swiper-slide">Slide 4</div>
-          <div class="swiper-slide">Slide 5</div>
-          <div class="swiper-slide">Slide 6</div>
-          <div class="swiper-slide">Slide 7</div>
-          <div class="swiper-slide">Slide 8</div>
-          <div class="swiper-slide">Slide 9</div>
-          <div class="swiper-slide">Slide 10</div>
+          <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature1.jpg)"></div>
+          <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature2.jpg)"></div>
         </div>
       </div>
     </div>
-    <!-- <div class="image-btn-ul">
-      <div>
-        <ul>
-          <li v-for="item in 15" :key="item">{{item}}</li>
-        </ul>
+    <div class="swiper-container gallery-thumbs" v-if="false">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature1.jpg)"></div>
+        <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature2.jpg)"></div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -89,6 +80,10 @@ export default ComponentImagesViewer
     color: white;
     transition: all ease .4s;
     cursor: pointer;
+    &:hover{
+      background: #FFE266;
+      color: #354048;
+    };
   }
   .my-btn-prev{
     left: 40px;
@@ -97,75 +92,34 @@ export default ComponentImagesViewer
     right: 40px;
   }
   .swiper-container {
-    width: 600px;
+    width: 100%;
     height: 300px;
   }
-  .image-btn-ul {
-    position: fixed;
+  .gallery-top {
+    height: 80%;
     width: 100%;
-    z-index: 1000;
-    height: 100px;
-    bottom: 0;
-    left: 0;
-    ul{
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      font-size: 0;
-      line-height: 0;
+    .swiper-slide {
+      background-size: cover;
+      background-position: center;
     }
-    li {
-      width:118px;
-      height:96px;
-      border-radius:4px;
-      border:2px solid rgba(255,226,102,1);
-      background: red;
+  }
+  .gallery-thumbs {
+    height: 96px !important;;
+    box-sizing: border-box;
+    position: fixed;
+    width: auto;
+    left: 90px;
+    right: 90px;
+    bottom: 30px;
+    z-index: 10;
+    .swiper-slide {
+      width: 118px !important;
+      height: 96px;
+      border-radius: 4px;
       margin-right: 24px;
-      display: inline-block;
-      line-height: 96px;
-      text-align: center;
-      font-size: 30px;
     }
-  } 
+    .swiper-slide-thumb-active {}
+  }
 }
 
-</style>
-<style>
-  html, body {
-    position: relative;
-    height: 100%;
-  }
-  body {
-    background: #eee;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color:#000;
-    margin: 0;
-    padding: 0;
-  }
-  .swiper-container {
-    width: 100%;
-    height: 100%;
-  }
-  .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-
-    /* Center slide text vertically */
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-  }
 </style>

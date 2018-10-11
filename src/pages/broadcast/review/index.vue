@@ -43,6 +43,7 @@
     <images-viewer v-model="imagesViewer.show" @cancel="cancel" />
     <file-viewer v-model="fileViewer.show"  @cancel="cancel" />
     <link-viewer v-model="linkViewer.show"  @cancel="cancel" />
+    <video-viewer v-model="videoViewer.show"  @cancel="cancel" />
   </section>
 </template>
 

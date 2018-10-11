@@ -1,10 +1,7 @@
 <template>
-  <div id="video-viewer" v-show="show">
-    <div class="mask show-mask"></div>
+  <div id="video-viewer" v-show="visiable">
+    <div class="mask show-mask"  @click="close"></div>
     <div class="box show-box">
-      <div class="header">
-        <span class="btn-close" @click="close"><i class="el-icon-close"></i></span>
-      </div>
       <div class="content">
       	<video :src="videoLink" controls="controls"> your browser does not support the video tag </video>
       </div>

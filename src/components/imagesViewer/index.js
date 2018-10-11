@@ -30,17 +30,29 @@ import Swiper from 'swiper'
   }
 })
 export default class ComponentImagesViewer extends Vue {
-  swiper1 = null
+  swiper = null
   visiable = false
   mounted() {
-    this.$nextTick(function() {
-      this.swiper1 = new Swiper('.swiper-container', {
-        navigation: {
-          nextEl: '.my-btn-next',
-          prevEl: '.my-btn-prev',
-        },
-        observer:true
-      })
+    // var galleryThumbs = new Swiper('.gallery-thumbs', {
+    //   spaceBetween: 24,
+    //   slidesPerView: 4,
+    //   freeMode: true,
+    //   watchSlidesVisibility: true,
+    //   watchSlidesProgress: true,
+    // });
+    this.swiper = new Swiper('.gallery-top', {
+      // spaceBetween: 10,
+      navigation: {
+        nextEl: '.my-btn-next',
+        prevEl: '.my-btn-prev',
+      },
+      // navigation: {
+      //   nextEl: '.swiper-button-next',
+      //   prevEl: '.swiper-button-prev',
+      // },
+      // thumbs: {
+      //   swiper: galleryThumbs
+      // }
     })
   }
 
