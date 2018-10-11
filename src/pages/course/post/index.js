@@ -634,17 +634,9 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
-      this.getMenberListsApi({selectAll: 1})
-          // .then(() => {
-          //   this.updateMenberListsAllApi({bool: true})
-          // })
-    } else {
-      this.getMenberListsApi({groupId: item.groupId})
-          // .then(() => {
-          //   this.updateMenberListsAllApi({bool: true})
-          // })
-    }
+    Object.prototype.toString.call(item) === '[object String]'
+    ? this.getMenberListsApi({selectAll: 1})
+    : this.getMenberListsApi({groupId: item.groupId})
   }
 
   /**
@@ -715,7 +707,12 @@ export default class CoursePost extends Vue {
   selectTutor(item) {
     const temTutorLists = [...this.temTutorLists]
     const data = { show: true, tem: [], value: [] }
-    temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+    if(this.models.editType === 'tutor') {
+      temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+    } else {
+      this.updateMenberListsByIdApi({uid: item.uid})
+      this.temTutorLists = this.menberLists
+    }
     this.temTutorLists = temTutorLists
     data.tem = item
     data.value = item.uid
