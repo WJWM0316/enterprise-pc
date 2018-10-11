@@ -5,7 +5,6 @@ import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
 import { editorRules } from 'FILTERS/rules'
 import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMemberInfoApi } from 'STORE/api/organization.js'
-import { getMemberInfosApi } from 'STORE/api/user.js'
 
 @Component({
   components: {
@@ -41,6 +40,9 @@ import { getMemberInfosApi } from 'STORE/api/user.js'
     '$route': {
       handler() {
         this.init()
+      },
+      imageUpload(){
+
       },
       immediate: true
     }
@@ -203,9 +205,8 @@ export default class WorkZonePost extends Vue {
       this.form.roleId = 3,
       this.form.id = this.user_id,
       this.form.contentAdminGroup = ''
-      this.form.id = this.user_id
 
-      if(data.avatar.length>0){
+      if(data.avatar&& data.avatar.smallUrl){
         this.imageUpload.list[0] = {
           url: data.avatar.smallUrl,
           show: false
@@ -262,13 +263,20 @@ export default class WorkZonePost extends Vue {
   }
 
   imgOp(index,type){
+
+    console.log(index,type)
     if(type === 'over'){
-      this.imageUpload.list[index].show = true
+      this.imageUpload.list[0].show = true
+      console.log(this.imageUpload.list[0].show)
+
     }else if(type === 'out'){
-      this.imageUpload.list[index].show = false
+      this.imageUpload.list[0].show = false
+      console.log(this.imageUpload.list[0].show)
+
     }else if(type === 'delete'){
-      delete this.from.avatarId 
-      this.imageUpload.list.splice(index,1)
+      delete this.form.avatarId 
+
+      this.imageUpload.list.splice(0,1)
     }
   }
 

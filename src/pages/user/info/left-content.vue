@@ -30,8 +30,8 @@
 				</li>
 			</ul>
 			<ul class="user-his-infos" v-else></ul>
-			<div class="edit-enter">
-				<router-link :to="{name: 'organization'}" class="set">编辑</router-link>
+			<div class="edit-enter" v-if="isShowEdit">
+				<router-link :to="{name: 'editMember',query: {user_id: userInfo.uid } }" class="set">编辑</router-link>
 			</div>
 		</div>
 		<div class="his-dynamics">
@@ -56,6 +56,7 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { getMemberInfosApi } from 'STORE/api/user.js'
 
 @Component({
 	methods: {
@@ -69,16 +70,55 @@ import Component from 'vue-class-component'
     ...mapGetters([
       'personalInfoLessons',
       'personalInfoStudy',
-      'personalInfoBase'
+      'personalInfoBase',
+      'userInfos'
     ])
+  },
+  watch: {
+  	personalInfoBase(res){
+  		this.getUserInfo()
+  	}
   }
 })
 export default class ComponentLeft extends Vue {
+	loginInfo = {} //登陆用户
+	userInfo = {} //当前用户
+	isShowEdit = false //是否显示编辑
 	created() {
 		const params = this.$route.params
 		this.getPersonalInfoStudyApi(params)
-    this.getPersonalInfoBaseApi(params)
+  	this.getPersonalInfoBaseApi(params)
     this.getPersonalInfoLessonsApi(params)
+	}
+
+	//编辑权限判断
+	isJurisdiction() {
+
+		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
+			this.loginInfo = res.data.data
+			console.log(this.loginInfo.roleName,this.userInfo.roleName)
+			if(this.loginInfo.roleName === '超级管理员'){
+				if(this.userInfo.roleName !== '超级管理员'){
+					this.isShowEdit = true
+				}
+			}else if(this.loginInfo.roleName === '后台管理员'){
+				if(this.userInfo.roleName !== '后台管理员' && this.userInfo.roleName !== '超级管理员'){
+					this.isShowEdit = true
+				}
+			}else if(this.loginInfo.roleName === '内容管理员'){
+				if(this.userInfo.roleName !== '内容管理员' && this.userInfo.roleName !== '超级管理员'  && this.userInfo.roleName !== '后台管理员'){
+					this.isShowEdit = true
+				}
+			}
+		})
+	}
+
+	//当前用户信息
+	getUserInfo() {
+		getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
+			this.userInfo = res.data.data
+			this.isJurisdiction()
+		})
 	}
 }
 </script>

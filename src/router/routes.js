@@ -534,6 +534,7 @@ export const routes = [
     title: '排序设置',
     component: () => import(/* webpackChunkName: "setSort" */ '@/pages/setSort/index.vue'),
     meta: {
+      icon: 'el-icon-circle-close',
       keepAlive: false,
       useNav: true
     },

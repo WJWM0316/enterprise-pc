@@ -92,6 +92,7 @@ export default class CourseList extends Vue {
       width: '10%',
       label: '操 作',
       showTips: 'yes',
+      filterPlacement: '移除导师：把对应外部导师移除出企业'
     }
   ]
 
@@ -150,6 +151,15 @@ export default class CourseList extends Vue {
     this.getTutorList()
   }
 
+  //跳转个人空间
+  viewMenberInfo(id,type) {
+    this.$router.push({ 
+      name: 'userInfos', 
+      params: { id }, 
+      query:{joinType: type}
+    })
+  }
+
   /**
    * 获取列表
    */
@@ -164,7 +174,6 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-    console.log(111)
     this.pagination.page = 1
     this.getTutorList()
   }

@@ -17,7 +17,6 @@
           >
             <el-input style="width: 300px;" v-model="form.name" :maxlength="30" placeholder="请填写姓名"/>
         </el-form-item>
-
         <el-form-item
           label="头像"
           prop="avatarId"
@@ -27,8 +26,8 @@
                 @mouseover="imgOp (imgIndex,'over') "
                 @mouseout="imgOp(imgIndex,'out')" 
               >
-                <img class="" :src="imgItem.url" alt="" >
-                <span class="deleteImg" v-if="imgItem.show"
+                <img :src="imgItem.url" >
+                <span class="deleteImg" v-show="imgItem.show"
                   @click="imgOp(imgIndex,'delete')"
                 >删除图片</span>
               </li>

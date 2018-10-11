@@ -290,6 +290,12 @@
                 v-model="ownerUidName"
                 placeholder="请输入导师名称" />
             </div>
+            <div class="selected-item" v-show="form.master_uid.show">
+              已选择：
+              <span @click="removeSingleChecked('master_uid')">
+                {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
+              </span>
+            </div>
             <div class="group-list">
               <button class="common-btn" @click="tutorClassification('outer')">外部导师</button>
               <button class="common-btn"

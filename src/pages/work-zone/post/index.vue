@@ -52,7 +52,7 @@
               @click="removeMultipleCheck('members', mIndex)"
               :key="mIndex"
               v-for="(mItem, mIndex) in form.members.tem">
-                {{ mItem }}<i class="el-icon-close"></i>
+                {{ mItem.realname }}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
@@ -147,7 +147,7 @@
               @click="removeMultipleCheck('hits', hIndex)"
               v-for="(hItem, hIndex) in form.hits.tem"
               :key="hIndex">
-                {{hItem}}<i class="el-icon-close"></i>
+                {{hItem.realname}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
@@ -238,13 +238,16 @@
               </el-button>
             </div>
             <div class="menber-list">
-              <el-radio v-model="form.owner_uid.value"
-                :label="menberItem.uid"
+              <div
+                v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"
-                @change="singleSelection('owner_uid', menberItem)"
-                v-for="(menberItem, menberIndex) in menberLists">
-                  {{menberItem.realname}}
-              </el-radio>
+                @click="seleteOwnerUid(menberItem)"
+                :class="{'common-checkbox-active': menberItem.active}"
+                class="common-checkbox">
+                <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+                <span>{{menberItem.realname}}</span>
+              </div>
             </div>
           </div>
           <!-- 选择圈主-end -->
@@ -259,38 +262,45 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="filterMenber('all')">所有人</el-button>
-              <el-button
-                size="large"
+              <button class="common-btn" @click="filterMenber('all')">所有人</button>
+              <button
+                class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 @click="filterMenber(groupItem)">
-                  {{groupItem.groupName}}
-              </el-button>
+                {{groupItem.groupName}}
+              </button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.members.tem">
-                <el-checkbox
-                  :label="menberItem.realname"
-                  :key="menberIndex"
-                  @change="multipleSelection('members', menberItem)"
-                  v-for="(menberItem, menberIndex) in menberLists" />
-              </el-checkbox-group>
+              <div
+                v-for="(menberItem, menberIndex) in menberLists"
+                :key="menberIndex"
+                @click="multipleSelection('members', menberItem, menberIndex)"
+                :class="{'common-checkbox-active': menberItem.active}"
+                class="common-checkbox">
+                <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+                <span>{{menberItem.realname}}</span>
+              </div>
             </div>
           </div>
           <!-- 选择工作圈成员-end -->
 
           <!-- 组织-start -->
           <div class="organizations-type-list" v-if="models.currentModalName === 'organizations'">
-            <el-button
-              size="large"
+            <button
+              class="common-btn"
               v-for="(groupItem, groupIndex) in groupLists"
-               @click="seleteGroup(groupItem, 'groupLists')"
-              :class="{'zike-btn-active-selected': groupItem.active}"
-              :key="groupIndex">
-                {{groupItem.groupName}}
-            </el-button>
-            <p class="tips">如果需要对部门组织进行修改，请点击左侧的<a class="set">【组织】</a>进行修改；如无权限，请联系管理员修改。</p>
+              :key="groupIndex"
+              :class="{'common-btn-active': groupItem.active}"
+              @click="seleteGroup(groupItem, 'groupLists')">
+              {{groupItem.groupName}}
+            </button>
+            <p class="tips">
+              如果需要对部门组织进行修改，请点击左侧的
+              <router-link target="_blank" :to="{name: 'organization'}" class="set">【组织】</router-link>
+              进行修改；如无权限，请联系管理员修改。
+            </p>
           </div>
           <!-- 组织-end -->
           <!-- 选择不可见学员-start -->
@@ -303,23 +313,33 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="filterMenber('all')">所有人</el-button>
-              <el-button
-                size="large"
+              <button class="common-btn" @click="filterMenber('all')">所有人</button>
+              <button
+                class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 @click="filterMenber(groupItem)">
-                  {{groupItem.groupName}}
-              </el-button>
+                {{groupItem.groupName}}
+              </button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.hits.tem">
+              <div
+                v-for="(menberItem, menberIndex) in menberLists"
+                :key="menberIndex"
+                @click="multipleSelection('hits', menberItem, menberIndex)"
+                :class="{'common-checkbox-active': menberItem.active}"
+                class="common-checkbox">
+                <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+                <span>{{menberItem.realname}}</span>
+              </div>
+              <!-- <el-checkbox-group v-model="form.hits.tem">
                 <el-checkbox
                   :label="menberItem.realname"
                   :key="menberIndex"
                   @change="multipleSelection('hits', menberItem)"
                   v-for="(menberItem, menberIndex) in menberLists" />
-              </el-checkbox-group>
+              </el-checkbox-group> -->
             </div>
           </div>
           <!-- 选择不可见学员-end -->

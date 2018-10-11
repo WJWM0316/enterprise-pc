@@ -35,7 +35,11 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getLiveInvisibleMenberListApi',
       'getTutorListApi',
       'getCategoryApi',
-      'noCheckGroupListsApi'
+      'noCheckGroupListsApi',
+      'updateMenberListsApi',
+      'updateMultipleMenberListsApi',
+      'updateMenberListsAllApi',
+      'updateMenberListsByIdApi'
     ])
   },
   computed: {
@@ -172,7 +176,8 @@ export default class BroadcastPost extends Vue {
     showClose: true,
     confirmText: '提交',
     currentModalName: '',
-    type: 'confirm'
+    type: 'confirm',
+    editType: 'tutor'
   }
 
   // 社区介绍富文本编辑器
@@ -309,7 +314,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getTutorListApi({selectAll: 2, name: this.searchField})
+    this.getMenberListsApi({selectAll: 2, name: this.searchField})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = this.tutorLists
@@ -329,7 +334,6 @@ export default class BroadcastPost extends Vue {
   openModal(type) {
   	switch(type) {
   		case 'categoryList':
-        this.models.show = true
   			this.models.title = '选择分类'
         this.form.categoryList.tem.length
           ? this.updateCategoryListsApi({categoryId: this.form.categoryList.tem[0].categoryId})
@@ -338,12 +342,12 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.getGroupListsApi({isHaveMember: 1})
+        this.getTutorListApi({type: 2})
             .then(() => {
-              this.models.show = true
+              this.temTutorLists = this.tutorLists
             })
   			break
   		case 'groupList':
-      this.models.show = true
   			this.models.title = '选择组织'
         this.getGroupListsApi()
         this.form.groupList.value.length
@@ -352,11 +356,13 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'memberList':
   			this.models.title = '参与直播学员'
-        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.memberList.value.split(',')})
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
-        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.invisibleList.value.split(',')})
         break
   		default:
   			break
@@ -364,6 +370,7 @@ export default class BroadcastPost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
+    this.models.show = true
   }
   /**
    * @Author   小书包
@@ -421,20 +428,20 @@ export default class BroadcastPost extends Vue {
 
       // 不可见学员
       invisibleList.map(field => {
-        this.form.invisibleList.tem.push(field.realname)
+        this.form.invisibleList.tem.push(field)
         this.form.invisibleList.value.push(field.uid)
         this.form.invisibleList.show = true
-        this.form.invisibleList.noEdit.tem.push(field.realname)
+        this.form.invisibleList.noEdit.tem.push(field)
         this.form.invisibleList.noEdit.value.push(field.uid)
         this.form.invisibleList.noEdit.show = true
       })
 
       // 必修学员
       memberList.map(field => {
-        this.form.memberList.tem.push(field.realname)
+        this.form.memberList.tem.push(field)
         this.form.memberList.value.push(field.uid)
         this.form.memberList.show = true
-        this.form.memberList.noEdit.tem.push(field.realname)
+        this.form.memberList.noEdit.tem.push(field)
         this.form.memberList.noEdit.value.push(field.uid)
         this.form.memberList.noEdit.show = true
       })
@@ -484,6 +491,8 @@ export default class BroadcastPost extends Vue {
       this.ContentEditor.content = info.intro
       this.temTutorLists = this.tutorLists
       this.form.check_uid = this.form.uid.value
+      this.form.memberList.noEdit.value = this.form.memberList.noEdit.value.join(',')
+      this.form.invisibleList.noEdit.value = this.form.invisibleList.noEdit.value.join(',')
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -517,12 +526,9 @@ export default class BroadcastPost extends Vue {
   cancel() {
     const type = this.models.currentModalName
     this.models.show = false
-    // 没有点击确定按钮
-    if(this.models.show) {
-      this.form[type].value = this.form[type].noEdit.value
-      this.form[type].tem = this.form[type].noEdit.tem
-      this.form[type].show = this.form[type].noEdit.show
-    }
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
   }
 
   /**
@@ -536,9 +542,15 @@ export default class BroadcastPost extends Vue {
       case 'categoryList':
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
         this.form.check_categoryList = ''
+        this.form.categoryList.noEdit.value = ''
+        this.form.categoryList.noEdit.tem = []
+        this.form.categoryList.noEdit.show = false
         break
       case 'uid':
         this.form.check_uid = ''
+        this.form.uid.noEdit.value = ''
+        this.form.uid.noEdit.tem = []
+        this.form.uid.noEdit.show = false
         break
       default:
         break
@@ -565,6 +577,25 @@ export default class BroadcastPost extends Vue {
         if(this.form.groupList.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_groupList = ''
+          this.form.groupList.noEdit.value = ''
+          this.form.groupList.noEdit.tem = []
+          this.form.groupList.noEdit.show = false
+        }
+        break
+      case 'memberList':
+        if(this.form.memberList.tem.length <= 0) {
+          this.form.memberList.noEdit.value = ''
+          this.form.memberList.noEdit.tem = []
+          this.form.memberList.noEdit.show = false
+          this.updateMenberListsAllApi({bool: false})
+        }
+        break
+      case 'invisibleList':
+        if(this.form.invisibleList.tem.length <= 0) {
+          this.form.invisibleList.noEdit.value = ''
+          this.form.invisibleList.noEdit.tem = []
+          this.form.invisibleList.noEdit.show = false
+          this.updateMenberListsAllApi({bool: false})
         }
         break
       default:
@@ -592,11 +623,13 @@ export default class BroadcastPost extends Vue {
    */
   tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]') {
+      this.models.editType = 'tutor'
       this.getTutorListApi({type: 2})
           .then(() => {
             this.temTutorLists = this.tutorLists
           })
     } else {
+      this.models.editType = 'member'
       this.getMenberListsApi({groupId: item.groupId})
           .then(() => {
             this.temTutorLists = this.menberLists
@@ -648,8 +681,19 @@ export default class BroadcastPost extends Vue {
    * @DateTime 2018-09-10
    * @detail   单选
    */
-  singleSelection(type, item) {
-    this.form[type].tem = item
+  selectTutor(item) {
+    const temTutorLists = [...this.temTutorLists]
+    const data = { show: true, tem: [], value: [] }
+    if(this.models.editType === 'tutor') {
+      temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+    } else {
+      this.updateMenberListsByIdApi({uid: item.uid})
+      this.temTutorLists = this.menberLists
+    }
+    this.temTutorLists = temTutorLists
+    data.tem = item
+    data.value = item.uid
+    this.form.uid = Object.assign(this.form.uid, data)
   }
 
   /**
@@ -657,14 +701,41 @@ export default class BroadcastPost extends Vue {
    * @DateTime 2018-09-10
    * @detail   多选
    */
-  multipleSelection(type, item) {
-    const value = []
+  multipleSelection(type, item, index) {
+    const data = { show: true, tem: [], value: [] }
+    this.updateMenberListsApi({ index })
     this.menberLists.map(field => {
-      if(this.form[type].tem.includes(field.realname)) {
-        value.push(field.uid)
+      if(field.active) {
+        data.value.push(field.uid)
+        data.tem.push(field)
       }
     })
-    this.form[type].value = value.join(',')
+    data.value = data.value.join(',')
+    this.form[type] = Object.assign(this.form[type], data)
+    switch(type) {
+      case 'memberList':
+        if(this.form.invisibleList.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      case 'invisibleList':
+        if(this.form.memberList.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      default:
+        break
+    }
   }
 
   /**

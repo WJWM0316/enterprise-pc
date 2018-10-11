@@ -13,7 +13,9 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getJobCircleDetailsApi',
       'putJobCircleApi',
       'getJobCircleHitListsApi',
-      'getJobCircleOrganizationListsApi'
+      'getJobCircleOrganizationListsApi',
+      'updateMenberListsApi',
+      'updateMultipleMenberListsApi'
     ])
   },
   computed: {
@@ -105,6 +107,7 @@ export default class MenberList extends Vue {
       })
       this.checkList = data
       this.form.members = data.value.join(',')
+      this.updateMultipleMenberListsApi({list: this.form.members.split(',')})
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -137,15 +140,12 @@ export default class MenberList extends Vue {
    * @DateTime 2018-09-10
    * @detail   多选
    */
-  multipleSelection() {
-    const menberLists = [...this.menberLists]
+  multipleSelection(item, index) {
     const value = []
-    menberLists.map(field => {
-      if(this.checkList.tem.includes(field.realname)) {
-        value.push(field.uid)
-      }
+    this.updateMenberListsApi({ index })
+    this.menberLists.map(field => {
+      if(field.active) value.push(field.uid)
     })
-    this.checkList.value = value
     this.form.members = value.join(',')
   }
 
