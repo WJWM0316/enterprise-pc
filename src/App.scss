@@ -100,3 +100,65 @@ ul {
 .el-checkbox__inner {
   border-radius: 50% !important;
 }
+
+.common-btn {
+  display: inline-block;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-transition: .1s;
+  transition: .1s;
+  font-weight: 500;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: #354048;
+  background-color: transparent;
+  color: #354048;
+  margin-right: 8px;
+  min-width: 128px;
+  outline: unset;
+  margin: 0px 16px 16px 0px;
+  &:hover{
+    background: rgba(255, 226, 102, 0.2);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #D7AB70;
+    border-color: #EDEDED;
+  };
+}
+.common-btn-active {
+  background: rgba(255, 226, 102, 0.2);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #D7AB70;
+  border-color: #EDEDED;
+}
+
+.common-checkbox {
+  font-size:14px;
+  font-weight:400;
+  color:rgba(102,102,102,1);
+  display: inline-block;
+  margin: 10px 30px 10px 0px;
+  cursor: pointer;
+  i{
+    padding-right: 10px;
+    font-size: 14px;
+  }
+  span{
+    min-width: 70px;
+    display: inline-block;
+  }
+}
+.common-checkbox-active{
+  font-size:14px;
+  font-weight:400;
+  color:rgba(215,171,112,1);
+}

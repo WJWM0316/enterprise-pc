@@ -17,8 +17,7 @@ import MainContent from './content.vue'
 	},
 	methods: {
 		...mapActions([
-			'getDesktopInfosApi',
-			'getMemberDynamicsListApi'
+			'getDesktopInfosApi'
 		])
 	},
 	computed: {
@@ -31,7 +30,6 @@ import MainContent from './content.vue'
 export default class pageDashboard extends Vue {
 	created() {
 		this.getDesktopInfosApi()
-		this.getMemberDynamicsListApi({page: 1, count: 20})
 	}
 }
 </script>

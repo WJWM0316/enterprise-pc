@@ -5,19 +5,19 @@ import { request } from './index.js'
 // import Qs from 'qs'
 
 // 【课节打卡】获取一级评论
-export const getLessonCommentFirstListsApi = params => request(`/coursesectioncard/comment/commentList/${params.id}`, 'get', params)
+export const getCommentListsApi = params => request(`/coursesectioncard/comment/commentList/${params.id}`, 'get', params)
 
 // 【课节打卡】搜索一级评论
-export const getLessonSearchCommentListsApi = params => request('/coursesectioncard/searchComment', 'get', params)
+export const getSearchCommentListsApi = params => request('/coursesectioncard/searchComment', 'get', params)
 
 // 【课节打卡】获取二级评论（测试commentId可使用202）
-export const getLessonCommentSecondListsApi = params => request(`/coursesectioncard/comment/replyList/${params.id}`, 'get', params)
+export const getCommentSecondListsApi = params => request(`/coursesectioncard/comment/replyList/${params.id}`, 'get', params)
 
 // 【课节打卡】设置热评
 export const putLessonPunchApi = params => request(`/coursesectioncard/comment/hot/${params.id}`, 'put')
 
 // 【课节打卡】取消设置热评
-export const deleteLessonPunchApi = params => request(`/coursesectioncard/comment/hot/${params.id}`, 'delete')
+export const cancelLessonPunchApi = params => request(`/coursesectioncard/comment/hot/${params.id}`, 'delete')
 
 // 【课节打卡】删除评论
 export const deleteLessonPunchCommentApi = params => request(`/coursesectioncard/comment/${params.id}`, 'delete')

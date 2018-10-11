@@ -149,7 +149,7 @@
               @click="removeMultipleCheck('members', hIndex)"
               v-for="(hItem, hIndex) in form.members.tem"
               :key="hIndex">
-                {{hItem}}<i class="el-icon-close"></i>
+                {{hItem.realname}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
@@ -171,7 +171,7 @@
               @click="removeMultipleCheck('hits', hIndex)"
               v-for="(hItem, hIndex) in form.hits.tem"
               :key="hIndex">
-                {{hItem}}<i class="el-icon-close"></i>
+                {{hItem.realname}}<i class="el-icon-close"></i>
             </span>
           </div>
           <el-button
@@ -248,14 +248,12 @@
           <!-- 课程分类-start -->
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'category_id'">
             <div class="group-list">
-              <el-button
-                size="large"
-                v-for="(cateItem, cateIndex) in categoryList"
+              <button class="common-btn" v-for="(cateItem, cateIndex) in categoryList"
                 :key="cateIndex"
-                :class="{'zike-btn-active-selected': cateItem.active}"
+                :class="{'common-btn-active': cateItem.active}"
                 @click="selectCategory(cateItem, 'categoryList')">
-                  {{cateItem.categoryName}}
-              </el-button>
+                {{cateItem.categoryName}}
+              </button>
               <el-popover
                 placement="top"
                 width="304"
@@ -276,7 +274,9 @@
               </el-popover>
             </div>
             <div class="tips">
-              如果需要对部门组织进行修改，请点击<span>【分类设置】</span>进行修改；如无权限，请联系管理员修改。
+              如果需要对部门组织进行修改，请点击
+              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
           <!-- 课程分类-end -->
@@ -291,38 +291,38 @@
                 placeholder="请输入导师名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="tutorClassification('outer')">外部导师</el-button>
-              <el-button
-                size="large"
+              <button class="common-btn" @click="tutorClassification('outer')">外部导师</button>
+              <button class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                :class="{'zike-btn-active-selected': groupItem.active}"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="tutorClassification(groupItem)">
-                  {{groupItem.groupName}}
-              </el-button>
+                {{groupItem.groupName}}
+              </button>
             </div>
             <div class="menber-list">
-              <el-radio v-model="form.master_uid.value"
-                :label="tutorItem.uid"
-                :key="tutorIndex"
-                @change="singleSelection('master_uid', tutorItem)"
-                v-for="(tutorItem, tutorIndex) in temTutorLists">
-                  {{tutorItem.realname}}
-              </el-radio>
+              <div
+                class="common-checkbox"
+                :class="{'common-checkbox-active': tutorItem.active}"
+                v-for="(tutorItem, tutorIndex) in temTutorLists"
+                @click="selectTutor(tutorItem)"
+                :key="tutorIndex">
+                <i class="icon iconfont icon-checked"></i>
+                <span>{{tutorItem.realname}}</span>
+              </div>
             </div>
           </div>
           <!-- 选择课程成员-end -->
 
           <!-- 组织-start -->
           <div class="groupList-type-list" v-if="models.currentModalName === 'group_id'">
-            <el-button
-              size="large"
+            <button class="common-btn" 
               v-for="(groupItem, groupIndex) in groupLists"
                @click="seleteGroup(groupItem, 'groupLists')"
-              :class="{'zike-btn-active-selected': groupItem.active}"
+              :class="{'common-btn-active': groupItem.active}"
               :key="groupIndex">
-                {{groupItem.groupName}}
-            </el-button>
+              {{groupItem.groupName}}
+            </button>
             <p class="tips">
               如果需要对部门组织进行修改，请点击左侧的
               <router-link target="_blank" :to="{name: 'organization'}" class="set">【组织】</router-link>
@@ -341,23 +341,26 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="filterMenber('uid', 'all')">所有人</el-button>
-              <el-button
-                size="large"
+              <button class="common-btn" @click="filterMenber('uid', 'all')">所有人</button>
+              <button
+                class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 @click="filterMenber('groupList', groupItem)">
-                  {{groupItem.groupName}}
-              </el-button>
+                {{groupItem.groupName}}
+              </button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.members.tem">
-                <el-checkbox
-                  :label="menberItem.realname"
-                  :key="menberIndex"
-                  @change="multipleSelection('members', menberItem)"
-                  v-for="(menberItem, menberIndex) in menberLists" />
-              </el-checkbox-group>
+              <div
+                v-for="(menberItem, menberIndex) in menberLists"
+                :key="menberIndex"
+                @click="multipleSelection('members', menberItem, menberIndex)"
+                :class="{'common-checkbox-active': menberItem.active}"
+                class="common-checkbox">
+                <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+                <span>{{menberItem.realname}}</span>
+              </div>
             </div>
           </div>
           <!-- 必修学员-end -->
@@ -372,23 +375,24 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <el-button size="large" @click="filterMenber('hits', 'all')">所有人</el-button>
-              <el-button
-                size="large"
+              <button class="common-btn"  @click="filterMenber('hits', 'all')">所有人</button>
+              <button
                 v-for="(groupItem, groupIndex) in groupLists"
+                class="common-btn"
                 :key="groupIndex"
-                @click="filterMenber('groupList', groupItem)">
-                  {{groupItem.groupName}}
-              </el-button>
+                @click="filterMenber('groupList', groupItem)">{{groupItem.groupName}}</button>
             </div>
             <div class="menber-list">
-              <el-checkbox-group v-model="form.hits.tem">
-                <el-checkbox
-                  :label="menberItem.realname"
-                  :key="menberIndex"
-                  @change="multipleSelection('hits', menberItem)"
-                  v-for="(menberItem, menberIndex) in menberLists" />
-              </el-checkbox-group>
+              <div
+                v-for="(menberItem, menberIndex) in menberLists"
+                :key="menberIndex"
+                @click="multipleSelection('hits', menberItem, menberIndex)"
+                :class="{'common-checkbox-active': menberItem.active}"
+                class="common-checkbox">
+                <i class="icon iconfont icon-check-circle" v-show="menberItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
+                <span>{{menberItem.realname}}</span>
+              </div>
             </div>
           </div>
           <!-- 不可见学员-end -->
@@ -457,7 +461,7 @@ export default CoursePost
       color: #4080AD;
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -508,7 +512,7 @@ export default CoursePost
       }
     }
     .el-button {
-      width: 128px;
+      min-width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
       overflow: hidden;
@@ -536,7 +540,7 @@ export default CoursePost
   }
   .el-radio__label {
     box-sizing: border-box;
-    width: 70px;
+    min-width: 70px;
     padding-left: 5px;
     display: inline-block; 
   }
@@ -718,6 +722,9 @@ export default CoursePost
     color: unset;
     border-color: unset;
     background-color: unset;
+  }
+  .el-checkbox__label{
+    min-width: 70px;
   }
 }
 </style>

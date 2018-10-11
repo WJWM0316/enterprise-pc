@@ -25,7 +25,7 @@ const state = {
     title: ''
   },
   desktopNewestLiveInfo: {
-    liveName: '',
+    name: '',
     status: 3,
     peopleCount: 0,
     cover: {

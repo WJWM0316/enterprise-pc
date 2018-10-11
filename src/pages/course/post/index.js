@@ -34,7 +34,11 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'getCourseOrganizationsApi',
       'getCourseCategoryApi',
       'getCoursePeopleHitsApi',
-      'noCheckGroupListsApi'
+      'noCheckGroupListsApi',
+      'updateMenberListsApi',
+      'updateMultipleMenberListsApi',
+      'updateMenberListsAllApi',
+      'updateMenberListsByIdApi'
     ])
   },
   computed: {
@@ -183,7 +187,8 @@ export default class CoursePost extends Vue {
     showClose: true,
     confirmText: '提交',
     currentModalName: '',
-    type: 'confirm'
+    type: 'confirm',
+    editType: 'tutor'
   }
 
   // 社区介绍富文本编辑器
@@ -318,7 +323,7 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getTutorListApi({name: this.ownerUidName})
+    this.getTutorListApi({selectAll: 2, name: this.ownerUidName})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = this.tutorLists
@@ -351,9 +356,13 @@ export default class CoursePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.members.value.split(',')})
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({list: this.form.hits.value.split(',')})
         break
   		default:
   			break
@@ -403,7 +412,7 @@ export default class CoursePost extends Vue {
         this.getMenberListsApi(),
         this.getGroupListsApi({isHaveMember: 1}),
         this.getCategoryListsApi(),
-        this.getTutorListApi()
+        this.getTutorListApi({type: 2})
       ]
     )
     .then((res) => {
@@ -439,19 +448,19 @@ export default class CoursePost extends Vue {
         // 必修学员
         if(this.coursePeaple.includes(field.uid)) {
           this.form.members.value.push(field.uid)
-          this.form.members.tem.push(field.realname)
+          this.form.members.tem.push(field)
           this.form.members.show = true
           this.form.members.noEdit.value.push(field.uid)
-          this.form.members.noEdit.tem.push(field.realname)
+          this.form.members.noEdit.tem.push(field)
           this.form.members.noEdit.show = true
         }
         // 不可见学员
         if(this.coursePeapleHits.includes(field.uid)) {
           this.form.hits.value.push(field.uid)
-          this.form.hits.tem.push(field.realname)
+          this.form.hits.tem.push(field)
           this.form.hits.show = true
           this.form.hits.noEdit.value.push(field.uid)
-          this.form.hits.noEdit.tem.push(field.realname)
+          this.form.hits.noEdit.tem.push(field)
           this.form.hits.noEdit.show = true
         }
       })
@@ -497,6 +506,7 @@ export default class CoursePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
+    const data = { show: true, tem: [], value: [] }
     this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.models.show = false
     this.form[`check_${type}`] = this.form[type].value
@@ -507,6 +517,30 @@ export default class CoursePost extends Vue {
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    // switch(type) {
+    //   case 'members':
+    //     this.menberLists.map(field => {
+    //       if(field.active) {
+    //         data.value.push(field.uid)
+    //         data.tem.push(field)
+    //       }
+    //     })
+    //     data.value = data.value.join(',')
+    //     this.form.members = Object.assign(this.form.members, data)
+    //     break
+    //   case 'hits':
+    //     this.menberLists.map(field => {
+    //       if(field.active) {
+    //         data.value.push(field.uid)
+    //         data.tem.push(field)
+    //       }
+    //     })
+    //     data.value = data.value.join(',')
+    //     this.form.hits = Object.assign(this.form.hits, data)
+    //     break
+    //   default:
+    //     break
+    // }
   }
 
   /**
@@ -517,12 +551,9 @@ export default class CoursePost extends Vue {
   cancel() {
     const type = this.models.currentModalName
     this.models.show = false
-    // 没有点击确定按钮
-    if(this.models.show) {
-      this.form[type].value = this.form[type].noEdit.value
-      this.form[type].tem = this.form[type].noEdit.tem
-      this.form[type].show = this.form[type].noEdit.show
-    }
+    this.form[type].value = this.form[type].noEdit.value
+    this.form[type].tem = this.form[type].noEdit.tem
+    this.form[type].show = this.form[type].noEdit.show
   }
 
   /**
@@ -536,9 +567,15 @@ export default class CoursePost extends Vue {
       case 'category_id':
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
         this.form.check_category_id = ''
+        this.form.category_id.noEdit.value = ''
+        this.form.category_id.noEdit.tem = []
+        this.form.category_id.noEdit.show = false
         break
       case 'master_uid':
         this.form.check_master_uid = ''
+        this.form.master_uid.noEdit.value = ''
+        this.form.master_uid.noEdit.tem = []
+        this.form.master_uid.noEdit.show = false
         break
       default:
         break
@@ -553,16 +590,36 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-11
    * @detail   移除多选
    */
-  removeMultipleCheck(type, index, item) {   
-    const value = this.form[type].value.split(',').splice(index, 1)
+  removeMultipleCheck(type, index, item) {
+    let tem = this.form[type].value.split(',')
+    tem.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = value.join(',')
+    this.form[type].value = tem.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
     switch(type) {
       case 'group_id':
         if(this.form.group_id.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_group_id = ''
+          this.form.group_id.noEdit.value = ''
+          this.form.group_id.noEdit.tem = []
+          this.form.group_id.noEdit.show = false
+        }
+        break
+      case 'members':
+        if(this.form.members.tem.length <= 0) {
+          this.form.members.noEdit.value = ''
+          this.form.members.noEdit.tem = []
+          this.form.members.noEdit.show = false
+          this.updateMenberListsAllApi({bool: false})
+        }
+        break
+      case 'hits':
+        if(this.form.hits.tem.length <= 0) {
+          this.form.hits.noEdit.value = ''
+          this.form.hits.noEdit.tem = []
+          this.form.hits.noEdit.show = false
+          this.updateMenberListsAllApi({bool: false})
         }
         break
       default:
@@ -577,9 +634,17 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    Object.prototype.toString.call(item) === '[object String]'
-    ? this.getMenberListsApi({selectAll: 1})
-    : this.getMenberListsApi({groupId: item.groupId})
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          // .then(() => {
+          //   this.updateMenberListsAllApi({bool: true})
+          // })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          // .then(() => {
+          //   this.updateMenberListsAllApi({bool: true})
+          // })
+    }
   }
 
   /**
@@ -590,11 +655,13 @@ export default class CoursePost extends Vue {
    */
   tutorClassification(item) {
     if(Object.prototype.toString.call(item) === '[object String]') {
+      this.models.editType = 'tutor'
       this.getTutorListApi({type: 2})
           .then(() => {
             this.temTutorLists = this.tutorLists
           })
     } else {
+      this.models.editType = 'menber'
       this.getMenberListsApi({groupId: item.groupId})
           .then(() => {
             this.temTutorLists = this.menberLists
@@ -611,7 +678,7 @@ export default class CoursePost extends Vue {
   selectCategory(item, key) {
     this.updateCategoryListsApi({categoryId: item.categoryId})
     const data = { show: true, tem: [], value: [] }
-    this['categoryList'].map((field) => {
+    this.categoryList.map((field) => {
       if(field.active) {
         data.tem.push(field)
         data.value.push(field.categoryId)
@@ -645,8 +712,14 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-10
    * @detail   单选
    */
-  singleSelection(type, item) {
-    this.form[type].tem = item
+  selectTutor(item) {
+    const temTutorLists = [...this.temTutorLists]
+    const data = { show: true, tem: [], value: [] }
+    temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+    this.temTutorLists = temTutorLists
+    data.tem = item
+    data.value = item.uid
+    this.form.master_uid = Object.assign(this.form.master_uid, data)
   }
 
   /**
@@ -654,14 +727,41 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-10
    * @detail   多选
    */
-  multipleSelection(type, item) {
-    const value = []
+  multipleSelection(type, item, index) {
+    const data = { show: true, tem: [], value: [] }
+    this.updateMenberListsApi({ index })
     this.menberLists.map(field => {
-      if(this.form[type].tem.includes(field.realname)) {
-        value.push(field.uid)
+      if(field.active) {
+        data.value.push(field.uid)
+        data.tem.push(field)
       }
     })
-    this.form[type].value = value.join(',')
+    data.value = data.value.join(',')
+    this.form[type] = Object.assign(this.form[type], data)
+    switch(type) {
+      case 'members':
+        if(this.form.hits.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      case 'hits':
+        if(this.form.members.value.split(',').includes(String(item.uid))) {
+          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -674,6 +774,7 @@ export default class CoursePost extends Vue {
     this.categoryModal.loading = true
     this.getCategoryApi({name: this.categoryModal.name})
         .then(() => {
+          this.categoryModal.name = ''
           this.getCategoryListsApi()
               .then(() => {
                 this.categoryModal.loading = false
@@ -685,6 +786,7 @@ export default class CoursePost extends Vue {
           this.categoryModal.loading = false
           this.categoryModal.show = false
           this.$message.error(`${err.msg}~`)
+          this.categoryModal.name = ''
         })
   }
 

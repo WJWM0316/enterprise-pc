@@ -67,35 +67,6 @@
 			    <button class="time-button" v-if="desktopVerInfo.isOfficial" slot="reference">VIP</button>
 			  </el-popover>
 				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
-				<el-popover
-			    placement="bottom"
-			    width="158"
-			    trigger="hover">
-			    <div class="my-popover123456">
-			    	<h2>{{desktopVerInfo.name}}</h2>
-			    	<div class="walk">
-			    		<span>可用员工数：</span>
-			    		<strong>{{desktopVerInfo.enable.staffCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建课程数：</span>
-			    		<strong>{{desktopVerInfo.enable.courseCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建直播数：</span>
-			    		<strong>{{desktopVerInfo.enable.liveCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建工作圈数：</span>
-			    		<strong>{{desktopVerInfo.enable.jobCircleCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可存储文件量：</span>
-			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
-			    	</div>
-			    </div>
-			    <button class="time-button" v-if="desktopVerInfo.isOfficial">VIP,60天后过期</button>
-			  </el-popover>
 				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
 			<div class="statistics-flex-box">
@@ -158,7 +129,7 @@
 				<div class="card-header">
 					最新课程
 				</div>
-				<div class="card-content">
+				<div class="card-content" v-if="desktopNewestCourseInfo.coverImg">
 					<div class="img-box">
 						<img :src="desktopNewestCourseInfo.coverImg" alt="">
 					</div>
@@ -168,12 +139,18 @@
 						<p>完成打卡：{{desktopNewestCourseInfo.sessionCardCount}}</p>
 					</div>
 				</div>
+				<div class="text-content" v-else>
+					<p class="no-data">还没有新建的课程~</p>
+					<div class="btn-box">
+						<el-button type="primary" size="mini" @click="routeJump('coursePost')">去新建</el-button>
+					</div>
+				</div>
 			</div>
 			<div>
 				<div class="card-header">
 					最新直播
 				</div>
-				<div class="card-content">
+				<div class="card-content" v-if="desktopNewestLiveInfo.name">
 					<div class="img-box">
 						<img :src="desktopNewestLiveInfo.coverImg" alt="" v-if="desktopNewestLiveInfo.coverImg">
 					</div>
@@ -185,17 +162,23 @@
 						<p class="end" v-if="desktopNewestLiveInfo.status === 3">直播已结束</p>
 					</div>
 				</div>
+				<div class="text-content" v-else>
+					<p class="no-data">还没有新建的直播~</p>
+					<div class="btn-box">
+						<el-button type="primary" size="mini" @click="routeJump('broadcastPost')">去新建</el-button>
+					</div>
+				</div>
 			</div>
 		</section>
 		<section class="member-dynamics">
 			<header class="member-dynamics-header">
 				成员动态
-				<button class="click-item" @click="reflesh">
+				<button class="click-item" @click="reflesh" v-if="isHaveNew">
 					<i class="el-icon-refresh" style="color: #4080AD;"></i>
 					有新的动态，点击刷新
 				</button>
 			</header>
-			<ul>
+			<ul v-if="memberDynamics.length > 0">
 				<li v-for="(memberItem, memberIndex) in memberDynamics" :key="memberIndex">
 					<div class="img-box" @click="viewMenberInfo(memberItem.uid)">
 						<img :src="memberItem.avatarInfo.smallUrl">
@@ -212,6 +195,10 @@
 					</div>
 				</li>
 			</ul>
+			<div class="no-member-dynamics-data" v-else>
+				<img src="~IMAGES/no-data.png" alt="">
+				<p>还没有成员动态哦，成员参加的<br/> 课程、直播、工作圈相关动态将会在这里记录~</p>
+			</div>
 		</section>
 		<modal-dialog
       v-model="models.show"
@@ -247,7 +234,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 			'showMsg',
 			'getUserListsApi',
 			'getCompanyInfoApi',
-			'getMemberCheckNewDynamicsApi'
+			'getMemberCheckNewDynamicsApi',
+			'getMemberDynamicsListApi'
 		])
 	},
 	components: {
@@ -270,6 +258,7 @@ export default class pageDashboard extends Vue {
 
 	// 是否有新的成员动态
 	isHaveNew = 0
+	timer = null
 	// 确认信息弹窗
   models = {
     show: false,
@@ -339,14 +328,28 @@ export default class pageDashboard extends Vue {
 		this.$router.push({ name: 'userInfos', params: { id }})
 	}
 
-	mounted() {
-		const timer = setInterval(() =>{                    
-		  this.getMemberCheckNewDynamicsApi({timestamp: Date.parse(new Date())})
+	clock() {
+		this.timer = setInterval(() =>{
+		  const timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
+			this.getMemberCheckNewDynamicsApi({ timestamp })
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
+		  			this.clock()
 		  		})
 		}, 1000 * 60 * 5)
-		this.$once('hook:beforeDestroy', () => { clearInterval(timer) })
+	}
+
+	mounted() {
+		this.getMemberDynamicsListApi({page: 1, count: 20})
+				.then(() => {
+					const timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
+					this.getMemberCheckNewDynamicsApi({ timestamp })
+				  		.then(res => {
+				  			this.isHaveNew = res.data.data.isHaveNew
+				  			this.clock()
+				  		})
+				})
+		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
 	}
 }
 </script>
@@ -592,6 +595,15 @@ export default class pageDashboard extends Vue {
 			color:rgba(102,102,102,1);
 			margin-top: 10px;
 		}
+		.no-data {
+			font-size:16px;
+			font-weight:400;
+			color:rgba(53,64,72,1);
+		}
+		.btn-box {
+			text-align: right;
+			margin-top: 30px;
+		}
 	}
 	.member-dynamics {
 		background: #fff;
@@ -697,6 +709,20 @@ export default class pageDashboard extends Vue {
 		color:rgba(102,102,102,1);
 		margin: 0;
 		line-height: 1;
+	}
+	.no-member-dynamics-data {
+		text-align: center;
+		margin: 50px 0;
+		img {
+			width: 120px;
+		}
+		p{
+			font-size:12px;
+			font-weight:400;
+			color:rgba(188,193,204,1);
+			text-align: center;
+			line-height: 1.5;
+		}
 	}
 }
 .my-popover123456 {

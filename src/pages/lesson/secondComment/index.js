@@ -4,7 +4,7 @@ import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
-import { getSearchCommentListsApi, putLessonPunchApi, cancelLessonPunchApi, deleteLessonPunchCommentApi, postLessonPunchCommentApi } from 'API/lesson'
+import { getCommentSecondListsApi, putLessonPunchApi, cancelLessonPunchApi, deleteLessonPunchCommentApi, postLessonPunchCommentApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -79,7 +79,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       width: '15%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>热门评论/取消热门：把打卡内容设置为热门评论或者取消热门评论<br/>评论：进入评论内容管理页面'
+      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]
 
@@ -127,6 +127,7 @@ export default class CourseList extends Vue {
     console.log(this.form,this.$route.query)
 
     this.pageData = Object.assign(this.$route.query || {})
+    //测试结束删除
     this.getLists()
   }
 
@@ -138,23 +139,16 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
+    //this.course_section_id = 13
     let param = {
-      postId: this.pageData.postId,
-      keyword:this.form.name,
-      /*withReply: 1,
-      replyNum: 3,*/
+      id: this.pageData.commentId,
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       sort: 'asc'
     }
 
-    param.keyword.replace(/\s*/g,"")
-    if(param.keyword.length<1){
-      delete param.keyword
-    }
-
     console.log(param)
-    getSearchCommentListsApi(param).then(res=>{
+    getCommentSecondListsApi(param).then(res=>{
       console.log(res)
       this.commentList = {
         list : res.data.data,
@@ -174,8 +168,6 @@ export default class CourseList extends Vue {
       id: this.model.itemSel.id,
       is_pusnch_card: 0
     }
-    console.log(111111,data)
-
     deleteLessonPunchCommentApi(data).then(res=>{
       console.log(res)
       this.getLists()
@@ -202,71 +194,20 @@ export default class CourseList extends Vue {
     })
   }
 
-  //【课节打卡】取消设置热评
-  cancelHot(){
-    let data = {
-      id: this.model.itemSel.id,
-    }
-    cancelLessonPunchApi(data).then(res=>{
-      console.log(res)
-      this.getLists()
-      this.model.show = false
-    }).catch(err => {
-      this.$message.error(err.data.msg);
-    })
-  }
-
-  //【课节打卡】设置热评
-  putHot(){
-    let data = {
-      id: this.model.itemSel.id,
-    }
-    putLessonPunchApi(data).then(res=>{
-      console.log(res)
-      this.getLists()
-      this.model.show = false
-    }).catch(err => {
-      this.$message.error(err.data.msg);
-    })
-  }
-
-  
-
   todoAction(type, item) {
     console.log(item)
 
-    if(type!=='comment'){
-      this.model.show = true
-    }
+    this.model.show = true
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
         this.model.txt = '删除后的内容前台不可见'
         this.model.confirm = 'deleteComment'
         break
-      case 'cancelExcellent':
-        this.model.txt = '把该打卡取消热门评论'
-        this.model.confirm = 'cancelHot'
-        break
-      case 'excellent':
-        this.model.txt = '把该打卡设为热门评论'
-        this.model.confirm = 'putHot'
-        break
       case 'recover':
         this.model.txt = '恢复后内容前台可见'
         this.model.confirm = 'recover'
         break
-
-      case 'comment':
-      this.$router.push(
-          { name: 'secondComment',
-            query: {
-              course_section_id: this.pageData.course_section_id,
-              course_id: this.pageData.course_id,
-              commentId: item.id
-            }
-          }
-        )
         break
       default:
         break

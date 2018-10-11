@@ -493,6 +493,15 @@ export const routes = [
           keepAlive: false,
           module: 'lesson'
         }
+      },
+      {
+        path: 'secondComment',
+        name: 'secondComment',
+        component: () => import(/* webpackChunkName: "lessonPost" */ '@/pages/lesson/secondComment/index.vue'),
+        meta: {
+          keepAlive: false,
+          module: 'lesson'
+        }
       }
     ]
   },
@@ -516,6 +525,17 @@ export const routes = [
     meta: {
       keepAlive: false,
       useNav: false
+    },
+  },
+  // 排序设置管理
+  {
+    path: '/setSort',
+    name: 'setSort',
+    title: '排序设置',
+    component: () => import(/* webpackChunkName: "setSort" */ '@/pages/setSort/index.vue'),
+    meta: {
+      keepAlive: false,
+      useNav: true
     },
   },
   {

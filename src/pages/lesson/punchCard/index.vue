@@ -58,7 +58,7 @@
             </div>
         </div>
         <div v-else-if="props.scope.column.property === 'cardContent'" class="flex-box">
-          <div class="content" :class="{'delet': props.scope.row.punchCardStatus != 1}">
+          <div class="limit-row-num-2" :class="{'delet': props.scope.row.punchCardStatus != 1}">
             {{ props.scope.row.cardContent}}
           </div>
         </div>

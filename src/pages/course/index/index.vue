@@ -66,7 +66,7 @@
                   <span class="inner-tutor-realname">{{props.scope.row.groupName}}</span>
                 </div>
                 <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 5">
-                  <span>{{props.scope.row.realname}}</span>
+                  <span>外聘导师 - {{props.scope.row.realname}}</span>
                 </div>
             </div>
           </div>

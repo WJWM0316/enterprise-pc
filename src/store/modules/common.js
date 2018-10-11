@@ -14,7 +14,11 @@ import {
   NO_CHECK_UPDATE_GROUP_LISTS,
   GET_GROUP_LISTS,
   SELECT_ALL_MENBER_LISTS,
-  GET_MENBER_DYNAMICS_LIST
+  GET_MENBER_DYNAMICS_LIST,
+  UPDATE_MENBER_LISTS,
+  UPDATE_MENBER_LISTS_MULTIPLE,
+  UPDATE_MENBER_LISTS_All,
+  UPDATE_MENBER_LISTS_BY_ID
 } from '../mutation-types'
 
 import {
@@ -88,6 +92,7 @@ const mutations = {
   },
   [GET_MENBER_LISTS] (state, data) {
     data.map(field => {
+      field.active = false
       field.selfGroup = []
       field.group.map(val => {
         field.selfGroup.push(val.groupId)
@@ -95,8 +100,30 @@ const mutations = {
     })
     state.menberLists = data
   },
+  [UPDATE_MENBER_LISTS] (state, params) {
+    state.menberLists.map((field, i) => {
+      if(params.index === i) field.active = !field.active
+    })
+  },
+  [UPDATE_MENBER_LISTS_All] (state, params) {
+    state.menberLists.map(field => {
+      field.active = params.bool
+    })
+  },
+  [UPDATE_MENBER_LISTS_BY_ID] (state, params) {
+    state.menberLists.map(field => {
+      if(params.uid === field.uid) {
+        field.active = !field.active
+      }
+    })
+  },
+  [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
+    state.menberLists.map(field => {
+      if(params.list.includes(String(field.uid))) field.active = true
+    })
+  },
   [SELECT_ALL_MENBER_LISTS] (state, data) {
-    state.menberLists.map(field => {})
+    state.menberLists.map(field => field.active = false)
   },
   // 获取公司信息
   [GET_COMPANY_INFOS] (state, data) {
@@ -301,6 +328,42 @@ const actions = {
    */
   updateGroupListsApi(store, params) {
     store.commit(UPDATE_GROUP_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateMenberListsApi(store, params) {
+    store.commit(UPDATE_MENBER_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateMenberListsByIdApi(store, params) {
+    store.commit(UPDATE_MENBER_LISTS_BY_ID, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateMultipleMenberListsApi(store, params) {
+    store.commit(UPDATE_MENBER_LISTS_MULTIPLE, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新分组列表
+   * @return   {[type]}          [description]
+   */
+  updateMenberListsAllApi(store, params) {
+    store.commit(UPDATE_MENBER_LISTS_All, params)
   },
   /**
    * @Author   小书包

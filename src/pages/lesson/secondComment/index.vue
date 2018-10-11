@@ -4,16 +4,10 @@
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="`/lesson/index?course_id=${pageData.course_id}`">课节管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="`/lesson/punchCard?course_id=${pageData.course_id}&course_section_id=${pageData.course_section_id}`">打卡管理</el-breadcrumb-item>
-      <el-breadcrumb-item>评论管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="`/lesson/comment?course_id=${pageData.course_id}&course_section_id=${pageData.course_section_id}`">评论管理</el-breadcrumb-item>
+      <el-breadcrumb-item>评论</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
-      <el-col :span="12" class="search-zone">
-        <search-bar
-          width="500px"
-          @search="handleSearch"
-          v-model="form.name"
-          placeholder="请输入关键词" />
-      </el-col>
     </el-row>
     <table-list
     :list="commentList.list"
@@ -30,24 +24,6 @@
                 @click="todoAction('delete', props.scope.row)">
                   删除
                 </el-button>
-              <el-button
-                type="text"
-                :disabled="props.scope.row.isDeleted === 1 ? true : false"
-                @click="todoAction('comment', props.scope.row)" v-show="props.scope.row.replyCount>1">
-                  二级评论
-                </el-button>
-
-               <el-button
-              type="text"
-              v-if="props.scope.row.isExcellentCard==1"
-              @click="todoAction('cancelExcellent', props.scope.row)">
-                取消热门
-              </el-button>
-               <el-button
-              type="text" v-else
-              @click="todoAction('excellent', props.scope.row)">
-                热门评论
-              </el-button>
             </div>
             <div v-else>
               <el-button
@@ -93,7 +69,6 @@
         <div slot="customize-html" style="margin-left: 40px;">
           <div class="customize-html-content">
             <p class="dialog_p">{{model.txt}} </p>
-            
           </div>
         </div>
     </modal-dialog>
