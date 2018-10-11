@@ -7,7 +7,8 @@
           <el-button type="primary" class="click-item" @click="todoAction('set')">分组管理</el-button>
          </el-col>
         </el-row>
-        <el-button
+        <el-button 
+              class="group_btn"
               size="large"
               v-for="(groupItem, groupIndex) in groupList"
               :key="groupIndex"
@@ -21,7 +22,7 @@
       <el-col :span="12" class="left-content">
         <h2 class="">
           全部成员
-          <span class="number">（{{courseList.length}}人）</span>
+          <span class="number">（{{courseList.total}}人）</span>
         </h2>
       </el-col>
       <el-col :span="12" class="right-content">
@@ -44,15 +45,36 @@
     </el-select>
   </div>
   <table-list
-      :list="courseList"
+      :list="courseList.list"
       :fields="fields"
+      :total="courseList.total"
       >
       <template scope="props" slot="columns">
 
         <!-- 操作行数据 -->
-        <div class="btn-container" v-if="props.scope.column.property === 'groupName'">
-          <img v-if="props.scope.row&&props.scope.row.avatar && props.scope.row.avatar.smallUrl" :src="props.scope.row.avatar.smallUrl">
-          {{props.scope.row.realname}}
+        <div class="btn-container flex-box" v-if="props.scope.column.property === 'groupName'" @click="viewMenberInfo(props.scope.row.uid)">
+          <div class="img-box">
+            <el-popover
+              ref="popoverCover"
+              placement="right"
+              width="400">
+              <i class="u-image auto"><img :src="props.scope.row.avatar.smallUrl"></i>
+            </el-popover>
+            <div class="cover-wrapper">
+              <i class="cover u-image auto radius" v-popover:popoverCover>
+                <img style="width: 34px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
+              </i>
+            </div>
+          </div>
+          <div class="content">
+            <div>
+                <div class="limit-row-num-2"> {{ props.scope.row.realname}} </div>
+                <div class="tutor-name limit-row-num-1" >
+                  <span v-if="props.scope.row.group[0]">{{ props.scope.row.group[0].groupName}} </span>
+                  <span v-if="props.scope.row.rolename"> <span v-if="props.scope.row.group[0]">-</span>   {{ props.scope.row.rolename}} </span>
+                </div>
+            </div>
+          </div>
         </div>
 
         <!-- 操作行数据 -->
@@ -65,6 +87,8 @@
 </template>
 
 <style lang="scss">
+@import "~COLORS/variables";
+
 .page-position {
   margin-bottom: 32px;
 }
@@ -105,7 +129,7 @@
   }
   .group-type-list {
     .el-button{
-      width: 128px;
+      //width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
     }
@@ -115,10 +139,18 @@
       border-bottom:1px dashed rgba(235,238,245,1);
       margin-bottom: 30px;
     }
+    .group_btn {
+      width: auto;
+      padding: 10px 36px;
+    }
   }
   .dropdown-select {
     margin: 24px 0 16px 0;
   }
+  .cell {
+    overflow: inherit;
+  }
+
 }
 </style>
 

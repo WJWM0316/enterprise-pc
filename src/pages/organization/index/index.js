@@ -10,6 +10,12 @@ import { getMemberListApi, getGroupListApi } from '@/store/api/organization.js'
     },
     watch: {
       groupList (val) {},
+      '$route': {
+        handler() {
+          this.init()
+        },
+        immediate: true
+      }
     },
 })
 export default class pageOrganization extends Vue {
@@ -48,62 +54,81 @@ export default class pageOrganization extends Vue {
     fields = [
         {
           prop: 'groupName',
+          width: '30%',
           label: '成员',
           align: 'center'
         },
         {
-          prop: 'rolename',
+          prop: 'occupation',
+          width: '10%',
           label: '职位',
-          align: 'center'
-        },
-        {
-          prop: 'roleId',
-          label: '权限',
           align: 'center',
           showTips: 'no'
         },
         {
+          prop: 'rolename',
+          width: '10%',
+          label: '权限',
+          align: 'center'
+        },
+        {
           prop: 'mobile',
+          width: '10%',
           label: '手机号码',
           align: 'center',
           showTips: 'no'
         },
         {
           prop: 'email',
+          width: '10%',
           label: '邮箱',
           align: 'center',
           showTips: 'no'
         },
         {
           prop: 'wechat',
+          width: '10%',
           label: '微信',
           showTips: 'no'
         }
     ]
     memberData = {
         selectAll: 1,
-        page: 1,
         count: 20
     }
 
-    created() {
+    created(){
       this.getMsgList()
+    }
 
+    init() {
+      this.memberData = Object.assign(this.memberData,this.$route.query || {})
+      console.log(this.memberData,this.$route.query)
+      this.getMemberList()
     }
 
     getMsgList() {
-        this.getMemberList()
 
-        getGroupListApi().then( res => {
-            this.groupList = [...this.groupList,...res.data.data]
-        })
+      getGroupListApi().then( res => {
+          this.groupList = [...this.groupList,...res.data.data]
+      })
+    }
+
+    //跳转个人空间
+    viewMenberInfo(id) {
+      this.$router.push({ 
+        name: 'userInfos', 
+        params: { id }
+      })
     }
 
     getMemberList(){
-        
-        getMemberListApi(this.memberData).then( res => {
-            this.courseList = res.data.data
-        })
+      getMemberListApi(this.memberData).then( res => {
+        this.courseList = {
+          list : res.data.data,
+          total: res.data.meta.total
+        }
+      })
     }
 
     // 添加课程-跳转
@@ -148,6 +173,7 @@ export default class pageOrganization extends Vue {
         }
 
         this.rolevalue = '4'
+        this.memberData.page = 1
         this.getMemberList()
     }
 
@@ -157,6 +183,7 @@ export default class pageOrganization extends Vue {
         }else {
             this.memberData.roleId = id
         }
+        this.memberData.page = 1
         this.getMemberList()
     }
 }

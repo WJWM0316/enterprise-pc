@@ -151,14 +151,13 @@ export default class CourseList extends Vue {
     this.getTutorList()
   }
 
+  //跳转个人空间
   viewMenberInfo(id,type) {
     this.$router.push({ 
       name: 'userInfos', 
       params: { id }, 
       query:{joinType: type}
     })
-
-    console.log(type)
   }
 
   /**

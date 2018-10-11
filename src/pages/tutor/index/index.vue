@@ -216,8 +216,6 @@ export default CourseList
       border-radius: 50%;
       background: rgba(0,0,0,.1);
       margin-right: 16px;
-
-      
     }
     .text-inner-content{
       flex-grow: 1;
@@ -286,6 +284,9 @@ export default CourseList
       display: block;
       content: '';
     };
+  }
+  .cell {
+    overflow: inherit;
   }
 }
 
