@@ -199,17 +199,12 @@ export default class CourseList extends Vue {
   //搜索老师
   searchTea(mobile) {
     let that = this
-
-    console.log(this.searchValue)
     if(this.searchValue.length===0){
       return
     }
     this.searchType = true
-
-    console.log(this.searchList)
-
     searchTutorApi({mobile: this.searchValue}).then(res=>{
-      that.$message(res.data.msg);
+      //that.$message(res.data.msg);
       console.log(res)
       if(res.data.data){
         this.searchList = res.data.data
@@ -224,6 +219,7 @@ export default class CourseList extends Vue {
   select(type){
     if(type !== this.tutorType){
       this.pagination.type = type === 'inner' ? 1 : 2,
+      this.pagination.name = ''
       this.tutorType = type
       this.getTutorList()
     }

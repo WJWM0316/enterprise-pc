@@ -35,7 +35,7 @@
       prop="mobile"
       class="limit-width"
       >
-        <el-input type=number v-model="form.mobile" :maxlength="11" style="width: 380px;" />
+        <el-input type=text v-model="form.mobile" :maxlength="11" style="width: 380px;" />
     </el-form-item>
 
     <!-- 设置密码 -->
