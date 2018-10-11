@@ -51,7 +51,15 @@
                 <div class="tutor-name">{{ props.scope.row.title}}</div>
             </div>
           </div>
-        </div>        
+        </div>  
+
+
+        <div class="toUser" v-else-if="props.scope.column.property === 'communityCount'" @click="viewMenberInfo(props.scope.row.uid,'course')">
+          {{props.scope.row.communityCount}}
+        </div>     
+         <div class="toUser" v-else-if="props.scope.column.property === 'liveCount'" @click="viewMenberInfo(props.scope.row.uid,'live')">
+          {{props.scope.row.liveCount}}
+        </div>    
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
@@ -290,10 +298,16 @@ export default CourseList
     line-height:22px;
   }
 
-    .radius {
-      img {
-      border-radius: 50%;
-        
-      }
-    }
+.radius {
+  img {
+  border-radius: 50%;
+    
+  }
+}
+.toUser {
+  font-size:14px;
+  font-family:HelveticaNeue;
+  color:rgba(64,128,173,1);
+  cursor: pointer;
+}
 </style>

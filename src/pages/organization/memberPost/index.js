@@ -5,7 +5,6 @@ import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
 import { editorRules } from 'FILTERS/rules'
 import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMemberInfoApi } from 'STORE/api/organization.js'
-import { getMemberInfosApi } from 'STORE/api/user.js'
 
 @Component({
   components: {
@@ -203,7 +202,6 @@ export default class WorkZonePost extends Vue {
       this.form.roleId = 3,
       this.form.id = this.user_id,
       this.form.contentAdminGroup = ''
-      this.form.id = this.user_id
 
       if(data.avatar.length>0){
         this.imageUpload.list[0] = {
