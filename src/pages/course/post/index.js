@@ -356,13 +356,19 @@ export default class CoursePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
+        let memberList = Object.prototype.toString.call(this.form.members.value) === '[object Array]'
+          ? this.form.members.value
+          : this.form.members.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.members.value.split(',')})
+        this.updateMultipleMenberListsApi({list: memberList})
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
+        let hitsList = Object.prototype.toString.call(this.form.hits.value) === '[object Array]'
+          ? this.form.hits.value
+          : this.form.hits.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.hits.value.split(',')})
+        this.updateMultipleMenberListsApi({list: hitsList})
         break
   		default:
   			break

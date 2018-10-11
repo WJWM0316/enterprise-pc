@@ -285,8 +285,11 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '选择成员'
+        let members = Object.prototype.toString.call(this.form.members.value) === '[object Array]'
+          ? this.form.members.value
+          : this.form.members.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.members.value.split(',')})
+        this.updateMultipleMenberListsApi({list: members})
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
@@ -297,8 +300,11 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
+        let hitsList = Object.prototype.toString.call(this.form.hits.value) === '[object Array]'
+          ? this.form.hits.value
+          : this.form.hits.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.hits.value.split(',')})
+        this.updateMultipleMenberListsApi({list: hitsList})
   			break
   		default:
   			break

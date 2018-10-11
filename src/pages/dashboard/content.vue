@@ -343,7 +343,7 @@ export default class pageDashboard extends Vue {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
 					this.timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
-					this.getMemberCheckNewDynamicsApi({ timestamp })
+					this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 				  		.then(res => {
 				  			this.isHaveNew = res.data.data.isHaveNew
 				  			this.clock()
@@ -450,6 +450,7 @@ export default class pageDashboard extends Vue {
 			box-sizing: border-box;
 			padding: 0 30px;
 			line-height: 56px;
+			cursor: pointer;
 			&:after{
 				content: '';
 				display: block;
