@@ -52,8 +52,8 @@
       <template scope="props" slot="columns">
 
         <!-- 操作行数据 -->
-        <div class="btn-container flex-box" v-if="props.scope.column.property === 'groupName'" @click="viewMenberInfo(props.scope.row.uid)">
-          <div class="img-box">
+        <div class="btn-container flex-box" v-if="props.scope.column.property === 'groupName'" >
+          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" style="cursor:pointer;">
             <el-popover
               ref="popoverCover"
               placement="right"
@@ -68,9 +68,9 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.realname}} </div>
+                <div class="limit-row-num-2" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
                 <div class="tutor-name limit-row-num-1" >
-                  <span v-if="props.scope.row.group[0]">{{ props.scope.row.group[0].groupName}} </span>
+                  <span v-if="props.scope.row.group[0]" >{{ props.scope.row.group[0].groupName}} </span>
                   <span v-if="props.scope.row.rolename"> <span v-if="props.scope.row.group[0]">-</span>   {{ props.scope.row.rolename}} </span>
                 </div>
             </div>
