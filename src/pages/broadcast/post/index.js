@@ -353,17 +353,22 @@ export default class BroadcastPost extends Vue {
         this.form.groupList.value.length
           ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
           : this.noCheckGroupListsApi()
-          console.log(this.groupLists)
   			break
   		case 'memberList':
+        let memberList = Object.prototype.toString.call(this.form.memberList.value) === '[object Array]'
+          ? this.form.memberList.value
+          : this.form.memberList.value.split(',')
   			this.models.title = '参与直播学员'
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.memberList.value.split(',')})
+        this.updateMultipleMenberListsApi({list: memberList})
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
+        let invisibleList = Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]'
+          ? this.form.invisibleList.value
+          : this.form.invisibleList.value.split(',')
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.invisibleList.value.split(',')})
+        this.updateMultipleMenberListsApi({list: invisibleList})
         break
   		default:
   			break
