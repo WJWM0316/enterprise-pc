@@ -610,9 +610,23 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    Object.prototype.toString.call(item) === '[object String]'
-    ? this.getMenberListsApi({selectAll: 1})
-    : this.getMenberListsApi({groupId: item.groupId})
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    }
   }
 
   /**
