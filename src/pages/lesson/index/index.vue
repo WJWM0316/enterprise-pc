@@ -45,7 +45,7 @@
           <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></img>
           <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up',props.scope.row)" v-else />
 
-          <img src="~IMAGES/icon_down_dis.png" class="sort_blo up forbid" v-if="lessonList.list.length < zikeDefaultPageSize && props.scope.row.index===lessonList.list.length-1"></img>
+          <img src="~IMAGES/icon_down_dis.png" class="sort_blo up forbid" v-if="pageNum == form.page && && props.scope.row.index===lessonList.list.length-1"></img>
           <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down',props.scope.row)" v-else />
         </div>
         <!-- 重新定义课程名这一列的显示 -->

@@ -35,8 +35,9 @@ export default class WorkZonePost extends Vue {
   // 验证规则
   rules = {
     title: [
+      /*{ pattern: /\s+/g, message: '请填写课节标题',trigger: 'blur' },*/
       { required: true, message: '请填写课节标题', trigger: 'blur' },
-      { validator: this.checkBlankCharacter,  trigger: 'blur' }
+      /*{ validator: this.checkBlankCharacter,  trigger: 'blur' }*/
     ]
   }
 

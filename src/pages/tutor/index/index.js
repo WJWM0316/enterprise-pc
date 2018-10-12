@@ -94,14 +94,7 @@ export default class CourseList extends Vue {
       filterPlacement: '移除导师：把对应外部导师移除出企业'
     }
   ]
-
-  // 分页信息
-  /*pagination = {
-    page: 1,
-    pageSize: this.zikeDefaultPageSize,
-    count: 0,
-    total: 0
-  }*/
+  
   pagination = {
     page: 1,
     count: 20,
@@ -141,7 +134,6 @@ export default class CourseList extends Vue {
 
   visible = true
   created() {
-    this.init()
   }
   /**
    * 初始化表单、分页页面数据
@@ -165,7 +157,6 @@ export default class CourseList extends Vue {
   async getTutorList() {
     let params = this.pagination
 
-    console.log(params)
     getTutorListApi(params).then(res=>{
       this.tutorList = res.data.data
     })

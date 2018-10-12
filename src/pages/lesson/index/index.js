@@ -54,7 +54,7 @@ export default class CourseList extends Vue {
         },
         {
           label: '全部',
-          value: 'status-all'
+          value: 'status-2'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -77,6 +77,7 @@ export default class CourseList extends Vue {
   // 搜索表单
   form = {
     name: '',
+    status: 2
   }
 
   // 初始化的搜索表单
@@ -105,13 +106,13 @@ export default class CourseList extends Vue {
         title:this.form.name
       },
       order: {
-        update_time: 'DESC',
-        favors_count: 'DESC',
-        comments_count: 'DESC'
+        update_time: 'DESC'
       },
+      status: this.form.status || 2,
       course_id: this.course_id
     }
     let jsonDataString = JSON.stringify({search: data})
+    console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,
@@ -122,7 +123,6 @@ export default class CourseList extends Vue {
     //排序判断用
     this.form.page = param.page
     getLessonListsApi(param).then(res=>{
-
       res.data.data.map(function(value,index){
           value.sort="1"
           value.index = index

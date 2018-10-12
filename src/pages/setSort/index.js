@@ -24,14 +24,11 @@ import { getCategoryListsApi, createCategoryApi, editCategoryApi, updateCategory
   },
   computed: {
     pageNum () {
-      let num = Math.floor(this.classifyList.total/20)
-      if(this.classifyList.total%20!==0){
+      let num = Math.floor(this.classifyList.total/this.zikeDefaultPageSize)
+      if(this.classifyList.total%this.zikeDefaultPageSize!==0){
         num +=1
       }
-
-      console.log(this.classifyList.total%20)
       return num
-
     }
   }
 })

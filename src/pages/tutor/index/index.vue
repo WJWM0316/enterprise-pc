@@ -21,8 +21,9 @@
       </el-col>
     </el-row>
     <table-list
-    :list="tutorList"
+    :list="tutorList.list"
     :fields="tutorType === 'inner'?innerFields:outerFields"
+    :total="tutorList.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
