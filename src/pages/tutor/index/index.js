@@ -32,7 +32,6 @@ export default class CourseList extends Vue {
   // 表单数据
   tutorList = []
   input5 = ''
-  total = 50
 
   // 表格字段
   innerFields = [

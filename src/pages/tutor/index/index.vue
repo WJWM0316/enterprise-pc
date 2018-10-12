@@ -32,7 +32,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'realname'" class="flex-box">
-          <div class="img-box">
+          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)">
             <el-popover
               ref="popoverCover"
               placement="right"
@@ -41,19 +41,27 @@
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto radius" v-popover:popoverCover>
-                <img :src="props.scope.row.avatar.smallUrl">
+                <img style="width: 34px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
               </i>
             </div>
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2"> {{ props.scope.row.realname}} </div>
-                <div class="tutor-name">{{ props.scope.row.title}}</div>
+                <div class="limit-row-num-1" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
+
+                <div class="tutor-name limit-row-num-1" v-if="tutorType==='inner'">
+                  <div v-if="props.scope.row.group&&props.scope.row.group[0]">
+                    {{ props.scope.row.group[0].groupName}}
+                  </div>
+                </div>
+                <div class="tutor-name limit-row-num-1" v-else  >
+                  <div v-if="props.scope.row.title&&props.scope.row.title[0]">
+                    {{ props.scope.row.title[0]}}
+                  </div>
+                </div>
             </div>
           </div>
-        </div>  
-
-
+        </div>
         <div class="toUser" v-else-if="props.scope.column.property === 'communityCount'" @click="viewMenberInfo(props.scope.row.uid,'course')">
           {{props.scope.row.communityCount}}
         </div>     
@@ -90,7 +98,9 @@
             <div class="fetch-result" v-if="searchType">
               <el-collapse-transition>
                 <div class="transition-flex-box" v-if="searchList&&searchList.realname">
-                  <div class="img-box"></div>
+                  <div class="img-box">
+                    <img :src="searchList.avatar.smallUrl" />
+                  </div>
                   <div class="text-inner-content">
                     <p class="user-name" v-if="searchList.realname">{{searchList.realname}}</p>
                     <p class="user-degree" v-if="searchList.title">{{searchList.title[0]}}</p>
@@ -216,6 +226,12 @@ export default CourseList
       border-radius: 50%;
       background: rgba(0,0,0,.1);
       margin-right: 16px;
+      overflow: hidden;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     }
     .text-inner-content{
       flex-grow: 1;
