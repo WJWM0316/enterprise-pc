@@ -31,7 +31,7 @@
           <div class="selected-item" v-show="form.category_id.show">
             已选择：
             <span
-              @click="removeSingleChecked('category_id')"
+              @click="removeSingleChecked('category_id', cateItem)"
               :key="cateIndex"
               v-for="(cateItem, cateIndex) in form.category_id.tem">
                 {{ cateItem.categoryName }}<i class="el-icon-close"></i>
@@ -54,7 +54,7 @@
         > 
           <div class="selected-item" v-show="form.master_uid.show">
             已选择：
-            <span @click="removeSingleChecked('master_uid')">
+            <span @click="removeSingleChecked('master_uid', form.master_uid.tem)">
               {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
             </span>
           </div>
@@ -311,7 +311,7 @@
                 class="common-checkbox"
                 :class="{'common-checkbox-active': tutorItem.active}"
                 v-for="(tutorItem, tutorIndex) in temTutorLists"
-                @click="selectTutor(tutorItem)"
+                @click="fetchTutor(tutorItem)"
                 :key="tutorIndex">
                 <i class="icon iconfont icon-checked"></i>
                 <span>{{tutorItem.realname}}</span>

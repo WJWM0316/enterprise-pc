@@ -31,7 +31,7 @@
           <div class="selected-item" v-show="form.categoryList.show">
             已选择：
             <span
-              @click="removeSingleChecked('categoryList')"
+              @click="removeSingleChecked('categoryList', cateItem)"
               :key="cateIndex"
               v-for="(cateItem, cateIndex) in form.categoryList.tem">
                 {{ cateItem.categoryName }}<i class="el-icon-close"></i>
@@ -54,7 +54,7 @@
         > 
           <div class="selected-item" v-show="form.uid.show">
             已选择：
-            <span @click="removeSingleChecked('uid')">
+            <span @click="removeSingleChecked('uid', form.uid.tem)">
               {{ form.uid.tem.realname }}<i class="el-icon-close"></i>
             </span>
           </div>
@@ -302,7 +302,7 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearchTutor"
+                @search="fetchTutor"
                 v-model="searchField"
                 placeholder="请输入导师名称" />
             </div>

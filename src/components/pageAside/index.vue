@@ -3,9 +3,7 @@
     <section>
       <div>
         <div class="logo">
-          <div class="avatar-uploader">
-            <img src="~IMAGES/logo.png" class="avatar">
-          </div>
+          <img src="~IMAGES/logo.png" class="avatar">
         </div>
         <ul>
           <li
