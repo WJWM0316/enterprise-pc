@@ -50,10 +50,18 @@ const mutations = {
   },
   [GET_DESKINFOS] (state, data) {
     state.desktopInfos = data
-    state.desktopStudyInfo = data.studyInfo
-    state.desktopNewestCourseInfo = data.newestCourseInfo
-    state.desktopNewestLiveInfo = data.newestLiveInfo,
-    state.desktopVerInfo = data.verInfo
+    if(data.studyInfo) {
+      state.desktopStudyInfo = data.studyInfo
+    }
+    if(data.newestCourseInfo) {
+      state.desktopNewestCourseInfo = data.newestCourseInfo
+    }
+    if(data.newestLiveInfo) {
+      state.desktopNewestLiveInfo = data.newestLiveInfo
+    }
+    if(data.verInfo) {
+      state.desktopVerInfo = data.verInfo
+    }
   }
 }
 
