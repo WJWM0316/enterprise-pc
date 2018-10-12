@@ -302,7 +302,7 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearchTutor"
+                @search="fetchTutor"
                 v-model="searchField"
                 placeholder="请输入导师名称" />
             </div>
