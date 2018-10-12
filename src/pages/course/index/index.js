@@ -140,12 +140,7 @@ export default class CourseList extends Vue {
       delete params.status
       delete params.name
     }
-    this.getCourseListsApi(params)
-        .then(() => {
-          this.form.name = ''
-          delete this.form.status
-          delete this.form.category_id
-        })
+    this.getCourseListsApi(params).then(() => this.form = {})
   }
 
 
