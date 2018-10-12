@@ -28,7 +28,7 @@ import Clipboard from 'clipboard'
     visiable: {
       handler(visiable) {
         if (!visiable) {
-          this.$emit('input')
+          this.$emit('close')
         }
       }
     },
