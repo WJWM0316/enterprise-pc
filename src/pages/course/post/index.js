@@ -317,10 +317,10 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getTutorListApi({selectAll: 2, name: this.ownerUidName})
+    this.getMenberListsApi({name: this.ownerUidName})
         .then(() => {
-          this.searchField = ''
-          this.temTutorLists = this.tutorLists
+          this.ownerUidName = ''
+          this.temTutorLists = this.menberLists
         })
   }
   created() {
@@ -382,7 +382,7 @@ export default class CoursePost extends Vue {
       this.getGroupListsApi({isHaveMember: 1}),
       this.getMenberListsApi(),
       this.getCategoryListsApi(),
-      this.getTutorListApi({type: 1})
+      this.getTutorListApi({type: 2})
     ])
     .then(() => {
       this.temTutorLists = [...this.tutorLists]
@@ -532,7 +532,7 @@ export default class CoursePost extends Vue {
    * @detail   移除选中的radio对象
    * @return   {[type]}   [description]
    */
-  removeSingleChecked(type) {
+  removeSingleChecked(type, item) {
     switch(type) {
       case 'category_id':
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
@@ -542,6 +542,12 @@ export default class CoursePost extends Vue {
         this.form.category_id.noEdit.show = false
         break
       case 'master_uid':
+        if(this.models.editType === 'tutor') {
+          this.temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+        } else {
+          this.updateMenberListsByIdApi({uid: item.uid})
+          this.temTutorLists = this.menberLists
+        }
         this.form.check_master_uid = ''
         this.form.master_uid.noEdit.value = ''
         this.form.master_uid.noEdit.tem = []
@@ -674,16 +680,46 @@ export default class CoursePost extends Vue {
    * @DateTime 2018-09-10
    * @detail   单选
    */
-  selectTutor(item) {
+  fetchTutor(item) {
     const temTutorLists = [...this.temTutorLists]
     const data = { show: true, tem: [], value: [] }
     if(this.models.editType === 'tutor') {
       temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
     } else {
       this.updateMenberListsByIdApi({uid: item.uid})
-      this.temTutorLists = this.menberLists
+      temTutorLists = this.menberLists
     }
     this.temTutorLists = temTutorLists
+
+    if(!Object.prototype.toString.call(this.form.hits.value) === '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
+      this.$alert('导师和不可见学员重复选择', '错误提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {
+          if(this.models.editType === 'tutor') {
+            temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+          } else {
+            this.updateMenberListsByIdApi({uid: item.uid})
+            this.temTutorLists = this.menberLists
+          }
+        }
+      })
+      return
+    }
+
+    if(!Object.prototype.toString.call(this.form.members.value) === '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
+      this.$alert('导师和必修学员重复选择', '错误提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {
+          if(this.models.editType === 'tutor') {
+            temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+          } else {
+            this.updateMenberListsByIdApi({uid: item.uid})
+            this.temTutorLists = this.menberLists
+          }
+        }
+      })
+      return
+    }
     data.tem = item
     data.value = item.uid
     this.form.master_uid = Object.assign(this.form.master_uid, data)

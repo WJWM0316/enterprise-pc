@@ -308,6 +308,7 @@ export default class pageDashboard extends Vue {
    */
   reflesh() {
   	this.getMemberDynamicsListApi({count: 20, timestamp: this.timestamp})
+  	this.isHaveNew = 0
   }
 
   /**
