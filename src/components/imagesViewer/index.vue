@@ -1,5 +1,5 @@
 <template>
-  <div id="images-viewer" v-if="visiable">
+  <div id="images-viewer" v-show="visiable">
     <div class="mask"></div>
     <span class="btn-close" @click="close"><i class="el-icon-close"></i></span>
     <button class="my-btn2018 my-btn-prev"><i class="el-icon-arrow-left"></i></button>
@@ -7,15 +7,13 @@
     <div class="box">
       <div class="swiper-container gallery-top">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature1.jpg)"></div>
-          <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature2.jpg)"></div>
+          <div class="swiper-slide" :style="'background-image:url('+ imgItem.url +')'" v-for="(imgItem, imgIndex) in list" :key="imgIndex"></div>
         </div>
       </div>
     </div>
     <div class="swiper-container gallery-thumbs" v-if="false">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature1.jpg)"></div>
-        <div class="swiper-slide" style="background-image:url(https://www.swiper.com.cn/demo/img/nature2.jpg)"></div>
+        <div class="swiper-slide" :style="'background-image:url('+ imgItem.url +')'" v-for="(imgItem, imgIndex) in list" :key="imgIndex"></div>
       </div>
     </div>
   </div>

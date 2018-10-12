@@ -286,7 +286,9 @@ export default class WorkZonePost extends Vue {
   		case 'members':
   			this.models.title = '选择成员'
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.members.value.split(',')})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+        })
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
@@ -298,7 +300,9 @@ export default class WorkZonePost extends Vue {
   		case 'hits':
   			this.models.title = '选择不可见成员'
         this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({list: this.form.hits.value.split(',')})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+        })
   			break
   		default:
   			break
@@ -430,11 +434,10 @@ export default class WorkZonePost extends Vue {
     this.models.show = false
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
-    this.$refs.form.validateField(`check_${type}`)
-    // 已经确定编辑
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
   /**

@@ -34,13 +34,18 @@
             <my-audio :theUrl="props.scope.row.file.url" :disabled="!props.scope.row.status" />
           </template>
           <template v-else>
-            <img :src="props.scope.row.file.url" alt="" style="display: inline-block;" @click="cancel">
+            <img
+              :src="props.scope.row.file.url"
+              alt=""
+              style="display: inline-block;"
+              :class="{'img-disable': !props.scope.row.status}"
+              @click="handleViewImage(props.scope.row)">
           </template>
         </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
-    <images-viewer v-model="imagesViewer.show" @cancel="cancel" />
+    <images-viewer v-model="imagesViewer.show" @cancel="cancel" :list="imagesViewer.list" />
     <file-viewer v-model="fileViewer.show"  @cancel="cancel" />
     <link-viewer v-model="linkViewer.show"  @cancel="cancel" />
     <video-viewer v-model="videoViewer.show"  @cancel="cancel" />
@@ -78,6 +83,9 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
+  }
+  .img-disable{
+    opacity: .5;
   }
 }
 </style>

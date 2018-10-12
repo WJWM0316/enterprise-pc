@@ -259,6 +259,7 @@ export default class pageDashboard extends Vue {
 	// 是否有新的成员动态
 	isHaveNew = 0
 	timer = null
+	timestamp = null
 	// 确认信息弹窗
   models = {
     show: false,
@@ -306,7 +307,8 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}   [description]
    */
   reflesh() {
-  	console.log(111)
+  	this.getMemberDynamicsListApi({count: 20, timestamp: this.timestamp})
+  	this.isHaveNew = 0
   }
 
   /**
@@ -330,8 +332,7 @@ export default class pageDashboard extends Vue {
 
 	clock() {
 		this.timer = setInterval(() =>{
-		  const timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
-			this.getMemberCheckNewDynamicsApi({ timestamp })
+			this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
 		  			this.clock()
@@ -340,10 +341,11 @@ export default class pageDashboard extends Vue {
 	}
 
 	mounted() {
-		this.getMemberDynamicsListApi({page: 1, count: 20})
+		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
-					const timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
-					this.getMemberCheckNewDynamicsApi({ timestamp })
+					if(!this.memberDynamics.length) return;
+					this.timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
+					this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 				  		.then(res => {
 				  			this.isHaveNew = res.data.data.isHaveNew
 				  			this.clock()
@@ -450,6 +452,7 @@ export default class pageDashboard extends Vue {
 			box-sizing: border-box;
 			padding: 0 30px;
 			line-height: 56px;
+			cursor: pointer;
 			&:after{
 				content: '';
 				display: block;

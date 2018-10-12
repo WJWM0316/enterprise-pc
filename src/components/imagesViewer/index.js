@@ -6,12 +6,19 @@ import Swiper from 'swiper'
   props: {
     show: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    // 列表数据
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   model: {
     prop: 'show',
-    event: 'input'
+    event: 'close'
   },
   watch: {
     show: {
@@ -23,14 +30,13 @@ import Swiper from 'swiper'
     visiable: {
       handler(visiable) {
         if (!visiable) {
-          this.$emit('input')
+          this.$emit('close')
         }
       }
     }
   }
 })
 export default class ComponentImagesViewer extends Vue {
-  swiper = null
   visiable = false
   mounted() {
     // var galleryThumbs = new Swiper('.gallery-thumbs', {
@@ -40,7 +46,7 @@ export default class ComponentImagesViewer extends Vue {
     //   watchSlidesVisibility: true,
     //   watchSlidesProgress: true,
     // });
-    this.swiper = new Swiper('.gallery-top', {
+    new Swiper('.gallery-top', {
       // spaceBetween: 10,
       navigation: {
         nextEl: '.my-btn-next',
