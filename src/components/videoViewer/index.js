@@ -27,7 +27,7 @@ import Component from 'vue-class-component'
     visiable: {
       handler(visiable) {
         if (!visiable) {
-          this.$emit('input')
+          this.$emit('close')
         }
       }
     },

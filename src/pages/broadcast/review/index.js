@@ -128,7 +128,8 @@ export default class BroadcastReview extends Vue {
 
   // 查看图片
   imagesViewer = {
-    show: false
+    show: false,
+    list: []
   }
 
   // 查看连接
@@ -235,5 +236,17 @@ export default class BroadcastReview extends Vue {
    */
   cancel(type) {
     this.imagesViewer.show = true
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-12
+   * @detail   查看大图
+   * @return   {[type]}   [description]
+   */
+  handleViewImage(item) {
+    if(item.status === 0) return
+    this.imagesViewer.show = true
+    this.imagesViewer.list.push(item.file)
   }
 }

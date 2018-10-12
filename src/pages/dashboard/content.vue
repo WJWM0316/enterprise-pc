@@ -343,6 +343,7 @@ export default class pageDashboard extends Vue {
 	mounted() {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
+					if(!this.memberDynamics.length) return;
 					this.timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
 					this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 				  		.then(res => {
