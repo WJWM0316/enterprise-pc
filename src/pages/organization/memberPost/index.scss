@@ -141,11 +141,6 @@
 .header {
   margin: 30px 0;
 }
-.list-item {
-  width: 128px;
-  padding: 10px 20px;
-  margin-bottom: 16px;
-}
 .el-checkbox {
   margin-top: 0px !important;
   margin-left: 0px !important;
@@ -183,8 +178,8 @@
     color: #4080AD;
   }
   .el-button {
-    width: 128px;
-    padding: 10px 20px;
+    //width: 128px;
+    padding: 10px 38px;
     margin: 0px 16px 16px 0px;
   }
 }

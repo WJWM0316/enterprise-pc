@@ -24,7 +24,8 @@ export default class pageOrganization extends Vue {
       groupId: 10, 
       groupName: "所有人", 
       sort: 10, 
-      count: 10
+      count: 10,
+      active: true
     }
   ]
   options = [
@@ -110,8 +111,11 @@ export default class pageOrganization extends Vue {
     }
 
     getMsgList() {
-
       getGroupListApi().then( res => {
+          res.data.data.map(item=>{
+            item.active = false
+          })
+
           this.groupList = [...this.groupList,...res.data.data]
       })
     }
@@ -167,16 +171,25 @@ export default class pageOrganization extends Vue {
       }
     }
 
-    selectGroup(id){
-        if(id===10){
-            delete this.memberData.groupId
-        }else {
-            this.memberData.groupId = id
-        }
+    selectGroup(id,index){
+      if(id===10){
+          delete this.memberData.groupId
+      }else {
+          this.memberData.groupId = id
+      }
 
-        this.rolevalue = '4'
-        this.memberData.page = 1
-        this.getMemberList()
+      console.log(this.groupList)
+      this.groupList.map((field) => {
+        if(field.active) {
+          field.active = false
+        }
+      })
+
+      this.groupList[index].active = true
+
+      this.rolevalue = '4'
+      this.memberData.page = 1
+      this.getMemberList()
     }
 
     changeRule(id){

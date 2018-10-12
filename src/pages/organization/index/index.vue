@@ -10,9 +10,10 @@
         <el-button 
               class="group_btn"
               size="large"
+              :class="{'btn-active-selected': groupItem.active}"
               v-for="(groupItem, groupIndex) in groupList"
               :key="groupIndex"
-              @click="selectGroup(groupItem.groupId)">
+              @click="selectGroup(groupItem.groupId,groupIndex)">
             {{groupItem.groupName}}
         </el-button>
         <div class="border"></div>
@@ -151,6 +152,14 @@
     overflow: inherit;
   }
 
+  .btn-active-selected {
+    background:rgba(255,226,102,0.2);
+    border-radius:4px;
+    font-size:14px;
+    font-weight:400;
+    color:#D7AB70;
+    border-color: #EDEDED;
+  }
 }
 </style>
 

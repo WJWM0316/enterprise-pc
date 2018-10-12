@@ -71,7 +71,6 @@ export default class BroadcastPost extends Vue {
       }
     },
     startTime: '',
-    // 课程所属组织
     check_groupList: '',
     groupList: {
       tem: [],
@@ -472,8 +471,6 @@ export default class BroadcastPost extends Vue {
       this.form.coverImgId.value = info.coverImgId
       this.form.coverImgId.tem = info.cover.smallUrl
       this.form.check_coverImgId = info.coverImgId
-      this.imageUpload.hasUploaded = true
-      this.imageUpload.btnTxt = '重新上传'
       this.form.sort = info.sort
       this.form.isOnline = info.isOnline
       this.form.liveName = info.liveName
@@ -487,11 +484,13 @@ export default class BroadcastPost extends Vue {
       this.form.check_invisibleList = this.form.invisibleList.value
       this.form.memberList.value = this.form.memberList.value.join(',')
       this.form.check_memberList = this.form.memberList.value
-      this.ContentEditor.content = info.intro
-      this.temTutorLists = this.tutorLists
       this.form.check_uid = this.form.uid.value
       this.form.memberList.noEdit.value = this.form.memberList.noEdit.value.join(',')
       this.form.invisibleList.noEdit.value = this.form.invisibleList.noEdit.value.join(',')
+      this.ContentEditor.content = info.intro
+      this.temTutorLists = this.tutorLists
+      this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -612,9 +611,23 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    Object.prototype.toString.call(item) === '[object String]'
-    ? this.getMenberListsApi({selectAll: 1})
-    : this.getMenberListsApi({groupId: item.groupId})
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    }
   }
 
   /**
@@ -626,16 +639,10 @@ export default class BroadcastPost extends Vue {
   tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2})
-          .then(() => {
-            this.temTutorLists = this.tutorLists
-          })
+      this.getTutorListApi({type: 2}).then(() => {this.temTutorLists = this.tutorLists})
     } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId})
-          .then(() => {
-            this.temTutorLists = this.menberLists
-          })
+      this.getMenberListsApi({groupId: item.groupId}).then(() => {this.temTutorLists = this.menberLists})
     }
   }
 
@@ -724,9 +731,13 @@ export default class BroadcastPost extends Vue {
       })
       return
     }
-    
-    data.tem = item
-    data.value = item.uid
+    this.temTutorLists.map(field => {
+      if(field.active) {
+        data.tem = field
+        data.value = item.uid
+      }
+    })
+    data.show = Object.prototype.toString.call(data.value) === '[object Array]' ? false : true
     this.form.uid = Object.assign(this.form.uid, data)
   }
 
@@ -748,7 +759,7 @@ export default class BroadcastPost extends Vue {
     this.form[type] = Object.assign(this.form[type], data)
     switch(type) {
       case 'memberList':
-        if(this.form.invisibleList.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
@@ -758,7 +769,7 @@ export default class BroadcastPost extends Vue {
         }
         break
       case 'invisibleList':
-        if(this.form.memberList.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
@@ -793,7 +804,6 @@ export default class BroadcastPost extends Vue {
           this.categoryModal.loading = false
           this.categoryModal.show = false
           this.$message.error(`${err.msg}~`)
-          this.categoryModal.name = ''
         })
   }
   /**

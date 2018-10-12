@@ -14,10 +14,21 @@ import { getCategoryListsApi, createCategoryApi, editCategoryApi, updateCategory
     TableList,
     SearchBar
   },
+  watch: {
+    '$route': {
+      handler() {
+        this.init()
+      },
+      immediate: true
+    }
+  },
   computed: {
-    isEnd () {
-      //classifyList.list.length < zikeDefaultPageSize && props.scope.row.index === classifyList.list.length-1 && classifyList.total === props.scope.row.index+1
-        return false
+    pageNum () {
+      let num = Math.floor(this.classifyList.total/this.zikeDefaultPageSize)
+      if(this.classifyList.total%this.zikeDefaultPageSize!==0){
+        num +=1
+      }
+      return num
     }
   }
 })
@@ -73,7 +84,7 @@ export default class classifyList extends Vue {
   }
 
   created() {
-    this.init()
+    //this.init()
   }
 
   // 设置排序
@@ -121,8 +132,6 @@ export default class classifyList extends Vue {
 
     this.form.page = data.page
     getCategoryListsApi(data).then(res => {
-      console.log(res.data.data)
-
       res.data.data.map(function(value,index){
           value.sort="1"
           value.index = index
@@ -171,6 +180,9 @@ export default class classifyList extends Vue {
         type: 'success'
       });
       this.getList()
+    },res=>{
+      this.form.hintTXt = res.data.msg
+      console.log(res)
     })
   }
 
@@ -225,20 +237,10 @@ export default class classifyList extends Vue {
 
     switch(type) {
       case 'add':
-
-        console.log(this.classifyList.list.length)
-        if(this.classifyList.list.length<20){
           this.model.txt = ''
           this.model.confirm = 'addClass'
           this.model.confirmText = '提交'
           this.model.title = '新建分类'
-        }else {
-          this.model.txt = '分类已经达到了上限，不能再创建新的分类了。'
-          this.model.confirm = 'addHint'
-          this.model.confirmText = '知道了'
-          this.model.title = '上限提醒'
-          this.model.type = 'alert'
-        }
         
         break
       case 'edit':

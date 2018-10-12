@@ -93,7 +93,6 @@ export default class CourseList extends Vue {
     console.log('init----',this.$route)
     this.form = Object.assign(this.form, this.$route.query || {})
     this.course_id = this.$route.query.course_id
-    console.log(this.form)
     this.getLists()
   }
 
@@ -101,7 +100,6 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
-    console.log('11111======',this.course_id)
     let data = {
       like: {
         title:this.form.name
@@ -114,7 +112,6 @@ export default class CourseList extends Vue {
       course_id: this.course_id
     }
     let jsonDataString = JSON.stringify({search: data})
-    console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,
@@ -145,7 +142,6 @@ export default class CourseList extends Vue {
 
   //设置排序
   setSort(type,item){
-    console.log(type)
     let data = {
       course_section_id: item.courseSectionId,
       isUp: ''
@@ -157,7 +153,6 @@ export default class CourseList extends Vue {
     }
 
     sortUpdateApi(data).then(res=>{
-      console.log(res.data)
       this.$message({
         message: '成功',
         type: 'success'
@@ -169,7 +164,6 @@ export default class CourseList extends Vue {
   }
 
   todoAction(type, item) {
-    console.log(type,item)
     switch(type) {
       case 'edit':
         this.$router.push(

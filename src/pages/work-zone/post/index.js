@@ -399,14 +399,11 @@ export default class WorkZonePost extends Vue {
 
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
-      this.ContentEditor.content = jobCircleDetails.content
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = jobCircleDetails.ownerUid
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
-      this.imageUpload.hasUploaded = true
-      this.imageUpload.btnTxt = '重新上传'
       this.form.id = jobCircleDetails.id
       this.form.check_cover_img_id = jobCircleDetails.coverImgId
       this.form.members.value = this.form.members.value.join(',')
@@ -417,6 +414,9 @@ export default class WorkZonePost extends Vue {
       this.form.organizations.value = this.form.organizations.value.join(',')
       this.form.organizations.noEdit.value = this.form.organizations.noEdit.value.join(',')
       this.form.check_organizations = this.form.organizations.value
+      this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
+      this.ContentEditor.content = jobCircleDetails.content
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')
@@ -564,7 +564,7 @@ export default class WorkZonePost extends Vue {
     this.form[type] = Object.assign(this.form[type], data)
     switch(type) {
       case 'members':
-        if(this.form.hits.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
@@ -574,7 +574,7 @@ export default class WorkZonePost extends Vue {
         }
         break
       case 'hits':
-        if(this.form.members.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {

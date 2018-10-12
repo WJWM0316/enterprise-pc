@@ -44,12 +44,21 @@ export default class ComponentTableList extends Vue {
 
   handleCommand(val) {
     const keyValue = val.split('-')
-
+    let query = this.$route.query
+    let data = {}
     console.log(this.$route.query)
+
+    if(Object.keys(query).length>0){
+      Object.keys(query).forEach(function(key){
+        if(key !== keyValue[0]){
+          data[key] = query[key]
+        }
+      })
+    }else {
+      data[keyValue[0]] = keyValue[1]
+    }
     this.$router.push({
-      query: {
-        [keyValue[0]]: keyValue[1]
-      }
+      query: data
     })
   }
 
