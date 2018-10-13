@@ -20,7 +20,8 @@ import {
 const state = {
   courseList: {
     list: [],
-    total: 0
+    total: 0,
+    page: 1
   },
   courseDetail: {},
   coursePeaple: {},
@@ -33,6 +34,7 @@ const mutations = {
   [GET_COURSE_LISTS] (status, data) {
     state.courseList.list = data.data
     state.courseList.total = data.meta.total
+    state.courseList.page = data.meta.currentPage
   },
   [GET_COURSE_DEATAILS] (status, data) {
     state.courseDetail = data
