@@ -457,10 +457,10 @@ export default class BroadcastPost extends Vue {
       // 导师的遍历
       this.tutorLists.map(field => {
         if(field.uid === info.masterId) {
-          this.form.uid.value = field.uid
+          this.form.uid.value = String(field.uid)
           this.form.uid.tem = field
           this.form.uid.show = true
-          this.form.uid.noEdit.value = field.uid
+          this.form.uid.noEdit.value = String(field.uid)
           this.form.uid.noEdit.tem = field
           this.form.uid.noEdit.show = true
         }
@@ -637,9 +637,12 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
+    if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
       this.getTutorListApi({type: 2}).then(() => {this.temTutorLists = this.tutorLists})
+    } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
+      this.models.editType = 'member'
+      this.getMenberListsApi({selectAll: 1}).then(() => {this.temTutorLists = this.menberLists})
     } else {
       this.models.editType = 'member'
       this.getMenberListsApi({groupId: item.groupId}).then(() => {this.temTutorLists = this.menberLists})
@@ -702,7 +705,7 @@ export default class BroadcastPost extends Vue {
     }
     this.temTutorLists = temTutorLists
 
-    if(!Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {
+    if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {
       this.$alert('导师和不可见学员重复选择', '错误提醒', {
         confirmButtonText: '我知道了',
         callback: action => {
@@ -717,7 +720,7 @@ export default class BroadcastPost extends Vue {
       return
     }
 
-    if(!Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
+    if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
       this.$alert('导师和必修学员重复选择', '错误提醒', {
         confirmButtonText: '我知道了',
         callback: action => {
@@ -734,7 +737,7 @@ export default class BroadcastPost extends Vue {
     this.temTutorLists.map(field => {
       if(field.active) {
         data.tem = field
-        data.value = item.uid
+        data.value = String(item.uid)
       }
     })
     data.show = Object.prototype.toString.call(data.value) === '[object Array]' ? false : true
@@ -767,10 +770,26 @@ export default class BroadcastPost extends Vue {
             }
           })
         }
+        if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(this.form.uid.value)) {
+          this.$alert('必修学员和导师重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
         break
       case 'invisibleList':
         if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(this.form.uid.value)) {
+          this.$alert('必修学员和导师重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
               this.updateMenberListsByIdApi({uid: item.uid})
