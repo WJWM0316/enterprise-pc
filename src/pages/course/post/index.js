@@ -37,7 +37,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateMenberListsApi',
       'updateMultipleMenberListsApi',
       'updateMenberListsAllApi',
-      'updateMenberListsByIdApi'
+      'updateMenberListsByIdApi',
+      'noCheckGroupListsApi'
     ])
   },
   computed: {
@@ -334,6 +335,7 @@ export default class CoursePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
   			this.models.title = '选择分类'
@@ -353,7 +355,9 @@ export default class CoursePost extends Vue {
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
+        if(this.form.group_id.value.length) {
+          this.updateGroupListsApi({list: this.form.group_id.value})
+        }
   			break
   		case 'members':
   			this.models.title = '参与课程学员'

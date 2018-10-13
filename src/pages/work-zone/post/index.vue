@@ -29,7 +29,7 @@
         class="limit-width"
         >
           <div class="selected-item" v-show="form.owner_uid.show">
-            已选择：<span @click="removeSingleChecked('owner_uid')">{{form.owner_uid.tem.realname}}<i class="el-icon-close"></i></span>
+            <span @click="removeSingleChecked('owner_uid')">{{form.owner_uid.tem.realname}}<i class="el-icon-close"></i></span>
           </div>
           <el-button
             class="click-item"
@@ -47,7 +47,6 @@
         class="limit-width"
         > 
           <div class="selected-item" v-show="form.members.show">
-            已选择：
             <span
               @click="removeMultipleCheck('members', mIndex)"
               :key="mIndex"
@@ -71,7 +70,6 @@
         class="limit-width"
         >
           <div class="selected-item" v-show="form.organizations.show">
-            已选择：
             <span
               @click="removeMultipleCheck('organizations', oIndex, oItem)"
               :key="oIndex"

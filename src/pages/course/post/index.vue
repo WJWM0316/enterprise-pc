@@ -29,7 +29,6 @@
         class="limit-width"
         >
           <div class="selected-item" v-show="form.category_id.show">
-            已选择：
             <span
               @click="removeSingleChecked('category_id', cateItem)"
               :key="cateIndex"
@@ -53,7 +52,6 @@
         class="limit-width"
         > 
           <div class="selected-item" v-show="form.master_uid.show">
-            已选择：
             <span @click="removeSingleChecked('master_uid', form.master_uid.tem)">
               {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
             </span>
@@ -74,7 +72,6 @@
         class="limit-width"
         >
           <div class="selected-item" v-show="form.group_id.show">
-            已选择：
             <span
               @click="removeMultipleCheck('group_id', groupIndex, groupItem)"
               :key="groupIndex"

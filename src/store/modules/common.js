@@ -148,7 +148,7 @@ const mutations = {
       })
     } else {
       state.groupLists.map(field => {
-        field.active = params.list.includes(String(field.groupId)) ? true : false
+        field.active = params.list.includes(String(field.groupId)) || params.list.includes(field.groupId) ? true : false
       })
     }
   },
