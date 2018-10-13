@@ -7,6 +7,7 @@
       :total="total"
       :header-row-class-name="'zikebackend-table-header'"
       :row-class-name="tableRowClassName"
+      :class="{'table-no-data123': list.length < 1}"
       >
       <el-table-column type="selection" width="49" align="center" v-if="selectable"></el-table-column>
       <el-table-column
@@ -24,6 +25,10 @@
           <slot name="columns" :scope="scope">{{ scope.row[scope.column.property] }}</slot>
         </template>
       </el-table-column>
+      <div slot="empty" class="table-list-no-data">
+        <img src="~IMAGES/no-data.png" alt="">
+        <p :style="{'marginTop': '23px'}">暂无相关内容</p>
+      </div>
     </el-table>
     <el-pagination
       background
@@ -61,6 +66,9 @@ export default ComponentTableList
           line-height: 46px;
           vertical-align: middle;
         }
+      }
+      &:first-child{
+        padding-left: 40px;
       }
     }
   }
@@ -168,6 +176,23 @@ export default ComponentTableList
   .el-button--text {
     color: #4080AD;
     margin: 0 8px;
+  }
+  .table-list-no-data {
+    text-align: center;
+    margin: 160px auto 200px auto;
+    img{
+      width: 120px;
+    }
+    p {
+      font-size:20px;
+      font-weight:400;
+      color:rgba(188,193,204,1);
+    }
+  }
+  .table-no-data123{
+    &:before{
+      display: none;
+    };
   }
 }
 </style>
