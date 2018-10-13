@@ -24,24 +24,27 @@ import {
 const state = {
   liveReviewList: {
     list: [],
-    total: 0
+    total: 0,
+    page: 1
   },
   liveDetails: {},
   liveLists: {
     list: [],
-    total: 0
+    total: 0,
+    page: 1
   },
   liveProblemList: {
     list: [],
-    total: 0
-  }
+    total: 0,
+    page: 1
+  },
+  liveMenberList: {}
 }
 
 const mutations = {
   [GET_LIVE_REVIEW_LIST] (state, data) {
     state.liveReviewList.list = data.data
     state.liveReviewList.total = data.meta.total
-    state.liveReviewList.page = data.meta.currentPage
   },
   [GET_LIVE_DETAILS] (state, data) {
     state.liveDetails = data
@@ -49,13 +52,15 @@ const mutations = {
   [GET_LIVE_INVISIBLE_LIST] (state, data) {
     state.liveReviewList.list = data.data
   },
-  [GET_LIVE_MENBER_LIST] (state, data) {
+  [GET_LIVE_REVIEW_LIST] (state, data) {
     state.liveReviewList.list = data.data
+  },
+  [GET_LIVE_MENBER_LIST] (state, data) {
+    state.liveMenberList.list = data.data
   },
   [GET_LIVE_LIST] (state, data) {
     state.liveLists.list = data.data
     state.liveLists.total = data.meta.total
-    state.liveLists.page = data.meta.currentPage
   },
   [GET_LIVE_PROBLEM_LIST] (state, data) {
     data.data.map(field => {
@@ -66,7 +71,6 @@ const mutations = {
     })
     state.liveProblemList.list = data.data
     state.liveProblemList.total = data.meta.total
-    state.liveProblemList.page = data.meta.currentPage
   }
 }
 
@@ -150,7 +154,7 @@ const actions = {
   getLiveMenberListApi (store, params) {
     return getLiveMenberListApi(params)
       .then(res => {
-        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        store.commit(GET_LIVE_MENBER_LIST, res.data)
         return res
       })
       .catch(error => {
