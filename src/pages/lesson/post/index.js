@@ -35,8 +35,7 @@ export default class WorkZonePost extends Vue {
   // 验证规则
   rules = {
     title: [
-      { required: true, message: '请填写课节标题', trigger: 'blur' },
-      { validator: this.checkBlankCharacter,  trigger: 'blur' }
+      { validator: this.validatorBlank,  trigger: 'blur' }
     ]
   }
 
@@ -48,6 +47,7 @@ export default class WorkZonePost extends Vue {
     accept: '.png,.jpg',
     tips: 'JPG、PNG格式',
     btnTxt: '选择图片',
+    status: '',
     hintTxt:'设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工通过自由发布打卡内容来解锁下一节课。',
     params: {
       token: getAccessToken(),
@@ -81,7 +81,6 @@ export default class WorkZonePost extends Vue {
     height: 350
   }
 
-
   // 默认提交表单按钮可以点击
   submitBtnClick = true
 
@@ -94,6 +93,19 @@ export default class WorkZonePost extends Vue {
   // 编辑id
   lessonId = ''
 
+  //验证---start
+  validatorBlank(rule, value, callback){
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    if (val.length === 0) {
+      callback(new Error('请填写课节标题'));
+    } else if(val.length > 25) {
+      callback(new Error('课节标题必须填写，最多25字'));
+    }else {
+      callback();
+    }
+  }
+
+  //验证---end
   created() {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
     this.form.course_id = this.$route.query.course_id
@@ -198,6 +210,9 @@ export default class WorkZonePost extends Vue {
         }
       },
     }
+    params.title = params.title.replace(/(^\s*)|(\s*$)/g, "")
+    console.log(params.title.length)
+
     if(this.action === 'add'){
       postLessonApi(params)
       .then(res => {
@@ -225,8 +240,6 @@ export default class WorkZonePost extends Vue {
   handleContentEditorBlur() {
     this.$refs.form.validateField('content')
   }
-
-  
 
   /**
    * @Author   小书包
@@ -279,9 +292,20 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleImageSuccess(res) {
+    console.log(res)
+
     res.data[0].show = false
     this.imageUpload.list.push(res.data[0])
+    this.imageUpload.status = 'success'
+
   }
+
+  handleImageError(res) {
+    console.log('error',res)
+    this.imageUpload.status = 'error'
+  }
+
+
 
   /**
    * @Author   小书包
@@ -290,6 +314,9 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeImageUpload(file) {
+    console.log('beforeImageUpload',file)
+
+    this.imageUpload.status = 'loading'
   }
 
   /**

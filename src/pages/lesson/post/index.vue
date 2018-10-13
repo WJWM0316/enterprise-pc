@@ -18,7 +18,7 @@
         prop="title"
         class="limit-width"
         >
-          <el-input v-model="form.title" :maxlength="25" style="width: 380px;" />
+          <el-input v-model="form.title" style="width: 380px;" />
       </el-form-item>
       <!-- 请填写课节名 end-->
       
@@ -87,7 +87,14 @@
 
       <!-- 上传图片 start-->
       <el-form-item>
+
+        
+
         <ul class="img-list">
+          <div class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
+            <img src="~IMAGES/loading.png" class="loading" v-if="imageUpload.status==='loading'"/>
+            <p class="upload_status" v-if="imageUpload.status==='error'">上传失败</p>
+          </div>
           <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
             @mouseover="imgOp (imgIndex,'over') "
             @mouseout="imgOp(imgIndex,'out')" 
@@ -106,9 +113,13 @@
           :action="imageUpload.action"
           :before-upload="beforeImageUpload"
           :on-success="handleImageSuccess"
+          :on-error="handleImageError"
           :show-file-list="false"
           :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
+
+            
           <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+
           <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
 
@@ -164,15 +175,16 @@ export default WorkZonePost
         font-size: 14px;
         background: #ececec;
       }
-    }
-    img{
-      width: 100%;
-      height: 100%;
-      border-radius: 4px;
-      &:after {
+      img{
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        &:after {
 
+        }
       }
     }
+    
   }
 }
 .uploader-control {
@@ -254,4 +266,38 @@ export default WorkZonePost
   color:rgba(146,146,146,1);
   line-height:22px;
 }
+
+@-webkit-keyframes rotation{
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+.imgLoadSatus {
+  width: 96px;
+  height: 96px;
+  line-height: 96px;
+  text-align: center;
+  display: inline-block;
+  .loading{
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+    -webkit-transform: rotate(360deg);
+    animation: rotation 2s linear infinite;
+    -moz-animation: rotation 2s linear infinite;
+    -webkit-animation: rotation 2s linear infinite;
+    -o-animation: rotation 2s linear infinite;
+  }
+  .imgHint {
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(255,52,52,1);
+  }
+}
+
+
+
 </style>
