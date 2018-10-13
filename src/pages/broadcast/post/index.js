@@ -639,13 +639,30 @@ export default class BroadcastPost extends Vue {
   tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2}).then(() => {this.temTutorLists = this.tutorLists})
+      this.getTutorListApi({type: 2}).then(() => {
+        this.tutorLists.map(field => {
+          field.active = String(field.uid) === this.form.uid.value ? true : false
+        })
+        this.temTutorLists = this.tutorLists
+      })
     } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
       this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1}).then(() => {this.temTutorLists = this.menberLists})
+      this.getMenberListsApi({selectAll: 1}).then(() => {
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: [this.form.uid.value]
+        })
+        this.temTutorLists = this.menberLists
+      })
     } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId}).then(() => {this.temTutorLists = this.menberLists})
+      this.getMenberListsApi({groupId: item.groupId}).then(() => {
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: [this.form.uid.value]
+        })
+        this.temTutorLists = this.menberLists
+      })
     }
   }
 
