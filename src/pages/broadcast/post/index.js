@@ -334,22 +334,26 @@ export default class BroadcastPost extends Vue {
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
+        this.models.show = true
         this.form.categoryList.tem.length
           ? this.updateCategoryListsApi({categoryId: this.form.categoryList.tem[0].categoryId})
           : this.noCheckedCategoryListsApi()
   			break
   		case 'uid':
   			this.models.title = '选择导师'
+        this.models.show = true
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
         this.getGroupListsApi()
-        this.form.groupList.value.length
-          ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')})
-          : this.noCheckGroupListsApi()
-  			break
+            .then(() => {
+              this.models.show = true
+              this.form.groupList.value.length ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')}) : this.noCheckGroupListsApi()
+            })
+        break
   		case 'memberList':
   			this.models.title = '参与直播学员'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
@@ -357,6 +361,7 @@ export default class BroadcastPost extends Vue {
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
@@ -368,7 +373,6 @@ export default class BroadcastPost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.models.show = true
   }
   /**
    * @Author   小书包
@@ -572,6 +576,9 @@ export default class BroadcastPost extends Vue {
     this.form[type].tem.splice(index, 1)
     this.form[type].value = temArray.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    this.form[type].noEdit.show = this.form[type].show
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.value = this.form[type].value
     switch(type) {
       case 'groupList':
         this.updateGroupListsApi({groupId: item.groupId})

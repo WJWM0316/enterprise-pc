@@ -339,12 +339,14 @@ export default class CoursePost extends Vue {
   	switch(type) {
   		case 'category_id':
   			this.models.title = '选择分类'
+        this.models.show = true
         this.form[type].tem.length
           ? this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
           : this.noCheckedCategoryListsApi()
   			break
   		case 'master_uid':
   			this.models.title = '选择导师'
+        this.models.show = true
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.master_uid.tem.uid === field.uid ? true : false)
         } else {
@@ -355,11 +357,14 @@ export default class CoursePost extends Vue {
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
-        if(this.form.group_id.value.length) {
-          this.updateGroupListsApi({list: this.form.group_id.value})
-        }
+        this.getGroupListsApi()
+            .then(() => {
+              this.models.show = true
+              if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value})
+            })
   			break
   		case 'members':
+        this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
@@ -368,6 +373,7 @@ export default class CoursePost extends Vue {
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
@@ -379,7 +385,7 @@ export default class CoursePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.models.show = true
+    // this.models.show = true
   }
   /**
    * @Author   小书包
@@ -481,10 +487,6 @@ export default class CoursePost extends Vue {
       this.form.icon.value = courseDetail.icon
       this.form.icon.tem = courseDetail.coverImg
       this.form.check_icon = courseDetail.icon
-      this.imageUpload.hasUploaded = true
-      this.imageUpload.btnTxt = '重新上传'
-      this.ContentEditor.content = courseDetail.intro
-      this.temTutorLists = [...this.tutorLists]
       this.form.members.value = this.form.members.value.join(',')
       this.form.members.noEdit.value = this.form.members.noEdit.value.join(',')
       this.form.hits.value = this.form.hits.value.join(',')
@@ -502,6 +504,10 @@ export default class CoursePost extends Vue {
       this.form.master_uid.noEdit.tem = { realname: courseDetail.realname, uid: courseDetail.masterUid}
       this.form.master_uid.noEdit.show = true
       this.form.check_master_uid = courseDetail.masterUid
+      this.imageUpload.hasUploaded = true
+      this.imageUpload.btnTxt = '重新上传'
+      this.ContentEditor.content = courseDetail.intro
+      this.temTutorLists = [...this.tutorLists]
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -583,6 +589,9 @@ export default class CoursePost extends Vue {
     this.form[type].tem.splice(index, 1)
     this.form[type].value = tem.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    this.form[type].noEdit.show = this.form[type].show
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.value = this.form[type].value
     switch(type) {
       case 'group_id':
         if(this.form.group_id.tem <= 0) {
@@ -591,6 +600,8 @@ export default class CoursePost extends Vue {
           this.form.group_id.noEdit.value = ''
           this.form.group_id.noEdit.tem = []
           this.form.group_id.noEdit.show = false
+        } else {
+          this.updateGroupListsApi({list: this.form.group_id.value.split(',')})
         }
         break
       case 'members':
