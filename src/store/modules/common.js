@@ -148,7 +148,7 @@ const mutations = {
       })
     } else {
       state.groupLists.map(field => {
-        field.active = params.list.includes(String(field.groupId)) ? true : false
+        field.active = params.list.includes(String(field.groupId)) || params.list.includes(field.groupId) ? true : false
       })
     }
   },
@@ -157,7 +157,6 @@ const mutations = {
     state.groupLists.map(field => {
       field.active = false
     })
-    console.log(state.groupLists)
   },
   // 获取成员动态
   [GET_MENBER_DYNAMICS_LIST] (state, data) {
