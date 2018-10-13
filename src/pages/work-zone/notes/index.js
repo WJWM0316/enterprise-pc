@@ -46,26 +46,26 @@ export default class NoteList extends Vue {
       label: '帖子内容',
       align: 'left',
       showTips: 'no',
-      width: '30%'
+      width: '40%'
     },
     {
       prop: 'realname',
       label: '发布者',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'type',
       label: '文件类型',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'visible',
       label: '是否公开',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '15%',
       filteredValue:
@@ -88,7 +88,7 @@ export default class NoteList extends Vue {
     {
       prop: 'deletedAt',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -111,7 +111,7 @@ export default class NoteList extends Vue {
     {
       prop: 'createdAt',
       label: '建立时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
@@ -119,7 +119,8 @@ export default class NoteList extends Vue {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
-      width: '30%',
+      align: 'left',
+      width: '20%',
       filterPlacement: '帖子的相关操作~'
     }
   ]
@@ -189,7 +190,6 @@ export default class NoteList extends Vue {
         this.$confirm('删除后前台不可见, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
         })
         .then(() => {
           this.deleteJobCircleNoteApi({id: item.id})
@@ -219,7 +219,6 @@ export default class NoteList extends Vue {
           this.$confirm('设置这条内容为置顶后，最早的一条置顶内容将自动取消~', '置顶超过3条后', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
           })
           .then(() => {
             this.setJobCircleNotetoTopApi({id: item.id})
