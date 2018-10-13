@@ -343,6 +343,10 @@ export default class CoursePost extends Vue {
   			break
   		case 'master_uid':
   			this.models.title = '选择导师'
+        // this.updateMenberListsAllApi({bool: false})
+        // this.updateMultipleMenberListsApi({
+        //   list: [this.form.owner_uid.value]
+        // })
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
@@ -636,18 +640,15 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
+    if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2})
-          .then(() => {
-            this.temTutorLists = this.tutorLists
-          })
+      this.getTutorListApi({type: 2}).then(() => { this.temTutorLists = this.tutorLists })
+    } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
+      this.models.editType = 'member'
+      this.getMenberListsApi({selectAll: 1}).then(() => {this.temTutorLists = this.menberLists})
     } else {
-      this.models.editType = 'menber'
-      this.getMenberListsApi({groupId: item.groupId})
-          .then(() => {
-            this.temTutorLists = this.menberLists
-          })
+      this.models.editType = 'member'
+      this.getMenberListsApi({groupId: item.groupId}).then(() => {this.temTutorLists = this.menberLists})
     }
   }
 
