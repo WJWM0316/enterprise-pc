@@ -28,6 +28,11 @@ import Component from 'vue-class-component'
       type: Number,
       default: 0
     },
+    // 当前页数
+    page: {
+      type: [String, Number],
+      default: 1
+    },
     // 重置表格的行样式
     tableRowClassName: {
       type: Function,

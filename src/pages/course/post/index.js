@@ -610,9 +610,23 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    Object.prototype.toString.call(item) === '[object String]'
-    ? this.getMenberListsApi({selectAll: 1})
-    : this.getMenberListsApi({groupId: item.groupId})
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    }
   }
 
   /**
@@ -743,7 +757,7 @@ export default class CoursePost extends Vue {
     this.form[type] = Object.assign(this.form[type], data)
     switch(type) {
       case 'members':
-        if(this.form.hits.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
@@ -753,7 +767,7 @@ export default class CoursePost extends Vue {
         }
         break
       case 'hits':
-        if(this.form.members.value.split(',').includes(String(item.uid))) {
+        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {

@@ -17,6 +17,7 @@
     :list="courseList.list"
     :fields="fields"
     :total="courseList.total"
+    :page="courseList.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

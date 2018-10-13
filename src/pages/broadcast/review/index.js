@@ -71,7 +71,7 @@ export default class BroadcastReview extends Vue {
       filterPlacement: '测试啦'
     },
     {
-      prop: 'fromUserName',
+      prop: 'realname',
       label: '发布人',
       align: 'center',
       showTips: 'no',

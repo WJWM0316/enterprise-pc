@@ -233,7 +233,7 @@
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterMenber(groupItem)">
+                @click="filterMenber('owner_uid', groupItem)">
                   {{groupItem.groupName}}
               </el-button>
             </div>
@@ -262,12 +262,12 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('all')">所有人</button>
+              <button class="common-btn" @click="filterMenber('members', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterMenber(groupItem)">
+                @click="filterMenber('members', groupItem)">
                 {{groupItem.groupName}}
               </button>
             </div>
@@ -313,12 +313,12 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('all')">所有人</button>
+              <button class="common-btn" @click="filterMenber('hits', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterMenber(groupItem)">
+                @click="filterMenber('hits', groupItem)">
                 {{groupItem.groupName}}
               </button>
             </div>

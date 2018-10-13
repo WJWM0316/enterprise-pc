@@ -17,6 +17,7 @@
     <table-list
     :list="jobCircleCommentFirstLists.list"
     :fields="fields"
+    :page="jobCircleCommentFirstLists.page"
     :total="jobCircleCommentFirstLists.total"
     >
       <template scope="props" slot="columns">

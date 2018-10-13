@@ -63,6 +63,7 @@ const mutations = {
   [GET_WORK_ZONE_LISTS] (state, data) {
     state.jobCircleLists.list = data.data
     state.jobCircleLists.total = data.meta.total
+    state.jobCircleLists.page = data.meta.currentPage
   },
   [GET_JOB_CIRCLE_MENBER_LISTS] (state, data) {
     state.jobCircleMemberLists = data
@@ -82,14 +83,17 @@ const mutations = {
   [GET_JOB_CIRCLE_NOTE_LISTS] (state, data) {
     state.jobCircleNoteLists.list = data.data
     state.jobCircleNoteLists.total = data.meta.total
+    state.jobCircleNoteLists.page = data.meta.currentPage
   },
   [GET_JOB_CIRCLE_COMMENT_FIRST_LISTS] (state, data) {
     state.jobCircleCommentFirstLists.list = data.data
     state.jobCircleCommentFirstLists.total = data.meta.total
+    state.jobCircleCommentFirstLists.page = data.meta.currentPage
   },
   [GET_JOB_CIRCLE_COMMENT_SECOND_LISTS] (state, data) {
     state.jobCircleCommentSecondLists.list = data.data
     state.jobCircleCommentSecondLists.total = data.meta.total
+    state.jobCircleCommentSecondLists.page = data.meta.currentPage
   },
   [GET_JOB_CIRCLE_TOP_NUM] (state, data) {
     state.jobCircleTopNum = data
