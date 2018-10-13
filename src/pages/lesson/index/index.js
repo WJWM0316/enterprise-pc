@@ -50,7 +50,11 @@ export default class CourseList extends Vue {
       showTips: 'yes',
       width: '10%',
       filteredValue:
-      [
+      [ 
+        {
+          label: '全部',
+          value: 'status-2'
+        },
         {
           label: '上线',
           value: 'status-1'
@@ -58,10 +62,6 @@ export default class CourseList extends Vue {
         {
           label: '下线',
           value: 'status-0'
-        },
-        {
-          label: '全部',
-          value: 'status-2'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'

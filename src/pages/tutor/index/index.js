@@ -27,12 +27,7 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   }
 })
 export default class CourseList extends Vue {
-  // 导师类型
-  tutorType = 'inner'
   // 表单数据
-  tutorList = []
-  input5 = ''
-
   // 表格字段
   innerFields = [
     {
@@ -60,7 +55,6 @@ export default class CourseList extends Vue {
       align: 'center',
     }
   ]
-
   outerFields = [
     {
       prop: 'realname',
@@ -95,17 +89,6 @@ export default class CourseList extends Vue {
     }
   ]
   
-  pagination = {
-    page: 1,
-    count: 20,
-    type: 1,
-    name: ''
-  }
-
-  searchType = false
-  searchValue = ''
-  searchList = {}
-
   // 确认信息弹窗
   models = {
     show: false,
@@ -130,15 +113,39 @@ export default class CourseList extends Vue {
     height: '192px'
   }
 
+  //当前选择删除
   nowSelectDeleteItem = {}
 
-  visible = true
+  // 导师类型
+  tutorType = 'inner' 
+
+  //列表数据
+  form = {
+    list: [],
+    page: 1,
+    total: 0,
+  }
+
+  pagination = {
+    count: this.zikeDefaultPageSize,
+    type: 1,
+    name: ''
+  }
+  //搜索
+  searchData = {
+    type : false,
+    value : '',
+    hintTxt: '',
+    list : {}
+  }
+
   created() {
   }
   /**
    * 初始化表单、分页页面数据
    */
   init() {
+    this.form = Object.assign(this.form, this.$route.query)
     this.getTutorList()
   }
 
@@ -154,17 +161,21 @@ export default class CourseList extends Vue {
   /**
    * 获取列表
    */
-  async getTutorList() {
+  async getTutorList({ page } = {}) {
     let params = this.pagination
 
+    params.page = page || this.form.page || 1
     getTutorListApi(params).then(res=>{
-      this.tutorList = res.data.data
+      this.form = {
+        list : res.data.data,
+        total: res.data.meta.total
+      }
     })
   }
 
   // 点击搜索时触发
   handleSearch () {
-    this.pagination.page = 1
+    this.$route.query.page = 1
     this.getTutorList()
   }
 
@@ -198,18 +209,19 @@ export default class CourseList extends Vue {
   //搜索老师
   searchTea(mobile) {
     let that = this
-    if(this.searchValue.length===0){
+    if(this.searchData.value.length===0){
       return
     }
-    this.searchType = true
-    searchTutorApi({mobile: this.searchValue}).then(res=>{
-      //that.$message(res.data.msg);
+    this.searchData.type = true
+    searchTutorApi({mobile: this.searchData.value}).then(res=>{
       console.log(res)
+      this.searchData.hintTXt = ''
       if(res.data.data){
-        this.searchList = res.data.data
+        this.searchData.list = res.data.data
       }
     },res=>{
-      this.searchList = {}
+      this.searchData.list = {}
+      this.searchData.hintTXt = res.data.msg ||''
       console.log(res)
       that.$message(res.data.msg);
     })
@@ -225,11 +237,11 @@ export default class CourseList extends Vue {
   }
 
   cancel(){
-    this.searchType = false
+    this.searchData.type = false
   }
 
   confirm(){
-    this.searchType = false
+    this.searchData.type = false
     this.toTea()
   }
 
