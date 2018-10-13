@@ -157,6 +157,7 @@ const mutations = {
     state.groupLists.map(field => {
       field.active = false
     })
+    console.log(state.groupLists)
   },
   // 获取成员动态
   [GET_MENBER_DYNAMICS_LIST] (state, data) {

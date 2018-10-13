@@ -115,7 +115,7 @@ export default class ComponentTableList extends Vue {
               width="144"
               trigger="hover">
               <div domPropsInnerHTML={column.filterPlacement}></div>
-              <i class="el-icon-question" style="color: rgba(188,188,188,1);position: relative;z-index: 2;" slot="reference"></i>
+              <i class="el-icon-question" style="color: rgba(188,188,188,1);position: relative;z-index: 2;font-size:16px;" slot="reference"></i>
             </el-popover>
           </div>
         )
@@ -138,7 +138,7 @@ export default class ComponentTableList extends Vue {
                     width="144"
                     trigger="hover">
                     <div domPropsInnerHTML={column.filterPlacement}></div>
-                    <i class="el-icon-question" style="color: rgba(188,188,188,1);position: relative;z-index: 2;" slot="reference"></i>
+                    <i class="el-icon-question" style="color: rgba(188,188,188,1);position: relative;z-index: 2;font-size:16px;" slot="reference"></i>
                   </el-popover>
                 )
               }
