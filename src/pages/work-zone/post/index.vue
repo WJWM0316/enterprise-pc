@@ -229,13 +229,21 @@
                 placeholder="请输入圈主名称" />
             </div>
             <div class="group-list">
-              <el-button
+              <button class="common-btn" @click="filterMenber('owner_uid', 'all')">所有人</button>
+              <button
+                class="common-btn"
+                v-for="(groupItem, groupIndex) in groupLists"
+                :key="groupIndex"
+                @click="filterMenber('owner_uid', groupItem)">
+                {{groupItem.groupName}}
+              </button>
+              <!-- <el-button
                 size="large"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
                 @click="filterMenber('owner_uid', groupItem)">
                   {{groupItem.groupName}}
-              </el-button>
+              </el-button> -->
             </div>
             <div class="menber-list">
               <div

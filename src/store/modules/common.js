@@ -122,7 +122,7 @@ const mutations = {
   // 批量更新成员列表
   [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
     state.menberLists.map(field => {
-      if(params.list.includes(String(field.uid))) field.active = true
+      if(params.list.includes(String(field.uid)) || params.list.includes(field.uid)) field.active = true
     })
   },
   // 选择所用成员列表

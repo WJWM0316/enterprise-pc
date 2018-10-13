@@ -314,11 +314,7 @@ export default class WorkZonePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-     // 获取成员列表
-    this.getMenberListsApi()
-      .then(() => {
-        this.models.show = true
-      })
+    this.models.show = true
   }
   /**
    * @Author   小书包
@@ -405,7 +401,7 @@ export default class WorkZonePost extends Vue {
       this.form.content = jobCircleDetails.content
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
-      this.form.owner_uid.value = jobCircleDetails.ownerUid
+      this.form.owner_uid.value = String(jobCircleDetails.ownerUid)
       this.form.cover_img_id.value = jobCircleDetails.coverImgId
       this.form.cover_img_id.tem = jobCircleDetails.coverImg.smallUrl
       this.form.id = jobCircleDetails.id
@@ -555,7 +551,26 @@ export default class WorkZonePost extends Vue {
   seleteOwnerUid(item) {
     const data = { show: true, tem: [], value: [] }
     this.updateMenberListsByIdApi({uid: item.uid})
-    this.form.owner_uid.tem = item
+    if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
+      this.$alert('圈主和不可见学员重复选择', '错误提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {
+          this.updateMenberListsByIdApi({uid: item.uid})
+        }
+      })
+      return
+    }
+
+    if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
+      this.$alert('圈主和必修学员重复选择', '错误提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {
+          this.updateMenberListsByIdApi({uid: item.uid})
+        }
+      })
+      return
+    }
+
     this.menberLists.map(field => {
       if(field.active) {
         data.value = String(field.uid)
@@ -591,10 +606,26 @@ export default class WorkZonePost extends Vue {
             }
           })
         }
+        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(this.form.owner_uid.value)) {
+          this.$alert('必修学员和圈主重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
         break
       case 'hits':
         if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
           this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+            confirmButtonText: '我知道了',
+            callback: action => {
+              this.updateMenberListsByIdApi({uid: item.uid})
+            }
+          })
+        }
+        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(this.form.owner_uid.value)) {
+          this.$alert('不可见学员和圈主重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
               this.updateMenberListsByIdApi({uid: item.uid})
