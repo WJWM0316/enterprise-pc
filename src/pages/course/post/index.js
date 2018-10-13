@@ -343,10 +343,13 @@ export default class CoursePost extends Vue {
   			break
   		case 'master_uid':
   			this.models.title = '选择导师'
-        // this.updateMenberListsAllApi({bool: false})
-        // this.updateMultipleMenberListsApi({
-        //   list: [this.form.owner_uid.value]
-        // })
+        if(this.models.editType === 'tutor') {
+          this.temTutorLists.map(field => field.active = this.form.master_uid.tem.uid === field.uid ? true : false)
+        } else {
+          this.updateMenberListsAllApi({bool: false})
+          this.updateMenberListsByIdApi({uid: this.form.master_uid.tem.uid})
+          this.temTutorLists = this.menberLists
+        }
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
@@ -489,10 +492,10 @@ export default class CoursePost extends Vue {
       this.form.group_id.value = this.form.group_id.value.join(',')
       this.form.group_id.noEdit.value = this.form.group_id.noEdit.value.join(',')
       this.form.master_uid.value = String(courseDetail.masterUid)
-      this.form.master_uid.tem = { realname: courseDetail.realname }
+      this.form.master_uid.tem = { realname: courseDetail.realname, uid: courseDetail.masterUid}
       this.form.master_uid.show = true
       this.form.master_uid.noEdit.value = String(courseDetail.masterUid)
-      this.form.master_uid.noEdit.tem = { realname: courseDetail.realname }
+      this.form.master_uid.noEdit.tem = { realname: courseDetail.realname, uid: courseDetail.masterUid}
       this.form.master_uid.noEdit.show = true
       this.form.check_master_uid = courseDetail.masterUid
     })
@@ -636,19 +639,36 @@ export default class CoursePost extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
-   * @detail   导师分类
+   * @detail   选择导师
    * @return   {[type]}   [description]
    */
-  tutorClassification(item) {
+  tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2}).then(() => { this.temTutorLists = this.tutorLists })
+      this.getTutorListApi({type: 2}).then(() => {
+        this.tutorLists.map(field => {
+          field.active = String(field.uid) === this.form.master_uid.value ? true : false
+        })
+        this.temTutorLists = this.tutorLists
+      })
     } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
       this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1}).then(() => {this.temTutorLists = this.menberLists})
+      this.getMenberListsApi({selectAll: 1}).then(() => {
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: [this.form.master_uid.value]
+        })
+        this.temTutorLists = this.menberLists
+      })
     } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId}).then(() => {this.temTutorLists = this.menberLists})
+      this.getMenberListsApi({groupId: item.groupId}).then(() => {
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: [this.form.master_uid.value]
+        })
+        this.temTutorLists = this.menberLists
+      })
     }
   }
 
@@ -696,7 +716,7 @@ export default class CoursePost extends Vue {
    * @detail   单选
    */
   fetchTutor(item) {
-    const temTutorLists = [...this.temTutorLists]
+    let temTutorLists = [...this.temTutorLists]
     const data = { show: true, tem: [], value: [] }
     if(this.models.editType === 'tutor') {
       temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)

@@ -306,14 +306,6 @@
                 @click="tutorClassification('uid', groupItem)">
                 {{groupItem.groupName}}
               </button>
-<!--               <button class="common-btn" @click="tutorClassification('outer')">外部导师</button>
-              <button class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
-                :key="groupIndex"
-                :class="{'common-btn-active': groupItem.active}"
-                @click="tutorClassification(groupItem)">
-                {{groupItem.groupName}}
-              </button> -->
             </div>
             <div class="menber-list">
               <div
