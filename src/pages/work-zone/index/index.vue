@@ -17,6 +17,7 @@
     :list="jobCircleLists.list"
     :fields="fields"
     :total="jobCircleLists.total"
+    :page="jobCircleLists.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

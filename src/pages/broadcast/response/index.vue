@@ -8,6 +8,7 @@
     :list="liveProblemList.list"
     :fields="fields"
     :total="liveProblemList.total"
+    :page="liveProblemList.page"
     :tableRowClassName="tableRowClassName"
     >
       <template scope="props" slot="columns">

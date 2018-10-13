@@ -8,6 +8,7 @@
     <table-list
     :list="jobCircleCommentSecondLists.list"
     :fields="fields"
+    :page="jobCircleCommentSecondLists.page"
     :total="jobCircleCommentSecondLists.total"
     >
       <template scope="props" slot="columns">

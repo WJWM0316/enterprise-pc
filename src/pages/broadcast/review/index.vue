@@ -8,6 +8,7 @@
     :list="liveReviewList.list"
     :fields="fields"
     :total="liveReviewList.total"
+    :page="liveReviewList.page"
     :tableRowClassName="tableRowClassName"
     >
       <template scope="props" slot="columns">

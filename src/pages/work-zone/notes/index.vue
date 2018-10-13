@@ -18,6 +18,7 @@
     :fields="fields"
     :total="jobCircleNoteLists.total"
     :tableRowClassName="tableRowClassName"
+    :page="jobCircleNoteLists.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

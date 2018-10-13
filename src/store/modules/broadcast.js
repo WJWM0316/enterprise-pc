@@ -40,6 +40,8 @@ const state = {
 const mutations = {
   [GET_LIVE_REVIEW_LIST] (state, data) {
     state.liveReviewList.list = data.data
+    state.liveReviewList.total = data.meta.total
+    state.liveReviewList.page = data.meta.currentPage
   },
   [GET_LIVE_DETAILS] (state, data) {
     state.liveDetails = data
@@ -53,6 +55,7 @@ const mutations = {
   [GET_LIVE_LIST] (state, data) {
     state.liveLists.list = data.data
     state.liveLists.total = data.meta.total
+    state.liveLists.page = data.meta.currentPage
   },
   [GET_LIVE_PROBLEM_LIST] (state, data) {
     data.data.map(field => {
@@ -63,6 +66,7 @@ const mutations = {
     })
     state.liveProblemList.list = data.data
     state.liveProblemList.total = data.meta.total
+    state.liveProblemList.page = data.meta.currentPage
   }
 }
 
