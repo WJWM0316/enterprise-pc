@@ -62,9 +62,11 @@ export default ComponentTableList
       font-size: 14px;
       padding: 0;
       .cell{
+        padding: 0;
         > div {
           line-height: 46px;
           vertical-align: middle;
+          padding: 0;
         }
       }
       &:first-child{
@@ -165,6 +167,8 @@ export default ComponentTableList
   }
   .zike-dropdown {
     display: inline;
+    padding: 0;
+    padding-right: 10px;
     .el-dropdown-link,
     .el-icon-question {
       color: #909399;
@@ -175,7 +179,7 @@ export default ComponentTableList
   }
   .el-button--text {
     color: #4080AD;
-    margin: 0 8px;
+    margin-right: 15px;
   }
   .table-list-no-data {
     text-align: center;
@@ -193,6 +197,10 @@ export default ComponentTableList
     &:before{
       display: none;
     };
+  }
+  .cell {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

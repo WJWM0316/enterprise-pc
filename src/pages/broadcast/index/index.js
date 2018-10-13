@@ -44,7 +44,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'statusName',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%',
       filteredValue:
@@ -67,7 +67,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'onlineStatusName',
       label: '是否上线',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -86,7 +86,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'categoryName',
       label: '分类',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%',
       filteredValue: [],
@@ -95,7 +95,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'sort',
       label: '权 重',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filterPlacement: '排序的序号数字越小，在员工端排在越前面；反之，在员工端排在越后面'
@@ -103,7 +103,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'expectedStartTime',
       label: '开始时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
@@ -111,6 +111,7 @@ export default class BroadcastIndex extends Vue {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
+      align: 'left',
       width: '20%',
       filterPlacement: '编辑：编辑相关详细内容 <br/> 问答区：管理直播中的相关问答 <br/> 直播回顾：管理直播内容'
     }
@@ -149,7 +150,7 @@ export default class BroadcastIndex extends Vue {
     const params = {
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
-      globalLoading: true
+      // globalLoading: true
     }
     if(this.form.liveName) {
       params.liveName = this.form.liveName
