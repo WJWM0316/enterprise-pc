@@ -282,6 +282,10 @@ export default class WorkZonePost extends Vue {
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
+        this.updateMenberListsAllApi({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: [this.form.owner_uid.value]
+        })
   			break
   		case 'members':
   			this.models.title = '选择成员'
@@ -325,7 +329,7 @@ export default class WorkZonePost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'workZonePost') return
     // 获取组列表
-    this.getGroupListsApi()
+    this.getGroupListsApi({isHaveMember: 1})
     this.getMenberListsApi()
   }
   /**
@@ -342,7 +346,7 @@ export default class WorkZonePost extends Vue {
         this.getJobCircleDetailsApi(params),
         this.getJobCircleHitListsApi(params),
         this.getJobCircleOrganizationListsApi(params),
-        this.getGroupListsApi(),
+        this.getGroupListsApi({isHaveMember: 1}),
         this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params)
       ]
@@ -357,8 +361,8 @@ export default class WorkZonePost extends Vue {
         if(field.uid === jobCircleDetails.ownerUid) {
           this.form.owner_uid.tem = field
           this.form.owner_uid.show = true
-          this.form.check_owner_uid = field.uid
-          this.form.owner_uid.noEdit.value = field.uid
+          this.form.check_owner_uid = String(field.uid)
+          this.form.owner_uid.noEdit.value = String(field.uid)
           this.form.owner_uid.noEdit.tem = field
           this.form.owner_uid.noEdit.show = true
         }
@@ -523,9 +527,24 @@ export default class WorkZonePost extends Vue {
    * @detail  分类获取成员数据
    * @return   {[type]}      [description]
    */
-  filterMenber(item) {
-    const params = Object.prototype.toString.call(item) === '[object String]' ? {} : {groupId: item.groupId}
-    this.getMenberListsApi(params)
+  filterMenber(type, item) {
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[type].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[type].value.split(',') })
+            }
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[type].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[type].value.split(',') })
+            }
+          })
+    }
   }
 
   /**
@@ -539,7 +558,7 @@ export default class WorkZonePost extends Vue {
     this.form.owner_uid.tem = item
     this.menberLists.map(field => {
       if(field.active) {
-        data.value = field.uid
+        data.value = String(field.uid)
         data.tem = item
       }
     })
