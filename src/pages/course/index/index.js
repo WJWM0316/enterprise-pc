@@ -37,7 +37,7 @@ export default class CourseList extends Vue {
     {
       prop: 'title',
       label: '课 程',
-      align: 'center',
+      align: 'left',
       width: '60%'
     },
     {

@@ -34,7 +34,7 @@ export default class WorkzoneList extends Vue {
     {
       prop: 'name',
       label: '工作圈',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '55%'
     },

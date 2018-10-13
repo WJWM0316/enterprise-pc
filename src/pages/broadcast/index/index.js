@@ -37,7 +37,7 @@ export default class BroadcastIndex extends Vue {
     {
       prop: 'liveName',
       label: '直 播',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '35%'
     },
@@ -135,6 +135,7 @@ export default class BroadcastIndex extends Vue {
               value: `categoryId-${field.categoryId}`
             })
           })
+          this.fields[3].filteredValue.unshift({label: '全部', value: 'categoryId-0'})
         })
   }
 

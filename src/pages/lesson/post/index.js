@@ -59,7 +59,7 @@ export default class WorkZonePost extends Vue {
   fileUpload = {
     action: upload_api,
     list: [],
-    limit: 1,
+    limit: 2,
     accept: '.mp4, .mp3',
     progress: 0,
     tips: '格式支持mp3、mp4',
@@ -341,7 +341,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
-    console.log(11111,file)
     this.fileUpload.status = ''
     this.fileUpload.progress = 0
     this.fileUpload.progressText = ''
@@ -353,10 +352,6 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.params.attach_type = file.type.split('/')[0]
   }
 
-
-  on_change(file){
-    console.log(file)
-  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
@@ -380,8 +375,7 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'
     this.fileUpload.btnTxt = '重新上传'
-    const { msg } = JSON.parse(err.message)
-    this.showMsg({ content: `${msg}~`, type: 'error', duration: 3000 })
+    this.showMsg({ content: `上传失败~`, type: 'error', duration: 3000 })
     
   }
 }

@@ -44,7 +44,7 @@ export default class NoteList extends Vue {
     {
       prop: 'content',
       label: '帖子内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '30%'
     },

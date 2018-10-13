@@ -21,9 +21,10 @@
       </el-col>
     </el-row>
     <table-list
-    :list="tutorList.list"
+    :list="form.list"
     :fields="tutorType === 'inner'?innerFields:outerFields"
-    :total="tutorList.total"
+    :total="form.total"
+    :page="form.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
@@ -92,22 +93,27 @@
         <div slot="customize-html" style="margin-left: 20px;margin-top: 20px;">
           <div class="customize-html-content">
             <search-bar
+              class="mode_input"
               width="464px"
               @search="searchTea"
-              v-model="searchValue"
+              v-model="searchData.value"
               placeholder="请输入手机号搜索" />
-            <div class="fetch-result" v-if="searchType">
+            <div class="fetch-result" v-if="searchData.type">
+
+            <p class="model_hint" v-show="searchData.hintTXt">
+              {{searchData.hintTXt}}
+            </p>
               <el-collapse-transition>
-                <div class="transition-flex-box" v-if="searchList&&searchList.realname">
+                <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
                   <div class="img-box">
-                    <img :src="searchList.avatar.smallUrl" />
+                    <img :src="searchData.list.avatar.smallUrl" />
                   </div>
                   <div class="text-inner-content">
-                    <p class="user-name" v-if="searchList.realname">{{searchList.realname}}</p>
-                    <p class="user-degree" v-if="searchList.title">{{searchList.title[0]}}</p>
+                    <p class="user-name" v-if="searchData.list.realname">{{searchData.list.realname}}</p>
+                    <p class="user-degree" v-if="searchData.list.title">{{searchData.list.title[0]}}</p>
                   </div>
                   <div class="phone-box">
-                    {{searchList.mobile}}
+                    {{searchData.list.mobile}}
                   </div>
                 </div>
                 <div class="transition-flex-box tutor-nodata" v-else>
@@ -305,8 +311,23 @@ export default CourseList
   .cell {
     overflow: inherit;
   }
-}
 
+
+}
+.mode_input {
+  position: relative;
+  
+}
+.model_hint {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,52,52,1);
+  margin-left: 20px;
+  position: relative;
+  margin-left:0;
+  margin-top: -12px;
+}
 
 .dialog_p {
     font-size:14px;

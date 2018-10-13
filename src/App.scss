@@ -58,8 +58,9 @@ ul {
   }
   .el-breadcrumb__inner.is-link {
     color: #BCBCBC !important;
+    font-weight: 300;
     &:hover {
-      color: #BCBCBC !important;
+      color: #D7AB70 !important;
     };
   }
 }
