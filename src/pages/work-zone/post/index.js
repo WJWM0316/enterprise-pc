@@ -282,6 +282,7 @@ export default class WorkZonePost extends Vue {
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: [this.form.owner_uid.value]
@@ -289,6 +290,7 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '选择成员'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
@@ -297,12 +299,14 @@ export default class WorkZonePost extends Vue {
   		case 'organizations':
   			this.models.title = '选择组织'
         this.getGroupListsApi()
-        if(this.form.organizations.value.length) {
-          this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
-        }
+            .then(() => {
+              this.models.show = true
+              if(this.form.organizations.value.length) this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
+            })
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
+        this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
@@ -314,7 +318,6 @@ export default class WorkZonePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.models.show = true
   }
   /**
    * @Author   小书包
@@ -486,6 +489,9 @@ export default class WorkZonePost extends Vue {
     this.form[type].tem.splice(index, 1)
     this.form[type].value = temArray.join(',')
     this.form[type].show = this.form[type].tem <= 0 ? false : true
+    this.form[type].noEdit.show = this.form[type].show
+    this.form[type].noEdit.tem = this.form[type].tem
+    this.form[type].noEdit.value = this.form[type].value
     switch(type) {
       case 'members':
         if(this.form.members.tem <= 0) {
