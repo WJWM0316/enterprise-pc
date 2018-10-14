@@ -148,7 +148,7 @@ export default class BroadcastPost extends Vue {
   rules = {
     liveName: [
       { required: true, message: '请输入直播名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { validator: this.validateBlankCharacter, trigger: 'blur' },
       { min: 1, max: 25, message: '直播名称最多25个字', trigger: 'blur' }
     ],
     check_categoryList: [

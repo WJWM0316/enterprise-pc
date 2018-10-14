@@ -129,7 +129,7 @@ export default class WorkZonePost extends Vue {
   rules = {
     name: [
       { required: true, message: '请输入工作圈名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { validator: this.validateBlankCharacter, trigger: 'blur' },
       { min: 1, max: 25, message: '工作圈名称最多25个字', trigger: 'blur' }
     ],
     check_owner_uid: [

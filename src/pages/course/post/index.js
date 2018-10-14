@@ -152,7 +152,7 @@ export default class CoursePost extends Vue {
   rules = {
     title: [
       { required: true, message: '请输入课程名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { validator: this.validateBlankCharacter, trigger: 'blur' },
       { min: 1, max: 25, message: '课程名称最多25个字', trigger: 'blur' }
     ],
     check_category_id: [
