@@ -38,7 +38,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateMultipleMenberListsApi',
       'updateMenberListsAllApi',
       'updateMenberListsByIdApi',
-      'noCheckGroupListsApi'
+      'noCheckGroupListsApi',
+      'switchCheckGroupListsApi',
+      'classifyMemberListsByGroupIdApi'
     ])
   },
   computed: {
@@ -641,6 +643,8 @@ export default class CoursePost extends Vue {
             }
           })
     } else {
+      // this.switchCheckGroupListsApi({groupId: item.groupId})
+      // this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
       this.getMenberListsApi({groupId: item.groupId})
           .then(() => {
             if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {

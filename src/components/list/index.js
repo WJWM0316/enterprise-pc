@@ -59,7 +59,6 @@ export default class ComponentTableList extends Vue {
       })
     }
     data[keyValue[0]] = keyValue[1]
-    console.log(data)
     this.$router.push({
       query: data
     })

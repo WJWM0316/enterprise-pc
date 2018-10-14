@@ -18,7 +18,9 @@ import {
   UPDATE_MENBER_LISTS,
   UPDATE_MENBER_LISTS_MULTIPLE,
   UPDATE_MENBER_LISTS_All,
-  UPDATE_MENBER_LISTS_BY_ID
+  UPDATE_MENBER_LISTS_BY_ID,
+  SWITCH_CHECKED_GROUP_LISTS,
+  CLASSIFY_MENBER_LISTS_BY_GROUPID
 } from '../mutation-types'
 
 import {
@@ -142,9 +144,7 @@ const mutations = {
   [UPDATE_GROUP_LISTS] (state, params) {
     if(!params.list) {
       state.groupLists.map(field => {
-        if(field.groupId === params.groupId) {
-          field.active = !field.active
-        }
+        if(field.groupId === params.groupId) field.active = !field.active
       })
     } else {
       state.groupLists.map(field => {
@@ -154,8 +154,18 @@ const mutations = {
   },
   // 取消圈闭选中
   [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
+    state.groupLists.map(field => field.active = false)
+  },
+  // 组织切换选中
+  [SWITCH_CHECKED_GROUP_LISTS] (state, params) {
     state.groupLists.map(field => {
-      field.active = false
+      if(params.groupId === field.groupId) field.active = !field.active
+    })
+  },
+  // 通过组划分成员
+  [CLASSIFY_MENBER_LISTS_BY_GROUPID] (state, params) {
+    state.menberLists.map(field => {
+      if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
     })
   },
   // 获取成员动态
@@ -380,6 +390,24 @@ const actions = {
    */
   noCheckGroupListsApi(store) {
     store.commit(NO_CHECK_UPDATE_GROUP_LISTS)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   分组全不选
+   * @return   {[type]}          [description]
+   */
+  switchCheckGroupListsApi(store, params) {
+    store.commit(SWITCH_CHECKED_GROUP_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   成员分组
+   * @return   {[type]}          [description]
+   */
+  classifyMemberListsByGroupIdApi(store, params) {
+    store.commit(CLASSIFY_MENBER_LISTS_BY_GROUPID, params)
   },
   /**
    * @Author   小书包

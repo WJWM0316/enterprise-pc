@@ -351,6 +351,7 @@
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">
                 {{groupItem.groupName}}
               </button>
