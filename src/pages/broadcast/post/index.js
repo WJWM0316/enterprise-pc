@@ -508,8 +508,8 @@ export default class BroadcastPost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.models.show = false
+    this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
@@ -528,6 +528,14 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
+    if(type === 'uid' && !this.form.uid.value.length) {
+      if(this.models.editType === 'tutor') {
+        this.temTutorLists.map(field => field.active = this.form.uid.value === field.uid ? !field.active : false)
+      } else {
+        this.updateMenberListsByIdApi({uid: this.form.uid.value})
+        this.temTutorLists = this.menberLists
+      }
+    }
   }
 
   /**
