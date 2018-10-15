@@ -8,14 +8,15 @@ import Component from 'vue-class-component'
       type: Boolean,
       default: true
     },
-    videoLink: {
-      type: String,
-      default: 'http://www.w3school.com.cn/i/movie.ogg'
+    // 是否显示
+    data: {
+      type: Object,
+      default: {}
     }
   },
   model: {
     prop: 'show',
-    event: 'input'
+    event: 'close'
   },
   watch: {
     show: {
@@ -30,12 +31,6 @@ import Component from 'vue-class-component'
           this.$emit('close')
         }
       }
-    },
-    videoLink: {
-      handler (videoLink) {
-        this.videoLink = videoLink
-      },
-      immediate: true
     }
   }
 })
@@ -44,12 +39,5 @@ export default class ComponentVideoViewer extends Vue {
 	visiable = false
   close() {
     this.visiable = false
-  }
-
-  download() {
-    const newBlank = window.open(this.videoLink, '_blank')
-    setTimeout(() => {
-      newBlank.close()
-    }, 5000)
   }
 }

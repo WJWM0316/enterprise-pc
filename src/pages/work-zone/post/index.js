@@ -284,6 +284,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择圈主'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: [this.form.owner_uid.value]
         })
@@ -292,6 +293,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -308,6 +310,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择不可见成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -612,7 +615,7 @@ export default class WorkZonePost extends Vue {
             }
           })
         }
-        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(this.form.owner_uid.value)) {
+        if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(this.form.owner_uid.value)) {
           this.$alert('必修学员和圈主重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {
@@ -630,7 +633,7 @@ export default class WorkZonePost extends Vue {
             }
           })
         }
-        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(this.form.owner_uid.value)) {
+        if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(this.form.owner_uid.value)) {
           this.$alert('不可见学员和圈主重复选择', '错误提醒', {
             confirmButtonText: '我知道了',
             callback: action => {

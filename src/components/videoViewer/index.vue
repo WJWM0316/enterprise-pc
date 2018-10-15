@@ -3,7 +3,7 @@
     <div class="mask show-mask"  @click="close"></div>
     <div class="box show-box">
       <div class="content">
-      	<video :src="videoLink" controls="controls"> your browser does not support the video tag </video>
+      	<video :src="data.url" controls="controls"> your browser does not support the video tag </video>
       </div>
     </div>
   </div>
@@ -82,9 +82,14 @@ export default ComponentVideoViewer
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     width:600px;
-    background:rgba(0,0,0,0.3);
+    background:black;
     border:8px solid rgba(255,255,255,1);
-    max-width:984px;
+    width:980px;
+    height: 560px;
+    video {
+      height: 560px;
+      margin: 0 auto;
+    }
   }
 
   .box.show-box {

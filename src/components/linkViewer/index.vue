@@ -4,12 +4,12 @@
     <div class="box">
       <span class="btn-close" @click="close"><i class="el-icon-close"></i></span>
       <div class="inner">
-        <div class="img-box"></div>
+        <div class="img-box"><i class="icon iconfont icon-btn_link"></i></div>
         <div class="text-box">
-          <p class="filename">这里是链接的名称，完整显示</p>
+          <p class="filename">{{data.title}}</p>
           <div class="link-m-box">
-            <input type="text" class="link-input" :value="fileLink">
-            <button class="filelink" id="btn" @click="copy" :data-clipboard-text="fileLink">复制链接</button>
+            <input type="text" class="link-input" :value="data.url">
+            <button class="filelink" id="btn" @click="copy" :data-clipboard-text="data.url">复制链接</button>
           </div>
         </div>
       </div>
@@ -64,7 +64,13 @@ export default ComponentLinkViewer
   .img-box {
     width: 72px;
     height: 72px;
-    background: rgba(0,0,0,.1);
+    background: #4080AD;
+    line-height: 72px;
+    text-align: center;
+    color: white;
+    i{
+      font-size: 25px;
+    }
   }
   .btn-box {
     width: 124px;

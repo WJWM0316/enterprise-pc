@@ -3,6 +3,11 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyPrompt from 'COMPONENTS/prompt/index.vue'
+import MyAudio from 'COMPONENTS/myAudio/index.vue'
+import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
+import ImagesViewer from 'COMPONENTS/imagesViewer/index.vue'
+import FileViewer from 'COMPONENTS/fileViewer/index.vue'
+import VideoViewer from 'COMPONENTS/videoViewer/index.vue'
 @Component({
   name: 'note-list',
   methods: {
@@ -14,13 +19,15 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
       'updateJobCircleNoteVisibleApi',
       'recoverJobCircleNoteApi',
       'getJobCircleTopNumApi',
-      'cancleJobCircleNotetoTopApi'
+      'cancleJobCircleNotetoTopApi',
+      'getJobCircleFilesApi'
     ])
   },
   computed: {
     ...mapGetters([
       'jobCircleNoteLists',
-      'jobCircleTopNum'
+      'jobCircleTopNum',
+      'jobCircleFiles'
     ])
   },
   watch: {
@@ -34,7 +41,12 @@ import MyPrompt from 'COMPONENTS/prompt/index.vue'
   components: {
     TableList,
     SearchBar,
-    MyPrompt
+    MyPrompt,
+    MyAudio,
+    LinkViewer,
+    ImagesViewer,
+    FileViewer,
+    VideoViewer
   }
 })
 export default class NoteList extends Vue {
@@ -140,6 +152,29 @@ export default class NoteList extends Vue {
     type: 'confirm'
   }
 
+  // 查看视屏
+  videoViewer = {
+    show: false,
+    data: {}
+  }
+
+  // 查看图片
+  imagesViewer = {
+    show: false,
+    list: []
+  }
+
+  // 查看连接
+  linkViewer = {
+    show: false,
+    data: {}
+  }
+
+  // 查看文件
+  fileViewer = {
+    show: false,
+    data: {}
+  }
   /**
    * 初始化表单、分页页面数据
    */
@@ -214,7 +249,6 @@ export default class NoteList extends Vue {
             })
         break
       case 'top':
-      console.log(this.jobCircleTopNum.topNum)
         if(this.jobCircleTopNum.topNum > 2) {
           this.$confirm('设置这条内容为置顶后，最早的一条置顶内容将自动取消~', '置顶超过3条后', {
             confirmButtonText: '确定',
@@ -249,8 +283,16 @@ export default class NoteList extends Vue {
         break
     }
   }
-  confirm() {}
-  cancel() {}
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-15
+   * @detail   关闭弹窗
+   * @return   {[type]}        [description]
+   */
+  cancel(type) {
+    this[type].show = false
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-28
@@ -262,6 +304,47 @@ export default class NoteList extends Vue {
       return 'row-delete'
     } else {
       return 'row-exist'
+    }
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-15
+   * @detail   显示弹窗
+   * @return   {[type]}   [description]
+   */
+  showModal(item) {
+    switch(item.type) {
+      case '图片':
+        this.getJobCircleFilesApi({id: item.id})
+            .then(res=> {
+              this.imagesViewer.show = true
+              this.imagesViewer.list = this.jobCircleFiles.accessory
+            })
+        break
+      case '文件':
+        this.getJobCircleFilesApi({id: item.id})
+            .then(res=> {
+              this.fileViewer.show = true
+              this.fileViewer.data = this.jobCircleFiles.accessory[0]
+            })
+        break
+      case '视频':
+        this.getJobCircleFilesApi({id: item.id})
+            .then(res=> {
+              this.videoViewer.show = true
+              this.videoViewer.data = this.jobCircleFiles.accessory[0]
+            })
+        break
+      case '链接':
+        this.getJobCircleFilesApi({id: item.id})
+            .then(res=> {
+              this.linkViewer.show = true
+              this.linkViewer.data = this.jobCircleFiles
+              console.log(this.jobCircleFiles)
+            })
+        break
+      default:
+        break
     }
   }
 }

@@ -7,7 +7,8 @@ import {
   GET_JOB_CIRCLE_NOTE_LISTS,
   GET_JOB_CIRCLE_COMMENT_FIRST_LISTS,
   GET_JOB_CIRCLE_COMMENT_SECOND_LISTS,
-  GET_JOB_CIRCLE_TOP_NUM
+  GET_JOB_CIRCLE_TOP_NUM,
+  GET_JOB_CIRCLE_FILES
 } from '../mutation-types'
 
 import {
@@ -31,7 +32,8 @@ import {
   cancleJobCircleHotCommentApi,
   getJobCircleCommentSecondListsApi,
   getJobCircleTopNumApi,
-  cancleJobCircleNotetoTopApi
+  cancleJobCircleNotetoTopApi,
+  getJobCircleFilesApi
 } from 'API/workZone'
 
 const state = {
@@ -56,7 +58,8 @@ const state = {
     list: [],
     total: 0
   },
-  jobCircleTopNum: {}
+  jobCircleTopNum: {},
+  jobCircleFiles: {}
 }
 
 const mutations = {
@@ -98,6 +101,9 @@ const mutations = {
   [GET_JOB_CIRCLE_TOP_NUM] (state, data) {
     state.jobCircleTopNum = data
   },
+  [GET_JOB_CIRCLE_FILES] (state, data) {
+    state.jobCircleFiles = data
+  }
 }
 
 const getters = {
@@ -109,7 +115,8 @@ const getters = {
   jobCircleNoteLists: state => state.jobCircleNoteLists,
   jobCircleCommentFirstLists: state => state.jobCircleCommentFirstLists,
   jobCircleCommentSecondLists: state => state.jobCircleCommentSecondLists,
-  jobCircleTopNum: state => state.jobCircleTopNum
+  jobCircleTopNum: state => state.jobCircleTopNum,
+  jobCircleFiles: state => state.jobCircleFiles
 }
 
 const actions = {
@@ -420,6 +427,22 @@ const actions = {
     return getJobCircleTopNumApi(params)
       .then(res => {
         store.commit(GET_JOB_CIRCLE_TOP_NUM, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+   /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取工作圈的文件
+   * @return   {[type]}          [description]
+   */
+  getJobCircleFilesApi(store, params) {
+    return getJobCircleFilesApi(params)
+      .then(res => {
+        store.commit(GET_JOB_CIRCLE_FILES, res.data.data)
         return res
       })
       .catch(error => {

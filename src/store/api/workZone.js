@@ -51,10 +51,12 @@ export const updateJobCircleNoteVisibleApi = params => request(`/jobcircle/post/
 // 获取工作圈分月相册
 export const getJobCircleAlbumApi = params => request(`/jobcircle/picture/${params.id}`, 'get', params)
 // 获取工作圈所有帖子
-export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params.id}`, 'get', params)
+// export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params.id}`, 'get', params)
 // 获取工作圈所有帖子链接分页
 export const getJobCircleUrlsApi = params => request(`/jobcircle/urls/${params.id}`, 'get', params)
 // 工作圈帖子删除恢复
 export const recoverJobCircleNoteApi = params => request(`/jobcircle/post/recover`, 'put', params)
 // 获取工作圈帖子的置顶数
 export const getJobCircleTopNumApi = params => request(`/jobcircle/toppost/${params.id}`, 'get')
+// 取工作圈帖子图片/视频/文件/链接
+export const getJobCircleFilesApi = params => request(`/jobcircle/files/${params.id}`, 'get')
