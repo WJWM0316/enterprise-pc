@@ -28,6 +28,8 @@ export default class WorkZonePost extends Vue {
     title: '',
     // 手机号
     mobile: '',
+    //性别
+    gender: '1',
     // 设置密码
     password: '123456',
   }
@@ -100,7 +102,7 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-        const need = ['name', 'title', 'mobile', 'password']
+        const need = ['name', 'title', 'mobile', 'password', 'gender']
         const params = this.transformData(this.form, need)
 
         console.log(params)

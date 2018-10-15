@@ -38,6 +38,16 @@
         <el-input type=text v-model="form.mobile" :maxlength="11" style="width: 380px;" />
     </el-form-item>
 
+    <!-- 性别 -->
+    <el-form-item
+      label="性别"
+      prop="gender"
+      class="limit-width"
+      >
+        <el-radio v-model="form.gender" label="1">男</el-radio>
+        <el-radio v-model="form.gender" label="2">女</el-radio>
+    </el-form-item>
+
     <!-- 设置密码 -->
     <el-form-item
       label="设置密码"
