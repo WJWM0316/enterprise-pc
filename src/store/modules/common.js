@@ -97,9 +97,7 @@ const mutations = {
     data.map(field => {
       field.active = false
       field.selfGroup = []
-      field.group.map(val => {
-        field.selfGroup.push(val.groupId)
-      })
+      if(field.group) field.group.map(val => field.selfGroup.push(val.groupId))
     })
     state.menberLists = data
   },

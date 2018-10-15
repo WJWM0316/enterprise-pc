@@ -320,7 +320,7 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearchTutor() {
-    this.getMenberListsApi({name: this.ownerUidName})
+    this.getMenberListsApi({name: this.ownerUidName, selectAll: 2})
         .then(() => {
           this.ownerUidName = ''
           this.temTutorLists = this.menberLists
