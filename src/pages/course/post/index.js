@@ -40,7 +40,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateMenberListsByIdApi',
       'noCheckGroupListsApi',
       'switchCheckGroupListsApi',
-      'classifyMemberListsByGroupIdApi'
+      'classifyMemberListsByGroupIdApi',
+      'setSelfDefinedGroup',
+      'removeSelfDefinedGroup'
     ])
   },
   computed: {
@@ -370,7 +372,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => { this.setSelfDefinedGroup() })
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -379,7 +381,7 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => { this.setSelfDefinedGroup() })
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -390,7 +392,6 @@ export default class CoursePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    // this.models.show = true
   }
   /**
    * @Author   小书包
@@ -526,12 +527,38 @@ export default class CoursePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
+    const data = { show: true, tem: [], value: [] }
     this.models.show = false
     this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    this.removeSelfDefinedGroup()
+    switch(type) {
+      case 'members':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.members = Object.assign(this.form.members, data)
+        break
+      case 'hits':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.hits = Object.assign(this.form.hits, data)
+        break
+      default:
+        break   
+    }
     if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
@@ -546,6 +573,7 @@ export default class CoursePost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
+    this.removeSelfDefinedGroup()
   }
 
   /**
@@ -637,25 +665,11 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
-      this.getMenberListsApi({selectAll: 1})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
-    } else {
-      // this.switchCheckGroupListsApi({groupId: item.groupId})
-      // this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
-      this.getMenberListsApi({groupId: item.groupId})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
+    if(item.groupId !== 'all' && item.active) {
+      this.switchCheckGroupListsApi({groupId: 'all'})
     }
+    this.switchCheckGroupListsApi({groupId: item.groupId})
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
   }
 
   /**

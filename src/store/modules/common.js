@@ -20,7 +20,9 @@ import {
   UPDATE_MENBER_LISTS_All,
   UPDATE_MENBER_LISTS_BY_ID,
   SWITCH_CHECKED_GROUP_LISTS,
-  CLASSIFY_MENBER_LISTS_BY_GROUPID
+  CLASSIFY_MENBER_LISTS_BY_GROUPID,
+  ADD_SELF_GROUP_BY_USER,
+  REMOVE_SELF_GROUP_ITEM
 } from '../mutation-types'
 
 import {
@@ -162,13 +164,28 @@ const mutations = {
   },
   // 通过组划分成员
   [CLASSIFY_MENBER_LISTS_BY_GROUPID] (state, params) {
-    state.menberLists.map(field => {
-      if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
-    })
+    if(params.groupId === 'all') {
+      const bool = state.menberLists.every(field => field.active)
+      if(bool) {
+        state.menberLists.map(field => field.active = false)
+      } else {
+        state.menberLists.map(field => field.active = true)
+      }
+    } else {
+      state.menberLists.map(field => {
+        if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
+      })
+    }
   },
   // 获取成员动态
   [GET_MENBER_DYNAMICS_LIST] (state, data) {
     state.memberDynamics = data
+  },
+  [ADD_SELF_GROUP_BY_USER] (state) {
+    state.groupLists = [{groupName: '所有人', isUserDedined: true, active: false, groupId: 'all', sort: 'self'}, ...state.groupLists]
+  },
+  [REMOVE_SELF_GROUP_ITEM] (state) {
+    state.groupLists = state.groupLists
   }
 }
 
@@ -438,6 +455,24 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取所有分组
+   * @return   {[type]}          [description]
+   */
+  setSelfDefinedGroup(store) {
+    store.commit(ADD_SELF_GROUP_BY_USER)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取所有分组
+   * @return   {[type]}          [description]
+   */
+  removeSelfDefinedGroup(store) {
+    store.commit(REMOVE_SELF_GROUP_ITEM)
   }
 }
 
