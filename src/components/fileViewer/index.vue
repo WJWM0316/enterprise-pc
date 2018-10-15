@@ -4,10 +4,10 @@
     <div class="box">
       <span class="btn-close" @click="close"><i class="el-icon-close"></i></span>
       <div class="inner">
-        <div class="img-box"></div>
+        <div class="img-box">PDF</div>
         <div class="text-box">
-          <p class="filename">这里是文件的名称，完整显示.pptx</p>
-          <p class="filesize">8.63M</p>
+          <p class="filename">{{data.fileName}}</p>
+          <p class="filesize">{{data.sizeM}}</p>
         </div>
         <div class="btn-box">
           <el-button type="primary" @click="download">下载文件</el-button>
@@ -51,6 +51,7 @@ export default ComponentVideoViewer
       line-height: 1;
       color: #666;
       font-size: 14px;
+      margin-top: 12px;
     }
     .filesize {
       margin: 0;
@@ -67,7 +68,12 @@ export default ComponentVideoViewer
   .img-box {
     width: 72px;
     height: 72px;
-    background: rgba(0,0,0,.1);
+    background: #FA3939;
+    text-align: center;
+    line-height: 72px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
   }
   .btn-box {
     width: 124px;

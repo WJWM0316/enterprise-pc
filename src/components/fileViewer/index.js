@@ -6,16 +6,17 @@ import Component from 'vue-class-component'
     // 是否显示
     show: {
       type: Boolean,
-      default: true
+      default: false
     },
-    videoLink: {
-      type: String,
-      default: 'http://www.w3school.com.cn/i/movie.ogg'
+    // 是否显示
+    data: {
+      type: Object,
+      default: {}
     }
   },
   model: {
     prop: 'show',
-    event: 'input'
+    event: 'close'
   },
   watch: {
     show: {
@@ -37,9 +38,10 @@ export default class ComponentVideoViewer extends Vue {
   visiable = false
 	close() {
     this.visiable = false
+    // this.$emit('cancel')
   }
   download() {
-    const newBlank = window.open(this.videoLink, '_blank')
+    const newBlank = window.open(this.data.url, '_blank')
     setTimeout(() => {
       newBlank.close()
     }, 5000)

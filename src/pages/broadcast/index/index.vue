@@ -59,8 +59,10 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.liveName}} </div>
                 <div class="lalel">
-                  <span class="group-name" :class="{'outer-group-name': props.scope.row.masterGroup === '外聘导师'}">{{props.scope.row.masterGroup}}</span>
-                  <span class="name" :class="{'outer-name': props.scope.row.masterGroup === '外聘导师'}">{{props.scope.row.masterName}}</span>
+                  <span class="group-name" v-if="props.scope.row.roleId === '5'">{{props.scope.row.roleName}}</span>
+                  <span class="name" v-if="props.scope.row.roleId === '5'">{{props.scope.row.userTitle}}</span>
+                  <span class="group-name" v-if="props.scope.row.roleId === '4'">{{props.scope.row.masterGroup}}</span>
+                  <span class="name" v-if="props.scope.row.roleId === '4'">{{props.scope.row.masterName}}</span>
                 </div>
             </div>
           </div>

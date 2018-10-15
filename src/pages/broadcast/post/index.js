@@ -342,6 +342,7 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.models.show = true
+        this.getGroupListsApi({isHaveMember: 1})
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
@@ -355,6 +356,7 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '参与直播学员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
         })
@@ -362,6 +364,7 @@ export default class BroadcastPost extends Vue {
       case 'invisibleList':
         this.models.title = '对这些人不可见'
         this.models.show = true
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')

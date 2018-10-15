@@ -44,7 +44,7 @@
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
           <div class="img-box">
-            <el-popover
+            <!-- <el-popover
               ref="popoverCover"
               placement="right"
               width="400">
@@ -54,7 +54,8 @@
               <i class="cover u-image auto" v-popover:popoverCover>
                 <img :src="props.scope.row.coverImg.smallUrl">
               </i>
-            </div>
+            </div> -->
+            <img :src="props.scope.row.coverImg.smallUrl">
           </div>
           <div class="content">
             <div>

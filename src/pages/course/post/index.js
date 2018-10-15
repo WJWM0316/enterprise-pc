@@ -349,6 +349,7 @@ export default class CoursePost extends Vue {
   		case 'master_uid':
   			this.models.title = '选择导师'
         this.models.show = true
+        this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.master_uid.tem.uid === field.uid ? true : false)
         } else {
@@ -369,6 +370,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -377,6 +379,7 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
