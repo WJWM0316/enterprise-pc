@@ -93,19 +93,22 @@ export default class WorkZonePost extends Vue {
 
   rules = {
     name: [
-      { required: true, message: '请输入姓名', trigger: 'blur' }
+      { required: true, validator: this.validatorOccupation, message: '姓名必须填写，最多10个字符', trigger: 'blur' }
     ],
     groupId: [
       { required: true, message: '请选择部门', trigger: 'blur' }
     ],
     occupation: [
-      { required: true, message: '请输入职位', trigger: 'blur'}
+      { required: true, validator: this.validatorOccupation, message:'职位必须填写，最多10个字符', trigger: 'blur'}
     ],
     email: [
-      { required: true, message: '请输入手机号', trigger: 'blur' }
+      { required: true, validator: this.validatorEmail,  trigger: 'blur' }
+    ],
+    mobile: [
+      { validator: this.validatorMobile,  trigger: 'blur' }
     ],
     password: [
-      { required: true, message: '请输入密码', trigger: 'blur'}
+      { required: true, validator: this.validatorPassword, message: '请输入密码', trigger: 'blur'}
     ],
     roleId: [
       { required: true, message: '请选择权限', trigger: 'blur' }
@@ -175,6 +178,66 @@ export default class WorkZonePost extends Vue {
   pageStatus = ''  
   user_id = ''
   userInfo = {}
+
+  //职位or名字
+  validatorOccupation(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+
+    console.log(val.length>10)
+    if (val.length === 0) {
+      callback(new Error('职位必须填写，最多10个字符'));
+    } else if(val.length>10) {
+      console.log(1)
+      callback(new Error('职位必须填写，最多10个字符'));
+    }else {
+      callback();
+    }
+  }
+  //密码
+  validatorPassword(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    if (val.length === 0) {
+      callback(new Error('密码必须填写，6-20个字符'));
+    } else if(val.length<6 || val.length>20) {
+      callback(new Error('密码必须填写，6-20个字符'));
+    }else {
+      callback();
+    }
+  }
+
+  //邮箱
+  validatorEmail(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/);
+
+    console.log(re.test(val))
+    if (val.length === 0) {
+      callback(new Error('邮箱必须填写，可作为成员登陆邮箱'));
+    } else if(!re.test(val)) {
+      callback(new Error('邮箱格式不正确'));
+    }else {
+      callback();
+    }
+  }
+
+  //手机
+  validatorMobile(rule, value, callback){
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let re = new RegExp(/^1[3-578]\d{9}$/);
+
+    console.log(re.test(val))
+    if (val.length === 0) {
+      callback();
+    } else if(val.length>0) {
+      if(!re.test(val)){
+        callback(new Error('手机格式不正确'));
+      }else {
+        callback();
+      }
+
+    }
+  }
+
 
   init() {
     console.log('===',this.$route.name)

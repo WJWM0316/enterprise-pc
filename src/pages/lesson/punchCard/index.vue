@@ -19,6 +19,7 @@
     :list="cardList.list"
     :fields="fields"
     :total="cardList.total"
+    :page="cardList.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

@@ -43,18 +43,18 @@ export default class CourseList extends Vue {
       showTips: 'yes',
       width: '10%',
       filteredValue:
-      [
+      [ 
+        {
+          label: '全部',
+          value: 'is_punch_card-2'
+        },
         {
           label: '正常',
-          value: 'status-1'
+          value: 'is_punch_card-1'
         },
         {
           label: '已删除',
-          value: 'status-0'
-        },
-        {
-          label: '全部',
-          value: 'status-all'
+          value: 'is_punch_card-0'
         }
       ],
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
@@ -113,7 +113,11 @@ export default class CourseList extends Vue {
     height: '192px',
     confirm: ''
   }
-  cardList = []
+  cardList = {
+    list: [],
+    total: 0,
+    page: 1,
+  }
   course_id = ''
   /**
    * 初始化表单、分页页面数据
@@ -134,12 +138,13 @@ export default class CourseList extends Vue {
    * 获取列表
    */
   getLists({ page, pageSize } = {}) {
-    //this.course_section_id = 13
+    this.course_section_id = 13
     let data = {
         search:{
           like: {card_content: this.form.name},
           order:{created_at: 'DESC'},
-          course_section_id:this.course_section_id
+          course_section_id:this.course_section_id,
+          is_punch_card: this.form.is_punch_card|| 2,
         },
         otherSearch:{ realname: this.form.name}
       }
@@ -154,10 +159,10 @@ export default class CourseList extends Vue {
 
     console.log(param)
     getLessonPunchListsApi(param).then(res=>{
-      console.log(res)
       this.cardList = {
         list : res.data.data,
-        total: res.data.meta.total
+        total: res.data.meta.total,
+        page: this.form.page || 1
       }
     })
   }
@@ -173,15 +178,10 @@ export default class CourseList extends Vue {
       course_section_card_id: this.model.itemSel.courseSectionCardId,
       is_pusnch_card: 0
     }
-    console.log(111111,data)
-
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
       this.model.show = false
       this.getLists()
-
-      console.log(res)
     }).catch(err => {
-      console.log(err)
       //this.$message.error(err.data.msg);
     })
   }
@@ -195,11 +195,7 @@ export default class CourseList extends Vue {
     distoryAndRegaihnLessonPunchApi(data).then(res=>{
       this.model.show = false
       this.getLists()
-
-      console.log(res)
     }).catch(err => {
-      console.log(err)
-
       //this.$message.error(err.data.msg);
     })
   }
@@ -229,8 +225,6 @@ export default class CourseList extends Vue {
     setExcellentCourseCardApi(data).then(res=>{
       this.model.show = false
       this.getLists()
-
-      console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
     })

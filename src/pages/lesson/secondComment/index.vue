@@ -10,9 +10,10 @@
     <el-row class="header">
     </el-row>
     <table-list
-    :list="commentList.list"
+    :list="commentData.list"
     :fields="fields"
-    :total="commentList.total"
+    :page="commentData.page"
+    :total="commentData.total"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->

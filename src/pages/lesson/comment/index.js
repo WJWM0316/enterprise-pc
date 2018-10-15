@@ -53,16 +53,16 @@ export default class CourseList extends Vue {
       filteredValue:
       [
         {
+          label: '全部',
+          value: 'status-2'
+        },
+        {
           label: '正常',
           value: 'status-1'
         },
         {
           label: '已删除',
           value: 'status-0'
-        },
-        {
-          label: '全部',
-          value: 'status-all'
         }
       ],
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
@@ -85,7 +85,8 @@ export default class CourseList extends Vue {
 
   // 搜索表单
   form = {
-    name: ''
+    name: '',
+    status: '',
   }
 
   // 初始化的搜索表单
@@ -114,7 +115,11 @@ export default class CourseList extends Vue {
     height: '192px',
     confirm: ''
   }
-  commentList = []
+  commentData = {
+    list: [],
+    total: 0,
+    page: 1,
+  }
   course_id = ''
 
   pageData={
@@ -124,14 +129,12 @@ export default class CourseList extends Vue {
    */
   init() {
     this.form = Object.assign(this.form,this.$route.query || {})
-    console.log(this.form,this.$route.query)
 
     this.pageData = Object.assign(this.$route.query || {})
     this.getLists()
   }
 
   confirm(){
-    console.log(this[this.model.confirm])
     this[this.model.confirm]()
   }
   /**
@@ -141,24 +144,26 @@ export default class CourseList extends Vue {
     let param = {
       postId: this.pageData.postId,
       keyword:this.form.name,
-      /*withReply: 1,
-      replyNum: 3,*/
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       sort: 'asc'
     }
 
+    //评论状态
+    if(this.form.status === '0' || this.form.status === '1'){
+      param.status = this.form.status
+    }
     param.keyword.replace(/\s*/g,"")
     if(param.keyword.length<1){
       delete param.keyword
     }
 
-    console.log(param)
     getSearchCommentListsApi(param).then(res=>{
       console.log(res)
-      this.commentList = {
+      this.commentData = {
         list : res.data.data,
-        total: res.data.meta.total
+        total: res.data.meta.total,
+        page: param.page
       }
     })
   }
@@ -174,14 +179,11 @@ export default class CourseList extends Vue {
       id: this.model.itemSel.id,
       is_pusnch_card: 0
     }
-    console.log(111111,data)
 
     deleteLessonPunchCommentApi(data).then(res=>{
-      console.log(res)
       this.getLists()
       this.model.show = false
     }).catch(err => {
-      console.log(err)
       //this.$message.error(err.data.msg);
     })
   }
@@ -192,12 +194,9 @@ export default class CourseList extends Vue {
       id: this.model.itemSel.id,
     }
     postLessonPunchCommentApi(data).then(res=>{
-      console.log(res)
       this.getLists()
       this.model.show = false
     }).catch(err => {
-      console.log(err)
-
       //this.$message.error(err.data.msg);
     })
   }
@@ -208,7 +207,6 @@ export default class CourseList extends Vue {
       id: this.model.itemSel.id,
     }
     cancelLessonPunchApi(data).then(res=>{
-      console.log(res)
       this.getLists()
       this.model.show = false
     }).catch(err => {
@@ -222,7 +220,6 @@ export default class CourseList extends Vue {
       id: this.model.itemSel.id,
     }
     putLessonPunchApi(data).then(res=>{
-      console.log(res)
       this.getLists()
       this.model.show = false
     }).catch(err => {
@@ -233,7 +230,6 @@ export default class CourseList extends Vue {
   
 
   todoAction(type, item) {
-    console.log(item)
 
     if(type!=='comment'){
       this.model.show = true

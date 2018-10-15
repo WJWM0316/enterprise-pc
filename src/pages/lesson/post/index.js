@@ -45,7 +45,7 @@ export default class WorkZonePost extends Vue {
     list: [],
     limit: 9,
     accept: '.png,.jpg',
-    tips: 'JPG、PNG格式',
+    tips: 'JPG、PNG格式，最多可上传9张',
     btnTxt: '选择图片',
     status: '',
     hintTxt:'设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工通过自由发布打卡内容来解锁下一节课。',

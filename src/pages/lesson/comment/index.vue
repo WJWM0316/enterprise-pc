@@ -16,9 +16,10 @@
       </el-col>
     </el-row>
     <table-list
-    :list="commentList.list"
+    :list="commentData.list"
     :fields="fields"
-    :total="commentList.total"
+    :total="commentData.total"
+    :page="commentData.page"
     >
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
