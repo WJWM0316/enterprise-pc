@@ -301,7 +301,6 @@ export default class WorkZonePost extends Vue {
   }
 
   handleImageError(res) {
-    console.log('error',res)
     this.imageUpload.status = 'error'
   }
 
@@ -314,8 +313,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeImageUpload(file) {
-    console.log('beforeImageUpload',file)
-
     this.imageUpload.status = 'loading'
   }
 

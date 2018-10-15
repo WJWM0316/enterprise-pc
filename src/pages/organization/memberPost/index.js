@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import MyCropper from 'COMPONENTS/cropper/index.vue'
+
 import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
 import { editorRules } from 'FILTERS/rules'
@@ -9,6 +11,7 @@ import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMembe
 @Component({
   components: {
     ModalDialog,
+    MyCropper
   },
   methods: {
     ...mapActions([
@@ -51,16 +54,12 @@ import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMembe
 export default class WorkZonePost extends Vue {
   // 图片上传
   imageUpload = {
-    action: upload_api,
-    list: [],
-    limit: 9,
-    accept: '.png,.jpg',
-    //tips: 'JPG、PNG格式',
-    btnTxt: '上传头像',
-    params: {
-      token: getAccessToken(),
-      attach_type: 'img',
-    }
+
+    hasUploaded: false,
+    btnTxt: '上传封面',
+    tips: '建议尺寸160X160px ，JPG、PNG格式，图片小于5M',
+    showError: false,
+    accept: '.jpeg, .png, .jpg'
   }
 
   form = {
@@ -72,6 +71,8 @@ export default class WorkZonePost extends Vue {
     groupId: '',
     // 职位
     occupation: '',
+    //性别
+    gender: '1',
     //邮箱
     email: '',
     // 微信号
@@ -88,7 +89,12 @@ export default class WorkZonePost extends Vue {
       tem: [],
       show: false
     },
-    contentAdminGroup: ''
+    contentAdminGroup: '',
+
+    icon: {
+      tem: '',
+      showError: false,
+    },
   }
 
   rules = {
@@ -183,11 +189,9 @@ export default class WorkZonePost extends Vue {
   validatorOccupation(rule, value, callback) {
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
 
-    console.log(val.length>10)
     if (val.length === 0) {
       callback(new Error('职位必须填写，最多10个字符'));
     } else if(val.length>10) {
-      console.log(1)
       callback(new Error('职位必须填写，最多10个字符'));
     }else {
       callback();
@@ -209,8 +213,6 @@ export default class WorkZonePost extends Vue {
   validatorEmail(rule, value, callback) {
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
     let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/);
-
-    console.log(re.test(val))
     if (val.length === 0) {
       callback(new Error('邮箱必须填写，可作为成员登陆邮箱'));
     } else if(!re.test(val)) {
@@ -224,8 +226,6 @@ export default class WorkZonePost extends Vue {
   validatorMobile(rule, value, callback){
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
     let re = new RegExp(/^1[3-578]\d{9}$/);
-
-    console.log(re.test(val))
     if (val.length === 0) {
       callback();
     } else if(val.length>0) {
@@ -240,7 +240,6 @@ export default class WorkZonePost extends Vue {
 
 
   init() {
-    console.log('===',this.$route.name)
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
       this.form.password = '123456'
@@ -248,28 +247,30 @@ export default class WorkZonePost extends Vue {
       this.user_id = this.$route.query.user_id
       this.editInitMsg()
     }
-
     this.getGroupList()
   }
 
   //编辑时初始化
   editInitMsg(){
     getMemberInfoApi({id: this.user_id}).then(res=>{
+      console.log('edit========',res.data.data)
       let data = res.data.data
-      console.log(res.data.data)
+      this.form.name = data.realname
+      this.form.avatarId = data.avatarId
+      this.form.groupId =data.group.length>0?data.group[0].groupId:null
+      this.form.occupation = data.occupation
+      this.form.email = data.email
+      this.form.wechat = data.wechat
+      this.form.mobile = data.mobile
 
-      this.form.name = data.realname,
-      this.form.avatarId = data.avatarId,
-      this.form.groupId =data.group.length>0?data.group[0].groupId:null,
-      this.form.occupation = data.occupation,
-      this.form.email = data.email,
-      this.form.wechat = data.wechat,
-      this.form.mobile = data.mobile,
-      this.form.roleId = 3,
-      this.form.id = this.user_id,
+      this.form.roleId = data.roleId
+      this.form.gender = data.gender.toString()
+      this.form.id = this.user_id
       this.form.contentAdminGroup = ''
 
       if(data.avatar&& data.avatar.smallUrl){
+
+        this.form.icon.tem = data.avatar.smallUrl
         this.imageUpload.list[0] = {
           url: data.avatar.smallUrl,
           show: false
@@ -290,7 +291,6 @@ export default class WorkZonePost extends Vue {
     })
 
     getMemberInfoApi({id: this.userInfos.id}).then(res=>{
-      console.log('============',res.data.data)
       this.userInfo = res.data.data
     })
   }
@@ -306,7 +306,6 @@ export default class WorkZonePost extends Vue {
   }
 
   openModel2(){
-    console.log(1)
     this.passWordModel.show = true
     this.passWordModel.width = '432px'
     this.passWordModel.minHeight = '102px'
@@ -325,24 +324,6 @@ export default class WorkZonePost extends Vue {
     })
   }
 
-  imgOp(index,type){
-
-    console.log(index,type)
-    if(type === 'over'){
-      this.imageUpload.list[0].show = true
-      console.log(this.imageUpload.list[0].show)
-
-    }else if(type === 'out'){
-      this.imageUpload.list[0].show = false
-      console.log(this.imageUpload.list[0].show)
-
-    }else if(type === 'delete'){
-      delete this.form.avatarId 
-
-      this.imageUpload.list.splice(0,1)
-    }
-  }
-
   // 检测是否可以提交
   checkSubmit() {
     console.log(this.form)
@@ -357,7 +338,7 @@ export default class WorkZonePost extends Vue {
         if(this.form.roleId === 3){
           this.form.contentAdminGroup = this.form.group_management.value
         }
-        const need = ['name', 'avatarId', 'groupId', 'occupation','email','wechat','mobile','password','roleId','contentAdminGroup','id']
+        const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
         console.log(params)
         this.submit(params)
@@ -456,18 +437,38 @@ export default class WorkZonePost extends Vue {
   /**
    * @detail   图片上传成功
    */
-  handleImageSuccess(res) {
+  imageUploadSuccess(res) {
     console.log(res)
-    res.data[0].show = false
-    this.form.avatarId = res.data[0].id
-    this.imageUpload.list = []
-    this.imageUpload.list.push(res.data[0])
+
+    this.form.avatarId = res.id
+    this.form.icon.tem = res.url
+    this.imageUpload.hasUploaded = true
+    this.imageUpload.btnTxt = '重新上传'
+    this.imageUpload.showError = false
+    //this.$refs.form.validateField('avatarId')
+  }
+
+  handleImageError(res) {
+
+    console.log(res)
+    this.imageUpload.status = 'error'
+
+    this.imageUpload.hasUploaded = false
+    this.imageUpload.btnTxt = '重新上传'
+    this.imageUpload.showError = true
+    if(Object.prototype.toString.call(res) === '[object String]') {
+      this.$message.error(`${res}~`)
+    } else {
+      this.$message.error(`${res.msg}~`)
+    }
   }
 
   /**
    * @detail   图片上传之前的处理
    */
   beforeImageUpload(file) {
+    /*console.log('beforeImageUpload')
+    this.imageUpload.status = 'loading'*/
   }
 
   removeGroupCheck(index) {
@@ -494,8 +495,6 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.group_management = data
-
-    console.log(data.value)
   }
 
 }
