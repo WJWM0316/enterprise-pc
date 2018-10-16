@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div class="swiper-container gallery-thumbs" v-if="false">
+    <div class="swiper-container gallery-thumbs">
       <div class="swiper-wrapper">
         <div class="swiper-slide" :style="'background-image:url('+ imgItem.url +')'" v-for="(imgItem, imgIndex) in list" :key="imgIndex"></div>
       </div>
@@ -35,8 +35,8 @@ export default ComponentImagesViewer
     z-index: 5;
   }
   .box{
-    height: 450px;
-    width: 680px;
+    height: 768px;
+    width: 1106px;
     position: relative;
     position: fixed;
     left: 50%;

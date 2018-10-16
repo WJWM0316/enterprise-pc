@@ -46,10 +46,6 @@
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
-<!--     <images-viewer v-model="imagesViewer.show" @cancel="cancel" :list="imagesViewer.list" />
-    <file-viewer v-model="fileViewer.show"  @cancel="cancel" />
-    <link-viewer v-model="linkViewer.show"  @cancel="cancel" />
-    <video-viewer v-model="videoViewer.show"  @cancel="cancel" /> -->
     <images-viewer v-model="imagesViewer.show" @cancel="cancel('imagesViewer')" :list="imagesViewer.list" />
     <file-viewer v-model="fileViewer.show"  @cancel="cancel('fileViewer')" :data="fileViewer.data" />
     <link-viewer v-model="linkViewer.show"  @cancel="cancel('linkViewer')" :data="linkViewer.data" />
@@ -76,9 +72,9 @@ export default BroadcastReview
   }
   .zike-audio {
     position: absolute;
-    left: 50%;
+    left: 50px;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
   }
   .limit-row-num-3 {
     overflow: hidden;
