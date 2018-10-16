@@ -17,6 +17,7 @@
         label="课节标题"
         prop="title"
         class="limit-width"
+        style="margin: 56px 0 32px 0;"
         >
           <el-input v-model="form.title" style="width: 380px;" />
       </el-form-item>
@@ -57,7 +58,7 @@
             :on-success="handleFileSuccess"
             :show-file-list="false"
             :on-progress="uploadFileProcess">
-            <el-button slot="trigger" size="large" type="primary" :class="{'btn-change': fileUpload.show}">{{fileUpload.btnTxt}}</el-button>
+            <el-button slot="trigger" size="large" class="base_btn" :class="{'btn-change': fileUpload.show}">{{fileUpload.btnTxt}}</el-button>
           </el-upload>
           <div class="tips">{{fileUpload.tips}}</div>
         </div>
@@ -74,6 +75,7 @@
             v-model="form.details"
             :path="ContentEditor.path"
             :height="ContentEditor.height" />
+            <p class="editor_p" >* 音频/视频 和 图文 两者必须填一项。</p>
       </el-form-item>
       <!-- 图文编辑 end-->
 
@@ -89,7 +91,7 @@
         
 
         <ul class="img-list">
-          <div class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
+          <div style="float: left" class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
             <img src="~IMAGES/loading.png" class="loading" v-if="imageUpload.status==='loading'"/>
             <p class="upload_status" v-if="imageUpload.status==='error'">上传失败</p>
           </div>
@@ -113,28 +115,29 @@
           :on-success="handleImageSuccess"
           :on-error="handleImageError"
           :show-file-list="false"
+          :file-list="imageUpload.list"
           :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
 
             
           <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
 
-          <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
+          <div slot="tip" style="margin: 8px 0 8px 0;line-height: initial; color: #bcbcbc;" class="el-upload__tip">{{imageUpload.tips}}</div>
         </el-upload>
 
-        <p class="upload_p">{{imageUpload.hintTxt}}</p>
+        <p class="upload_p" >{{imageUpload.hintTxt}}</p>
       </el-form-item>
       <!-- 上传图片 start-->
 
       <!-- 是否上线 start-->
-      <el-form-item label="是否上线">
+      <el-form-item label="是否上线" >
         <el-radio v-model="form.status" :label="1">上线</el-radio>
         <el-radio v-model="form.status" :label="0">下线</el-radio>
       </el-form-item>
       <!-- 是否上线 end-->
 
       <!-- 确认提交 -->
-      <el-form-item>
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+      <el-form-item class="footer-button">
+        <el-button class="" type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
 </div>
@@ -145,6 +148,13 @@ export default WorkZonePost
 </script>
 <style lang="scss">
 @import "~cropperjs/dist/cropper.min.css";
+
+.footer-button {
+  margin: 40px 0;
+  button {
+    width: 120px;
+  }
+}
 
 #lesson-post {
   background: white;
@@ -249,20 +259,37 @@ export default WorkZonePost
   .error {
     color: #FF3434;
   }
+  .base_btn {
+    background:rgba(255,226,102,1);
+    font-size:14px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    border: none;
+  }
   .btn-change {
     background:rgba(237,237,237,1);
     border-radius:4px;
     font-weight:400;
-    color:rgba(146,146,146,1);
+    color:#929292;
     border-color: rgba(237,237,237,1);
   }
 }
 .upload_p {
+  margin: 0;
   font-size:14px;
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:rgba(146,146,146,1);
   line-height:22px;
+}
+
+.editor_p {
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(188,188,188,1);
+  margin: 0;
 }
 
 @-webkit-keyframes rotation{
