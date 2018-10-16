@@ -42,7 +42,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'switchCheckGroupListsApi',
       'classifyMemberListsByGroupIdApi',
       'setSelfDefinedGroup',
-      'removeSelfDefinedGroup'
+      'removeSelfDefinedGroup',
+      'updateAllGroupListStatus'
     ])
   },
   computed: {
@@ -372,7 +373,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => { this.setSelfDefinedGroup() })
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -665,11 +666,23 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    if(item.groupId !== 'all' && item.active) {
-      this.switchCheckGroupListsApi({groupId: 'all'})
+    if(Object.prototype.toString.call(item) === '[object String]') {
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
+    } else {
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
+            }
+          })
     }
-    this.switchCheckGroupListsApi({groupId: item.groupId})
-    this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
   }
 
   /**
@@ -808,7 +821,10 @@ export default class CoursePost extends Vue {
    */
   multipleSelection(type, item, index) {
     const data = { show: true, tem: [], value: [] }
+    // 用于判断逆推选中组织
+    let currentEditType = null
     this.updateMenberListsApi({ index })
+    const isCheckedAll = this.menberLists.every(field => field.active)
     this.menberLists.map(field => {
       if(field.active) {
         data.value.push(field.uid)
@@ -817,6 +833,11 @@ export default class CoursePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
+    // if(isCheckedAll) {
+    //   this.updateAllGroupListStatus({bool: true})
+    // }
+    // console.log(item.selfGroup)
+    // this.switchCheckGroupListsApi({groupId: 'all'})
     switch(type) {
       case 'members':
         if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {

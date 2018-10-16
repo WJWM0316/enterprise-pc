@@ -46,10 +46,14 @@
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
-    <images-viewer v-model="imagesViewer.show" @cancel="cancel" :list="imagesViewer.list" />
+<!--     <images-viewer v-model="imagesViewer.show" @cancel="cancel" :list="imagesViewer.list" />
     <file-viewer v-model="fileViewer.show"  @cancel="cancel" />
     <link-viewer v-model="linkViewer.show"  @cancel="cancel" />
-    <video-viewer v-model="videoViewer.show"  @cancel="cancel" />
+    <video-viewer v-model="videoViewer.show"  @cancel="cancel" /> -->
+    <images-viewer v-model="imagesViewer.show" @cancel="cancel('imagesViewer')" :list="imagesViewer.list" />
+    <file-viewer v-model="fileViewer.show"  @cancel="cancel('fileViewer')" :data="fileViewer.data" />
+    <link-viewer v-model="linkViewer.show"  @cancel="cancel('linkViewer')" :data="linkViewer.data" />
+    <video-viewer v-model="videoViewer.show"  @cancel="cancel('videoViewer')" :data="videoViewer.data" />
   </section>
 </template>
 
@@ -84,6 +88,7 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
+    padding-left: 40px;
   }
   .img-disable{
     opacity: .5;

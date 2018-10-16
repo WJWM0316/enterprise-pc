@@ -126,7 +126,7 @@
 		</section>
 		<section class="notice-flex-box">
 			<div>
-				<div class="card-header">
+				<div class="card-header" @click="routeJump('course')">
 					最新课程
 				</div>
 				<div class="card-content" v-if="desktopNewestCourseInfo.coverImg">
@@ -147,7 +147,7 @@
 				</div>
 			</div>
 			<div>
-				<div class="card-header">
+				<div class="card-header" @click="routeJump('broadcast')">
 					最新直播
 				</div>
 				<div class="card-content" v-if="desktopNewestLiveInfo.name">
@@ -534,6 +534,7 @@ export default class pageDashboard extends Vue {
 			text-indent: 15px;
 			margin: 20px 0;
 			line-height: 1;
+			cursor: pointer;
 			&:before {
 		    content: '';
 		    height: 100%;
