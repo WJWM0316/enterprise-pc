@@ -313,7 +313,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   fetchTutor() {
-    this.getMenberListsApi({name: this.searchField})
+    this.getMenberListsApi({name: this.searchField, selectAll: 2})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = [...this.menberLists]
