@@ -143,7 +143,6 @@ export default class pageOrganization extends Vue {
     }
 
     todoAction(type) {
-      console.log(type)
 
       switch(type) {
         case 'set':
@@ -171,22 +170,19 @@ export default class pageOrganization extends Vue {
       }
     }
 
-    selectGroup(id,index){
-      if(id===10){
+    selectGroup(item){
+      if(item.groupId===10){
           delete this.memberData.groupId
       }else {
-          this.memberData.groupId = id
+          this.memberData.groupId = item.groupId
       }
 
-      console.log(this.groupList)
       this.groupList.map((field) => {
         if(field.active) {
           field.active = false
         }
       })
-
-      this.groupList[index].active = true
-
+      item.active = true
       this.rolevalue = '4'
       this.memberData.page = 1
       delete this.memberData.roleId

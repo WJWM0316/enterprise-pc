@@ -48,13 +48,13 @@
           </el-col>
         </el-row>
         <div>
-          <el-button size="large" @click="memberClassification('all')" class="list-item" v-if="groupLists.length > 0">所有人</el-button>
           <el-button
             size="large"
-            v-for="(groupItem, groupIndex) in groupLists"
+            v-for="(groupItem, groupIndex) in groupList"
             :key="groupIndex"
             class="list-item"
-            @click="memberClassification(groupItem.groupId)">
+            :class="{'btn-active-selected': groupItem.active}"
+            @click="memberClassification(groupItem)">
               {{groupItem.groupName}}
           </el-button>
         </div>
