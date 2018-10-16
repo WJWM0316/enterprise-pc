@@ -308,6 +308,9 @@ export default class pageDashboard extends Vue {
    */
   reflesh() {
   	this.getMemberDynamicsListApi({count: 20})
+  			.then(() => {
+  				this.timestamp = Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+  			})
   	this.isHaveNew = 0
   }
 
@@ -339,7 +342,7 @@ export default class pageDashboard extends Vue {
 		}, 1000 * 10)
 	}
 
-	mounted() {
+	created() {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
 					if(!this.memberDynamics.length) return;
