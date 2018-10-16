@@ -46,7 +46,7 @@ export default class BroadcastReview extends Vue {
     {
       prop: 'content',
       label: '查看内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '40%',
       filteredValue:
@@ -73,14 +73,14 @@ export default class BroadcastReview extends Vue {
     {
       prop: 'realname',
       label: '发布人',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
     {
       prop: 'statusName',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '15%',
       filteredValue:
@@ -103,7 +103,7 @@ export default class BroadcastReview extends Vue {
     {
       prop: 'createdAt',
       label: '开始时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
@@ -123,7 +123,8 @@ export default class BroadcastReview extends Vue {
 
   // 查看视屏
   videoViewer = {
-    show: false
+    show: false,
+    data: {}
   }
 
   // 查看图片
@@ -134,12 +135,14 @@ export default class BroadcastReview extends Vue {
 
   // 查看连接
   linkViewer = {
-    show: false
+    show: false,
+    data: {}
   }
 
   // 查看文件
   fileViewer = {
-    show: false
+    show: false,
+    data: {}
   }
   /**
    * 初始化表单、分页页面数据

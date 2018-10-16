@@ -27,11 +27,19 @@
               恢复
           </el-button>
         </div>
-        <!-- 重新定义课程名这一列的显示 -->
+        <!-- 重新定义提问内容这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'askContent'" class="limit-row-num-3">
-          {{props.scope.row.askContent}}
+          <template v-if="props.scope.row.askType === 'text'">{{props.scope.row.askContent}}</template>
         </div>
-        <!-- 其他列按后端给回的字段显示 -->
+        <!-- 重新定义提问内容这一列的显示 -->
+        <div v-else-if="props.scope.column.property === 'replyContent'" class="limit-row-num-3-3">
+          <template v-if="props.scope.row.replyType === 'text'">
+            {{props.scope.row.replyContent}}
+          </template>
+          <template v-if="props.scope.row.replyType === 'audio'">
+            <my-audio :theUrl="props.scope.row.replyContent" :disabled="!props.scope.row.status" />
+          </template>
+        </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
@@ -64,6 +72,15 @@ export default BroadcastReview
     font-size: 14px;
     line-height: 1.4;
     padding-left: 40px;
+  }
+  .limit-row-num-3-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    line-height: 1.4;
   }
 }
 </style>

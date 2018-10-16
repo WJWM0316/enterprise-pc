@@ -126,7 +126,7 @@
 		</section>
 		<section class="notice-flex-box">
 			<div>
-				<div class="card-header">
+				<div class="card-header" @click="routeJump('course')">
 					最新课程
 				</div>
 				<div class="card-content" v-if="desktopNewestCourseInfo.coverImg">
@@ -147,17 +147,17 @@
 				</div>
 			</div>
 			<div>
-				<div class="card-header">
+				<div class="card-header" @click="routeJump('broadcast')">
 					最新直播
 				</div>
 				<div class="card-content" v-if="desktopNewestLiveInfo.name">
 					<div class="img-box">
-						<img :src="desktopNewestLiveInfo.coverImg" alt="" v-if="desktopNewestLiveInfo.coverImg">
+						<img :src="desktopNewestLiveInfo.coverImg.smallUrl" alt="" v-if="desktopNewestLiveInfo.coverImg">
 					</div>
 					<div class="text-content">
-						<h2>{{desktopNewestLiveInfo.liveName}}</h2>
+						<h2>{{desktopNewestLiveInfo.name}}</h2>
 						<p>学习人数：{{desktopNewestLiveInfo.peopleCount}}</p>
-						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime}}</p>
+						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime * 1000 | date}}</p>
 						<p class="doing" v-if="desktopNewestLiveInfo.status === 2">正在直播</p>
 						<p class="end" v-if="desktopNewestLiveInfo.status === 3">直播已结束</p>
 					</div>
@@ -307,8 +307,11 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}   [description]
    */
   reflesh() {
-  	this.getMemberDynamicsListApi({count: 20, timestamp: this.timestamp})
   	this.isHaveNew = 0
+  	this.getMemberDynamicsListApi({count: 20})
+  			.then(() => {
+  				this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+  			})
   }
 
   /**
@@ -335,17 +338,15 @@ export default class pageDashboard extends Vue {
 			this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
-		  			this.clock()
 		  		})
-		}, 1000 * 60 * 5)
+		}, 1000 * 10)
 	}
 
-	mounted() {
+	created() {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
-					if(!this.memberDynamics.length) return;
-					this.timestamp = Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
-					this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
+					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+					this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
 				  		.then(res => {
 				  			this.isHaveNew = res.data.data.isHaveNew
 				  			this.clock()
@@ -453,6 +454,7 @@ export default class pageDashboard extends Vue {
 			padding: 0 30px;
 			line-height: 56px;
 			cursor: pointer;
+			text-align: center;
 			&:after{
 				content: '';
 				display: block;
@@ -534,6 +536,7 @@ export default class pageDashboard extends Vue {
 			text-indent: 15px;
 			margin: 20px 0;
 			line-height: 1;
+			cursor: pointer;
 			&:before {
 		    content: '';
 		    height: 100%;
@@ -563,7 +566,6 @@ export default class pageDashboard extends Vue {
 		.img-box {
 			width: 64px;
 			height: 64px;
-			background: rgba(0,0,0,.03);
 			margin-right: 16px;
 			position: relative;
 			cursor: pointer;
