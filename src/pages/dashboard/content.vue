@@ -152,12 +152,12 @@
 				</div>
 				<div class="card-content" v-if="desktopNewestLiveInfo.name">
 					<div class="img-box">
-						<img :src="desktopNewestLiveInfo.coverImg" alt="" v-if="desktopNewestLiveInfo.coverImg">
+						<img :src="desktopNewestLiveInfo.coverImg.smallUrl" alt="" v-if="desktopNewestLiveInfo.coverImg">
 					</div>
 					<div class="text-content">
-						<h2>{{desktopNewestLiveInfo.liveName}}</h2>
+						<h2>{{desktopNewestLiveInfo.name}}</h2>
 						<p>学习人数：{{desktopNewestLiveInfo.peopleCount}}</p>
-						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime}}</p>
+						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime * 1000 | date}}</p>
 						<p class="doing" v-if="desktopNewestLiveInfo.status === 2">正在直播</p>
 						<p class="end" v-if="desktopNewestLiveInfo.status === 3">直播已结束</p>
 					</div>
@@ -564,7 +564,6 @@ export default class pageDashboard extends Vue {
 		.img-box {
 			width: 64px;
 			height: 64px;
-			background: rgba(0,0,0,.03);
 			margin-right: 16px;
 			position: relative;
 			cursor: pointer;
