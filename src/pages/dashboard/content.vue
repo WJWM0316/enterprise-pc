@@ -307,11 +307,11 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}   [description]
    */
   reflesh() {
+  	this.isHaveNew = 0
   	this.getMemberDynamicsListApi({count: 20})
   			.then(() => {
-  				this.timestamp = Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+  				this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
   			})
-  	this.isHaveNew = 0
   }
 
   /**
@@ -345,8 +345,7 @@ export default class pageDashboard extends Vue {
 	created() {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
-					if(!this.memberDynamics.length) return;
-					this.timestamp = Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
 					this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
 				  		.then(res => {
 				  			this.isHaveNew = res.data.data.isHaveNew
