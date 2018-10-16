@@ -68,7 +68,7 @@ export default class pageOrganization extends Vue {
           showTips: 'no'
         },
         {
-          prop: 'rolename',
+          prop: 'roleName',
           width: '10%',
           label: '权限',
           align: 'center'
@@ -189,6 +189,7 @@ export default class pageOrganization extends Vue {
 
       this.rolevalue = '4'
       this.memberData.page = 1
+      delete this.memberData.roleId
       this.getMemberList()
     }
 

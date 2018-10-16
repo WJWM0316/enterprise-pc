@@ -83,13 +83,10 @@ export default class classifyList extends Vue {
     name: ''
   }
 
-  created() {
-    //this.init()
-  }
+  created() {}
 
   // 设置排序
   setSort(type,item){
-    console.log(item)
     let data = {
       id: item.categoryId,
       type: 1
@@ -112,7 +109,6 @@ export default class classifyList extends Vue {
     })
   }
 
-
   /**
    * 初始化表单、分页页面数据
    */
@@ -124,7 +120,7 @@ export default class classifyList extends Vue {
   /**
    * 获取列表
    */
-  getList({ page, pageSize } = {}) {
+  getList({ page } = {}) {
     let data = {
       page: page || this.form.page || 1,
       pageCount: this.zikeDefaultPageSize
@@ -132,6 +128,12 @@ export default class classifyList extends Vue {
 
     this.form.page = data.page
     getCategoryListsApi(data).then(res => {
+
+
+      if(res.data.data.length === 0 && data.page>1){
+        this.$router.push({ query: {page: data.page-1} })
+        return
+      }
       res.data.data.map(function(value,index){
           value.sort="1"
           value.index = index
@@ -145,7 +147,6 @@ export default class classifyList extends Vue {
 
   deleteClass() {
     deleteCategoryApi({id: this.model.itemSel.categoryId}).then(res=>{
-      console.log(res)
       this.model.show = false
 
       this.$message({
@@ -172,7 +173,6 @@ export default class classifyList extends Vue {
     }
 
     createCategoryApi(data).then(res=>{
-      console.log(res)
       this.model.show = false
       this.form.hintTXt = ''
       this.$message({

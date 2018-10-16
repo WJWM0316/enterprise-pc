@@ -148,7 +148,7 @@ export default class BroadcastPost extends Vue {
   rules = {
     liveName: [
       { required: true, message: '请输入直播名称', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' },
+      { validator: this.validateBlankCharacter, trigger: 'blur' },
       { min: 1, max: 25, message: '直播名称最多25个字', trigger: 'blur' }
     ],
     check_categoryList: [
@@ -313,7 +313,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   fetchTutor() {
-    this.getMenberListsApi({name: this.searchField})
+    this.getMenberListsApi({name: this.searchField, selectAll: 2})
         .then(() => {
           this.searchField = ''
           this.temTutorLists = [...this.menberLists]
@@ -342,6 +342,7 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.models.show = true
+        this.getGroupListsApi({isHaveMember: 1})
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
@@ -355,6 +356,7 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '参与直播学员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
         })
@@ -362,6 +364,7 @@ export default class BroadcastPost extends Vue {
       case 'invisibleList':
         this.models.title = '对这些人不可见'
         this.models.show = true
+        this.getGroupListsApi({isHaveMember: 1})
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
@@ -508,8 +511,8 @@ export default class BroadcastPost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
-    this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.models.show = false
+    this.form[type].show = this.form[type].value || this.form[type].value.length ? true : false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
@@ -528,6 +531,14 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
+    if(type === 'uid' && !this.form.uid.value.length) {
+      if(this.models.editType === 'tutor') {
+        this.temTutorLists.map(field => field.active = this.form.uid.value === field.uid ? !field.active : false)
+      } else {
+        this.updateMenberListsByIdApi({uid: this.form.uid.value})
+        this.temTutorLists = this.menberLists
+      }
+    }
   }
 
   /**

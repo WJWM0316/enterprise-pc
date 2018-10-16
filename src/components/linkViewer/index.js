@@ -7,16 +7,17 @@ import Clipboard from 'clipboard'
     // 是否显示
     show: {
       type: Boolean,
-      default: true
+      default: false
     },
-    fileLink: {
-      type: String,
-      default: 'http://www.w3school.com.cn/i/movie.ogg'
+    // 是否显示
+    data: {
+      type: Object,
+      default: {}
     }
   },
   model: {
     prop: 'show',
-    event: 'input'
+    event: 'close'
   },
   watch: {
     show: {
@@ -31,16 +32,7 @@ import Clipboard from 'clipboard'
           this.$emit('close')
         }
       }
-    },
-    fileLink: {
-      handler (fileLink) {
-        this.fileLink = fileLink
-      },
-      immediate: true
     }
-  },
-  methods: {
-    ...mapActions(['showMsg'])
   }
 })
 export default class ComponentLinkViewer extends Vue {

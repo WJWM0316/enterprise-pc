@@ -140,6 +140,7 @@ export default class CourseList extends Vue {
   }
 
   created() {
+    console.log('create')
   }
   /**
    * 初始化表单、分页页面数据
@@ -175,7 +176,8 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-    this.$route.query.page = 1
+
+    this.$router.push({query: {page:1}})
     this.getTutorList()
   }
 
@@ -232,7 +234,10 @@ export default class CourseList extends Vue {
       this.pagination.type = type === 'inner' ? 1 : 2,
       this.pagination.name = ''
       this.tutorType = type
-      this.getTutorList()
+
+
+      this.$router.push({query: {page:1}})
+      this.init()
     }
   }
 

@@ -41,7 +41,7 @@ export default class MenberList extends Vue {
   rules = {
     name: [
       //{ required: true, message: '分组名必须填写，最多20个字', trigger: 'blur' }
-      { validator: this.validatePass,  trigger: 'blur' }
+      { required: true,validator: this.validatePass,  trigger: 'blur' }
     ]
   }
 

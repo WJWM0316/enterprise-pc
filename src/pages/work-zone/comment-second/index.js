@@ -38,34 +38,35 @@ export default class CommentList extends Vue {
     {
       prop: 'content',
       label: '评论内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '40%'
     },
     {
       prop: 'userName',
       label: '发布者',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'status',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'createdAt',
       label: '建立时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '20%'
     },
     {
       prop: 'actions',
       label: '操 作',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filterPlacement: '吊炸天的操作~'

@@ -311,7 +311,8 @@
                 v-for="(tutorItem, tutorIndex) in temTutorLists"
                 @click="fetchTutor(tutorItem)"
                 :key="tutorIndex">
-                <i class="icon iconfont icon-checked"></i>
+                <i class="icon iconfont icon-checked" v-show="tutorItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!tutorItem.active"></i>
                 <span>{{tutorItem.realname}}</span>
               </div>
             </div>
@@ -345,11 +346,11 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('uid', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">
                 {{groupItem.groupName}}
               </button>
@@ -379,7 +380,6 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn"  @click="filterMenber('hits', 'all')">所有人</button>
               <button
                 v-for="(groupItem, groupIndex) in groupLists"
                 class="common-btn"

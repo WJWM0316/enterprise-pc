@@ -58,7 +58,7 @@ export default ComponentTableList
     height: 48px;
     line-height: 48px;
     th {
-      background: #f4f4f4;
+      background: #F0F2F5;
       font-size: 14px;
       padding: 0;
       .cell{

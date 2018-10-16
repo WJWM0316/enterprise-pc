@@ -21,34 +21,23 @@
           label="头像"
           prop="avatarId"
           class="limit-width">
-            <ul class="img-list">
-              <li class="avatar_blo" v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
-                @mouseover="imgOp (imgIndex,'over') "
-                @mouseout="imgOp(imgIndex,'out')" 
-              >
-                <img :src="imgItem.url" >
-                <span class="deleteImg" v-show="imgItem.show"
-                  @click="imgOp(imgIndex,'delete')"
-                >删除图片</span>
-              </li>
-            </ul>
-          <el-upload
-            ref="image"
-            name="image"
+
+          <div class="img-box" v-if="form.icon.tem && !imageUpload.showError">
+            <img :src="form.icon.tem" class="upload-cover avatar_blo">
+          </div>
+          <my-cropper
+            :hasUploaded="imageUpload.hasUploaded"
+            :btnTxt="imageUpload.btnTxt"
             :accept="imageUpload.accept"
-            :data="imageUpload.params"
-            :action="imageUpload.action"
-            :before-upload="beforeImageUpload"
-            :on-success="handleImageSuccess"
-            :show-file-list="false"
-            :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
+            @success="imageUploadSuccess"
+            @fail="handleImageError"></my-cropper>
 
-            <el-button slot="trigger" size="small" type="primary" :class="{'zike-btn-selected': imageUpload.list.length>0}">上传头像</el-button>
-
-
-            <div slot="tip" class="el-upload__tip">{{imageUpload.tips}}</div>
-          </el-upload>
-
+          <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
+            <div class="tips">
+              <p><i class="el-icon-error"></i></p>
+              <p>上传失败</p>
+            </div>
+          </div>
         </el-form-item>
 
         <!-- 所属部门 -->
@@ -75,6 +64,16 @@
           class="limit-width"
           >
             <el-input style="width: 300px;" v-model="form.occupation" :maxlength="30" placeholder="请填写职位信息"/>
+        </el-form-item>
+
+        <!-- 性别 -->
+        <el-form-item
+          label="性别"
+          prop="gender"
+          class="limit-width"
+          >
+            <el-radio v-model="form.gender" label="1">男</el-radio>
+            <el-radio v-model="form.gender" label="2">女</el-radio>
         </el-form-item>
 
         <!-- 邮箱 -->

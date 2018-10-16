@@ -37,7 +37,7 @@
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
 
 				<!-- 已付费，显示对应版本标识，目前有VIP和SVIP -->
-				<el-popover
+<!-- 				<el-popover
 			    placement="bottom"
 			    width="158"
 			    trigger="hover">
@@ -65,7 +65,7 @@
 			    	</div>
 			    </div>
 			    <button class="time-button" v-if="desktopVerInfo.isOfficial" slot="reference">VIP</button>
-			  </el-popover>
+			  </el-popover> -->
 				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
 				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
@@ -344,7 +344,7 @@ export default class pageDashboard extends Vue {
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
 					if(!this.memberDynamics.length) return;
-					this.timestamp = Date.parse(new Date(this.memberDynamics[this.memberDynamics.length - 1].createdAt)) / 1000
+					this.timestamp = Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
 					this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 				  		.then(res => {
 				  			this.isHaveNew = res.data.data.isHaveNew

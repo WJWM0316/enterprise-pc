@@ -327,7 +327,8 @@
                 v-for="(tutorItem, tutorIndex) in temTutorLists"
                 @click="selectTutor(tutorItem)"
                 :key="tutorIndex">
-                <i class="icon iconfont icon-checked"></i>
+                <i class="icon iconfont icon-checked" v-show="tutorItem.active"></i>
+                <i class="icon iconfont icon-radio_default" v-show="!tutorItem.active"></i>
                 <span>{{tutorItem.realname}}</span>
               </div>
             </div>

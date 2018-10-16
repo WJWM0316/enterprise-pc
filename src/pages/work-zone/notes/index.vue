@@ -63,9 +63,16 @@
         <div v-else-if="props.scope.column.property === 'content'" class="limit-row-num-2">
           {{ props.scope.row.content }}
         </div>
+        <div v-else-if="props.scope.column.property === 'type'" class="limit-row-num-2-2" @click="showModal(props.scope.row)">
+          {{ props.scope.row.type }}
+        </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
+    <images-viewer v-model="imagesViewer.show" @cancel="cancel('imagesViewer')" :list="imagesViewer.list" />
+    <file-viewer v-model="fileViewer.show"  @cancel="cancel('fileViewer')" :data="fileViewer.data" />
+    <link-viewer v-model="linkViewer.show"  @cancel="cancel('linkViewer')" :data="linkViewer.data" />
+    <video-viewer v-model="videoViewer.show"  @cancel="cancel('videoViewer')" :data="videoViewer.data" />
   </section>
 </template>
 
@@ -99,6 +106,16 @@ export default NoteList
     font-size: 14px;
     line-height: 1.4;
     padding-left: 40px;
+  }
+  .limit-row-num-2-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: #354048;
+    font-size: 14px;
+    line-height: 1.4;
   }
 }
 </style>

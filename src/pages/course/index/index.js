@@ -43,7 +43,7 @@ export default class CourseList extends Vue {
     {
       prop: 'status',
       label: '是否上线',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -66,7 +66,7 @@ export default class CourseList extends Vue {
     {
       prop: 'category',
       label: '类 型',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%',
       filteredValue: [],
@@ -75,7 +75,7 @@ export default class CourseList extends Vue {
     {
       prop: 'sort',
       label: '权 重',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面'
@@ -84,6 +84,7 @@ export default class CourseList extends Vue {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
+      align: 'left',
       width: '10%',
       filterPlacement: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
     }

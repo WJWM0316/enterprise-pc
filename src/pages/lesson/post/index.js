@@ -35,7 +35,7 @@ export default class WorkZonePost extends Vue {
   // 验证规则
   rules = {
     title: [
-      { validator: this.validatorBlank,  trigger: 'blur' }
+      { required: true, validator: this.validatorBlank,  trigger: 'blur' }
     ]
   }
 
@@ -45,7 +45,7 @@ export default class WorkZonePost extends Vue {
     list: [],
     limit: 9,
     accept: '.png,.jpg',
-    tips: 'JPG、PNG格式',
+    tips: 'JPG、PNG格式，最多可上传9张',
     btnTxt: '选择图片',
     status: '',
     hintTxt:'设置本节打卡任务，员工将需要按任务要求完成打卡，才算正式学完本节并解锁下一节。也可以不设置本节打卡任 务，员工通过自由发布打卡内容来解锁下一节课。',
@@ -175,7 +175,14 @@ export default class WorkZonePost extends Vue {
           this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
         }
         // 需要提交的参数的key值
-        const required = ['course_id','title','status','punch_card_title','details','av_id','punch_card_img']
+        const required = ['course_id','title','status','punch_card_title','details','punch_card_img']
+        let av_id = this.form.av_id
+        if(av_id.length>0){
+          av_id.replace(/(^\s*)|(\s*$)/g, "")
+          if(av_id.length>0){
+            required.push('av_id')
+          }
+        }
         // 过滤不需要提交的参数
         const params = this.transformData(this.form, required)
         this.submit(params)
@@ -297,15 +304,11 @@ export default class WorkZonePost extends Vue {
     res.data[0].show = false
     this.imageUpload.list.push(res.data[0])
     this.imageUpload.status = 'success'
-
   }
 
   handleImageError(res) {
-    console.log('error',res)
     this.imageUpload.status = 'error'
   }
-
-
 
   /**
    * @Author   小书包
@@ -314,8 +317,10 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeImageUpload(file) {
-    console.log('beforeImageUpload',file)
-
+    const isLt20M = file.size / 1024 / 1024 < 20;
+    if(!isLt20M){
+      this.$message.error('上传图片大小不能超过 20MB!');
+    }
     this.imageUpload.status = 'loading'
   }
 
@@ -341,9 +346,15 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
+
+    console.log(file,file.size / 1024 / 1024)
+    const isLt200M = file.size / 1024 / 1024 < 200;
+    if(!isLt200M){
+      this.$message.error('上传文件大小不能超过 200MB!');
+    }
     this.fileUpload.status = ''
     this.fileUpload.progress = 0
-    this.fileUpload.progressText = ''
+    this.fileUpload.progressText = '上传中'
 
 
     this.fileUpload.infos = file
@@ -369,13 +380,13 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileError(err, file, fileList) {
-    console.log(err,file)
+    console.log(err)
 
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'
     this.fileUpload.btnTxt = '重新上传'
-    this.showMsg({ content: `上传失败~`, type: 'error', duration: 3000 })
+    this.showMsg({ content: `上传失败 ~`, type: 'error', duration: 3000 })
     
   }
 }

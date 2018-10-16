@@ -37,35 +37,35 @@ export default class BroadcastReponse extends Vue {
     {
       prop: 'askContent',
       label: '提问内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
-      width: '40%'
+      width: '30%'
     },
     {
       prop: 'askMan',
       label: '提问人',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'replyContent',
       label: '回答内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '30%'
     },
     {
       prop: 'replyMan',
       label: '回答者',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '10%'
     },
     {
       prop: 'status',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -88,8 +88,9 @@ export default class BroadcastReponse extends Vue {
     {
       prop: 'actions',
       label: '操 作',
+      align: 'left',
       showTips: 'yes',
-      width: '50%',
+      width: '10%',
       filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]

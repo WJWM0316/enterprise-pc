@@ -18,7 +18,11 @@ import {
   UPDATE_MENBER_LISTS,
   UPDATE_MENBER_LISTS_MULTIPLE,
   UPDATE_MENBER_LISTS_All,
-  UPDATE_MENBER_LISTS_BY_ID
+  UPDATE_MENBER_LISTS_BY_ID,
+  SWITCH_CHECKED_GROUP_LISTS,
+  CLASSIFY_MENBER_LISTS_BY_GROUPID,
+  ADD_SELF_GROUP_BY_USER,
+  REMOVE_SELF_GROUP_ITEM
 } from '../mutation-types'
 
 import {
@@ -95,9 +99,7 @@ const mutations = {
     data.map(field => {
       field.active = false
       field.selfGroup = []
-      field.group.map(val => {
-        field.selfGroup.push(val.groupId)
-      })
+      if(field.group) field.group.map(val => field.selfGroup.push(val.groupId))
     })
     state.menberLists = data
   },
@@ -142,9 +144,7 @@ const mutations = {
   [UPDATE_GROUP_LISTS] (state, params) {
     if(!params.list) {
       state.groupLists.map(field => {
-        if(field.groupId === params.groupId) {
-          field.active = !field.active
-        }
+        if(field.groupId === params.groupId) field.active = !field.active
       })
     } else {
       state.groupLists.map(field => {
@@ -154,13 +154,38 @@ const mutations = {
   },
   // 取消圈闭选中
   [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
+    state.groupLists.map(field => field.active = false)
+  },
+  // 组织切换选中
+  [SWITCH_CHECKED_GROUP_LISTS] (state, params) {
     state.groupLists.map(field => {
-      field.active = false
+      if(params.groupId === field.groupId) field.active = !field.active
     })
+  },
+  // 通过组划分成员
+  [CLASSIFY_MENBER_LISTS_BY_GROUPID] (state, params) {
+    if(params.groupId === 'all') {
+      const bool = state.menberLists.every(field => field.active)
+      if(bool) {
+        state.menberLists.map(field => field.active = false)
+      } else {
+        state.menberLists.map(field => field.active = true)
+      }
+    } else {
+      state.menberLists.map(field => {
+        if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
+      })
+    }
   },
   // 获取成员动态
   [GET_MENBER_DYNAMICS_LIST] (state, data) {
     state.memberDynamics = data
+  },
+  [ADD_SELF_GROUP_BY_USER] (state) {
+    state.groupLists = [{groupName: '所有人', isUserDedined: true, active: false, groupId: 'all', sort: 'self'}, ...state.groupLists]
+  },
+  [REMOVE_SELF_GROUP_ITEM] (state) {
+    state.groupLists = state.groupLists
   }
 }
 
@@ -384,6 +409,24 @@ const actions = {
   /**
    * @Author   小书包
    * @DateTime 2018-09-21
+   * @detail   分组全不选
+   * @return   {[type]}          [description]
+   */
+  switchCheckGroupListsApi(store, params) {
+    store.commit(SWITCH_CHECKED_GROUP_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   成员分组
+   * @return   {[type]}          [description]
+   */
+  classifyMemberListsByGroupIdApi(store, params) {
+    store.commit(CLASSIFY_MENBER_LISTS_BY_GROUPID, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
    * @detail   获取分组列表
    * @return   {[type]}          [description]
    */
@@ -412,6 +455,24 @@ const actions = {
       .catch(error => {
         return Promise.reject(error.data || {})
       })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取所有分组
+   * @return   {[type]}          [description]
+   */
+  setSelfDefinedGroup(store) {
+    store.commit(ADD_SELF_GROUP_BY_USER)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取所有分组
+   * @return   {[type]}          [description]
+   */
+  removeSelfDefinedGroup(store) {
+    store.commit(REMOVE_SELF_GROUP_ITEM)
   }
 }
 
