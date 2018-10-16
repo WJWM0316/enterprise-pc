@@ -336,7 +336,6 @@ export default class pageDashboard extends Vue {
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
 		  		})
-		  // this.clock()
 		}, 1000 * 10)
 	}
 
