@@ -22,7 +22,8 @@ import {
   SWITCH_CHECKED_GROUP_LISTS,
   CLASSIFY_MENBER_LISTS_BY_GROUPID,
   ADD_SELF_GROUP_BY_USER,
-  REMOVE_SELF_GROUP_ITEM
+  REMOVE_SELF_GROUP_ITEM,
+  UPDATE_All_GROUP_LISTS_STATUS
 } from '../mutation-types'
 
 import {
@@ -151,6 +152,10 @@ const mutations = {
         field.active = params.list.includes(String(field.groupId)) || params.list.includes(field.groupId) ? true : false
       })
     }
+  },
+  // 更新全部组列表
+  [UPDATE_All_GROUP_LISTS_STATUS] (state, params) {
+    state.groupLists.map(field => field.active = params.bool)
   },
   // 取消圈闭选中
   [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
@@ -473,6 +478,15 @@ const actions = {
    */
   removeSelfDefinedGroup(store) {
     store.commit(REMOVE_SELF_GROUP_ITEM)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新所有的分组列表 UPDATE_All_GROUP_LISTS_STATUS
+   * @return   {[type]}          [description]
+   */
+  updateAllGroupListStatus(store, params) {
+    store.commit(UPDATE_All_GROUP_LISTS_STATUS, params)
   }
 }
 

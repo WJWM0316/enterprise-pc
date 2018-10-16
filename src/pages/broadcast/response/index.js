@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import MyAudio from 'COMPONENTS/myAudio/index.vue'
 
 @Component({
   name: 'response-list',
@@ -27,7 +28,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   },
    components: {
     TableList,
-    SearchBar
+    SearchBar,
+    MyAudio
   }
 })
 export default class BroadcastReponse extends Vue {
@@ -138,8 +140,7 @@ export default class BroadcastReponse extends Vue {
       case 'delete':
         this.$confirm('删除后该内容前台不可见', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         })
         .then(() => {
           this.deleteLiveProblemCommentApi({problem_id: item.id, globalLoading: true})
@@ -154,8 +155,7 @@ export default class BroadcastReponse extends Vue {
       case 'recover':
         this.$confirm('恢复后该内容前台可见', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         })
         .then(() => {
           this.recoverLiveProblemCommentApi({problem_id: item.id, globalLoading: true})

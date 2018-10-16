@@ -65,9 +65,11 @@ const mutations = {
   [GET_LIVE_PROBLEM_LIST] (state, data) {
     data.data.map(field => {
       field.replyContent = field.answerInfo.content
-      field.replyMan = field.answerInfo.nickname
+      field.replyMan = field.answerInfo.realname
+      field.replyType = field.answerInfo.type
       field.askContent = field.problemInfo.content
-      field.askMan = field.problemInfo.nickname
+      field.askMan = field.problemInfo.realname
+      field.askType = field.problemInfo.type
     })
     state.liveProblemList.list = data.data
     state.liveProblemList.total = data.meta.total
