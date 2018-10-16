@@ -95,6 +95,16 @@ export default NoteList
     background:rgba(248,250,251,1);
     text-decoration: line-through;
     color: #DCDCDC;
+    .limit-row-num-2 {
+      background:rgba(248,250,251,1);
+      text-decoration: line-through;
+      color: #DCDCDC;
+    }
+    .limit-row-num-2-2 {
+      background:rgba(248,250,251,1);
+      text-decoration: line-through;
+      color: #DCDCDC;
+    }
   }
   .limit-row-num-2 {
     overflow: hidden;
