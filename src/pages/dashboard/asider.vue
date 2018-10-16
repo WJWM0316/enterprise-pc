@@ -42,7 +42,7 @@ export default class pageDashboard extends Vue {}
 		font-weight:500;
 		color:rgba(102,102,102,1);
 		position: relative;
-		text-indent: 15px;
+		text-indent: 22px;
 		height: 60px;
 		line-height: 58px;
 		border-bottom:1px solid rgba(237,237,237,1);
