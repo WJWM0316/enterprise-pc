@@ -335,8 +335,8 @@ export default class pageDashboard extends Vue {
 			this.getMemberCheckNewDynamicsApi({ timestamp: this.timestamp })
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
-		  			this.clock()
 		  		})
+		  // this.clock()
 		}, 1000 * 10)
 	}
 
