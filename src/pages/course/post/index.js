@@ -530,11 +530,11 @@ export default class CoursePost extends Vue {
     const type = this.models.currentModalName
     const data = { show: true, tem: [], value: [] }
     this.models.show = false
-    this.form[type].show = this.form[type].value.length || this.form[type].value ? true : false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
+    this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
     this.removeSelfDefinedGroup()
     switch(type) {
       case 'members':

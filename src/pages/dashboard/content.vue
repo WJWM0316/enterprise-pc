@@ -453,6 +453,7 @@ export default class pageDashboard extends Vue {
 			padding: 0 30px;
 			line-height: 56px;
 			cursor: pointer;
+			text-align: center;
 			&:after{
 				content: '';
 				display: block;
