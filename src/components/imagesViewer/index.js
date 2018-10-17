@@ -39,26 +39,25 @@ import Swiper from 'swiper'
 export default class ComponentImagesViewer extends Vue {
   visiable = false
   mounted() {
-    // var galleryThumbs = new Swiper('.gallery-thumbs', {
-    //   spaceBetween: 24,
-    //   slidesPerView: 4,
-    //   freeMode: true,
-    //   watchSlidesVisibility: true,
-    //   watchSlidesProgress: true,
-    // });
+    var galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 24,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesVisibility: true,
+      watchSlidesProgress: true,
+    });
     new Swiper('.gallery-top', {
-      // spaceBetween: 10,
       navigation: {
         nextEl: '.my-btn-next',
         prevEl: '.my-btn-prev',
       },
-      // navigation: {
-      //   nextEl: '.swiper-button-next',
-      //   prevEl: '.swiper-button-prev',
-      // },
-      // thumbs: {
-      //   swiper: galleryThumbs
-      // }
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      thumbs: {
+        swiper: galleryThumbs
+      }
     })
   }
 

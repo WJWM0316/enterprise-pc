@@ -2,9 +2,9 @@
 	<header id="page-header">
 		<section>
 			<ul class="navigation">
-				<li>
+<!-- 				<li>
 					<i class="el-icon-bell"></i>
-				</li>
+				</li> -->
 				<li>
 					<el-dropdown trigger="hover" @command="logout" placement="bottom">
 					  <div class="el-dropdown-link" style="color:#354048">

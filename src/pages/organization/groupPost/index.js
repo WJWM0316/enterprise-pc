@@ -8,14 +8,12 @@ import { getMemberListApi, getGroupListApi, deleteGroupApi, addGroupApi, editGro
   methods: {
     ...mapActions([
       'showMsg',
-      'getGroupListsApi',
       'getMenberListsApi'
     ])
   },
   computed: {
     ...mapGetters([
       'jobCircleLists',
-      'groupLists',
       'menberLists'
     ])
   },
@@ -51,6 +49,8 @@ export default class MenberList extends Vue {
     value: []
   }
 
+  groupList = []
+
   temMenberLists = []
   // 默认提交表单按钮可以点击
   submitBtnClick = true
@@ -85,24 +85,41 @@ export default class MenberList extends Vue {
       tem: [],
       value: []
     }
-    Promise.all(
-      [
-        this.getGroupListsApi(),
-        this.getMenberListsApi()
-      ]
-    )
-    .then((res) => {
+
+    getGroupListApi().then(res=>{
+      if(res.data.data.length>0){
+        let data = [{
+          groupName:'所有人',
+          groupId:'all',
+          active: false
+        }]
+        res.data.data.map(item=>{
+          item.active = false
+          data.push(item)
+        })
+        this.groupList = data
+      }
+    })
+
+    this.getMenberListsApi().then((res) => {
       this.temMenberLists = [...this.menberLists]
       this.checkList = data
 
       if(this.$route.name === 'editGroup'){
         this.getEditMsg()
       }
-      
-    },res=>{
-    })
-    .catch((err) => {
-      this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
+      if(this.groupLists.length>0){
+        let groupList = [{
+          groupName:'所有人',
+          groupId:'all',
+          active: false
+        }]
+        this.groupLists.map(item=>{
+          item.active = false
+          groupList.push(item)
+        })
+        this.groupList = groupList
+      }
     })
   }
 
@@ -122,7 +139,7 @@ export default class MenberList extends Vue {
 
       this.editData.groupId = this.$route.params.groupId
       this.editData.name = this.form.name
-      this.groupLists.map(item=>{
+      this.groupList.map(item=>{
         if(item.groupName != this.form.name){
           this.editData.groupNameList.push(item.groupName)
         }
@@ -177,12 +194,13 @@ export default class MenberList extends Vue {
   /**
    * @detail   成员分类
    */
-  memberClassification(groupId) {
-    const data = {
+  memberClassification(groupItem) {
+    /*const data = {
       tem: [],
       value: []
     }
     const menberLists = [...this.menberLists]
+  
     if(groupId === 'all') {
       menberLists.map(field => {
         data.tem.push(field.realname)
@@ -195,8 +213,54 @@ export default class MenberList extends Vue {
           data.value.push(field.uid)
         }
       })
+    }*/
+    
+    let data = {
+      tem: [...this.checkList.tem],
+      value: [...this.checkList.value]
+    } 
+    const menberLists = [...this.menberLists]
+    groupItem.active = !groupItem.active
+      
+    if(groupItem.groupId === 'all'){
+      data = {
+        tem: [],
+        value: []
+      }
     }
+    console.log(groupItem.groupId)
+    menberLists.map(field => {
+      if(groupItem.groupId === 'all'){
+        if(groupItem.active){
+          // 选中
+          data.tem.push(field.realname)
+          data.value.push(field.uid)
+        }
 
+        this.groupList.map(item=>{
+          item.active = groupItem.active
+        })
+      }else {
+        if(field.selfGroup.includes(groupItem.groupId)) {
+          console.log(field.uid)
+          if(groupItem.active ){
+            // 选中
+            if(!data.value.includes(field.uid)){
+              data.tem.push(field.realname)
+              data.value.push(field.uid)
+            }
+          }else {
+            //取消
+            let index = data.value.indexOf(field.uid)
+            if(index>-1){
+              data.value.splice(index, 1);
+              data.tem.splice(index, 1);
+            }
+          }
+        }
+      }
+    })
+    console.log(data)
     this.checkList = data
   }
 
@@ -240,8 +304,6 @@ export default class MenberList extends Vue {
           obj.err(err)
         })
     }
-
-    
   }
 
   // 检测是否可以提交

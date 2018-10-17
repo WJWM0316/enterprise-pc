@@ -19,14 +19,7 @@ import { getMemberListApi, getGroupListApi } from '@/store/api/organization.js'
     },
 })
 export default class pageOrganization extends Vue {
-  groupList = [ 
-    {
-      groupId: 10, 
-      groupName: "所有人", 
-      sort: 10, 
-      count: 10,
-      active: true
-    }
+  groupList = [
   ]
   options = [
     {
@@ -43,7 +36,7 @@ export default class pageOrganization extends Vue {
     },
     {
       value: '4',
-        label: '全部成员'
+      label: '全部成员'
     }
   ]
     rolevalue = ''
@@ -94,28 +87,53 @@ export default class pageOrganization extends Vue {
           showTips: 'no'
         }
     ]
+
     memberData = {
-        selectAll: 1,
-        count: 20,
-        page: 1,
+      selectAll: 1,
+      count: 20,
+      page: 1
     }
 
-    created(){
-      this.getMsgList()
-    }
+    created(){}
 
     init() {
+      
+      this.memberData = {
+        selectAll: 1,
+        count: 20,
+        page: 1
+      }
       this.memberData = Object.assign(this.memberData,this.$route.query || {})
-      console.log(this.memberData,this.$route.query)
+      console.log(this.memberData)
+      console.log(this.$route.query)
+      if(this.$route.query.roleId){
+        delete this.memberData.roleId
+        this.rolevalue = this.$route.query.roleId
+      }
       this.getMemberList()
+      this.getMsgList()
+
     }
 
     getMsgList() {
       getGroupListApi().then( res => {
-          res.data.data.map(item=>{
-            item.active = false
-          })
+          this.groupList = [
+          {
+            groupId: 10, 
+            groupName: "所有人", 
+            sort: 10, 
+            count: 10,
+            active: true
+          }]
 
+          res.data.data.map(item=>{
+            if(this.$route.query.groupId && this.$route.query.groupId == item.groupId){
+              item.active = true
+              this.groupList[0].active = false
+            }else {
+              item.active = false
+            }
+          })
           this.groupList = [...this.groupList,...res.data.data]
       })
     }
@@ -143,8 +161,6 @@ export default class pageOrganization extends Vue {
     }
 
     todoAction(type) {
-      console.log(type)
-
       switch(type) {
         case 'set':
           this.$router.push({
@@ -171,35 +187,54 @@ export default class pageOrganization extends Vue {
       }
     }
 
-    selectGroup(id,index){
-      if(id===10){
-          delete this.memberData.groupId
-      }else {
-          this.memberData.groupId = id
+    selectGroup(item){
+      let query = {
+        page: 1,
+        roleId: '4'
       }
 
-      console.log(this.groupList)
-      this.groupList.map((field) => {
+      if(item.groupId===10){
+          query = {}
+      }else {
+          query.groupId = item.groupId
+      }
+
+      this.$router.push({
+        name: 'organization',
+        query: query
+      })
+
+      /*this.groupList.map((field) => {
         if(field.active) {
           field.active = false
         }
       })
-
-      this.groupList[index].active = true
-
+      item.active = true
       this.rolevalue = '4'
       this.memberData.page = 1
+
       delete this.memberData.roleId
-      this.getMemberList()
+      this.getMemberList()*/
+      
     }
 
     changeRule(id){
-        if(id==4){
-            delete this.memberData.roleId
-        }else {
-            this.memberData.roleId = id
-        }
-        this.memberData.page = 1
-        this.getMemberList()
+      let query = {
+        page: 1
+      }
+
+      if(id==4){
+          query = {}
+      }else {
+          query.roleId = id
+      }
+
+      if(this.$route.query.groupId){
+          query.groupId = this.$route.query.groupId
+      }
+      this.$router.push({
+        name: 'organization',
+        query: query
+      })
     }
 }

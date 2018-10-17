@@ -140,12 +140,26 @@ export default class CourseList extends Vue {
   }
 
   created() {
-    console.log('create')
   }
   /**
    * 初始化表单、分页页面数据
    */
   init() {
+    this.pagination = {
+      count: this.zikeDefaultPageSize,
+      type: 1,
+      name: ''
+    }
+    this.searchData = {
+      type : false,
+      value : '',
+      hintTxt: '',
+      list : {}
+    }
+    if(this.$route.query.tutorType){
+      this.tutorType = this.$route.query.tutorType
+    }
+
     this.form = Object.assign(this.form, this.$route.query)
     this.getTutorList()
   }
@@ -230,13 +244,9 @@ export default class CourseList extends Vue {
   }
 
   select(type){
+
     if(type !== this.tutorType){
-      this.pagination.type = type === 'inner' ? 1 : 2,
-      this.pagination.name = ''
-      this.tutorType = type
-
-
-      this.$router.push({query: {page:1}})
+      this.$router.push({query: {page:1,tutorType: type}})
       this.init()
     }
   }

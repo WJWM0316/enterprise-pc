@@ -94,6 +94,10 @@
 .list-item {
   padding: 10px 36px;
   margin-bottom: 16px;
+  &.el-button {
+    margin-left : 0;
+    margin-right: 10px;
+  }
 }
 .el-checkbox {
   margin-top: 0px !important;
@@ -112,5 +116,13 @@
   button {
     width: 120px;
   }
+}
+.btn-active-selected {
+  background:rgba(255,226,102,0.2);
+  border-radius:4px;
+  font-size:14px;
+  font-weight:400;
+  color:#D7AB70;
+  border-color: #EDEDED;
 }
 

@@ -13,7 +13,7 @@
               :class="{'btn-active-selected': groupItem.active}"
               v-for="(groupItem, groupIndex) in groupList"
               :key="groupIndex"
-              @click="selectGroup(groupItem.groupId,groupIndex)">
+              @click="selectGroup(groupItem)">
             {{groupItem.groupName}}
         </el-button>
         <div class="border"></div>

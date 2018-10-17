@@ -114,7 +114,7 @@ export default class WorkZonePost extends Vue {
       { validator: this.validatorMobile,  trigger: 'blur' }
     ],
     password: [
-      { required: true, validator: this.validatorPassword, message: '请输入密码', trigger: 'blur'}
+      { required: true, validator: this.validatorPassword, trigger: 'blur'}
     ],
     roleId: [
       { required: true, message: '请选择权限', trigger: 'blur' }

@@ -11,6 +11,8 @@ import './eleui/index.js'
 // 引入vue实例扩展函数库
 import './util'
 
+import './filters'
+
 Vue.config.productionTip = false
 
 new Vue({
