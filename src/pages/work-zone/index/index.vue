@@ -44,17 +44,6 @@
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'name'" class="flex-box">
           <div class="img-box">
-            <!-- <el-popover
-              ref="popoverCover"
-              placement="right"
-              width="400">
-              <i class="u-image auto"><img :src="props.scope.row.coverImg.smallUrl"></i>
-            </el-popover>
-            <div class="cover-wrapper">
-              <i class="cover u-image auto" v-popover:popoverCover>
-                <img :src="props.scope.row.coverImg.smallUrl">
-              </i>
-            </div> -->
             <img :src="props.scope.row.coverImg.smallUrl">
           </div>
           <div class="content">
@@ -98,6 +87,9 @@ export default WorkzoneList
   .header {
     margin: 30px 0;
   }
+  .limit-row-num-2{
+    padding-right: 40px;
+  }
   .content {
     .lalel{
       font-size: 12px;
@@ -110,6 +102,7 @@ export default WorkzoneList
       line-height:1;
       background:rgba(53,64,72,1);
       padding: 2px 5px;
+      display: inline-block;
     }
     .name {
       font-weight:400;
@@ -118,6 +111,7 @@ export default WorkzoneList
       padding: 2px 5px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
+      display: inline-block;
     }
   }
 }

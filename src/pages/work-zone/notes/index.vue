@@ -74,6 +74,9 @@
         <div v-else-if="props.scope.column.property === 'type'" class="limit-row-num-2-2" @click="showModal(props.scope.row)">
           {{ props.scope.row.type }}
         </div>
+        <div v-else-if="props.scope.column.property === 'createdAt'">
+          {{ props.scope.row.createdAt.slice(0, 10) }}
+        </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>

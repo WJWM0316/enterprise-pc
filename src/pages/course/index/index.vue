@@ -117,5 +117,8 @@ export default CourseList
     color:#D7AB70;
     padding: 2px 4px;
   }
+  .flex-box{
+    margin-right: 40px;
+  }
 }
 </style>

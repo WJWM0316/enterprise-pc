@@ -40,14 +40,14 @@ export default class CourseList extends Vue {
       prop: 'title',
       label: '课 程',
       align: 'left',
-      width: '60%'
+      width: '50%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -87,7 +87,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '10%',
+      width: '15%',
       filterPlacement: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
     }
   ]

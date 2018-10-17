@@ -24,6 +24,9 @@
         <div v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.status === 1 ? '正常' : '已删除' }}
         </div>
+        <div v-else-if="props.scope.column.property === 'content'" class="limit-row-num-2">
+          {{ props.scope.row.content }}
+        </div>
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
     </table-list>
@@ -44,6 +47,17 @@ export default CommentList
   }
   .deleted {
     background:rgba(248,250,251,1);
+  }
+  .limit-row-num-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    line-height: 1.4;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 </style>
