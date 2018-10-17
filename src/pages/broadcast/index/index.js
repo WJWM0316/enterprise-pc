@@ -39,7 +39,7 @@ export default class BroadcastIndex extends Vue {
       label: '直 播',
       align: 'left',
       showTips: 'no',
-      width: '35%'
+      width: '30%'
     },
     {
       prop: 'statusName',
@@ -112,7 +112,7 @@ export default class BroadcastIndex extends Vue {
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '10%',
+      width: '15%',
       filterPlacement: '编辑：编辑相关详细内容 <br/> 问答区：管理直播中的相关问答 <br/> 直播回顾：管理直播内容'
     }
   ]

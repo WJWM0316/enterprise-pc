@@ -23,7 +23,6 @@
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button
             type="text"
-            v-if="props.scope.row.status === 1 || props.scope.row.status === 2"
             @click="routeJump(props.scope.row.liveId, 'broadcastUpdate')">
               编辑
             </el-button>
