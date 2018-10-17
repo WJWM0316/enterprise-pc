@@ -46,7 +46,7 @@
           <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down', props.scope.row)" v-else />
         </div>
 
-        <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
+        <div v-else style="margin-left: 40px;">{{props.scope.row[props.scope.column.property]}}</div>
 
       </template>
     </table-list>
@@ -149,7 +149,6 @@ export default CourseList
       width:14px;
       height:10px;
       display: block;
-      margin: 0 auto;
       //background:rgba(188,188,188,1);
       &.up {
         margin-bottom: 8px;

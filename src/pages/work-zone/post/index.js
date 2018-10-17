@@ -31,7 +31,16 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateMenberListsApi',
       'updateMenberListsByIdApi',
       'updateMenberListsAllApi',
-      'updateMultipleMenberListsApi'
+      'updateMultipleMenberListsApi',
+      'updateMenberListsAllApi',
+      'updateMenberListsByIdApi',
+      'setSelfDefinedGroup',
+      'removeSelfDefinedGroup',
+      'updateAllGroupListStatus',
+      'updateSingleGrouptatus',
+      'updateSingleMemberStatus',
+      'classifyMemberListsByGroupIdApi',
+      'switchCheckGroupListsApi'
     ])
   },
   computed: {
@@ -293,7 +302,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -310,7 +319,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择不可见成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -436,6 +445,7 @@ export default class WorkZonePost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
+    const data = { show: true, tem: [], value: [] }
     this.models.show = false
     this.ownerUidName = ''
     this.form[`check_${type}`] = this.form[type].value
@@ -443,6 +453,32 @@ export default class WorkZonePost extends Vue {
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
+    this.removeSelfDefinedGroup()
+    switch(type) {
+      case 'members':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.members = Object.assign(this.form.members, data)
+        this.form.check_members = this.form.members.value
+        break
+      case 'hits':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.hits = Object.assign(this.form.hits, data)
+        break
+      default:
+        break   
+    }
     if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
@@ -457,6 +493,7 @@ export default class WorkZonePost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
+    this.removeSelfDefinedGroup()
   }
 
   /**
@@ -528,11 +565,11 @@ export default class WorkZonePost extends Vue {
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-10
-   * @detail  分类获取成员数据
-   * @return   {[type]}      [description]
+   * @DateTime 2018-10-17
+   * @detail   分类圈主
+   * @return   {[type]}   [description]
    */
-  filterMenber(type, item) {
+  filterOwnerUid(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]') {
       this.getMenberListsApi({selectAll: 1})
           .then(() => {
@@ -550,6 +587,23 @@ export default class WorkZonePost extends Vue {
             }
           })
     }
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-10
+   * @detail  分类获取成员数据
+   * @return   {[type]}      [description]
+   */
+  filterMenber(type, item) {
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId, bool: item.active})
+    this.switchCheckGroupListsApi({groupId: item.groupId})
+    this.menberLists.map(field => {
+      if(field.selfGroup.includes(item.groupId)) {
+        item.active ? this.updateSingleMemberStatus({uid: field.uid, bool: true}) : this.updateSingleMemberStatus({uid: field.uid, bool: false})
+      }
+    })
+    const checkedMenberLists = this.menberLists.filter(field => field.active)
+    checkedMenberLists.length === this.menberLists.length ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
   }
 
   /**
@@ -605,6 +659,7 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
+    this.memberAssociationGroup(item)
     switch(type) {
       case 'members':
         if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
@@ -647,6 +702,42 @@ export default class WorkZonePost extends Vue {
     }
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-16
+   * @detail   通过成员关联组
+   * @return   {[type]}   [description]
+   */
+  memberAssociationGroup(item) {
+    // 是否选中全部的组织
+    const isCheckedAll = this.menberLists.every(field => field.active)
+    // 判断是否已经全选
+    isCheckedAll ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
+
+    this.menberLists.map(field => {
+      // 当前的成员id 和选中的成员id 是否相等
+      if(field.uid === item.uid) {
+        // 判断有没有分组
+        if(field.selfGroup.length) {
+          // 遍历所有的分组
+          this.groupLists.map(group => {
+            // 当前选中的项所在的分组
+            if(field.selfGroup.includes(group.groupId)) {
+              // 当前分组有多少人
+              const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(group.groupId))
+              // 当前分组有多少人是被选中的
+              const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
+              if(currentTypeGroupNums.length === currentTypeGroupNumsActive.length) {
+                item.active ? this.updateSingleGrouptatus({groupId: group.groupId, bool: true}) : this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              } else {
+                this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              }
+            }
+          })
+        }
+      }
+    })
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-11

@@ -362,11 +362,11 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('memberList', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">
                 {{groupItem.groupName}}
               </button>
@@ -396,11 +396,11 @@
                 placeholder="请输入学员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('invisibleList', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">
                 {{groupItem.groupName}}
               </button>
