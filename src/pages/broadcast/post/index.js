@@ -39,7 +39,15 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateMenberListsApi',
       'updateMultipleMenberListsApi',
       'updateMenberListsAllApi',
-      'updateMenberListsByIdApi'
+      'updateMenberListsByIdApi',
+      'setSelfDefinedGroup',
+      'removeSelfDefinedGroup',
+      'updateAllGroupListStatus',
+      'updateSingleGrouptatus',
+      'updateSingleMemberStatus',
+      'classifyMemberListsByGroupIdApi',
+      'switchCheckGroupListsApi',
+      'updateAllMemberStatus'
     ])
   },
   computed: {
@@ -356,7 +364,7 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '参与直播学员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
         })
@@ -364,7 +372,7 @@ export default class BroadcastPost extends Vue {
       case 'invisibleList':
         this.models.title = '对这些人不可见'
         this.models.show = true
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
@@ -511,12 +519,38 @@ export default class BroadcastPost extends Vue {
    */
   confirm() {
     const type = this.models.currentModalName
+    const data = { show: true, tem: [], value: [] }
     this.models.show = false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
+    this.removeSelfDefinedGroup()
+    switch(type) {
+      case 'memberList':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.memberList = Object.assign(this.form.memberList, data)
+        break
+      case 'invisibleList':
+        this.menberLists.map(field => {
+          if(field.active) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
+        })
+        data.value = data.value.join(',')
+        this.form.invisibleList = Object.assign(this.form.invisibleList, data)
+        break
+      default:
+        break   
+    }
     if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
   }
 
@@ -531,13 +565,20 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    if(type === 'uid' && !this.form.uid.value.length) {
-      if(this.models.editType === 'tutor') {
-        this.temTutorLists.map(field => field.active = this.form.uid.value === field.uid ? !field.active : false)
-      } else {
-        this.updateMenberListsByIdApi({uid: this.form.uid.value})
-        this.temTutorLists = this.menberLists
-      }
+    this.removeSelfDefinedGroup()
+    switch(type) {
+      case 'uid':
+        if(this.models.editType === 'tutor') {
+          this.temTutorLists.map(field => field.active = this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid ? true : false)
+        } else {
+          // this.updateMenberListsByIdApi({uid: this.form.uid.value})
+          this.updateAllMemberStatus({bool: false})
+          this.updateSingleMemberStatus({uid: this.form.uid.value})
+          this.temTutorLists = this.menberLists
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -629,25 +670,53 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
-      this.getMenberListsApi({selectAll: 1})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
-    } else {
-      this.getMenberListsApi({groupId: item.groupId})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
-    }
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId, bool: item.active})
+    this.switchCheckGroupListsApi({groupId: item.groupId})
+    this.menberLists.map(field => {
+      if(field.selfGroup.includes(item.groupId)) {
+        item.active ? this.updateSingleMemberStatus({uid: field.uid, bool: true}) : this.updateSingleMemberStatus({uid: field.uid, bool: false})
+      }
+    })
+    const checkedMenberLists = this.menberLists.filter(field => field.active)
+    checkedMenberLists.length === this.menberLists.length ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-16
+   * @detail   通过成员关联组
+   * @return   {[type]}   [description]
+   */
+  memberAssociationGroup(item) {
+    // 是否选中全部的组织
+    const isCheckedAll = this.menberLists.every(field => field.active)
+    // 判断是否已经全选
+    isCheckedAll ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
+
+    this.menberLists.map(field => {
+      // 当前的成员id 和选中的成员id 是否相等
+      if(field.uid === item.uid) {
+        // 判断有没有分组
+        if(field.selfGroup.length) {
+          // 遍历所有的分组
+          this.groupLists.map(group => {
+            // 当前选中的项所在的分组
+            if(field.selfGroup.includes(group.groupId)) {
+              // 当前分组有多少人
+              const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(group.groupId))
+              // 当前分组有多少人是被选中的
+              const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
+              if(currentTypeGroupNums.length === currentTypeGroupNumsActive.length) {
+                item.active ? this.updateSingleGrouptatus({groupId: group.groupId, bool: true}) : this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              } else {
+                this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              }
+            }
+          })
+        }
+      }
+    })
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
@@ -795,6 +864,7 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
+    this.memberAssociationGroup(item)
     switch(type) {
       case 'memberList':
         if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {

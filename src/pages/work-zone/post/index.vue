@@ -227,21 +227,14 @@
                 placeholder="请输入圈主名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('owner_uid', 'all')">所有人</button>
+              <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
-                @click="filterMenber('owner_uid', groupItem)">
+                @click="filterOwnerUid('owner_uid', groupItem)">
                 {{groupItem.groupName}}
               </button>
-              <!-- <el-button
-                size="large"
-                v-for="(groupItem, groupIndex) in groupLists"
-                :key="groupIndex"
-                @click="filterMenber('owner_uid', groupItem)">
-                  {{groupItem.groupName}}
-              </el-button> -->
             </div>
             <div class="menber-list">
               <div
@@ -268,11 +261,11 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('members', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('members', groupItem)">
                 {{groupItem.groupName}}
               </button>
@@ -319,11 +312,11 @@
                 placeholder="请输入成员名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterMenber('hits', 'all')">所有人</button>
               <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in groupLists"
                 :key="groupIndex"
+                :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('hits', groupItem)">
                 {{groupItem.groupName}}
               </button>

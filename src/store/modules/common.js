@@ -24,7 +24,9 @@ import {
   ADD_SELF_GROUP_BY_USER,
   REMOVE_SELF_GROUP_ITEM,
   UPDATE_All_GROUP_LISTS_STATUS,
-  SWITCH_SINGLE_GROUP_LISTS
+  SWITCH_SINGLE_GROUP_LISTS,
+  UPDATE_MENBER_SINGLE,
+  UPDATE_ALL_MENBER_STATUS
 } from '../mutation-types'
 
 import {
@@ -129,6 +131,18 @@ const mutations = {
       if(params.list.includes(String(field.uid)) || params.list.includes(field.uid)) field.active = true
     })
   },
+  // 更新单个成员
+  [UPDATE_MENBER_SINGLE] (state, params) {
+    state.menberLists.map(field => {
+      if(params.uid === field.uid) field.active = params.bool
+    })
+  },
+  // 更新所有成员
+  [UPDATE_ALL_MENBER_STATUS] (state, params) {
+    state.menberLists.map(field => {
+      field.active = params.bool
+    })
+  },
   // 选择所用成员列表
   [SELECT_ALL_MENBER_LISTS] (state, data) {
     state.menberLists.map(field => field.active = false)
@@ -177,12 +191,8 @@ const mutations = {
   // 通过组划分成员
   [CLASSIFY_MENBER_LISTS_BY_GROUPID] (state, params) {
     if(params.groupId === 'all') {
-      const bool = state.menberLists.every(field => field.active)
-      if(bool) {
-        state.menberLists.map(field => field.active = false)
-      } else {
-        state.menberLists.map(field => field.active = true)
-      }
+      params.bool ? state.menberLists.map(field => field.active = false) : state.menberLists.map(field => field.active = true)
+      params.bool ? state.groupLists.map(field => field.active = false) : state.groupLists.map(field => field.active = true)
     } else {
       state.menberLists.map(field => {
         if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
@@ -503,6 +513,24 @@ const actions = {
    */
   updateSingleGrouptatus(store, params) {
     store.commit(SWITCH_SINGLE_GROUP_LISTS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新单个成员选中状态
+   * @return   {[type]}          [description]
+   */
+  updateSingleMemberStatus(store, params) {
+    store.commit(UPDATE_MENBER_SINGLE, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新成员选中状态
+   * @return   {[type]}          [description]
+   */
+  updateAllMemberStatus(store, params) {
+    store.commit(UPDATE_ALL_MENBER_STATUS, params)
   }
 }
 

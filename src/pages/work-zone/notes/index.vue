@@ -60,8 +60,16 @@
               恢复
           </el-button>
         </div>
-        <div v-else-if="props.scope.column.property === 'content'" class="limit-row-num-2">
-          {{ props.scope.row.content }}
+        <div v-else-if="props.scope.column.property === 'content'">
+          <el-popover
+            placement="top-start"
+            width="310"
+            trigger="click"
+            :content="props.scope.row.content">
+            <div slot="reference" class="limit-row-num-2">
+              {{ props.scope.row.content }}
+            </div>
+          </el-popover>
         </div>
         <div v-else-if="props.scope.column.property === 'type'" class="limit-row-num-2-2" @click="showModal(props.scope.row)">
           {{ props.scope.row.type }}
