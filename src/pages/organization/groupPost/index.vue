@@ -1,7 +1,7 @@
 <template>
   <div id="course-post">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
-      <el-breadcrumb-item :to="{ name: 'memberList' }">组织成员管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'groupManage' }">组织管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{$route.name === 'addGroup' ? '新建分组' : '编辑分组'}}</el-breadcrumb-item>
     </el-breadcrumb>

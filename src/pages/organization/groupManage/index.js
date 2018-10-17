@@ -25,17 +25,20 @@ export default class groupList extends Vue {
     {
       prop: 'groupName',
       label: '分组',
-      align: 'center'
+      width: '70%',
+      align: 'left'
     },
     {
       prop: 'sort',
       label: '排序',
-      align: 'center'
+      width: '15%',
+      align: 'left'
     },
     {
       prop: 'actions',
       label: '操作',
-      align: 'center'
+      width: '15%',
+      align: 'left'
     }
   ]
 
