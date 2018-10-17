@@ -47,21 +47,21 @@ export default class CommentList extends Vue {
       label: '评论内容',
       align: 'left',
       showTips: 'no',
-      width: '30%'
+      width: '34%'
     },
     {
       prop: 'userName',
       label: '发布者',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '13%'
     },
     {
       prop: 'status',
       label: '状态',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '13%',
       filteredValue:
       [
         {
@@ -91,7 +91,7 @@ export default class CommentList extends Vue {
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '30%',
+      width: '20%',
       filterPlacement: '吊炸天的操作~'
     }
   ]

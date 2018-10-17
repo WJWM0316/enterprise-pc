@@ -72,6 +72,7 @@ export default BroadcastReview
     font-size: 14px;
     line-height: 1.4;
     padding-left: 40px;
+    padding-right: 40px;
   }
   .limit-row-num-3-3 {
     overflow: hidden;
@@ -81,6 +82,7 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
+    padding-right: 30px;
   }
 }
 </style>

@@ -85,6 +85,7 @@ export default BroadcastReview
     font-size: 14px;
     line-height: 1.4;
     padding-left: 40px;
+    padding-right: 40px;
   }
   .img-disable{
     opacity: .5;

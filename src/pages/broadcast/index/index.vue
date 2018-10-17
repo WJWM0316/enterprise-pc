@@ -77,6 +77,9 @@
             {{ props.scope.row.statusName }}
           </span>
         </div>
+        <div v-else-if="props.scope.column.property === 'expectedStartTime'" class="expectedStartTime">
+          {{ props.scope.row.expectedStartTime }}
+        </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
       </template>
@@ -117,6 +120,7 @@ export default BroadcastIndex
       line-height:1;
       background:rgba(53,64,72,1);
       padding: 2px 5px;
+      display: inline-block;
     }
     .name {
       font-weight:400;
@@ -125,14 +129,17 @@ export default BroadcastIndex
       padding: 2px 5px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
+      display: inline-block;
     }
     .outer-group-name {
       background: transparent;
       color: #929292;
+      display: inline-block;
     }
     .outer-name {
       background: transparent;
       color: #929292;
+      display: inline-block;
     }
   }
   .live-status-icon-doing{
@@ -170,6 +177,12 @@ export default BroadcastIndex
       border-radius: 50%;
       vertical-align: middle;
     }
+  }
+  .flex-box{
+    margin-right: 40px;
+  }
+  .expectedStartTime {
+    margin-right: 30px;
   }
 }
 </style>

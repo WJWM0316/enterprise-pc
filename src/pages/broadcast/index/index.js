@@ -41,14 +41,14 @@ export default class BroadcastIndex extends Vue {
       label: '直 播',
       align: 'left',
       showTips: 'no',
-      width: '30%'
+      width: '34%'
     },
     {
       prop: 'statusName',
       label: '状态',
       align: 'left',
       showTips: 'no',
-      width: '10%',
+      width: '8%',
       filteredValue:
       [
         {
@@ -71,7 +71,7 @@ export default class BroadcastIndex extends Vue {
       label: '是否上线',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '12%',
       filteredValue:
       [
         {
@@ -90,7 +90,7 @@ export default class BroadcastIndex extends Vue {
       label: '分类',
       align: 'left',
       showTips: 'no',
-      width: '10%',
+      width: '8%',
       filteredValue: [],
       filterPlacement: '测试啦'
     },
@@ -99,7 +99,7 @@ export default class BroadcastIndex extends Vue {
       label: '权 重',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '8%',
       filterPlacement: '排序的序号数字越小，在员工端排在越前面；反之，在员工端排在越后面'
     },
     {
@@ -107,14 +107,14 @@ export default class BroadcastIndex extends Vue {
       label: '开始时间',
       align: 'left',
       showTips: 'no',
-      width: '15%'
+      width: '10%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '15%',
+      width: '20%',
       filterPlacement: '编辑：编辑相关详细内容 <br/> 问答区：管理直播中的相关问答 <br/> 直播回顾：管理直播内容'
     }
   ]

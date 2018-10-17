@@ -40,14 +40,14 @@ export default class WorkzoneList extends Vue {
       label: '工作圈',
       align: 'left',
       showTips: 'no',
-      width: '55%'
+      width: '40%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -70,7 +70,7 @@ export default class WorkzoneList extends Vue {
       label: '权 重',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。'
     },
     {
@@ -78,7 +78,7 @@ export default class WorkzoneList extends Vue {
       label: '操 作',
       align: 'left',
       showTips: 'yes',
-      width: '15%',
+      width: '20%',
       filterPlacement: '编辑相关详细内容'
     }
   ]

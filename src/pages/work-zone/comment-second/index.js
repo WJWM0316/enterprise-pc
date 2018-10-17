@@ -40,21 +40,21 @@ export default class CommentList extends Vue {
       label: '评论内容',
       align: 'left',
       showTips: 'no',
-      width: '40%'
+      width: '34%'
     },
     {
       prop: 'userName',
       label: '发布者',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '13%'
     },
     {
       prop: 'status',
       label: '状态',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '13%'
     },
     {
       prop: 'createdAt',
