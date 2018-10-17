@@ -44,7 +44,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'setSelfDefinedGroup',
       'removeSelfDefinedGroup',
       'updateAllGroupListStatus',
-      'updateSingleGrouptatus'
+      'updateSingleGrouptatus',
+      'updateSingleMemberStatus',
+      'updateAllMemberStatus'
     ])
   },
   computed: {
@@ -383,7 +385,7 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => { this.setSelfDefinedGroup() })
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -576,6 +578,14 @@ export default class CoursePost extends Vue {
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
     this.removeSelfDefinedGroup()
+    switch(type) {
+      case 'master_uid':
+        this.updateAllMemberStatus({bool: false})
+        this.updateSingleMemberStatus({uid: this.form.master_uid.value})
+        break
+      default:
+        break
+    }
   }
 
   /**
@@ -667,8 +677,15 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId, bool: item.active})
     this.switchCheckGroupListsApi({groupId: item.groupId})
+    this.menberLists.map(field => {
+      if(field.selfGroup.includes(item.groupId)) {
+        item.active ? this.updateSingleMemberStatus({uid: field.uid, bool: true}) : this.updateSingleMemberStatus({uid: field.uid, bool: false})
+      }
+    })
+    const checkedMenberLists = this.menberLists.filter(field => field.active)
+    checkedMenberLists.length === this.menberLists.length ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
   }
 
   /**
@@ -867,46 +884,32 @@ export default class CoursePost extends Vue {
    */
   memberAssociationGroup(item) {
     // 是否选中全部的组织
-    // const isCheckedAll = this.menberLists.every(field => field.active)
-    // if(isCheckedAll) {
-    //   this.updateSingleGrouptatus({groupId: 'all', bool: false})
-    //   return
-    // }
+    const isCheckedAll = this.menberLists.every(field => field.active)
+    // 判断是否已经全选
+    isCheckedAll ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
 
     this.menberLists.map(field => {
+      // 当前的成员id 和选中的成员id 是否相等
       if(field.uid === item.uid) {
-
         // 判断有没有分组
-        if(!field.selfGroup.length) {
-          // 判断是否选中
-          if(field.active) {
-
-          } else {
-
-          }
-        } else {
-          // 判断是否选中
-          if(field.active) {
-            // 当前分组有多少人
-            const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(field.groupId))
-            // 当前分组有多少人是被选中的
-            const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
-            console.log(currentTypeGroupNums.length, currentTypeGroupNumsActive.length)
-          } else {
-
-          }
+        if(field.selfGroup.length) {
+          // 遍历所有的分组
+          this.groupLists.map(group => {
+            // 当前选中的项所在的分组
+            if(field.selfGroup.includes(group.groupId)) {
+              // 当前分组有多少人
+              const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(group.groupId))
+              // 当前分组有多少人是被选中的
+              const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
+              if(currentTypeGroupNums.length === currentTypeGroupNumsActive.length) {
+                item.active ? this.updateSingleGrouptatus({groupId: group.groupId, bool: true}) : this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              } else {
+                this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              }
+            }
+          })
         }
       }
-      // if(item.selfGroup.includes(field.groupId)) {
-      //   const currentTypeGroupArray1 = this.menberLists.filter(member => member.selfGroup.includes(field.groupId))
-      //   const currentTypeGroupArray2 = currentTypeGroupArray1.filter(member => member.active )
-      //   console.log(currentTypeGroupArray1.length, currentTypeGroupArray1.length)
-      //   if(currentTypeGroupArray1.length === currentTypeGroupArray1.length) {
-      //     this.updateSingleGrouptatus({groupId: field.groupId, bool: true})
-      //   } else {
-      //     this.updateSingleGrouptatus({groupId: field.groupId, bool: false})
-      //   }
-      // }
     })
   }
 
