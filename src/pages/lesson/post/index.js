@@ -175,13 +175,15 @@ export default class WorkZonePost extends Vue {
           this.form.punch_card_img = imgListId.slice(0,imgListId.length-1)
         }
         // 需要提交的参数的key值
-        const required = ['course_id','title','status','punch_card_title','details','punch_card_img']
+        const required = ['course_id','title','status','punch_card_title','punch_card_img']
+        
         let av_id = this.form.av_id
-        if(av_id.length>0){
-          av_id.replace(/(^\s*)|(\s*$)/g, "")
-          if(av_id.length>0){
-            required.push('av_id')
-          }
+        if(av_id>0){
+          required.push('av_id')
+        }
+
+        if(this.form.details !== '<p><br></p>'){
+            required.push('details')
         }
         // 过滤不需要提交的参数
         const params = this.transformData(this.form, required)

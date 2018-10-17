@@ -14,7 +14,7 @@
           placeholder="请输入关键词" />
       </el-col>
     </el-row>
-    <!-- :total="jobCircleLists.total" -->
+    
     <table-list
     :list="cardList.list"
     :fields="fields"
