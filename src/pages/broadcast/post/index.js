@@ -339,6 +339,7 @@ export default class BroadcastPost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    const temTutorLists = [...this.temTutorLists]
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
@@ -351,6 +352,13 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '选择导师'
         this.models.show = true
         this.getGroupListsApi({isHaveMember: 1})
+        if(this.models.editType === 'tutor') {
+          temTutorLists.map(field => field.active = this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid ? true : false)
+          this.temTutorLists = temTutorLists
+        } else {
+          this.updateMenberListsByIdApi({uid: item.uid})
+          this.temTutorLists = this.menberLists
+        }
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
@@ -571,7 +579,6 @@ export default class BroadcastPost extends Vue {
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid ? true : false)
         } else {
-          // this.updateMenberListsByIdApi({uid: this.form.uid.value})
           this.updateAllMemberStatus({bool: false})
           this.updateSingleMemberStatus({uid: this.form.uid.value})
           this.temTutorLists = this.menberLists
@@ -734,20 +741,17 @@ export default class BroadcastPost extends Vue {
       })
     } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
       this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1}).then(() => {
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: [this.form.uid.value]
-        })
-        this.temTutorLists = this.menberLists
-      })
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            this.updateAllMemberStatus({bool: false})
+            this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
+            this.temTutorLists = this.menberLists
+          })
     } else {
       this.models.editType = 'member'
       this.getMenberListsApi({groupId: item.groupId}).then(() => {
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: [this.form.uid.value]
-        })
+        this.updateAllMemberStatus({bool: false})
+        this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
         this.temTutorLists = this.menberLists
       })
     }

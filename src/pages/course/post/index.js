@@ -357,7 +357,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
         this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
-          this.temTutorLists.map(field => field.active = this.form.master_uid.tem.uid === field.uid ? true : false)
+          this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid ? true : false)
         } else {
           this.updateMenberListsAllApi({bool: false})
           this.updateMenberListsByIdApi({uid: this.form.master_uid.tem.uid})
@@ -518,6 +518,7 @@ export default class CoursePost extends Vue {
       this.imageUpload.btnTxt = '重新上传'
       this.ContentEditor.content = courseDetail.intro
       this.temTutorLists = [...this.tutorLists]
+      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');

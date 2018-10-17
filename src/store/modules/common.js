@@ -134,7 +134,7 @@ const mutations = {
   // 更新单个成员
   [UPDATE_MENBER_SINGLE] (state, params) {
     state.menberLists.map(field => {
-      if(params.uid === field.uid) field.active = params.bool
+      if(params.uid === field.uid || Number(params.uid) === field.uid) field.active = params.bool
     })
   },
   // 更新所有成员
