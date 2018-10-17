@@ -51,38 +51,39 @@ export default class pageOrganization extends Vue {
           prop: 'groupName',
           width: '30%',
           label: '成员',
-          align: 'center'
+          align: 'left'
         },
         {
           prop: 'occupation',
           width: '10%',
           label: '职位',
-          align: 'center',
+          align: 'left',
           showTips: 'no'
         },
         {
           prop: 'roleName',
           width: '10%',
           label: '权限',
-          align: 'center'
+          align: 'left'
         },
         {
           prop: 'mobile',
           width: '10%',
           label: '手机号码',
-          align: 'center',
+          align: 'left',
           showTips: 'no'
         },
         {
           prop: 'email',
           width: '10%',
           label: '邮箱',
-          align: 'center',
+          align: 'left',
           showTips: 'no'
         },
         {
           prop: 'wechat',
           width: '10%',
+          align: 'left',
           label: '微信',
           showTips: 'no'
         }

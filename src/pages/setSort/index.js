@@ -44,17 +44,20 @@ export default class classifyList extends Vue {
     {
       prop: 'categoryName',
       label: '课程、直播的分类',
-      align: 'center'
+      width: '70%',
+      align: 'left'
     },
     {
       prop: 'sort',
       label: '排序',
-      align: 'center'
+      width: '15%',
+      align: 'left'
     },
     {
       prop: 'actions',
       label: '操作',
-      align: 'center'
+      width: '15%',
+      align: 'left'
     }
   ]
 

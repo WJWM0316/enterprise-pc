@@ -4,7 +4,7 @@
     <div class="group-type-list">
         <el-row class="organization-base " style="margin-top: 14px">
          <el-col :span="24" class="right-content">
-          <el-button type="primary" class="click-item" @click="todoAction('set')">分组管理</el-button>
+          <el-button type="primary" class="click-item button_base margin_0" @click="todoAction('set')">分组管理</el-button>
          </el-col>
         </el-row>
         <el-button 
@@ -22,12 +22,11 @@
     <el-row class="organization-base">
       <el-col :span="12" class="left-content">
         <h2 class="">
-          全部成员
-          <span class="number">（{{courseList.total}}人）</span>
+          全部成员<span class="number">({{courseList.total}}人)</span>
         </h2>
       </el-col>
       <el-col :span="12" class="right-content">
-        <el-button type="primary" class="click-item" @click="todoAction('add')">添加新成员</el-button>
+        <el-button type="primary" class="click-item button_base" @click="todoAction('add')">添加新成员</el-button>
       </el-col>
     </el-row>
   
@@ -77,11 +76,9 @@
             </div>
           </div>
         </div>
-
-        <!-- 操作行数据 -->
-        <div class="btn-container" v-if="props.scope.column.property === 'actions'"></div>
         <!-- 其他列按后端给回的字段显示 -->
-        <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
+        <template v-else>{{typeof props.scope.row[props.scope.column.property] === 'string'? (props.scope.row[props.scope.column.property].length>0?props.scope.row[props.scope.column.property]:'-' ): props.scope.row[props.scope.column.property]}}
+        </template>
       </template>
     </table-list>
   </div>
@@ -116,7 +113,7 @@
       font-size:16px;
       font-weight:400;
       color:rgba(146,146,146,1);
-      margin-left: 10px;
+      margin-left: 12px;
     }
     .left-content {
       text-align: left;
@@ -133,6 +130,9 @@
       //width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      &.margin_0 {
+        margin-right: 0;
+      }
     }
     .border {
       width:100%;
@@ -158,8 +158,27 @@
     font-size:14px;
     font-weight:400;
     color:#D7AB70;
-    border-color: #EDEDED;
+    border-color: #f7e9c9;
   }
+  
+
+  .button_base {
+    width:128px;
+    height:40px;
+    background:rgba(255,226,102,1);
+  }
+
+  
+
+}
+.el-scrollbar {
+  }
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+    background: rgba(255,226,102,0.12);
+    font-size:14px;
+    font-family:PingFang-SC-Regular;
+    font-weight:400;
+    color:rgba(215,171,112,1);
 }
 </style>
 
