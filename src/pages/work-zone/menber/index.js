@@ -15,7 +15,18 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
       'getJobCircleHitListsApi',
       'getJobCircleOrganizationListsApi',
       'updateMenberListsApi',
-      'updateMultipleMenberListsApi'
+      'updateMultipleMenberListsApi',
+      'updateMenberListsAllApi',
+      'updateMenberListsByIdApi',
+      'noCheckGroupListsApi',
+      'switchCheckGroupListsApi',
+      'classifyMemberListsByGroupIdApi',
+      'setSelfDefinedGroup',
+      'removeSelfDefinedGroup',
+      'updateAllGroupListStatus',
+      'updateSingleGrouptatus',
+      'updateSingleMemberStatus',
+      'updateAllMemberStatus'
     ])
   },
   computed: {
@@ -108,6 +119,7 @@ export default class MenberList extends Vue {
       this.checkList = data
       this.form.members = data.value.join(',')
       this.updateMultipleMenberListsApi({list: this.form.members.split(',')})
+      this.setSelfDefinedGroup()
     })
     .catch((err) => {
       this.showMsg({ content: '初始化页面失败~', type: 'error', duration: 3000 })
@@ -130,10 +142,21 @@ export default class MenberList extends Vue {
    * @detail  刷选组员数据
    * @return   {[type]}      [description]
    */
-  filterMenber(item) {
-    Object.prototype.toString.call(item) === '[object String]'
-    ? this.getMenberListsApi({selectAll: 1})
-    : this.getMenberListsApi({groupId: item.groupId})
+  filterMenber(type, item) {
+    const value = []
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId, bool: item.active})
+    this.switchCheckGroupListsApi({groupId: item.groupId})
+    this.menberLists.map(field => {
+      if(field.selfGroup.includes(item.groupId)) {
+        item.active ? this.updateSingleMemberStatus({uid: field.uid, bool: true}) : this.updateSingleMemberStatus({uid: field.uid, bool: false})
+      }
+    })
+    const checkedMenberLists = this.menberLists.filter(field => field.active)
+    checkedMenberLists.length === this.menberLists.length ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
+    this.menberLists.map(field => {
+      if(field.active) value.push(field.uid)
+    })
+    this.form.members = value.join(',')
   }
   /**
    * @Author   小书包
@@ -173,5 +196,42 @@ export default class MenberList extends Vue {
           this.submitBtnTxt = '提交'
         }, 3000)
       })
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-16
+   * @detail   通过成员关联组
+   * @return   {[type]}   [description]
+   */
+  memberAssociationGroup(item) {
+    // 是否选中全部的组织
+    const isCheckedAll = this.menberLists.every(field => field.active)
+    // 判断是否已经全选
+    isCheckedAll ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
+
+    this.menberLists.map(field => {
+      // 当前的成员id 和选中的成员id 是否相等
+      if(field.uid === item.uid) {
+        // 判断有没有分组
+        if(field.selfGroup.length) {
+          // 遍历所有的分组
+          this.groupLists.map(group => {
+            // 当前选中的项所在的分组
+            if(field.selfGroup.includes(group.groupId)) {
+              // 当前分组有多少人
+              const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(group.groupId))
+              // 当前分组有多少人是被选中的
+              const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
+              if(currentTypeGroupNums.length === currentTypeGroupNumsActive.length) {
+                item.active ? this.updateSingleGrouptatus({groupId: group.groupId, bool: true}) : this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              } else {
+                this.updateSingleGrouptatus({groupId: group.groupId, bool: false})
+              }
+            }
+          })
+        }
+      }
+    })
   }
 }
