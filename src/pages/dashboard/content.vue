@@ -75,7 +75,8 @@
 					<p>昨日学习人数</p>
 					<el-popover
 				    placement="top-start"
-				    width="200"
+				    width="122"
+				    popper-class="dashboard-popper"
 				    trigger="hover"
 				    content="昨日0时-24时有访问【小灯塔PLUS员工移动端】的用户数">
 				    <i class="el-icon-question" slot="reference"></i>
@@ -86,7 +87,8 @@
 					<p>昨日学习时长</p>
 					<el-popover
 				    placement="top-start"
-				    width="200"
+				    width="122"
+				    popper-class="dashboard-popper"
 				    trigger="hover"
 				    content="昨日有访问【员工移动端】用户的昨日访问时长总和">
 				    <i class="el-icon-question" slot="reference"></i>
@@ -533,7 +535,7 @@ export default class pageDashboard extends Vue {
 			font-weight:500;
 			color:rgba(102,102,102,1);
 			position: relative;
-			text-indent: 15px;
+			text-indent: 19px;
 			margin: 20px 0;
 			line-height: 1;
 			cursor: pointer;
@@ -619,8 +621,8 @@ export default class pageDashboard extends Vue {
 			font-weight:500;
 			color:rgba(102,102,102,1);
 			position: relative;
-			text-indent: 15px;
-			margin: 20px 0;
+			text-indent: 19px;
+			margin-bottom: 20px;
 			line-height: 1;
 			&:before {
 		    content: '';

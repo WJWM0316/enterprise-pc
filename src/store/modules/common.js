@@ -23,7 +23,8 @@ import {
   CLASSIFY_MENBER_LISTS_BY_GROUPID,
   ADD_SELF_GROUP_BY_USER,
   REMOVE_SELF_GROUP_ITEM,
-  UPDATE_All_GROUP_LISTS_STATUS
+  UPDATE_All_GROUP_LISTS_STATUS,
+  SWITCH_SINGLE_GROUP_LISTS
 } from '../mutation-types'
 
 import {
@@ -165,6 +166,12 @@ const mutations = {
   [SWITCH_CHECKED_GROUP_LISTS] (state, params) {
     state.groupLists.map(field => {
       if(params.groupId === field.groupId) field.active = !field.active
+    })
+  },
+  // 组织切换选中
+  [SWITCH_SINGLE_GROUP_LISTS] (state, params) {
+    state.groupLists.map(field => {
+      if(params.groupId === field.groupId) field.active = params.bool
     })
   },
   // 通过组划分成员
@@ -487,6 +494,15 @@ const actions = {
    */
   updateAllGroupListStatus(store, params) {
     store.commit(UPDATE_All_GROUP_LISTS_STATUS, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   更新单个组的选中状态
+   * @return   {[type]}          [description]
+   */
+  updateSingleGrouptatus(store, params) {
+    store.commit(SWITCH_SINGLE_GROUP_LISTS, params)
   }
 }
 

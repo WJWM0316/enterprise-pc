@@ -43,7 +43,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'classifyMemberListsByGroupIdApi',
       'setSelfDefinedGroup',
       'removeSelfDefinedGroup',
-      'updateAllGroupListStatus'
+      'updateAllGroupListStatus',
+      'updateSingleGrouptatus'
     ])
   },
   computed: {
@@ -373,7 +374,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -666,23 +667,8 @@ export default class CoursePost extends Vue {
    * @return   {[type]}      [description]
    */
   filterMenber(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
-      this.getMenberListsApi({selectAll: 1})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
-    } else {
-      this.getMenberListsApi({groupId: item.groupId})
-          .then(() => {
-            if(Object.prototype.toString.call(this.form[this.models.currentModalName].value) !== '[object Array]') {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({ list: this.form[this.models.currentModalName].value.split(',') })
-            }
-          })
-    }
+    this.classifyMemberListsByGroupIdApi({groupId: item.groupId})
+    this.switchCheckGroupListsApi({groupId: item.groupId})
   }
 
   /**
@@ -821,10 +807,7 @@ export default class CoursePost extends Vue {
    */
   multipleSelection(type, item, index) {
     const data = { show: true, tem: [], value: [] }
-    // 用于判断逆推选中组织
-    let currentEditType = null
     this.updateMenberListsApi({ index })
-    const isCheckedAll = this.menberLists.every(field => field.active)
     this.menberLists.map(field => {
       if(field.active) {
         data.value.push(field.uid)
@@ -833,11 +816,7 @@ export default class CoursePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
-    // if(isCheckedAll) {
-    //   this.updateAllGroupListStatus({bool: true})
-    // }
-    // console.log(item.selfGroup)
-    // this.switchCheckGroupListsApi({groupId: 'all'})
+    this.memberAssociationGroup(item)
     switch(type) {
       case 'members':
         if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
@@ -878,6 +857,57 @@ export default class CoursePost extends Vue {
       default:
         break
     }
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-16
+   * @detail   通过成员关联组
+   * @return   {[type]}   [description]
+   */
+  memberAssociationGroup(item) {
+    // 是否选中全部的组织
+    // const isCheckedAll = this.menberLists.every(field => field.active)
+    // if(isCheckedAll) {
+    //   this.updateSingleGrouptatus({groupId: 'all', bool: false})
+    //   return
+    // }
+
+    this.menberLists.map(field => {
+      if(field.uid === item.uid) {
+
+        // 判断有没有分组
+        if(!field.selfGroup.length) {
+          // 判断是否选中
+          if(field.active) {
+
+          } else {
+
+          }
+        } else {
+          // 判断是否选中
+          if(field.active) {
+            // 当前分组有多少人
+            const currentTypeGroupNums = this.menberLists.filter(member => member.selfGroup.includes(field.groupId))
+            // 当前分组有多少人是被选中的
+            const currentTypeGroupNumsActive = currentTypeGroupNums.filter(member => member.active )
+            console.log(currentTypeGroupNums.length, currentTypeGroupNumsActive.length)
+          } else {
+
+          }
+        }
+      }
+      // if(item.selfGroup.includes(field.groupId)) {
+      //   const currentTypeGroupArray1 = this.menberLists.filter(member => member.selfGroup.includes(field.groupId))
+      //   const currentTypeGroupArray2 = currentTypeGroupArray1.filter(member => member.active )
+      //   console.log(currentTypeGroupArray1.length, currentTypeGroupArray1.length)
+      //   if(currentTypeGroupArray1.length === currentTypeGroupArray1.length) {
+      //     this.updateSingleGrouptatus({groupId: field.groupId, bool: true})
+      //   } else {
+      //     this.updateSingleGrouptatus({groupId: field.groupId, bool: false})
+      //   }
+      // }
+    })
   }
 
   /**
