@@ -942,6 +942,15 @@ export default class CoursePost extends Vue {
 
   /**
    * @Author   小书包
+   * @DateTime 2018-10-17
+   * @detail   切换发否上线
+   * @return   {[type]}   [description]
+   */
+  switchOnLine() {
+    console.log(1)
+  }
+  /**
+   * @Author   小书包
    * @DateTime 2018-09-29
    * @detail   图片上传成功
    * @return   {[type]}       [description]
