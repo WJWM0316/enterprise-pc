@@ -103,20 +103,27 @@ export default CourseList
   }
   .tutor-name {
     color: #929292;
+    overflow: hidden;
+    margin-top: 8px;
+    line-height: 1;
   }
   .inner-tutor-groupname {
     background:rgba(53,64,72,1);
     font-size:12px;
     font-weight:400;
     color:rgba(255,255,255,1);
-    padding: 2px 4px;
+    padding: 4px;
+    display: inline-block;
+    line-height: 1;
   }
   .inner-tutor-realname {
     background:#FFF9D9;
     font-size:12px;
     font-weight:400;
     color:#D7AB70;
-    padding: 2px 4px;
+    padding: 4px;
+    display: inline-block;
+    line-height: 1;
   }
   .flex-box{
     margin-right: 40px;
