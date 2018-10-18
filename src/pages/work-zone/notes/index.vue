@@ -71,8 +71,11 @@
             </div>
           </el-popover>
         </div>
-        <div v-else-if="props.scope.column.property === 'type'" class="limit-row-num-2-2" @click="showModal(props.scope.row)">
-          {{ props.scope.row.type }}
+        <div
+          v-else-if="props.scope.column.property === 'type'"
+          :class="{'can-click': props.scope.row.type !== '无文件', 'no-click': props.scope.row.type === '无文件'}"
+          class="limit-row-num-2-2" @click="showModal(props.scope.row)">
+          {{ props.scope.row.type === '无文件' ? '-' : props.scope.row.type }}
         </div>
         <div v-else-if="props.scope.column.property === 'createdAt'">
           {{ props.scope.row.createdAt.slice(0, 10) }}
@@ -137,6 +140,12 @@ export default NoteList
     color: #354048;
     font-size: 14px;
     line-height: 1.4;
+  }
+  .can-click{
+    color: #4080AD;
+  }
+  .no-click{
+    color: #929292;
   }
 }
 </style>

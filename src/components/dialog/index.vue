@@ -70,7 +70,7 @@ export default ComponentDialog
     opacity: 0;
     visibility: hidden;
     transform: translate(-50%, -50%);
-    padding: 30px;
+    padding: 32px 30px;
     box-sizing: border-box;
   }
 
@@ -98,8 +98,9 @@ export default ComponentDialog
     };
     .dialog-title {
       font-size: 14px;
-      color: #040404;
+      color: #354048;
       font-size: 16px;
+      font-weight: 400;
       margin: 0;
       display: inline-block;
       vertical-align: middle;

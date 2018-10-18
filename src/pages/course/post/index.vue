@@ -532,6 +532,10 @@ export default CoursePost
       span {
         color: #4080AD;
       }
+      a {
+        color: #4080AD;
+        text-decoration: none;
+      }
     }
   }
   .el-radio {
