@@ -2,11 +2,11 @@
   <div class="user-right-content">
   	<div class="his-dynamics-tab-box">
 			<div :class="{active: 	currentType === 'getPersonalInfoLessonsApi'}" @click="tabClick('getPersonalInfoLessonsApi')">
-				<div class="cell">参与的课程</div>
+				<div class="cell">{{!personalInfoBase.isExternalTutor ? '参与的课程' : 'TA的课程'}}</div>
 				<div class="num" v-if="!personalInfoBase.isExternalTutor">({{personalInfoBase.listItemCounts.lessonCount}})</div>
 			</div>
 			<div :class="{active: 	currentType === 'getPersonalInfoLivesApi'}" @click="tabClick('getPersonalInfoLivesApi')">
-				<div class="cell">参与的直播</div>
+				<div class="cell">{{!personalInfoBase.isExternalTutor ? '参与的直播' : 'TA的直播'}}</div>
 				<div class="num" v-if="!personalInfoBase.isExternalTutor">({{personalInfoBase.listItemCounts.liveCount}})</div>
 			</div>
 			<div :class="{active: 	currentType === 'getPersonalInfoJobCirclesApi'}" @click="tabClick('getPersonalInfoJobCirclesApi')" v-if="!personalInfoBase.isExternalTutor">
