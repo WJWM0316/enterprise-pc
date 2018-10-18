@@ -48,7 +48,7 @@ export default class BroadcastReview extends Vue {
       label: '查看内容',
       align: 'left',
       showTips: 'no',
-      width: '40%',
+      width: '35%',
       filteredValue:
       [
         {
@@ -75,7 +75,7 @@ export default class BroadcastReview extends Vue {
       label: '发布人',
       align: 'left',
       showTips: 'no',
-      width: '15%'
+      width: '20%'
     },
     {
       prop: 'statusName',
@@ -102,7 +102,7 @@ export default class BroadcastReview extends Vue {
     },
     {
       prop: 'createdAt',
-      label: '开始时间',
+      label: '发布时间',
       align: 'left',
       showTips: 'no',
       width: '15%'

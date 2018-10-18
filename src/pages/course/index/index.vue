@@ -4,7 +4,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入课程名或导师..." />
@@ -116,6 +116,9 @@ export default CourseList
     font-weight:400;
     color:#D7AB70;
     padding: 2px 4px;
+  }
+  .flex-box{
+    margin-right: 40px;
   }
 }
 </style>

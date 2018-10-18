@@ -20,13 +20,15 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   methods: {
     ...mapActions([
       'getCourseListsApi',
-      'getCategoryListsApi'
+      'getCategoryListsApi',
+      'getDesktopInfosApi'
     ])
   },
   computed: {
     ...mapGetters([
       'courseList',
-      'categoryList'
+      'categoryList',
+      'desktopVerInfo'
     ])
   }
 })
@@ -38,14 +40,14 @@ export default class CourseList extends Vue {
       prop: 'title',
       label: '课 程',
       align: 'left',
-      width: '60%'
+      width: '50%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -85,7 +87,7 @@ export default class CourseList extends Vue {
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '10%',
+      width: '15%',
       filterPlacement: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
     }
   ]
@@ -100,6 +102,7 @@ export default class CourseList extends Vue {
   }
 
   created() {
+    this.getDesktopInfosApi()
     this.getCategoryListsApi()
         .then(() => {
           this.categoryList.map(field => {
@@ -149,6 +152,14 @@ export default class CourseList extends Vue {
    * @return   {[type]}          [description]
    */
   addCourse() {
+    const desktopVerInfo = this.desktopVerInfo
+    if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+      this.$alert('课程创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建课程上限已满提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {}
+      })
+      return
+    }
     this.$router.push({ name: 'coursePost'})
   }
 

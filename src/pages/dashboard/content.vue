@@ -323,6 +323,47 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}        [description]
    */
   routeJump(name) {
+  	const desktopVerInfo = this.desktopVerInfo
+  	switch(name) {
+  		case 'addMember':
+  			if(desktopVerInfo.created.jobCircleCount >= desktopVerInfo.enable.jobCircleCount) {
+  				this.$alert('成员创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '成员创建上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'coursePost':
+  			if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+  				this.$alert('课程创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建课程上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'broadcastPost':
+  			if(desktopVerInfo.created.liveCount >= desktopVerInfo.enable.liveCount) {
+  				this.$alert('直播创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建直播上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'workZonePost':
+  			if(desktopVerInfo.created.jobCircleCount >= desktopVerInfo.enable.jobCircleCount) {
+  				this.$alert('工作圈创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建工作圈上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		default:
+  			break
+  	}
   	this.$router.push({ name })
   }
   /**

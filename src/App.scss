@@ -9,12 +9,14 @@
     top: 0;
     left: 0;
     bottom: 0;
+    z-index: 2;
   }
   > main {
     position: relative;
   }
   .offset-left {
-    margin-left: 200px
+    margin-left: 200px;
+    min-width: 1240px;
   }
 }
 
@@ -107,7 +109,7 @@ ul {
   display: inline-block;
   line-height: 1;
   cursor: pointer;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #DCDCDC;
   color: #606266;
   -webkit-appearance: none;
   text-align: center;
