@@ -4,8 +4,10 @@
 		<right-component />
   </div>
   <div v-else class="no-user-data">
-  	<h2>该员工已经被删除</h2>
-  	<el-button type="primary" @click="routeJump">{{leaveTime}}秒后返回首页</el-button>
+  	<div>
+	  	<img src="~IMAGES/no-data.png" alt="">
+	  	<p>该员工已被删除 | {{leaveTime}}秒后<span @click="routeJump">返回首页</span></p>
+  	</div>
   </div>
 </template>
 <script>
@@ -23,6 +25,16 @@ import RightComponent from './right-content.vue'
     ...mapGetters([
       'personalInfoBase'
     ])
+  },
+  watch: {
+  	'personalInfoBase': {
+      handler(val) {
+      	if(!val) {
+      		this.clock()
+      	}
+      },
+      immediate: true
+    }
   }
 })
 export default class pageIndex extends Vue {
@@ -33,12 +45,10 @@ export default class pageIndex extends Vue {
 			this.leaveTime--
 			if(this.leaveTime === 0) {
 				clearInterval(this.timer)
+				console.log(111)
 				this.$router.push({name: 'dashboard'})
 			}
 		}, 1000 )
-	}
-	mounted() {
-		this.clock()
 	}
 
 	routeJump() {
@@ -52,6 +62,24 @@ export default class pageIndex extends Vue {
 	display: -webkit-box;
 }
 .no-user-data {
-	text-align: center
+	text-align: center;
+	font-size:20px;
+	font-weight:400;
+	color:rgba(188,193,204,1);
+	img{
+		width: 170px;
+	}
+	> div{
+		display: inline-block;
+		width: 290px;
+		height: 242px;
+		line-height: 1;
+		position: absolute;
+		left: 50%;
+		margin-left: -145px;
+		top: 50%;
+		margin-top: -121px;
+		/*line-height: calc(100vh - 104px);*/
+	}
 }
 </style>
