@@ -34,25 +34,25 @@ export default class CourseList extends Vue {
       prop: 'realname',
       label: '导师资料',
       width: '40%',
-      align: 'center'
+      align: 'left'
     },
     {
       prop: 'mobile',
       label: '手机号',
       width: '20%',
-      align: 'center'
+      align: 'left'
     },
     {
       prop: 'communityCount',
       label: 'TA的课程',
       width: '15%',
-      align: 'center',
+      align: 'left',
     },
     {
       prop: 'liveCount',
       width: '15%',
       label: 'TA的直播',
-      align: 'center',
+      align: 'left',
     }
   ]
   outerFields = [
@@ -60,25 +60,25 @@ export default class CourseList extends Vue {
       prop: 'realname',
       label: '导师资料',
       width: '40%',
-      align: 'center'
+      align: 'left'
     },
     {
       prop: 'mobile',
       width: '20%',
       label: '手机号',
-      align: 'center'
+      align: 'left'
     },
     {
       prop: 'communityCount',
       width: '10%',
       label: 'TA的课程',
-      align: 'center',
+      align: 'left',
     },
     {
       prop: 'liveCount',
       width: '10%',
       label: 'TA的直播',
-      align: 'center',
+      align: 'left',
     },
     {
       prop: 'actions',
@@ -145,6 +145,7 @@ export default class CourseList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
+    let query = this.$route.query
     this.pagination = {
       count: this.zikeDefaultPageSize,
       type: 1,
@@ -156,11 +157,12 @@ export default class CourseList extends Vue {
       hintTxt: '',
       list : {}
     }
-    if(this.$route.query.tutorType){
-      this.tutorType = this.$route.query.tutorType
+    if(query.tutorType){
+      this.tutorType = query.tutorType
+      this.pagination.type = query.tutorType === 'inner'?1:2
     }
 
-    this.form = Object.assign(this.form, this.$route.query)
+    this.form = Object.assign(this.form, query)
     this.getTutorList()
   }
 
