@@ -110,7 +110,6 @@ export default class CourseList extends Vue {
     showClose: true,
     confirmText: '确定',
     type: 'confirm',
-    confirmType: 'danger',
     width: '432px',
     height: '192px',
     confirm: ''

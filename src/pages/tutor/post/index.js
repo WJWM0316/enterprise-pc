@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import Cropper from 'cropperjs'
-import { editorRules } from 'FILTERS/rules'
 import { createTutorApi } from 'STORE/api/tutor.js'
 
 @Component({
@@ -39,24 +37,34 @@ export default class WorkZonePost extends Vue {
 
   rules = {
     name: [
-      { required: true, message: '请输入导师名称', trigger: 'blur' }
+      { required: true, message: '导师姓名必须填写，最多10个字', trigger: 'blur' },
+      {
+        max: 10,
+        trigger: 'blur',
+        message: '导师姓名必须填写，最多10个字'
+      }
     ],
     title: [
-      { required: true, message: '请输入导师头衔', trigger: 'blur' }
+      { required: true, message: '导师头衔必须填写，最多25个字', trigger: 'blur' },
+      {
+        max: 25,
+        trigger: 'blur',
+        message: '导师姓名必须填写，最多10个字'
+      }
     ],
     mobile: [
-        { required: true, message: '请输入手机号',trigger: 'blur' }, 
+        { required: true, message: '手机号必须填写，最多11个字，纯数字',trigger: 'blur' }, 
         {
           max: 11,
           min: 11,
           trigger: 'blur',
-          message: '请输入正确的手机号'
+          message: '手机号必须填写，最多11个字，纯数字'
         }
     ],
-    password: /*[
-      { required: true, message: '请输入密码', trigger: 'blur'},
-      { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
-    ]*/
+    gender: [
+        { required: true, trigger: 'blur' }, 
+    ],
+    password:
 
     [{
         required: true,

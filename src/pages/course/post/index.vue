@@ -234,7 +234,7 @@
     @confirm="confirm"
     @cancel="cancel"
     >
-      <div slot="title" style="margin-left: 10px;">
+      <div slot="title" style="margin-left: 0px;">
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>
@@ -531,6 +531,10 @@ export default CoursePost
       margin: 16px 0;
       span {
         color: #4080AD;
+      }
+      a {
+        color: #4080AD;
+        text-decoration: none;
       }
     }
   }

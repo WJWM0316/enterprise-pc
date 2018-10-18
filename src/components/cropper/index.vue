@@ -13,8 +13,8 @@
 	          <img id="uploadPreview" style="width:100px;height:100px;"/>
 	        </div>
 	        <div class="cropper-res-wrap">
-	          <div class="cropper-res" id="cropperRes">
-	            <img style="width:100px;height:100px;"/>
+	          <div :class="{'radiu': picShape === 'radiu'}" class="cropper-res" id="cropperRes">
+	            <img style="width:100px;height:100px;"  />
 	          </div>
             <p class="label-tips">{{tips}}</p>
 	        </div>
@@ -66,6 +66,12 @@ import Cropper from 'cropperjs'
     accept: {
       type: String,
       default: ''
+    },
+
+    // 上传图片形状
+    picShape: {
+      type: String,
+      default: 'square'
     }
   }
 })
@@ -433,6 +439,10 @@ export default class ComponentCropper extends Vue {
     font-weight:400;
     color:rgba(146,146,146,1);
     border-color: rgba(237,237,237,1);
+  }
+
+  .radiu {
+    border-radius: 50%;
   }
 }
 </style>

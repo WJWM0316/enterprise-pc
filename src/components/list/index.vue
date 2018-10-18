@@ -58,7 +58,7 @@ export default ComponentTableList
     height: 48px;
     line-height: 48px;
     th {
-      background: #F0F2F5;
+      background: #F5F7FA;
       font-size: 14px;
       padding: 0;
       .cell{
@@ -162,7 +162,7 @@ export default ComponentTableList
       font-size:12px;
       font-weight:400;
       color:rgba(102,102,102,1);
-      margin-left: 5px;
+      margin-left: 7px;
     }
   }
   .zike-dropdown {
@@ -201,6 +201,12 @@ export default ComponentTableList
   .cell {
     padding-left: 0;
     padding-right: 0;
+  }
+  .el-pager {
+    li{
+      height: 30px;
+      font-weight: 300;
+    }
   }
 }
 </style>

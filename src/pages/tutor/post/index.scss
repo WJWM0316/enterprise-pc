@@ -176,7 +176,24 @@
     }
   }
 }
+.el-radio {
+  margin: 10px 32px 10px 0px;
+  &.is-checked {
+    //border:1px solid rgba(215,171,112,1);
+    //box-sizing: border-box;
+    //border-radius: 50%;
+    .el-radio__inner {
+      border-color: rgba(215,171,112,1);
+      background:rgba(215,171,112,1);
+    }
+    .el-radio__label {
+      color:rgba(215,171,112,1);
+    }
+  }
 
+  color:rgba(188,188,188,1);
+
+}
 #work-zone-post {
   .cropper-alert-mask {
     position: fixed;

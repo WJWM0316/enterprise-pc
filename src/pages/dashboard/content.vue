@@ -5,7 +5,7 @@
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
 				<el-popover
-			    placement="bottom"
+			    placement="bottom-end"
 			    width="158"
 			    content="dddddddd"
 			    trigger="hover">
@@ -29,44 +29,12 @@
 			    	</div>
 			    	<div class="walk">
 			    		<span>可存储文件量：</span>
-			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
+			    		<strong>{{desktopVerInfo.enable.storageSpaceCount.sizeM}}</strong>
 			    	</div>
 			    </div>
 			    <button class="click-item time-button" v-if="!desktopVerInfo.isOfficial" slot="reference">试用期：{{desktopVerInfo.remainDay}} 天</button>
 			  </el-popover>
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
-
-				<!-- 已付费，显示对应版本标识，目前有VIP和SVIP -->
-<!-- 				<el-popover
-			    placement="bottom"
-			    width="158"
-			    trigger="hover">
-			    <div class="my-popover123456">
-			    	<h2>{{desktopVerInfo.name}}</h2>
-			    	<div class="walk">
-			    		<span>可用员工数：</span>
-			    		<strong>{{desktopVerInfo.enable.staffCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建课程数：</span>
-			    		<strong>{{desktopVerInfo.enable.courseCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建直播数：</span>
-			    		<strong>{{desktopVerInfo.enable.liveCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可创建工作圈数：</span>
-			    		<strong>{{desktopVerInfo.enable.jobCircleCount}}</strong>
-			    	</div>
-			    	<div class="walk">
-			    		<span>可存储文件量：</span>
-			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
-			    	</div>
-			    </div>
-			    <button class="time-button" v-if="desktopVerInfo.isOfficial" slot="reference">VIP</button>
-			  </el-popover> -->
-				<!-- 离会员有效期还剩30天时，显示剩余天数和【续费】按钮 -->
 				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
 			<div class="statistics-flex-box">
@@ -128,10 +96,10 @@
 		</section>
 		<section class="notice-flex-box">
 			<div>
-				<div class="card-header" @click="routeJump('course')">
+				<div class="card-header">
 					最新课程
 				</div>
-				<div class="card-content" v-if="desktopNewestCourseInfo.coverImg">
+				<div class="card-content" v-if="desktopNewestCourseInfo.coverImg" @click="routeJump('course')">
 					<div class="img-box">
 						<img :src="desktopNewestCourseInfo.coverImg" alt="">
 					</div>
@@ -149,10 +117,10 @@
 				</div>
 			</div>
 			<div>
-				<div class="card-header" @click="routeJump('broadcast')">
+				<div class="card-header">
 					最新直播
 				</div>
-				<div class="card-content" v-if="desktopNewestLiveInfo.name">
+				<div class="card-content" v-if="desktopNewestLiveInfo.name" @click="routeJump('broadcast')">
 					<div class="img-box">
 						<img :src="desktopNewestLiveInfo.coverImg.smallUrl" alt="" v-if="desktopNewestLiveInfo.coverImg">
 					</div>
@@ -213,7 +181,7 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 10px;">
+        <div slot="title" style="margin-left: 0px;">
           <h3 class="dialog-title" v-if="models.title"></h3>
         </div>
         <div slot="customize-html">
@@ -297,9 +265,13 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}   [description]
    */
   openModal() {
-  	this.models.show = !this.models.show
-  	this.models.type = 'alert'
-  	this.models.confirmText = '我知道了'
+  	// this.models.show = !this.models.show
+  	// this.models.type = 'alert'
+  	// this.models.confirmText = '我知道了'
+  	this.$alert('客服电话：020-2816-3063', '开通正式版、升级和续费请联系客服', {
+      confirmButtonText: '我知道了',
+      callback: action => {}
+    })
   }
 
   /**
@@ -323,6 +295,47 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}        [description]
    */
   routeJump(name) {
+  	const desktopVerInfo = this.desktopVerInfo
+  	switch(name) {
+  		case 'addMember':
+  			if(desktopVerInfo.created.jobCircleCount >= desktopVerInfo.enable.jobCircleCount) {
+  				this.$alert('成员创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '成员创建上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'coursePost':
+  			if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+  				this.$alert('课程创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建课程上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'broadcastPost':
+  			if(desktopVerInfo.created.liveCount >= desktopVerInfo.enable.liveCount) {
+  				this.$alert('直播创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建直播上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		case 'workZonePost':
+  			if(desktopVerInfo.created.jobCircleCount >= desktopVerInfo.enable.jobCircleCount) {
+  				this.$alert('工作圈创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建工作圈上限已满提醒', {
+	          confirmButtonText: '我知道了',
+	          callback: action => {}
+	        })
+	        return
+  			}
+  			break
+  		default:
+  			break
+  	}
   	this.$router.push({ name })
   }
   /**

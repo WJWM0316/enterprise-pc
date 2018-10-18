@@ -11,7 +11,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="pagination.name"
           placeholder="请输入导师名称或关键字" />
@@ -34,7 +34,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'realname'" class="flex-box">
-          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)">
+          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" >
             <el-popover
               ref="popoverCover"
               placement="right"
@@ -43,7 +43,7 @@
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto radius" v-popover:popoverCover>
-                <img style="width: 34px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
+                <img style="width: 48px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
               </i>
             </div>
           </div>
@@ -75,6 +75,7 @@
       </template>
     </table-list>
     <modal-dialog
+      headType= '1'
       v-model="models.show"
       :title="models.title"
       :show-close="models.showClose"
@@ -85,12 +86,12 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 20px;">
+        <div slot="title">
           <h3 class="dialog-title">
             {{models.title}} 
           </h3>
         </div>
-        <div slot="customize-html" style="margin-left: 20px;margin-top: 20px;">
+        <div slot="customize-html" style="margin-left: 16px;margin-top: 20px;">
           <div class="customize-html-content">
             <search-bar
               class="mode_input"
@@ -126,6 +127,8 @@
     </modal-dialog>
 
     <modal-dialog
+      headType = '3'
+      bottomType = '2'
       v-model="delateModels.show"
       :title="delateModels.title"
       :show-close="delateModels.showClose"
@@ -135,7 +138,7 @@
       :min-height="delateModels.minHeight"
       @confirm="deleteTea"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title">
           <h3 class="dialog-title">
             {{delateModels.title}} 
           </h3>
@@ -186,7 +189,6 @@ export default CourseList
       display: inline-block;
       margin-right: 50px;
       cursor: pointer;
-      padding: 0 15px;
       font-size: 14px;
       &:before{
         position: absolute;
@@ -203,6 +205,7 @@ export default CourseList
     }
     .active {
       color: #354048;
+      font-weight: 500;
       &:before{
         opacity: 1;
         visibility: visible;
@@ -314,6 +317,25 @@ export default CourseList
 
 
 }
+
+.el-radio {
+  margin: 10px 32px 10px 0px;
+  &.is-checked {
+    //border:1px solid rgba(215,171,112,1);
+    //box-sizing: border-box;
+    //border-radius: 50%;
+    .el-radio__inner {
+      border-color: rgba(215,171,112,1);
+      background:rgba(215,171,112,1);
+    }
+    .el-radio__label {
+      color:rgba(215,171,112,1);
+    }
+  }
+
+  color:rgba(188,188,188,1);
+}
+
 .mode_input {
   position: relative;
   
@@ -348,5 +370,6 @@ export default CourseList
   font-family:HelveticaNeue;
   color:rgba(64,128,173,1);
   cursor: pointer;
+  font-weight: 300;
 }
 </style>

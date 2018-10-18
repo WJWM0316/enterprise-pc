@@ -29,8 +29,10 @@
             :hasUploaded="imageUpload.hasUploaded"
             :btnTxt="imageUpload.btnTxt"
             :accept="imageUpload.accept"
+            picShape="radiu"
             @success="imageUploadSuccess"
-            @fail="handleImageError"></my-cropper>
+            @fail="handleImageError"
+            ></my-cropper>
 
           <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
             <div class="tips">
@@ -46,7 +48,7 @@
           prop="groupId"
           class="limit-width"
           >
-          <el-select v-model="form.groupId" placeholder="请选择所属部门">
+          <el-select style="width: 224px;" v-model="form.groupId" placeholder="请选择所属部门">
             <el-option
               v-for="item in groupList"
               :key="item.groupId"
@@ -148,7 +150,6 @@
           v-if="form.roleId === 3">
             <div class="selected-item" v-show="form.group_management.show"
             >
-              已选择：
               <span 
                 v-for="(groupItem, groupIndex) in form.group_management.tem" 
                 :key="groupIndex"
@@ -184,7 +185,7 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 10px;">
+        <div slot="title" >
           <h3 class="dialog-title">
             {{models.title}} 
           </h3>
@@ -222,7 +223,7 @@
       :min-height="passWordModel.minHeight"
       @confirm="confirm2"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title">
           <h3 class="passwordTitle">
             {{passWordModel.title}} 
           </h3>
@@ -245,7 +246,7 @@
       :min-height="delateModels.minHeight"
       @confirm="deleteMember"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title" >
           <h3 class="dialog-title">
             {{delateModels.title}} 
           </h3>

@@ -13,7 +13,8 @@
         type="button" 
         class="search" 
         @click="handleSearch">
-          <i class="el-icon-search"></i>
+          <!-- <i class="el-icon-search"></i> -->
+          <i class="icon iconfont icon-search"></i>
       </button>
     </div>
   </div>
@@ -29,7 +30,7 @@ export default SearchBar
 .zike-common-search-bar {
   height:40px;
   border-radius:4px;
-  border:1px solid rgba(220,223,230,1);
+  border:1px solid #DCDCDC;
   position: relative;
   input{
     background: red;
@@ -45,6 +46,22 @@ export default SearchBar
     left: 0;
     top: 0;
     background: transparent;
+    font-size: 14px;
+  }
+  input::-webkit-input-placeholder {
+    color: #DCDCDC;
+  }
+  input:-moz-placeholder {
+    color: #DCDCDC;
+  }
+  input:-ms-input-placeholder {
+    color: #DCDCDC;
+  }
+  input:input-placeholder {
+    color: #DCDCDC;
+  }
+  .icon-search{
+    color: #BCBCBC;
   }
   button {
     width: 40px;

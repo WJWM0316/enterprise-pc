@@ -8,11 +8,15 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   methods: {
     ...mapActions([
       'getJobCircleListsApi',
-      'showMsg'
+      'showMsg',
+      'getDesktopInfosApi'
     ])
   },
   computed: {
-    ...mapGetters(['jobCircleLists'])
+    ...mapGetters([
+      'jobCircleLists',
+      'desktopVerInfo'
+    ])
   },
   watch: {
     '$route': {
@@ -36,14 +40,14 @@ export default class WorkzoneList extends Vue {
       label: '工作圈',
       align: 'left',
       showTips: 'no',
-      width: '55%'
+      width: '40%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filteredValue:
       [
         {
@@ -66,7 +70,7 @@ export default class WorkzoneList extends Vue {
       label: '权 重',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '15%',
       filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。'
     },
     {
@@ -74,7 +78,7 @@ export default class WorkzoneList extends Vue {
       label: '操 作',
       align: 'left',
       showTips: 'yes',
-      width: '15%',
+      width: '20%',
       filterPlacement: '编辑相关详细内容'
     }
   ]
@@ -92,6 +96,9 @@ export default class WorkzoneList extends Vue {
     this.getWorkZoneLists()
   }
 
+  created() {
+    this.getDesktopInfosApi()
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-21
@@ -128,6 +135,14 @@ export default class WorkzoneList extends Vue {
    * @detail   添加课程
    */
   addWorkZone() {
+    const desktopVerInfo = this.desktopVerInfo
+    if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+      this.$alert('工作圈创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建工作圈上限已满提醒', {
+        confirmButtonText: '我知道了',
+        callback: action => {}
+      })
+      return
+    }
     this.$router.push({ name: 'workZonePost'})
   }
 

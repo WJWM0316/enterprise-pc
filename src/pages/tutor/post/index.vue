@@ -2,7 +2,7 @@
 <div id="work-zone-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'tutor' }">导师管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'tutorPost' ? '添加外部导师' : '添加外部导师'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'tutorPost' ? '添加外部导师' : '添加外部新导师'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form class="form"
     :model="form"
@@ -13,11 +13,21 @@
     >
     <!-- 请填写导师名称-->
     <el-form-item
-      label="导师名称"
+      label="导师姓名"
       prop="name"
       class="limit-width"
       >
-        <el-input v-model="form.name" :maxlength="10" style="width: 380px;" />
+        <el-input v-model="form.name" :maxlength="10" style="width: 380px; " placeholder="限制10个字以内" />
+    </el-form-item>
+
+    <!-- 性别 -->
+    <el-form-item
+      label="选择性别"
+      prop="gender"
+      class="limit-width"
+      >
+        <el-radio v-model="form.gender" label="1">男</el-radio>
+        <el-radio v-model="form.gender" label="2">女</el-radio>
     </el-form-item>
     
     <!-- 导师头衔 -->
@@ -26,27 +36,19 @@
       prop="title"
       class="limit-width"
       >
-        <el-input v-model="form.title" :maxlength="25" style="width: 380px;" />
+        <el-input v-model="form.title" :maxlength="25" style="width: 380px;" placeholder="限制25个字以内"/>
     </el-form-item>
     
     <!-- 手机号 -->
     <el-form-item
-      label="手机号"
+      label="手机号码"
       prop="mobile"
       class="limit-width"
       >
-        <el-input type=text v-model="form.mobile" :maxlength="11" style="width: 380px;" />
+        <el-input type=text v-model="form.mobile" :maxlength="11" style="width: 380px;" placeholder="限制11个字以内，纯数字"/>
     </el-form-item>
 
-    <!-- 性别 -->
-    <el-form-item
-      label="性别"
-      prop="gender"
-      class="limit-width"
-      >
-        <el-radio v-model="form.gender" label="1">男</el-radio>
-        <el-radio v-model="form.gender" label="2">女</el-radio>
-    </el-form-item>
+    
 
     <!-- 设置密码 -->
     <el-form-item
@@ -54,7 +56,7 @@
       prop="password"
       class="limit-width"
       >
-        <el-input type=text v-model="form.password" :minlength="6" :maxlength="20" style="width: 380px;" />
+        <el-input type=text v-model="form.password" :maxlength="20" style="width: 380px;" placeholder="限制6-20个字" />
     </el-form-item>
 
     <!-- 确认提交 -->
@@ -72,7 +74,7 @@
     :min-height="models.minHeight"
     @confirm="confirm"
     >
-      <div slot="title" style="margin-left: 22px;">
+      <div slot="title" >
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>

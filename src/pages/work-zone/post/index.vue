@@ -209,7 +209,7 @@
     @confirm="confirm"
     @cancel="cancel"
     >
-      <div slot="title" style="margin-left: 10px;">
+      <div slot="title" style="margin-left: 0px;">
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>

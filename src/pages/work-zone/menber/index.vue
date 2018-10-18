@@ -14,12 +14,12 @@
       </el-col>
     </el-row>
     <div>
-      <button class="common-btn" @click="filterMenber('all')" v-if="groupLists.length > 0">所有人</button>
       <button
         class="common-btn"
         v-for="(groupItem, groupIndex) in groupLists"
         :key="groupIndex"
-        @click="filterMenber(groupItem)">
+        :class="{'common-btn-active': groupItem.active}"
+        @click="filterMenber('groupLists', groupItem)">
         {{groupItem.groupName}}
       </button>
     </div>

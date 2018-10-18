@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
+import { getLessonPunchListsApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -60,7 +60,7 @@ export default class CourseList extends Vue {
       filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
-      prop: 'releaseUser',
+      prop: 'realname',
       label: '发布者',
       align: 'center',
       showTips: 'no',

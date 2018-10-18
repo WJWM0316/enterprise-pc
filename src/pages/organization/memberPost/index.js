@@ -149,7 +149,6 @@ export default class WorkZonePost extends Vue {
     showClose: true,
     confirmText: '删除',
     type: 'confirm',
-    confirmType: 'danger',
     width: '432px',
     height: '192px'
   }

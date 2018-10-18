@@ -58,51 +58,51 @@ export default class NoteList extends Vue {
       label: '帖子内容',
       align: 'left',
       showTips: 'no',
-      width: '40%'
+      width: '37%'
     },
     {
       prop: 'realname',
       label: '发布者',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '12%'
     },
     {
       prop: 'type',
       label: '文件类型',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '12%'
     },
-    {
-      prop: 'visible',
-      label: '是否公开',
-      align: 'left',
-      showTips: 'yes',
-      width: '15%',
-      filteredValue:
-      [
-        {
-          label: '全部',
-          value: 'visible-3'
-        },
-        {
-          label: '公开',
-          value: 'visible-0'
-        },
-        {
-          label: '隐藏',
-          value: 'visible-1'
-        }
-      ],
-      filterPlacement: '隐藏该内容，除了已加入工作圈的成员和选定的成员以外的成员都不可见；隐藏后可重新公开，公开则所有成员都可见'
-    },
+    // {
+    //   prop: 'visible',
+    //   label: '是否公开',
+    //   align: 'left',
+    //   showTips: 'yes',
+    //   width: '15%',
+    //   filteredValue:
+    //   [
+    //     {
+    //       label: '全部',
+    //       value: 'visible-3'
+    //     },
+    //     {
+    //       label: '公开',
+    //       value: 'visible-0'
+    //     },
+    //     {
+    //       label: '隐藏',
+    //       value: 'visible-1'
+    //     }
+    //   ],
+    //   filterPlacement: '隐藏该内容，除了已加入工作圈的成员和选定的成员以外的成员都不可见；隐藏后可重新公开，公开则所有成员都可见'
+    // },
     {
       prop: 'deletedAt',
       label: '状态',
       align: 'left',
       showTips: 'yes',
-      width: '10%',
+      width: '12%',
       filteredValue:
       [
         {
@@ -125,14 +125,14 @@ export default class NoteList extends Vue {
       label: '建立时间',
       align: 'left',
       showTips: 'no',
-      width: '15%'
+      width: '17%'
     },
     {
       prop: 'actions',
       label: '操 作',
       showTips: 'yes',
       align: 'left',
-      width: '20%',
+      width: '30%',
       filterPlacement: '帖子的相关操作~'
     }
   ]

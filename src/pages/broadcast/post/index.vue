@@ -249,7 +249,7 @@
     @confirm="confirm"
     @cancel="cancel"
     >
-      <div slot="title" style="margin-left: 10px;">
+      <div slot="title" style="margin-left: 0px;">
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>
@@ -461,6 +461,10 @@ export default BroadcastPost
       font-size: 12px;
       margin: 30px 0 0 16px;
     }
+    a {
+      color: #4080AD;
+      text-decoration: none;
+    }
     .set{
       cursor: pointer;
       color: #4080AD;
@@ -548,6 +552,10 @@ export default BroadcastPost
       margin: 16px 0;
       span {
         color: #4080AD;
+      }
+      a {
+        color: #4080AD;
+        text-decoration: none;
       }
     }
   }
