@@ -29,7 +29,7 @@
 			    	</div>
 			    	<div class="walk">
 			    		<span>可存储文件量：</span>
-			    		<strong>{{desktopVerInfo.enable.storageSpaceCount}}</strong>
+			    		<strong>{{desktopVerInfo.enable.storageSpaceCount.sizeM}}</strong>
 			    	</div>
 			    </div>
 			    <button class="click-item time-button" v-if="!desktopVerInfo.isOfficial" slot="reference">试用期：{{desktopVerInfo.remainDay}} 天</button>
