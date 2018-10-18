@@ -1,28 +1,40 @@
 <template>
   <section id="zike-dialog" transition="toast" keep-alive="keep-alive">
     <div class="mask" :class="{'show-mask': visiable}"></div>
-    <section class="box" :style="{ width: dialogWidth }" :class="{'show-box': visiable}">
+    <section class="box" :style="{ width: dialogWidth }" :class="{'show-box': visiable}"  >
       <header class="dialog-hd">
+        <span class="default" v-if="headType==1"></span>
+        <span class="blank" v-else-if="headType==2"></span>
+        <img class="icon" src="~IMAGES/dl_err.png"  v-else-if="headType==3"/> 
+        <img class="icon" src="~IMAGES/dl_suc.png"  v-else-if="headType==4"/>
         <slot name="title">
           <h3 class="dialog-title" v-html="title"></h3>
         </slot>
+
+
         <span @click="handleCancel" v-if="showClose" class="dialog-close">
           <i class="el-icon-close"></i>
         </span>
       </header>
+
       <main class="dialog-bd" :style="{ minHeight: dialogMinHeight }">
         <slot name="customize-html"></slot>
       </main>
       <footer class="dialog-ft">
-        <div class="dialog-ft-btns">
+        <div class="dialog-ft-btns" :class="{'button_2': bottomType == 2 }">
           <slot name="footer">
             <template v-if="type === 'alert'">
-              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" style="margin-right: 0;"></el-button>
+              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" ></el-button>
             </template>
             <template v-else-if="type === 'confirm'">
               <el-button size="large" @click="handleCancel" v-text="cancelText" v-show="showClose"></el-button>
-              <el-button type="danger" plain size="large" @click="handleConfirm" v-text="confirmText" v-if="confirmType==='danger'"></el-button>
-              <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" v-else></el-button>
+              <el-button 
+                type="primary" 
+                size="large" 
+                @click="handleConfirm" 
+                v-text="confirmText" 
+                :class="{'err': headType == 3 }"
+              ></el-button>
             </template>
           </slot>
         </div>
@@ -81,21 +93,35 @@ export default ComponentDialog
   }
 
   header {
+    height: 24px;
     flex: 0 0 auto;
     position: relative;
+    line-height: 24px;
     color: $dialog-header-color;
-    line-height: 1;
-    margin-left: 18px;
-    &:before{
-      content: '';
+    >div {
+      display: inline-block;
+    }
+    .default {
       width:6px;
       background:rgba(255,226,102,1);
       display: inline-block;
-      position: absolute;
-      height: 80%;
-      top: 50%;
-      transform: translateY(-50%);
-    };
+      height: 16px;
+      margin-right: 16px;
+      margin-left: 16px;
+      position: relative;
+      top: 4px;
+    }
+    .blank {
+
+    }
+    .icon {
+      width:24px;
+      height:24px;
+      margin-right: 16px;
+      position: relative;
+      top: 2px;
+      float: left;
+    }
     .dialog-title {
       font-size: 14px;
       color: #040404;
@@ -103,6 +129,7 @@ export default ComponentDialog
       margin: 0;
       display: inline-block;
       vertical-align: middle;
+      position: relative;
     }
     .dialog-close {
       position: absolute;
@@ -129,11 +156,37 @@ export default ComponentDialog
     flex: 0 0 auto;
     .dialog-ft-btns {
       text-align: right;
+      &.button_2 {
+        button {
+          width: auto;
+          margin: 0 16px 0 8px;
+          color: #354048;
+          padding: 8px 18px;
+          font-size:14px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+        }
+      }
       button {
         width: 124px;
         margin: 0 16px 0 8px;
         color: #354048;
+        padding: 12px 0;
+        
       }
+      .el-button--primary {
+        &.err {
+          background:rgba(255,52,52,0.05);
+          border:1px solid rgba(255,52,52,1);
+          color:rgba(255,52,52,1) !important;
+        }
+      }
+      
+      button:last-child
+      { 
+        margin-right: 0;
+      }
+
       .el-button--default{
         border: 1px solid rgba(220,223,230,1);
       }

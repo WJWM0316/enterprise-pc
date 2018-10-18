@@ -61,10 +61,11 @@
         <div v-else-if="props.scope.column.property === 'content'" :class="{'delet': props.scope.row.status != 1}" class="flex-box">
             <div class="limit-row-num-2"> {{ props.scope.row.content}} </div>
         </div>
+
         <div v-else-if="props.scope.column.property === 'userName'" :class="{'delet': props.scope.row.status != 1}" class="flex-box">
              {{props.scope.row.userName}}
-          </div>
         </div>
+        
         <div v-else-if="props.scope.column.property === 'updatedAt'" :class="{'delet': props.scope.row.status != 1}">
           {{props.scope.row.updatedAt}}
         </div>
@@ -86,7 +87,7 @@
       :min-height="model.minHeight"
       @confirm="confirm"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title">
           <h3 class="dialog-title">
             {{model.title}} 
           </h3>

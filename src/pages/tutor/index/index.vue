@@ -75,6 +75,7 @@
       </template>
     </table-list>
     <modal-dialog
+      headType= '1'
       v-model="models.show"
       :title="models.title"
       :show-close="models.showClose"
@@ -85,12 +86,12 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 20px;">
+        <div slot="title">
           <h3 class="dialog-title">
             {{models.title}} 
           </h3>
         </div>
-        <div slot="customize-html" style="margin-left: 20px;margin-top: 20px;">
+        <div slot="customize-html" style="margin-left: 16px;margin-top: 20px;">
           <div class="customize-html-content">
             <search-bar
               class="mode_input"
@@ -126,6 +127,8 @@
     </modal-dialog>
 
     <modal-dialog
+      headType = '3'
+      bottomType = '2'
       v-model="delateModels.show"
       :title="delateModels.title"
       :show-close="delateModels.showClose"
@@ -135,7 +138,7 @@
       :min-height="delateModels.minHeight"
       @confirm="deleteTea"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title">
           <h3 class="dialog-title">
             {{delateModels.title}} 
           </h3>
@@ -313,6 +316,24 @@ export default CourseList
   }
 
 
+}
+
+.el-radio {
+  margin: 10px 32px 10px 0px;
+  &.is-checked {
+    //border:1px solid rgba(215,171,112,1);
+    //box-sizing: border-box;
+    //border-radius: 50%;
+    .el-radio__inner {
+      border-color: rgba(215,171,112,1);
+      background:rgba(215,171,112,1);
+    }
+    .el-radio__label {
+      color:rgba(215,171,112,1);
+    }
+  }
+
+  color:rgba(188,188,188,1);
 }
 
 .mode_input {

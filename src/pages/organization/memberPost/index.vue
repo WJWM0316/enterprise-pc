@@ -185,7 +185,7 @@
       @confirm="confirm"
       @cancel="cancel"
       >
-        <div slot="title" style="margin-left: 10px;">
+        <div slot="title" >
           <h3 class="dialog-title">
             {{models.title}} 
           </h3>
@@ -223,7 +223,7 @@
       :min-height="passWordModel.minHeight"
       @confirm="confirm2"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title">
           <h3 class="passwordTitle">
             {{passWordModel.title}} 
           </h3>
@@ -246,7 +246,7 @@
       :min-height="delateModels.minHeight"
       @confirm="deleteMember"
       >
-        <div slot="title" style="margin-left: 22px;">
+        <div slot="title" >
           <h3 class="dialog-title">
             {{delateModels.title}} 
           </h3>

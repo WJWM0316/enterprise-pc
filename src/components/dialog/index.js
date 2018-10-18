@@ -23,6 +23,18 @@ import Component from 'vue-class-component'
       default: 'alert'
     },
 
+    //头部类型 1黄条。2 空格。3错误。4 正确
+    headType: {
+      type: String,
+      default: '1'
+    },
+
+    //按钮类型 1默认固定宽度。2 padding
+    bottomType: {
+      type: String,
+      default: '1'
+    },
+
     // 是否显示关闭按钮
     showClose: {
       type: Boolean,
@@ -52,16 +64,13 @@ import Component from 'vue-class-component'
       type: [Number, String],
       default: 90
     },
+
     // 确定按钮文本
     confirmText: {
       type: String,
       default: '确定'
     },
-    // 确定按钮显示状态
-    confirmType: {
-      type: String,
-      default: ''
-    },
+
     // 取消按钮文本
     cancelText: {
       type: String,

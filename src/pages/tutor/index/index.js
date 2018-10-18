@@ -95,7 +95,7 @@ export default class CourseList extends Vue {
     title: '提示',
     showClose: true,
     confirmText: '添加新外部老师',
-    type: 'confirm',
+    type: 'alert',
     width: '670px',
     height: '400px'
   }
@@ -108,7 +108,6 @@ export default class CourseList extends Vue {
     showClose: true,
     confirmText: '删除',
     type: 'confirm',
-    confirmType: 'danger',
     width: '432px',
     height: '192px'
   }

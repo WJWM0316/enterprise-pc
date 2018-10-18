@@ -74,7 +74,7 @@
     :min-height="models.minHeight"
     @confirm="confirm"
     >
-      <div slot="title" style="margin-left: 22px;">
+      <div slot="title" >
         <h3 class="dialog-title">
           {{models.title}} 
         </h3>

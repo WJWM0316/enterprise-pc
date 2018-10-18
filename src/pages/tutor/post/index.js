@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-import Cropper from 'cropperjs'
-import { editorRules } from 'FILTERS/rules'
 import { createTutorApi } from 'STORE/api/tutor.js'
 
 @Component({

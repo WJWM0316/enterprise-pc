@@ -51,11 +51,7 @@ import Component from 'vue-class-component'
       type: String,
       default: '确定'
     },
-    // 确定按钮显示状态
-    confirmType: {
-      type: String,
-      default: ''
-    },
+    
     // 取消按钮文本
     cancelText: {
       type: String,

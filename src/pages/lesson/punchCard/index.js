@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import { getLessonPunchListsApi, putLessonPunchApi, deleteLessonPunchApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
+import { getLessonPunchListsApi ,distoryAndRegaihnLessonPunchApi ,setExcellentCourseCardApi } from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
