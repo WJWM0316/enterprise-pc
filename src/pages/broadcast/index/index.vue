@@ -119,14 +119,15 @@ export default BroadcastIndex
       color:rgba(255,255,255,1);
       line-height:1;
       background:rgba(53,64,72,1);
-      padding: 2px 5px;
+      padding: 4px;
       display: inline-block;
+      line-height: 1;
     }
     .name {
       font-weight:400;
       color:rgba(255,255,255,1);
       line-height:1;
-      padding: 2px 5px;
+      padding: 4px;
       background:rgba(255,249,217,1);
       color:rgba(215,171,112,1);
       display: inline-block;
@@ -135,11 +136,15 @@ export default BroadcastIndex
       background: transparent;
       color: #929292;
       display: inline-block;
+      line-height: 1;
+      padding: 4px;
     }
     .outer-name {
       background: transparent;
       color: #929292;
       display: inline-block;
+      line-height: 1;
+      padding: 4px;
     }
   }
   .live-status-icon-doing{
