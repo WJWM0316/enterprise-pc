@@ -2,7 +2,7 @@
   <div id="course-post">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'groupManage' }">组织管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'groupManage' }">分组管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{$route.name === 'addGroup' ? '新建分组' : '编辑分组'}}</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form
@@ -11,9 +11,7 @@
       ref="form"
       >
         <div v-if="$route.name === 'addGroup'">
-
           <div class="walk-title">新建分组名称</div>
-
           <!-- 请填写课程名称 -->
           <el-form-item
             prop="name"
@@ -35,7 +33,7 @@
         </div>
 
 
-        <div class="walk-title">选择分组成员</div>
+        <div class="walk-title select ">选择分组成员</div>
 
 
         <el-row class="header">
@@ -47,7 +45,7 @@
               placeholder="输入搜索名称" />
           </el-col>
         </el-row>
-        <div>
+        <div class="groupList">
           <el-button
             size="large"
             v-for="(groupItem, groupIndex) in groupList"
@@ -59,8 +57,9 @@
           </el-button>
         </div>
         <div class="menber-list">
-          <el-checkbox-group v-model="checkList.tem">
+          <el-checkbox-group class="checkbox" v-model="checkList.tem">
             <el-checkbox
+              class="limit-row-num-1"
               :label="menberItem.realname"
               :key="menberIndex"
               @change="multipleSelection"

@@ -7,6 +7,7 @@ import {
   GET_MEMBER_INFOS
 } from '../mutation-types'
 
+import defaultAvatar from 'IMAGES/img_normal_head.png'
 import {
   getPersonalInfoLessonsApi,
   getPersonalInfoStudyApi,
@@ -35,7 +36,8 @@ const state = {
       liveCount: 0
     },
     avatar: {
-      smallUrl: ''
+      smallUrl: defaultAvatar
+      // smallUrl: ''
     }
   },
   personalInfoLives: {},

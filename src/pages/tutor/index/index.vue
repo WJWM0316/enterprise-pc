@@ -11,7 +11,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="pagination.name"
           placeholder="请输入导师名称或关键字" />
@@ -34,7 +34,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'realname'" class="flex-box">
-          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)">
+          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" >
             <el-popover
               ref="popoverCover"
               placement="right"
@@ -43,7 +43,7 @@
             </el-popover>
             <div class="cover-wrapper">
               <i class="cover u-image auto radius" v-popover:popoverCover>
-                <img style="width: 34px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
+                <img style="width: 48px;border-radius: 50%; " :src="props.scope.row.avatar.smallUrl">
               </i>
             </div>
           </div>
@@ -186,7 +186,6 @@ export default CourseList
       display: inline-block;
       margin-right: 50px;
       cursor: pointer;
-      padding: 0 15px;
       font-size: 14px;
       &:before{
         position: absolute;
@@ -203,6 +202,7 @@ export default CourseList
     }
     .active {
       color: #354048;
+      font-weight: 500;
       &:before{
         opacity: 1;
         visibility: visible;
@@ -314,6 +314,7 @@ export default CourseList
 
 
 }
+
 .mode_input {
   position: relative;
   
@@ -348,5 +349,6 @@ export default CourseList
   font-family:HelveticaNeue;
   color:rgba(64,128,173,1);
   cursor: pointer;
+  font-weight: 300;
 }
 </style>

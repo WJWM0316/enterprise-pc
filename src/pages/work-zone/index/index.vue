@@ -4,7 +4,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入工作圈名称" />

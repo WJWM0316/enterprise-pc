@@ -4,7 +4,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入课程名或导师..." />
@@ -63,11 +63,12 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
                 <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 4">
-                  <span class="inner-tutor-groupname">{{props.scope.row.realname}}</span>
-                  <span class="inner-tutor-realname">{{props.scope.row.groupName}}</span>
+                  <span class="inner-tutor-groupname">{{props.scope.row.groupName}}</span>
+                  <span class="inner-tutor-realname">{{props.scope.row.realname}}</span>
                 </div>
                 <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 5">
-                  <span>外聘导师 - {{props.scope.row.realname}}</span>
+                  <span class="inner-tutor-groupname">{{props.scope.row.masterInfo.roleName}}</span>
+                  <span class="inner-tutor-realname">{{props.scope.row.masterInfo.realname}}</span>
                 </div>
             </div>
           </div>

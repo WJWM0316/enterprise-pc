@@ -98,18 +98,18 @@ export default class pageOrganization extends Vue {
     created(){}
 
     init() {
-      
+      let query =  this.$route.query
       this.memberData = {
         selectAll: 1,
         count: 20,
         page: 1
       }
-      this.memberData = Object.assign(this.memberData,this.$route.query || {})
-      console.log(this.memberData)
-      console.log(this.$route.query)
-      if(this.$route.query.roleId){
-        delete this.memberData.roleId
-        this.rolevalue = this.$route.query.roleId
+      this.memberData = Object.assign(this.memberData,query || {})
+      if(query.roleId){
+        if(query.roleId === '4'){
+          delete this.memberData.roleId
+        }
+        this.rolevalue = query.roleId
       }
       this.getMemberList()
       this.getMsgList()

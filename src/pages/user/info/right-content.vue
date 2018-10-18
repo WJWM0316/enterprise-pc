@@ -187,7 +187,6 @@ export default class ComponentRight extends Vue {
 			width:108px;
 			height:108px;
 			border-radius:4px;
-			background: rgba(0,0,0,.05);
 			margin-right: 16px;
 			img{
 				width: 100%;

@@ -81,6 +81,7 @@ import { getMemberInfosApi } from 'STORE/api/user.js'
   }
 })
 export default class ComponentLeft extends Vue {
+
 	loginInfo = {} //登陆用户
 	userInfo = {} //当前用户
 	isShowEdit = false //是否显示编辑
@@ -96,7 +97,6 @@ export default class ComponentLeft extends Vue {
 
 		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
 			this.loginInfo = res.data.data
-			console.log(this.loginInfo.roleName,this.userInfo.roleName)
 			if(this.loginInfo.roleName === '超级管理员'){
 				if(this.userInfo.roleName !== '超级管理员'){
 					this.isShowEdit = true
@@ -112,7 +112,7 @@ export default class ComponentLeft extends Vue {
 			}
 		})
 	}
-
+	
 	//当前用户信息
 	getUserInfo() {
 		getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{

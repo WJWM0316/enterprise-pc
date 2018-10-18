@@ -1,4 +1,6 @@
 @import "~cropperjs/dist/cropper.min.css";
+@import "~COLORS/variables";
+
 #course-post {
   background: white;
 	.el-form {
@@ -21,7 +23,10 @@
 		padding-bottom: 15px;
 		border-bottom: 1px solid rgba(220,223,230,1);
 		font-size: 20px;
-    margin: 40px 44px 30px 0px;
+    margin: 56px 44px 24px 0px;
+    &.select {
+      margin: 48px 44px 24px 0px;
+    }
 	}
 	.customize-html-content {
 		flex-grow: 1;
@@ -87,6 +92,9 @@
       }
     }
   }
+  .groupList {
+
+  }
 }
 .header {
   margin: 30px 0;
@@ -109,7 +117,7 @@
   width: 100px;
 }
 .menber-list {
-  margin-top: 30px;
+  margin-top: 16px;
 }
 .footer-button {
   margin: 40px 0;
@@ -124,5 +132,24 @@
   font-weight:400;
   color:#D7AB70;
   border-color: #EDEDED;
+}
+
+.limit-row-num-1 {
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    color: #354048;
+    font-size: 14px;
+    line-height: 1.4;
+    
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 

@@ -461,6 +461,10 @@ export default BroadcastPost
       font-size: 12px;
       margin: 30px 0 0 16px;
     }
+    a {
+      color: #4080AD;
+      text-decoration: none;
+    }
     .set{
       cursor: pointer;
       color: #4080AD;
@@ -548,6 +552,10 @@ export default BroadcastPost
       margin: 16px 0;
       span {
         color: #4080AD;
+      }
+      a {
+        color: #4080AD;
+        text-decoration: none;
       }
     }
   }

@@ -4,7 +4,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.liveName"
           placeholder="请输入直播名称或关键词" />

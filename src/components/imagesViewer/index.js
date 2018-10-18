@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import Swiper from 'swiper'
-
+// https://via.placeholder.com/1000x500
 @Component({
   props: {
     show: {
@@ -33,13 +33,26 @@ import Swiper from 'swiper'
           this.$emit('close')
         }
       }
-    }
+    },
+    list: {
+      handler(list) {
+        if(list.length) {
+          setTimeout(() => {this.init() }, 16.7)
+        }
+      },
+      immediate: true
+    },
   }
 })
 export default class ComponentImagesViewer extends Vue {
   visiable = false
-  mounted() {
-    var galleryThumbs = new Swiper('.gallery-thumbs', {
+
+  close() {
+    this.visiable = false
+  }
+
+  init() {
+    const galleryThumbs = new Swiper('.gallery-thumbs', {
       spaceBetween: 24,
       slidesPerView: 4,
       freeMode: true,
@@ -51,17 +64,9 @@ export default class ComponentImagesViewer extends Vue {
         nextEl: '.my-btn-next',
         prevEl: '.my-btn-prev',
       },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
       thumbs: {
         swiper: galleryThumbs
       }
     })
-  }
-
-  close() {
-    this.visiable = false
   }
 }
