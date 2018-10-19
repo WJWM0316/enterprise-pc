@@ -214,6 +214,8 @@
     </modal-dialog>
 
     <modal-dialog
+      bottomType="2"
+      headType="2"
       v-model="passWordModel.show"
       :title="passWordModel.title"
       :show-close="passWordModel.showClose"
@@ -224,19 +226,21 @@
       @confirm="confirm2"
       >
         <div slot="title">
-          <h3 class="passwordTitle">
+          <h3 class="dialog-title">
             {{passWordModel.title}} 
           </h3>
         </div>
         <div slot="customize-html" >
-          <div class="customize-html-content" style="margin-left: 18px;">
-            <el-input :class="{'pw_input': passWordModel.isHintShow}" v-model="form.password" :maxlength="20"  placeholder="请输入分组名，限制20个字以内"/>
+          <div class="customize-html-content" style="margin-top: 8px;">
+            <el-input :class="{'pw_input': passWordModel.isHintShow}" v-model="form.password" :maxlength="20"  placeholder="请输入密码，限制6-20个字"/>
           </div>
           <p class="pw_hint" v-if="passWordModel.isHintShow">{{passWordModel.hintMsg}}</p>
         </div>
     </modal-dialog>
 
     <modal-dialog
+      bottomType="2"
+      headType="3"
       v-model="delateModels.show"
       :title="delateModels.title"
       :show-close="delateModels.showClose"

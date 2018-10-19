@@ -153,6 +153,7 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
+    console.log(this.form)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加loading
@@ -170,17 +171,14 @@ export default class WorkZonePost extends Vue {
         }
         // 需要提交的参数的key值
         const required = ['course_id','title','status','punch_card_title','punch_card_img']
-        
         let av_id = this.form.av_id
         if(av_id>0){
           required.push('av_id')
         }
 
-        console.log(this.form.details !== '<p><br></p>' && this.form.details.length>0)
         if(this.form.details !== '<p><br></p>' && this.form.details.length>0){
             required.push('details')
         }
-        console.log(this.form.details)
 
         // 过滤不需要提交的参数
         const params = this.transformData(this.form, required)
@@ -263,6 +261,7 @@ export default class WorkZonePost extends Vue {
    */
   initPageByUpdate() {
     getLessonEditApi({id: this.lessonId}).then(res=>{
+
       let msg = res.data.data
 
       msg.punchCardCImgInfo.map(function(value,index){
@@ -288,6 +287,8 @@ export default class WorkZonePost extends Vue {
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
       }
+
+      console.log(this.form)
     })
   }
 
@@ -403,5 +404,7 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.progress = 0
     this.fileUpload.status = 'processing'
     this.fileUpload.progressText = ''
+
+    this.form.av_id = ''
   }
 }

@@ -34,7 +34,7 @@
               <el-button
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
-                @click="todoAction('comment', props.scope.row)" v-show="props.scope.row.replyCount>1">
+                @click="todoAction('comment', props.scope.row)" v-show="props.scope.row.replyCount>0">
                   二级评论
                 </el-button>
 
