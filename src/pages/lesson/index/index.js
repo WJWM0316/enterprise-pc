@@ -39,14 +39,14 @@ export default class CourseList extends Vue {
     {
       prop: 'title',
       label: '课 节',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '40%'
     },
     {
       prop: 'status',
       label: '是否上线',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -69,12 +69,13 @@ export default class CourseList extends Vue {
     {
       prop: 'sort',
       label: '排序',
-      align: 'center',
+      align: 'left',
       width: '10%'
     },
     {
       prop: 'actions',
       label: '操 作',
+      align: 'left',
       showTips: 'yes',
       width: '20%',
       filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
@@ -147,7 +148,6 @@ export default class CourseList extends Vue {
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getWorkZoneLists()
   }
 
   //设置排序

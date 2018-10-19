@@ -40,8 +40,8 @@ import Component from 'vue-class-component'
 })
 export default class pageLogin extends Vue {
 	form = {
-		email: '15876550627',
-		password: '123456'
+		email: '',
+		password: ''
 	}
 	rules = {
 		email: [

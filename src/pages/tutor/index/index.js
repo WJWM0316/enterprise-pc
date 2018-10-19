@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
-import { getTutorListApi, deletetTutorApi, searchTutorApi, createTutorApi} from 'STORE/api/tutor.js'
+import { getTutorListApi, addSearchTutorApi, deletetTutorApi, searchTutorApi} from 'STORE/api/tutor.js'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
@@ -97,7 +97,8 @@ export default class CourseList extends Vue {
     confirmText: '添加新外部老师',
     type: 'alert',
     width: '670px',
-    height: '400px'
+    height: '400px',
+    isHideBtn: '1',
   }
 
   // 确认信息弹窗
@@ -167,11 +168,19 @@ export default class CourseList extends Vue {
 
   //跳转个人空间
   viewMenberInfo(id,type) {
-    this.$router.push({ 
-      name: 'userInfos', 
-      params: { id }, 
-      query:{joinType: type}
-    })
+    console.log(id,type)
+    let query = {}
+    if(id){
+      if(type){
+        query = {joinType: type}
+      }
+      this.$router.push({ 
+        name: 'userInfos', 
+        params: { id }, 
+        query: query
+      })
+    }
+    
   }
 
   /**
@@ -229,12 +238,17 @@ export default class CourseList extends Vue {
     if(this.searchData.value.length===0){
       return
     }
+    this.models.isHideBtn = '1'
+
     this.searchData.type = true
     searchTutorApi({mobile: this.searchData.value}).then(res=>{
-      console.log(res)
+      console.log('===',res)
+      this.models.isHideBtn = '2'
       this.searchData.hintTXt = ''
       if(res.data.data){
         this.searchData.list = res.data.data
+      }else {
+        this.models.confirmText = '添加该导师'
       }
     },res=>{
       this.searchData.list = {}
@@ -244,6 +258,7 @@ export default class CourseList extends Vue {
     })
   }
 
+  //添加搜索的外部导师
   select(type){
 
     if(type !== this.tutorType){
@@ -252,13 +267,28 @@ export default class CourseList extends Vue {
     }
   }
 
+  //添加搜索的外部导师
+  addTea(){
+    addSearchTutorApi({mobile: this.searchData.value}).then(res=>{
+      this.searchData.type = false
+      this.$message(res.data.msg)
+    },res=>{
+      this.$message(res.data.msg)
+    })
+  }
+
   cancel(){
     this.searchData.type = false
   }
 
   confirm(){
-    this.searchData.type = false
-    this.toTea()
+    if( this.searchData.list&& this.searchData.list.length>0){
+      this.addTea()
+      
+    }else {
+      this.searchData.type = false
+      this.toTea()
+    }
   }
 
   openMadal() {

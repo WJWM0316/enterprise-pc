@@ -357,7 +357,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
         this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
-          this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid ? true : false)
+          this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.id || this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid || Number(this.form.master_uid.value) === field.id ? true : false)
         } else {
           this.updateMenberListsAllApi({bool: false})
           this.updateMenberListsByIdApi({uid: this.form.master_uid.tem.uid})
@@ -772,7 +772,7 @@ export default class CoursePost extends Vue {
     let temTutorLists = [...this.temTutorLists]
     const data = { show: true, tem: [], value: [] }
     if(this.models.editType === 'tutor') {
-      temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+      temTutorLists.map(field => field.active = item.id === field.id ? true : false)
     } else {
       this.updateMenberListsByIdApi({uid: item.uid})
       temTutorLists = this.menberLists
@@ -811,7 +811,7 @@ export default class CoursePost extends Vue {
     this.temTutorLists.map(field => {
       if(field.active) {
         data.tem = field
-        data.value = String(field.uid)
+        data.value = field.uid ? String(field.uid) : String(field.id)
       }
     })
     data.show = Object.prototype.toString.call(data.value) === '[object Array]' ? false : true

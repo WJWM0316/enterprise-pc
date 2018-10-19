@@ -2,7 +2,7 @@
 <div id="work-zone-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'tutor' }">导师管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'tutorPost' ? '添加外部导师' : '添加外部新导师'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>添加新外部导师</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form class="form"
     :model="form"

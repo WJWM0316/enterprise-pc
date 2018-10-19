@@ -353,10 +353,10 @@ export default class BroadcastPost extends Vue {
         this.models.show = true
         this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
-          temTutorLists.map(field => field.active = this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid ? true : false)
+          temTutorLists.map(field => field.active = this.form.uid.value === field.id || this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid || Number(this.form.uid.value) === field.id ? true : false)
           this.temTutorLists = temTutorLists
         } else {
-          this.updateMenberListsByIdApi({uid: item.uid})
+          this.updateMenberListsByIdApi({uid: this.form.uid.value})
           this.temTutorLists = this.menberLists
         }
   			break
@@ -403,7 +403,7 @@ export default class BroadcastPost extends Vue {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
       this.getGroupListsApi({isHaveMember: 1}),
-      this.getMenberListsApi(),
+      this.getMenberListsApi({selectAll: 1}),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
     ])
@@ -429,7 +429,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi({isHaveMember: 1}),
-        this.getMenberListsApi(),
+        this.getMenberListsApi({selectAll: 1}),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]
@@ -478,7 +478,7 @@ export default class BroadcastPost extends Vue {
       })
 
       // 导师的遍历
-      this.tutorLists.map(field => {
+      this.menberLists.map(field => {
         if(field.uid === info.masterId) {
           this.form.uid.value = String(field.uid)
           this.form.uid.tem = field
@@ -514,6 +514,7 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
+      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -806,7 +807,7 @@ export default class BroadcastPost extends Vue {
     const temTutorLists = [...this.temTutorLists]
     const data = { show: true, tem: [], value: [] }
     if(this.models.editType === 'tutor') {
-      temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+      temTutorLists.map(field => field.active = item.id === field.id ? true : false)
     } else {
       this.updateMenberListsByIdApi({uid: item.uid})
       this.temTutorLists = this.menberLists
@@ -845,7 +846,7 @@ export default class BroadcastPost extends Vue {
     this.temTutorLists.map(field => {
       if(field.active) {
         data.tem = field
-        data.value = String(item.uid)
+        data.value = item.uid ? String(item.uid) : String(item.id)
       }
     })
     data.show = Object.prototype.toString.call(data.value) === '[object Array]' ? false : true

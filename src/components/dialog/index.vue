@@ -21,7 +21,7 @@
         <slot name="customize-html"></slot>
       </main>
       <footer class="dialog-ft">
-        <div class="dialog-ft-btns" :class="{'button_2': bottomType == 2 }">
+        <div class="dialog-ft-btns" :class="{'button_2': bottomType == 2 }" v-if="isHideBtn==='2'">
           <slot name="footer">
             <template v-if="type === 'alert'">
               <el-button type="primary" size="large" @click="handleConfirm" v-text="confirmText" ></el-button>

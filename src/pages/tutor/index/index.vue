@@ -34,7 +34,7 @@
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'realname'" class="flex-box">
-          <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" >
+          <div class="img-box" @click="viewMenberInfo(props.scope.row.id)" >
             <el-popover
               ref="popoverCover"
               placement="right"
@@ -49,7 +49,7 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-1" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
+                <div class="limit-row-num-1" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.id)"> {{ props.scope.row.realname}} </div>
 
                 <div class="tutor-name limit-row-num-1" v-if="tutorType==='inner'">
                   <div v-if="props.scope.row.group&&props.scope.row.group[0]">
@@ -64,10 +64,10 @@
             </div>
           </div>
         </div>
-        <div class="toUser" v-else-if="props.scope.column.property === 'communityCount'" @click="viewMenberInfo(props.scope.row.uid,'course')">
+        <div class="toUser" v-else-if="props.scope.column.property === 'communityCount'" @click="viewMenberInfo(props.scope.row.id,'course')">
           {{props.scope.row.communityCount}}
         </div>     
-         <div class="toUser" v-else-if="props.scope.column.property === 'liveCount'" @click="viewMenberInfo(props.scope.row.uid,'live')">
+         <div class="toUser" v-else-if="props.scope.column.property === 'liveCount'" @click="viewMenberInfo(props.scope.row.id,'live')">
           {{props.scope.row.liveCount}}
         </div>    
         <!-- 其他列按后端给回的字段显示 -->
@@ -83,6 +83,7 @@
       :type="models.type"
       :width="models.width"
       :min-height="models.minHeight"
+      :isHideBtn="models.isHideBtn"
       @confirm="confirm"
       @cancel="cancel"
       >
@@ -104,23 +105,24 @@
             <p class="model_hint" v-show="searchData.hintTXt">
               {{searchData.hintTXt}}
             </p>
-              <el-collapse-transition>
-                <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
-                  <div class="img-box">
-                    <img :src="searchData.list.avatar.smallUrl" />
-                  </div>
-                  <div class="text-inner-content">
-                    <p class="user-name" v-if="searchData.list.realname">{{searchData.list.realname}}</p>
-                    <p class="user-degree" v-if="searchData.list.title">{{searchData.list.title[0]}}</p>
-                  </div>
-                  <div class="phone-box">
-                    {{searchData.list.mobile}}
-                  </div>
+
+            <el-collapse-transition v-if="models.isHideBtn==='2'">
+              <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
+                <div class="img-box">
+                  <img :src="searchData.list.avatar.smallUrl" />
                 </div>
-                <div class="transition-flex-box tutor-nodata" v-else>
-                  Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+                <div class="text-inner-content">
+                  <p class="user-name" v-if="searchData.list.realname">{{searchData.list.realname}}</p>
+                  <p class="user-degree" v-if="searchData.list.title">{{searchData.list.title[0]}}</p>
                 </div>
-              </el-collapse-transition>
+                <div class="phone-box">
+                  {{searchData.list.mobile}}
+                </div>
+              </div>
+              <div class="transition-flex-box tutor-nodata" v-else>
+                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+              </div>
+            </el-collapse-transition>
             </div>
           </div>
         </div>

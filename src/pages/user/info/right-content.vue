@@ -29,7 +29,7 @@
 						<div class="u-info" v-if="courseItem.masterInfo.roleId == 5">
 							<span class="user-name">{{courseItem.realname}}</span>
 						</div>
-						<div class="progress">
+						<div class="progress" v-if="courseItem.masterInfo.roleId == 4">
 							<div class="learn-rate-text">已学习<span> {{courseItem.selfProcess}}% </span></div>
 							<div class="line">
 								<div class="doing" :style="`width: ${courseItem.selfProcess}%`"></div>
@@ -45,12 +45,16 @@
 					</div>
 					<div class="text-content">
 						<h2>{{liveItem.name}}</h2>
-						<div class="u-info" v-if="liveItem.roleId == 4">
+						<div class="u-info" v-if="liveItem.roleId === '4'">
 							<span class="group-name">{{liveItem.groupName}}</span>
 							<span class="user-name">{{liveItem.realname}}</span>
 						</div>
-						<div class="u-info" v-if="liveItem.roleId == 5">
+						<div class="u-info" v-if="liveItem.roleId === '5'">
 							<span class="user-name">{{liveItem.realname}}</span>
+						</div>
+						<div v-if="liveItem.roleId === '5'">
+							<time>{{liveItem.expectedStartTime * 1000 | date}}</time>
+							<span class="live-status" :class="{'live-status-doing': liveItem.status === 2, 'live-status-default': liveItem.status === 1 || liveItem.status === 3}">{{ liveItem.status === 1 ? '直播未开始' : liveItem.status === 2 ? '正在直播' : '直播已结束'}}</span>
 						</div>
 					</div>
 				</li>
@@ -173,6 +177,24 @@ export default class ComponentRight extends Vue {
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content:space-between;
+		time{
+			font-size:14px;
+			font-weight:400;
+			color:rgba(146,146,146,1);
+			float: left;
+		}
+		.live-status-doing {
+			font-size:14px;
+			font-weight:400;
+			color:rgba(215,171,112,1);
+			float: right;
+		}
+		.live-status-default {
+			font-size:14px;
+			font-weight:400;
+			color:rgba(146,146,146,1);
+			float: right;
+		}
 		li{
 			width: calc(50% - 10px);
 			display: flex;
@@ -188,6 +210,7 @@ export default class ComponentRight extends Vue {
 			height:108px;
 			border-radius:4px;
 			margin-right: 16px;
+			overflow: hidden;
 			img{
 				width: 100%;
 				height: 100%;
