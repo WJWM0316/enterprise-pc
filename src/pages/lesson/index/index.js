@@ -148,7 +148,6 @@ export default class CourseList extends Vue {
   // 点击搜索时触发
   handleSearch() {
     this.setPathQuery(this.form)
-    this.getWorkZoneLists()
   }
 
   //设置排序
