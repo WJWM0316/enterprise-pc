@@ -32,8 +32,8 @@
             <div class="progress-bar" :style="{width: fileUpload.progress + '%'}"></div>
             <div class="box">
               <div class="file-infos">
-                <i class="el-icon-question"></i>
-                <span class="file-name limit-row-num-1">{{fileUpload.infos.name}}</span>
+                <img class="video_icon" src="~IMAGES/video.png" >
+                <span class="file-name ">{{fileUpload.infos.name}}</span>
               </div>
               <div class="file-status" >
                 <span
@@ -41,7 +41,7 @@
                   :class="{'processing': fileUpload.status === 'processing', 'success': fileUpload.status === 'success', 'error': fileUpload.status === 'error'}">
                     {{fileUpload.progressText}}
                   </span>
-                <!-- <i class="el-icon-error"></i> -->
+                <i class="el-icon-error" :class="{'loading': fileUpload.status==='loading'}" @click="removeVideo"></i>
               </div>
             </div>
           </div>
@@ -87,22 +87,28 @@
 
       <!-- 上传图片 start-->
       <el-form-item>
-
-        
-
         <ul class="img-list">
+
+          <!-- <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
+            <div class="tips">
+              <p><i class="el-icon-error"></i></p>
+              <p>上传失败</p>
+            </div>
+          </div> -->
+
           <div style="float: left" class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
             <img src="~IMAGES/loading.png" class="loading" v-if="imageUpload.status==='loading'"/>
-            <p class="upload_status" v-if="imageUpload.status==='error'">上传失败</p>
+            <div class="error" v-if="imageUpload.status==='error'">
+              <i class="icon iconfont icon-shibai"></i>
+              <p >上传失败</p>
+            </div>
+            
           </div>
-          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"  
-            @mouseover="imgOp (imgIndex,'over') "
-            @mouseout="imgOp(imgIndex,'out')" 
+
+          <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"
           >
             <img class="" :src="imgItem.url" alt="" >
-            <span class="deleteImg" v-if="imgItem.show"
-              @click="imgOp(imgIndex,'delete')"
-            >删除图片</span>
+            <img src="~IMAGES/up_clo_2.png" class="deleteImg" @click="imgOp(imgIndex)">
           </li>
         </ul>
         <el-upload
@@ -148,6 +154,7 @@ export default WorkZonePost
 </script>
 <style lang="scss">
 @import "~cropperjs/dist/cropper.min.css";
+@import "~COLORS/variables";
 
 .footer-button {
   margin: 40px 0;
@@ -163,6 +170,8 @@ export default WorkZonePost
   }
   .img-list {
     overflow: hidden;
+    padding-top: 10px;
+    margin-bottom: 10px;
     li {
       width: 96px;
       height: 96px;
@@ -172,16 +181,11 @@ export default WorkZonePost
       background: rgba(0,0,0,.05);
       position: relative;
       .deleteImg {
-        width: 100%;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
+        width:18px;
+        height:18px;
         position: absolute;
-        left: 0;
-        top: 0;
-        color: #333333;
-        font-size: 14px;
-        background: #ececec;
+        right: -9px;
+        top: -9px;
       }
       img{
         width: 100%;
@@ -200,6 +204,7 @@ export default WorkZonePost
     width:380px;
     height:38px;
     padding: 0 16px;
+    box-sizing: border-box;
     border-radius:2px;
     border:1px solid rgba(220,220,220,1);
     position: relative;
@@ -215,7 +220,7 @@ export default WorkZonePost
     position: absolute;
     left: 0;
     top: 0;
-    background: rgba(38,191,129,.08);
+    background: #FFF9D9;
     width: 0%;
     height: 100%;
     border-radius: 2px;
@@ -225,26 +230,53 @@ export default WorkZonePost
     position: relative;
     z-index:2;
     display: flex;
+    flex-direction: row;
   }
   .file-infos {
-    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     text-align: left;
+    overflow: hidden;
+
+    .video_icon{
+      width:15px;
+      height:14px;
+      margin-right: 5px;
+    }
     i{
       margin-right: 5px;
       color: #354048;
     }
-  }
-  .file-status {
-    flex-grow: 1;
-    text-align: right;
-    i{
-      margin-left: 5px;
-      color: #FF3434;
+    .file-name {
+      flex: 1;
+      display: block;
+      color: #354048;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
-  .file-name {
-    color: #354048;
+  .file-status {
+    width: 70px;
+    text-align: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5px;
+    i{
+      margin-left: 5px;
+      color: rgba(188,188,188,1);
+      cursor: pointer;
+      &.loading {
+        color: #FF3434;
+      }
+    }
+    
   }
+  
   .tips {
     font-size:12px;
     font-weight:400;
@@ -300,9 +332,10 @@ export default WorkZonePost
 .imgLoadSatus {
   width: 96px;
   height: 96px;
-  line-height: 96px;
   text-align: center;
   display: inline-block;
+  background: #f8f8f8;
+  margin-right: 10px;
   .loading{
     width: 30px;
     height: 30px;
@@ -315,12 +348,51 @@ export default WorkZonePost
     -webkit-animation: rotation 2s linear infinite;
     -o-animation: rotation 2s linear infinite;
   }
+  .error {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    p {
+      height:20px;
+      margin: 0 0 0 0;
+      color: #929292;
+      line-height: 20px;
+    }
+    .icon-shibai {
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      color: #929292;
+      display: block;
+
+    }
+
+  }
   .imgHint {
     font-size:14px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(255,52,52,1);
   }
+}
+
+.el-radio {
+  margin: 10px 32px 10px 0px;
+  &.is-checked {
+    .el-radio__inner {
+      border-color: rgba(215,171,112,1);
+      background:rgba(215,171,112,1);
+    }
+    .el-radio__label {
+      color:rgba(215,171,112,1);
+    }
+  }
+  color:rgba(188,188,188,1);
+}
+.el-radio+.el-radio {
+    margin-left: 0px;
 }
 
 

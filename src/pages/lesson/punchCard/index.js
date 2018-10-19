@@ -32,14 +32,14 @@ export default class CourseList extends Vue {
     {
       prop: 'cardContent',
       label: '打卡内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '30%'
     },
     {
       prop: 'punchCardStatus',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '10%',
       filteredValue:
@@ -62,20 +62,21 @@ export default class CourseList extends Vue {
     {
       prop: 'realname',
       label: '发布者',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
     {
       prop: 'punchCardTime',
       label: '建立时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '20%'
     },
     {
       prop: 'actions',
       label: '操 作',
+      align: 'left',
       showTips: 'yes',
       width: '15%',
       filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>优秀打卡/取消优秀：把打卡内容设置为优秀打卡或者取消优秀打卡<br/>评论：进入评论内容管理页面'

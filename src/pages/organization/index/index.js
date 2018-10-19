@@ -121,7 +121,7 @@ export default class pageOrganization extends Vue {
           this.groupList = [
           {
             groupId: 10, 
-            groupName: "所有人", 
+            groupName: "全部成员", 
             sort: 10, 
             count: 10,
             active: true

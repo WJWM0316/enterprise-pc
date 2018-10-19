@@ -119,14 +119,8 @@ export default class WorkZonePost extends Vue {
     }
   }
 
-  imgOp(index,type){
-    if(type === 'over'){
-      this.imageUpload.list[index].show = true
-    }else if(type === 'out'){
-      this.imageUpload.list[index].show = false
-    }else if(type === 'delete'){
+  imgOp(index){
       this.imageUpload.list.splice(index,1)
-    }
   }
 
   toLessonList(){
@@ -336,12 +330,16 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
-    this.form.av_id = res.data[0].id
 
-    this.fileUpload.status = 'success'
-    this.fileUpload.progress = 100
-    this.fileUpload.progressText = '上传成功'
-    this.fileUpload.btnTxt = '重新上传'
+    console.log(res)
+    if(this.fileUpload.status === 'loading'){
+      this.form.av_id = res.data[0].id
+
+      this.fileUpload.status = 'success'
+      this.fileUpload.progress = 100
+      this.fileUpload.progressText = '上传成功'
+      this.fileUpload.btnTxt = '重新上传'
+    }
   }
 
   /**
@@ -356,11 +354,11 @@ export default class WorkZonePost extends Vue {
     if(!isLt200M){
       this.$message.error('上传文件大小不能超过 200MB!');
     }else {
-      this.fileUpload.status = ''
+      this.fileUpload.status = 'loading'
       this.fileUpload.progress = 0
       this.fileUpload.progressText = '上传中'
 
-
+      console.log(this.fileUpload.status)
       this.fileUpload.infos = file
       this.fileUpload.show = true
       this.fileUpload.btnTxt = '重新上传'
@@ -388,12 +386,19 @@ export default class WorkZonePost extends Vue {
    */
   handleFileError(err, file, fileList) {
     console.log(err)
-
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'
     this.fileUpload.btnTxt = '重新上传'
     this.showMsg({ content: `上传失败 ~`, type: 'error', duration: 3000 })
-    
+  }
+
+
+  removeVideo(){
+    this.fileUpload.show = false
+    this.fileUpload.btnTxt = '选择文件'
+    this.fileUpload.progress = 0
+    this.fileUpload.status = 'processing'
+    this.fileUpload.progressText = ''
   }
 }

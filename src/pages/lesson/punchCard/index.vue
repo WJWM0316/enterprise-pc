@@ -63,7 +63,7 @@
             {{ props.scope.row.cardContent}}
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'realname'" class="flex-box" :class="{'delet': props.scope.row.punchCardStatus != 1}">
+        <div v-else-if="props.scope.column.property === 'realname'" :class="{'delet': props.scope.row.punchCardStatus != 1}">
              {{props.scope.row.releaseUser.realname}}
           </div>
         </div>

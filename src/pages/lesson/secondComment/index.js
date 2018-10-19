@@ -33,21 +33,21 @@ export default class CourseList extends Vue {
     {
       prop: 'content',
       label: '评论内容',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '30%'
     },
     {
       prop: 'userName',
       label: '发布者',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
     {
       prop: 'status',
       label: '状态',
-      align: 'center',
+      align: 'left',
       showTips: 'yes',
       width: '15%',
       filteredValue:
@@ -70,12 +70,13 @@ export default class CourseList extends Vue {
     {
       prop: 'updatedAt',
       label: '建立时间',
-      align: 'center',
+      align: 'left',
       showTips: 'no',
       width: '15%'
     },
     {
       prop: 'actions',
+      align: 'left',
       label: '操 作',
       showTips: 'yes',
       width: '15%',
