@@ -403,7 +403,7 @@ export default class BroadcastPost extends Vue {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
       this.getGroupListsApi({isHaveMember: 1}),
-      this.getMenberListsApi(),
+      this.getMenberListsApi({selectAll: 1}),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
     ])
@@ -429,7 +429,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi({isHaveMember: 1}),
-        this.getMenberListsApi(),
+        this.getMenberListsApi({selectAll: 1}),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]
@@ -478,7 +478,7 @@ export default class BroadcastPost extends Vue {
       })
 
       // 导师的遍历
-      this.tutorLists.map(field => {
+      this.menberLists.map(field => {
         if(field.uid === info.masterId) {
           this.form.uid.value = String(field.uid)
           this.form.uid.tem = field
@@ -514,6 +514,7 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
+      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');

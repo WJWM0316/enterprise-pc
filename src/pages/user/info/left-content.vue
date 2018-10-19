@@ -139,20 +139,34 @@ export default class ComponentLeft extends Vue {
 	.base-infos-header {
 		height: 108px;
 		line-height: 108px;
+		position: relative;
+		text-align: right;
 		h2 {
 			font-size:38px;
-			font-weight:bold;
 			color:rgba(53,64,72,1);
-			float: left;
 			margin: 0;
+			color: #354048;
+	    margin: 0;
+	    font-weight: 500;
+	    line-height: 1.4;
+	    width: 210px;
+	    display: inline-block;
+	    vertical-align: middle;
+	    position: absolute;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    left: 0;
+	    text-align: left;
 		}
 		.user-avatar {
-			width:108px;
-			height:108px;
-			border-radius:66px;
-			float: right;
 			background: rgba(0,0,0,.05);
-			overflow: hidden;
+	    border-radius: 66px;
+	    height: 108px;
+	    overflow: hidden;
+	    width: 108px;
+	    display: inline-block;
+	    vertical-align: middle;
+	    margin-left: 30px;
 			img{
 				width: 100%;
 				height: 100%;
