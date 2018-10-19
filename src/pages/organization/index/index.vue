@@ -180,6 +180,11 @@
     font-weight:400;
     color:rgba(215,171,112,1);
 }
+
+.el-select-dropdown__item.selected {
+  font-weight: 400;
+  color: rgba(215,171,112,1);
+}
 </style>
 
 <script>
