@@ -7,13 +7,17 @@
     <div class="box">
       <div class="swiper-container gallery-top">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" :style="'background-image:url('+ imgItem.url +')'" v-for="(imgItem, imgIndex) in list" :key="imgIndex"></div>
+          <div class="swiper-slide" v-for="(imgItem, imgIndex) in list" :key="imgIndex">
+            <img :src="imgItem.url" alt="">
+          </div>
         </div>
       </div>
     </div>
     <div class="swiper-container gallery-thumbs">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" :style="'background-image:url('+ imgItem.url +')'" v-for="(imgItem, imgIndex) in list" :key="imgIndex"></div>
+        <div class="swiper-slide" v-for="(imgItem1, imgIndex1) in list" :key="imgIndex1">
+          <img :src="imgItem1.url" alt="">
+        </div>
       </div>
     </div>
   </div>
@@ -99,6 +103,10 @@ export default ComponentImagesViewer
     .swiper-slide {
       background-size: cover;
       background-position: center;
+      text-align: center;
+      img{
+        height: 100%;
+      }
     }
   }
   .gallery-thumbs {
@@ -115,6 +123,12 @@ export default ComponentImagesViewer
       height: 96px;
       border-radius: 4px;
       margin-right: 24px;
+      position: relative;
+      display: inline-block;
+      img{
+        width: 100%;
+        height: 100%;
+      }
     }
     .swiper-slide-thumb-active {}
   }
