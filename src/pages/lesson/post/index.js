@@ -176,9 +176,12 @@ export default class WorkZonePost extends Vue {
           required.push('av_id')
         }
 
-        if(this.form.details !== '<p><br></p>'){
+        console.log(this.form.details !== '<p><br></p>' && this.form.details.length>0)
+        if(this.form.details !== '<p><br></p>' && this.form.details.length>0){
             required.push('details')
         }
+        console.log(this.form.details)
+
         // 过滤不需要提交的参数
         const params = this.transformData(this.form, required)
         this.submit(params)

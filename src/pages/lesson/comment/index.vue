@@ -40,7 +40,7 @@
 
                <el-button
               type="text"
-              v-if="props.scope.row.isExcellentCard==1"
+              v-if="props.scope.row.isHot==1"
               @click="todoAction('cancelExcellent', props.scope.row)">
                 取消热门
               </el-button>
