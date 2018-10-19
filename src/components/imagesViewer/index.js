@@ -38,6 +38,7 @@ import Swiper from 'swiper'
       handler(list) {
         if(list.length) {
           setTimeout(() => {this.init() }, 16.7)
+          this.tem111 = list
         }
       },
       immediate: true
@@ -46,13 +47,22 @@ import Swiper from 'swiper'
 })
 export default class ComponentImagesViewer extends Vue {
   visiable = false
-
+  tem111 = []
   close() {
     this.visiable = false
   }
 
   init() {
     const galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 10,
+      slidesPerView: 6,
+      touchRatio: 0.2,
+      // loop:true,
+      // loopedSlides: 5, //looped slides should be the same
+      slideToClickedSlide: true,
+      preventsDefault:false,
+      observer:true,
+      observerParents:true,
       spaceBetween: 24,
       slidesPerView: 4,
       freeMode: true,
