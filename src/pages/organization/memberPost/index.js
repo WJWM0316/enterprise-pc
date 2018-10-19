@@ -56,7 +56,7 @@ export default class WorkZonePost extends Vue {
   imageUpload = {
 
     hasUploaded: false,
-    btnTxt: '上传封面',
+    btnTxt: '上传头像',
     tips: '建议尺寸160X160px ，JPG、PNG格式，图片小于5M',
     showError: false,
     accept: '.jpeg, .png, .jpg'
@@ -141,7 +141,7 @@ export default class WorkZonePost extends Vue {
     isHintShow:false,
   }
 
-  // 确认信息弹窗
+  // 删除确认信息弹窗
   delateModels = {
     show: false,
     title: '删除账户确认提醒',
