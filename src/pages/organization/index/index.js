@@ -141,10 +141,13 @@ export default class pageOrganization extends Vue {
 
     //跳转个人空间
     viewMenberInfo(id) {
-      this.$router.push({ 
-        name: 'userInfos', 
-        params: { id }
-      })
+      console.log(id)
+      if(id){
+        this.$router.push({ 
+          name: 'userInfos', 
+          params: { id }
+        })
+      }
     }
 
     getMemberList(){

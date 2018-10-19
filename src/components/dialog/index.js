@@ -75,6 +75,12 @@ import Component from 'vue-class-component'
     cancelText: {
       type: String,
       default: '取消'
+    },
+
+    //是否隐藏 1是。2 否
+    isHideBtn: {
+      type: String,
+      default: '2'
     }
   },
   watch: {
