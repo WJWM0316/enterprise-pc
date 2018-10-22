@@ -1,10 +1,11 @@
 const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
-const merge = require('webpack-merge')
 
-const baseConfig = {
+const baseUrl = process.env.NODE_ENV === 'development' ? '/' : ''
+module.exports = {
   lintOnSave: true,
+  baseUrl,
   configureWebpack: {
   	entry: {
 	    vendors: [
@@ -50,12 +51,6 @@ const baseConfig = {
     }
   },
   chainWebpack: config => {
-    config.plugins.delete('prefetch');
+    config.plugins.delete('prefetch')
   }
 }
-
-const proConfig = {}
-if(process.env.NODE_ENV === 'dev') {
-	proConfig.baseUrl = './'
-}
-module.exports = merge(baseConfig, proConfig)
