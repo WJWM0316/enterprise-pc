@@ -6,7 +6,7 @@ const baseUrl = process.env.NODE_ENV === 'development' ? '/' : './'
 
 module.exports = {
   lintOnSave: true,
-  baseUrl,
+  baseUrl: 'laohu',
   configureWebpack: {
   	entry: {
 	    vendors: [
