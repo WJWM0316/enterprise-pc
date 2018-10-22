@@ -307,27 +307,25 @@ export const routes = [
       useNav: true,
       icon: 'icon-teacher',
       module: 'tutor'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'tutorList',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/index/index.vue'),
-        meta: {
-   
-          module: 'tutor'
-        }
-      },
-      {
-        path: 'post',
-        name: 'tutorPost',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
-        meta: {
-   
-          module: 'tutor'
-        }
-      }
-    ]
+    }
+  },
+  {
+    path: '/tutor-list',
+    name: 'tutorList',
+    component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/index/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'tutor'
+    }
+  },
+  {
+    path: '/tutor-post',
+    name: 'tutorPost',
+    component: () => import(/* webpackChunkName: "courseList" */ '@/pages/tutor/post/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'tutor'
+    }
   },
   // {
   //   path: '/work-book',
