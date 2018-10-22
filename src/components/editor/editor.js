@@ -2,6 +2,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import WangEditor from 'wangeditor'
+import { upload_api } from '@/store/api/index.js'
+
 // 添加自定义按钮
 import './indent'
 import './lineheight'
@@ -33,7 +35,8 @@ export default class Editor extends Vue {
     const editor = new WangEditor(this.$refs.editor)
     editor.config.menus = ['|', 'source', 'bold', 'indent', 'lineheight', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', /* 'table', */ 'img', /* 'video', */ 'insertcode', 'undo', 'redo', 'fullscreen']
     editor.config.uploadImgFileName = 'img'
-    editor.config.uploadImgUrl = this.path
+    editor.config.uploadImgUrl = upload_api
+    // editor.config.uploadImgUrl = this.path
     // 自定义load事件
     editor.config.uploadImgFns.onload = (resText) => {
       const _editor = this
