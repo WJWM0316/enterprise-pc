@@ -6,15 +6,15 @@ const company = location.href.split('/')[3] || 'tiger'
 
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
-export let API_ROOT = null
-switch(process.env.NODE_ENV) {
-  case 'pro':
-    API_ROOT = `http://web-api.xplus.xiaodengta.com/${company}`
-    break
-  default:
-    API_ROOT = `http://web.xplus.ziwork.com/${company}`
-    break
-}
+export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
+// switch(process.env.NODE_ENV) {
+//   case 'pro':
+//     API_ROOT = `http://web-api.xplus.xiaodengta.com/${company}`
+//     break
+//   default:
+//     API_ROOT = `http://web.xplus.ziwork.com/${company}`
+//     break
+// }
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
