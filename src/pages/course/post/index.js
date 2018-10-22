@@ -425,7 +425,7 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   initPageByUpdate() {
-    const params = {id: this.$route.params.id}
+    const params = {id: this.$route.query.course_id}
     if(this.$route.name !== 'courseUpdate') return
     Promise.all(
       [
@@ -518,7 +518,6 @@ export default class CoursePost extends Vue {
       this.imageUpload.btnTxt = '重新上传'
       this.ContentEditor.content = courseDetail.intro
       this.temTutorLists = [...this.tutorLists]
-      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');

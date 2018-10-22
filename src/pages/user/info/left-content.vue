@@ -86,7 +86,9 @@ export default class ComponentLeft extends Vue {
 	userInfo = {} //当前用户
 	isShowEdit = false //是否显示编辑
 	created() {
-		const params = this.$route.params
+		const params = {
+			id: this.$route.query.id
+		}
 		this.getPersonalInfoStudyApi(params)
   	this.getPersonalInfoBaseApi(params)
     this.getPersonalInfoLessonsApi(params)

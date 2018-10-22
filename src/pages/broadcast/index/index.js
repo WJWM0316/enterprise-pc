@@ -203,7 +203,7 @@ export default class BroadcastIndex extends Vue {
    * @detail   路由跳转
    */
   routeJump(id, routeName) {
-    this.$router.push({name: routeName, params: {id}})
+    this.$router.push({name: routeName, query: {id}})
   }
 
   /**

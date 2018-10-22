@@ -421,7 +421,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   initPageByUpdate() {
-    const params = {id: this.$route.params.id}
+    const params = {id: this.$route.query.id}
     if(this.$route.name !== 'broadcastUpdate') return
     Promise.all(
       [

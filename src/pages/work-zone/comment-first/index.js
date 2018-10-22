@@ -154,7 +154,7 @@ export default class CommentList extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'comment':
-        this.$router.push({name: 'commentSecondList', params: {id: item.id}})
+        this.$router.push({name: 'commentSecondList', query: {id: item.id}})
         break
       case 'delete':
         this.$confirm('是否删除该评论, 是否继续?', '提示', {

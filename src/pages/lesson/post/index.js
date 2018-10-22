@@ -109,7 +109,6 @@ export default class WorkZonePost extends Vue {
   created() {
     this.action = this.$route.name === 'lessonAdd' ? 'add' : 'edit'
     this.form.course_id = this.$route.query.course_id
-    console.log(this.$route)
     if(this.action === 'add'){
       this.initPageByPost()
     }else {
@@ -153,7 +152,6 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
-    console.log(this.form)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加loading

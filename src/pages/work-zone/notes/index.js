@@ -219,7 +219,7 @@ export default class NoteList extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'comment':
-        this.$router.push({name: 'commentList', params: {id: item.id}})
+        this.$router.push({name: 'commentList', query: {id: item.id}})
         break
       case 'delete':
         this.$confirm('删除后前台不可见, 是否继续?', '提示', {

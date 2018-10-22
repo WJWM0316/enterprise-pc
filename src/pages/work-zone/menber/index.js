@@ -84,7 +84,7 @@ export default class MenberList extends Vue {
 
   init() {
     const params = {
-      id: this.$route.params.id
+      id: this.$route.query.id
     }
     const data = { tem: [], value: [] }
     Promise.all(

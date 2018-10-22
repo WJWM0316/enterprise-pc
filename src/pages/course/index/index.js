@@ -170,10 +170,6 @@ export default class CourseList extends Vue {
    * @return   {[type]}          [description]
    */
   routeJump(id, routeName) {
-    if(routeName === 'lessonList'){
-      this.$router.push({name: routeName, query: { course_id: id }})
-    }else {
-      this.$router.push({name: routeName, params: { id }})
-    }
+    this.$router.push({name: routeName, query: { course_id: id }})
   }
 }

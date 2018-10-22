@@ -345,7 +345,7 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}        [description]
    */
   viewMenberInfo(id) {
-		this.$router.push({ name: 'userInfos', params: { id }})
+		this.$router.push({ name: 'userInfos', query: { id }})
 	}
 
 	clock() {

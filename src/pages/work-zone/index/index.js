@@ -152,6 +152,6 @@ export default class WorkzoneList extends Vue {
    * @detail   路由切换
    */
   routeJump(id, routeName) {
-    this.$router.push({ name: routeName, params: { id } })
+    this.$router.push({ name: routeName, query: { id } })
   }
 }
