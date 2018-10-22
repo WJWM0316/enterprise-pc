@@ -2,7 +2,8 @@ import axios from 'axios'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
-const company = location.href.split('/')[3]
+
+const company = location.href.split('/')[3] || 'tiger'
 
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 

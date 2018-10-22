@@ -4,7 +4,6 @@ const resolve  = dir => { return path.join(__dirname, dir) }
 
 module.exports = {
   lintOnSave: true,
-  baseUrl: './',
   configureWebpack: {
   	entry: {
 	    vendors: [
@@ -51,7 +50,8 @@ module.exports = {
         data: `@import "@/variables.scss";`
       }
     }
+  },
+  chainWebpack: config => {
+    config.plugins.delete('prefetch')
   }
 }
-
-console.log(process.env.NODE_ENV)
