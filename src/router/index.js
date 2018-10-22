@@ -4,9 +4,11 @@ import { routes } from './routes.js'
 
 Vue.use(Router)
 
+const base = location.href.split('/')[3] || 'tiger'
+
 const router = new Router({
   mode: 'history',
-  base: process.env.NODE_ENV === 'production' ? `/${process.env.VUE_APP_COMPANY}` : '/',
+  base,
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

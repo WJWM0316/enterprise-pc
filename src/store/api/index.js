@@ -2,8 +2,10 @@ import axios from 'axios'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
+const company = location.href.split('/')[3] || 'tiger'
+
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
-export const API_ROOT = `${process.env.VUE_APP_API}`
+export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
 
