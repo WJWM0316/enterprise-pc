@@ -34,7 +34,8 @@
     "node-sass": "^4.9.3",
     "sass": "^1.13.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.16",
+    "webpack-merge": "^4.1.4"
   },
   "eslintConfig": {
     "root": true,

@@ -1,8 +1,9 @@
 const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
+const merge = require('webpack-merge')
 
-module.exports = {
+const baseConfig = {
   lintOnSave: true,
   configureWebpack: {
   	entry: {
@@ -43,10 +44,7 @@ module.exports = {
   },
   css: {
     loaderOptions: {
-      // 给 sass-loader 传递选项
       sass: {
-        // @/ 是 src/ 的别名
-        // 所以这里假设你有 `src/variables.scss` 这个文件
         data: `@import "@/variables.scss";`
       }
     }
@@ -55,3 +53,9 @@ module.exports = {
     config.plugins.delete('prefetch');
   }
 }
+
+const proConfig = {}
+if(process.env.NODE_ENV === 'dev') {
+	proConfig.baseUrl = './'
+}
+module.exports = merge(baseConfig, proConfig)
