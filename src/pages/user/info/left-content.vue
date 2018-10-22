@@ -41,7 +41,7 @@
 					<p>学习时长</p>
 				</div>
 				<div>
-					<strong>{{personalInfoStudy.finishedLessonCount}}</strong>
+					<strong>{{personalInfoStudy.lessonCount}}</strong>
 					<p>完成课程数</p>
 				</div>
 				<div>

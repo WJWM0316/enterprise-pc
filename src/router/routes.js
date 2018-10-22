@@ -45,7 +45,7 @@ export const routes = [
     },
     children: [
       {
-        path: 'index',
+        path: './index',
         name: 'courseList',
         component: () => import(/* webpackChunkName: "courseList" */ '@/pages/course/index/index.vue'),
         meta: {
@@ -54,7 +54,7 @@ export const routes = [
         }
       },
       {
-        path: 'post',
+        path: './post',
         name: 'coursePost',
         component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/post/index.vue'),
         meta: {
@@ -63,7 +63,7 @@ export const routes = [
         }
       },
       {
-        path: 'update/:id',
+        path: './update/:id',
         name: 'courseUpdate',
         component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
         meta: {
