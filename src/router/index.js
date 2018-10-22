@@ -4,18 +4,14 @@ import { routes } from './routes.js'
 
 Vue.use(Router)
 
-const base = location.href.split('/')[3] || 'tiger'
+const base = location.href.split('/')[3]
 
 const router = new Router({
   mode: 'history',
   base,
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
+    return savedPosition ? savedPosition : { x: 0, y: 0 }
   }
 })
 

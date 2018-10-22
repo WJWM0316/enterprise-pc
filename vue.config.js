@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
 
-console.log(process.env.NODE_ENV)
 module.exports = {
   lintOnSave: true,
   baseUrl: './',
