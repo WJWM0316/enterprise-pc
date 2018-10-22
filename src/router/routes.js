@@ -43,35 +43,65 @@ export const routes = [
       icon: 'icon-class',
       module: 'course'
     },
-    children: [
-      {
-        path: './index',
-        name: 'courseList',
-        component: () => import(/* webpackChunkName: "courseList" */ '@/pages/course/index/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: './post',
-        name: 'coursePost',
-        component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/post/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      },
-      {
-        path: './update/:id',
-        name: 'courseUpdate',
-        component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
-        meta: {
-          keepAlive: false,
-          module: 'course'
-        }
-      }
-    ]
+    // children: [
+    //   {
+    //     path: './index',
+    //     name: 'courseList',
+    //     component: () => import(/* webpackChunkName: "courseList" */ '@/pages/course/index/index.vue'),
+    //     meta: {
+    //       keepAlive: false,
+    //       module: 'course'
+    //     }
+    //   },
+    //   {
+    //     path: './post',
+    //     name: 'coursePost',
+    //     component: () => import( webpackChunkName: "coursePost"  '@/pages/course/post/index.vue'),
+    //     meta: {
+    //       keepAlive: false,
+    //       module: 'course'
+    //     }
+    //   },
+    //   {
+    //     path: './update/:id',
+    //     name: 'courseUpdate',
+    //     component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
+    //     meta: {
+    //       keepAlive: false,
+    //       module: 'course'
+    //     }
+    //   }
+    // ]
+  },
+  {
+    path: '/courseList',
+    name: 'courseList',
+    component: () => import(/* webpackChunkName: "courseList" */ '@/pages/course/index/index.vue'),
+    meta: {
+      keepAlive: false,
+      module: 'course',
+      useNav: false
+    }
+  },
+  {
+    path: '/coursePost',
+    name: 'coursePost',
+    component: () => import(/* webpackChunkName: "coursePost" */ '@/pages/course/post/index.vue'),
+    meta: {
+      keepAlive: false,
+      module: 'course',
+      useNav: false
+    }
+  },
+  {
+    path: '/courseUpdate/:id',
+    name: 'courseUpdate',
+    component: () => import(/* webpackChunkName: "courseUpdata" */ '@/pages/course/post/index.vue'),
+    meta: {
+      keepAlive: false,
+      module: 'course',
+      useNav: false
+    }
   },
   {
     path: '/broadcast',
