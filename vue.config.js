@@ -4,7 +4,7 @@ const resolve  = dir => { return path.join(__dirname, dir) }
 
 module.exports = {
   lintOnSave: true,
-  baseUrl: '/',
+  baseUrl: '/test',
   // baseUrl: process.env.NODE_ENV === 'production' ? `/${process.env.VUE_APP_COMPANY}` : '/',
   configureWebpack: {
   	entry: {
@@ -43,18 +43,6 @@ module.exports = {
 	    })
     ]
   },
-  // devServer: {
-  //   proxy: {
-  //     '': {
-  //       target: 'http://web.xplus.ziwork.com/tiger',
-  //       changeOrigin: true,
-  //       pathRewrite: {
-  //         '^/tiger': ''
-  //       },
-  //       logLevel: 'debug'
-  //     }
-  //   }
-  // },
   css: {
     loaderOptions: {
       // 给 sass-loader 传递选项
