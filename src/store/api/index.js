@@ -5,7 +5,7 @@ let loadingInstance = null
 const company = location.href.split('/')[3] || 'tiger'
 
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
-export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
+export const API_ROOT = `http://web-api.xplus.xiaodengta.com/${company}`
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
 
