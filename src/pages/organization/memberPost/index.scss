@@ -106,9 +106,6 @@
       margin: 0px 16px 16px 0px;
     }
   }
-  .el-radio {
-    margin: 10px 40px 10px 14px;
-  }
   .el-checkbox {
     margin-top: 10px !important;
     margin-left: 0px !important;
@@ -146,9 +143,6 @@
   .el-radio {
     margin: 10px 32px 10px 0px;
     &.is-checked {
-      //border:1px solid rgba(215,171,112,1);
-      //box-sizing: border-box;
-      //border-radius: 50%;
       .el-radio__inner {
         border-color: rgba(215,171,112,1);
         background:rgba(215,171,112,1);
@@ -157,9 +151,7 @@
         color:rgba(215,171,112,1);
       }
     }
-
     color:rgba(188,188,188,1);
-
   }
 }
 .header {

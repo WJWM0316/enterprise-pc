@@ -56,15 +56,18 @@
               {{groupItem.groupName}}
           </el-button>
         </div>
+
         <div class="menber-list">
-          <el-checkbox-group class="checkbox" v-model="checkList.tem">
-            <el-checkbox
-              class="limit-row-num-1"
-              :label="menberItem.realname"
-              :key="menberIndex"
-              @change="multipleSelection"
-              v-for="(menberItem, menberIndex) in temMenberLists" />
-          </el-checkbox-group>
+          <div
+            v-for="(memberItem, memberIndex) in memberList"
+            :key="memberIndex"
+            @click="multipleSelection(memberItem)"
+            :class="{'common-checkbox-active': memberItem.active}"
+            class="common-checkbox">
+            <i class="icon iconfont icon-check-circle" v-show="memberItem.active"></i>
+            <i class="icon iconfont icon-radio_default" v-show="!memberItem.active"></i>
+            <span>{{memberItem.realname}}</span>
+          </div>
         </div>
 
         <!-- 确认提交 -->
