@@ -391,7 +391,7 @@ export const routes = [
     }
   },
   {
-    path: 'user-info',
+    path: '/user-info',
     name: 'userInfos',
     component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/index.vue'),
     meta: {
