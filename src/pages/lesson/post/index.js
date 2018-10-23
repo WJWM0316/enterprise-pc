@@ -93,6 +93,8 @@ export default class WorkZonePost extends Vue {
   // 编辑id
   lessonId = ''
 
+  nowLoadUid = ''
+
   //验证---start
   validatorBlank(rule, value, callback){
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
@@ -332,9 +334,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
-
     console.log(res)
-    if(this.fileUpload.status === 'loading'){
+    if(res.uid === this.nowLoadUid){
       this.form.av_id = res.data[0].id
 
       this.fileUpload.status = 'success'
@@ -360,7 +361,7 @@ export default class WorkZonePost extends Vue {
       this.fileUpload.progress = 0
       this.fileUpload.progressText = '上传中'
 
-      console.log(this.fileUpload.status)
+      this.nowLoadUid = file.uid
       this.fileUpload.infos = file
       this.fileUpload.show = true
       this.fileUpload.btnTxt = '重新上传'
@@ -377,7 +378,10 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   uploadFileProcess(event, file, fileList){
-    this.fileUpload.progress = file.percentage.toFixed(0)
+    console.log(file.name,file.uid,fileList.length)
+    if(file.uid === this.nowLoadUid){
+      this.fileUpload.progress = file.percentage.toFixed(0)
+    }
   }
 
   /**

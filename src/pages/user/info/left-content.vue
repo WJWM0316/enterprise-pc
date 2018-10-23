@@ -81,17 +81,18 @@ import { getMemberInfosApi } from 'STORE/api/user.js'
   }
 })
 export default class ComponentLeft extends Vue {
-
 	loginInfo = {} //登陆用户
 	userInfo = {} //当前用户
 	isShowEdit = false //是否显示编辑
 	created() {
+
 		const params = {
 			id: this.$route.query.id
 		}
+		
 		this.getPersonalInfoStudyApi(params)
-  	this.getPersonalInfoBaseApi(params)
-    this.getPersonalInfoLessonsApi(params)
+	  	this.getPersonalInfoBaseApi(params)
+	    this.getPersonalInfoLessonsApi(params)
 	}
 
 	//编辑权限判断

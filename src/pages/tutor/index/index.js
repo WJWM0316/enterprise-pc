@@ -171,12 +171,13 @@ export default class CourseList extends Vue {
     console.log(id,type)
     let query = {}
     if(id){
+      query.id = id
       if(type){
         query = {joinType: type}
       }
+      
       this.$router.push({ 
         name: 'userInfos', 
-        params: { id }, 
         query: query
       })
     }

@@ -153,7 +153,6 @@ export default class MenberList extends Vue {
    * @detail   多选
    */
   multipleSelection(item) {
-    let value = []
     let index = ''
     let checkList = this.checkList
     item.active = !item.active
