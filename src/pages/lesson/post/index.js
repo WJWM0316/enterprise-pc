@@ -335,14 +335,12 @@ export default class WorkZonePost extends Vue {
    */
   handleFileSuccess(res) {
     console.log(res)
-    if(res.uid === this.nowLoadUid){
       this.form.av_id = res.data[0].id
 
       this.fileUpload.status = 'success'
       this.fileUpload.progress = 100
       this.fileUpload.progressText = '上传成功'
       this.fileUpload.btnTxt = '重新上传'
-    }
   }
 
   /**
@@ -378,10 +376,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   uploadFileProcess(event, file, fileList){
-    console.log(file.name,file.uid,fileList.length)
-    if(file.uid === this.nowLoadUid){
-      this.fileUpload.progress = file.percentage.toFixed(0)
-    }
+    this.fileUpload.progress = file.percentage.toFixed(0)
   }
 
   /**
@@ -407,6 +402,7 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.status = 'processing'
     this.fileUpload.progressText = ''
 
+    this.$refs.file.abort()
     this.form.av_id = ''
   }
 }
