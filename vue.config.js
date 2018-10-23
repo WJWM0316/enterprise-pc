@@ -2,11 +2,9 @@ const webpack = require('webpack')
 const path = require('path')
 const resolve  = dir => { return path.join(__dirname, dir) }
 
-// const baseUrl = process.env.NODE_ENV === 'development' ? '/' : './'
-
 module.exports = {
   lintOnSave: true,
-  baseUrl: '',
+  baseUrl: process.env.NODE_ENV === 'development' ? '/' : '',
   configureWebpack: {
   	entry: {
 	    vendors: [

@@ -7,7 +7,7 @@
 				<el-popover
 			    placement="bottom-end"
 			    width="158"
-			    content="dddddddd"
+			    content=""
 			    trigger="hover">
 			    <div class="my-popover123456">
 			    	<h2>{{desktopVerInfo.name}}</h2>
@@ -32,10 +32,12 @@
 			    		<strong>{{desktopVerInfo.enable.storageSpaceCount.sizeM}}</strong>
 			    	</div>
 			    </div>
-			    <button class="click-item time-button" v-if="!desktopVerInfo.isOfficial" slot="reference">试用期：{{desktopVerInfo.remainDay}} 天</button>
+			    <button class="click-item time-button" slot="reference">
+			    	{{!desktopVerInfo.isOfficial ? `试用期：${desktopVerInfo.remainDay} 天` : `标准版,${desktopVerInfo.remainDay}天后过期`}}
+			    </button>
 			  </el-popover>
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
-				<button class="todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
+				<button class="todo-action click-item" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
 			</div>
 			<div class="statistics-flex-box">
 				<div>
@@ -411,7 +413,6 @@ export default class pageDashboard extends Vue {
     padding-right: 0;
 	}
 	.time-button {
-		width:91px;
 		height:24px;
 		background:rgba(53,64,72,1);
 		border-radius:12px;
@@ -420,6 +421,7 @@ export default class pageDashboard extends Vue {
 		font-weight:400;
 		color:rgba(255,255,255,1);
 		line-height:20px;
+		padding: 0 15px;
 	}
 	.todo-action{
 		color: #4080AD;
