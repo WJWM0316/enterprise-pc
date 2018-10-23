@@ -49,14 +49,14 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-1" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.id)"> {{ props.scope.row.realname}} </div>
+                <div class="" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.id)"> {{ props.scope.row.realname}} </div>
 
-                <div class="tutor-name limit-row-num-1" v-if="tutorType==='inner'">
+                <div class="tutor-name " v-if="tutorType==='inner'">
                   <div v-if="props.scope.row.group&&props.scope.row.group[0]">
                     {{ props.scope.row.group[0].groupName}}
                   </div>
                 </div>
-                <div class="tutor-name limit-row-num-1" v-else  >
+                <div class="tutor-name " v-else  >
                   <div v-if="props.scope.row.title&&props.scope.row.title[0]">
                     {{ props.scope.row.title[0]}}
                   </div>
@@ -218,6 +218,7 @@ export default CourseList
     height:136px;
     background: rgba(0,0,0,.1);
     margin: 30px 0;
+    display: none;
   }
   .zike-common-search-bar {
     //margin-top: 30px;

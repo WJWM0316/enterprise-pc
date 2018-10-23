@@ -1,5 +1,5 @@
 <template>
-  <div id="user-info" v-if="personalInfoBase.avatar.smallUrl">
+  <div id="user-info" v-if="personalInfoBase.length>0">
 		<left-component />
 		<right-component />
   </div>
@@ -29,7 +29,9 @@ import RightComponent from './right-content.vue'
   watch: {
   	'personalInfoBase': {
       handler(val) {
-      	if(!val) {
+      	console.log(this.$route.query)
+      	console.log(val)
+      	if(!val.uid) {
       		this.clock()
       	}
       },
@@ -41,6 +43,7 @@ export default class pageIndex extends Vue {
 	leaveTime = 5
 	timer = null
 	clock() {
+		console.log(111)
 		this.timer = setInterval(() =>{
 			this.leaveTime--
 			if(this.leaveTime === 0) {

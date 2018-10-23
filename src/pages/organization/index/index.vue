@@ -71,7 +71,7 @@
                 <div class="limit-row-num-2" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
                 <div class="tutor-name limit-row-num-1" >
                   <span v-if="props.scope.row.group[0]" >{{ props.scope.row.group[0].groupName}} </span>
-                  <span v-if="props.scope.row.roleName"> <span v-if="props.scope.row.group[0]">-</span>   {{ props.scope.row.roleName}} </span>
+                  <!-- <span v-if="props.scope.row.roleName"> <span v-if="props.scope.row.group[0]">-</span>   {{ props.scope.row.roleName}} </span> -->
                 </div>
             </div>
           </div>

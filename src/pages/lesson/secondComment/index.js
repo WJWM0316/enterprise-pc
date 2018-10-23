@@ -146,7 +146,7 @@ export default class CourseList extends Vue {
       id: this.pageData.commentId,
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
-      sort: 'asc'
+      sort: 'desc'
     }
 
     //评论状态

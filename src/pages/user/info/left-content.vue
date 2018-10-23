@@ -1,6 +1,6 @@
 <template>
   <div class="user-left-content">
-		<div class="base-infos">
+		<div class="base-infos" >
 			<div class="base-infos-header">
 				<h2>{{personalInfoBase.realname}}</h2>
 				<div class="user-avatar">
@@ -30,7 +30,7 @@
 				</li>
 			</ul>
 			<ul class="user-his-infos" v-else></ul>
-			<div class="edit-enter" v-if="isShowEdit">
+			<div class="edit-enter" v-if="isShowEdit && userInfo && userInfo.roleId!==5">
 				<router-link :to="{name: 'editMember',query: {user_id: userInfo.uid } }" class="set">编辑</router-link>
 			</div>
 		</div>
@@ -49,7 +49,11 @@
 					<p>打卡数</p>
 				</div>
 			</div>
-			<div class="his-learn-tips"> <i class="icon iconfont icon-achievement"></i>你的学习时长已超越 <span>{{ personalInfoStudy.surpass }}% </span> 的同事 ~ </div>
+			<div class="his-learn-tips"> 
+				<i class="icon iconfont icon-achievement"></i>
+
+				{{isMe?'你':'TA'}}的学习时长已超越 
+				<span>{{ personalInfoStudy.surpass }}% </span> 的同事 ~ </div>
 		</div>
 	</div>
 </template>
@@ -84,6 +88,7 @@ export default class ComponentLeft extends Vue {
 	loginInfo = {} //登陆用户
 	userInfo = {} //当前用户
 	isShowEdit = false //是否显示编辑
+	isMe = false //是否自己
 	created() {
 
 		const params = {
@@ -93,11 +98,13 @@ export default class ComponentLeft extends Vue {
 		this.getPersonalInfoStudyApi(params)
 	  	this.getPersonalInfoBaseApi(params)
 	    this.getPersonalInfoLessonsApi(params)
+
+
+
 	}
 
 	//编辑权限判断
 	isJurisdiction() {
-
 		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
 			this.loginInfo = res.data.data
 			if(this.loginInfo.roleName === '超级管理员'){
@@ -113,15 +120,28 @@ export default class ComponentLeft extends Vue {
 					this.isShowEdit = true
 				}
 			}
+
+			if(this.loginInfo.id === this.userInfo.id){
+				this.isMe = true
+			}
 		})
 	}
 	
 	//当前用户信息
 	getUserInfo() {
-		getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
-			this.userInfo = res.data.data
-			this.isJurisdiction()
-		})
+		console.log('this.userInfo')
+		console.log(this.personalInfoBase)
+
+		if(this.personalInfoBase.uid){
+			getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
+				console.log(this.userInfo)
+
+				this.userInfo = res.data.data
+				this.isJurisdiction()
+				console.log(this.userInfo.id)
+			})
+		}
+		
 	}
 }
 </script>

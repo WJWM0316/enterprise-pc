@@ -201,8 +201,8 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch () {
-
-    this.$router.push({query: {page:1}})
+    this.form.page = 1
+    //this.$router.push({query: {page:1}})
     this.getTutorList()
   }
 
@@ -213,8 +213,10 @@ export default class CourseList extends Vue {
 
   //移除老师
   deleteTea() {
+
     this.delateModels.show = false
     let item = this.nowSelectDeleteItem
+    console.log(item)
     if(!item.uid){
       return
     }
@@ -229,6 +231,7 @@ export default class CourseList extends Vue {
   }
 
   showDeleteHint(item){
+
     this.delateModels.show = true
     this.nowSelectDeleteItem = item
   }
