@@ -102,7 +102,7 @@
       <el-form-item
         label="课程封面"
         prop="check_icon"
-        class="limit-width"
+        class="limit-width item_cover"
         >
         <div class="img-box" v-if="form.icon.tem && !imageUpload.showError">
           <img :src="form.icon.tem" class="upload-cover">
@@ -160,7 +160,7 @@
 
       <!-- 不可见学员 -->
       <el-form-item
-        label="不可见学员"
+        label="选择不可见学员"
         class="limit-width"
         >
           <div class="selected-item" v-show="form.hits.show">
@@ -219,7 +219,7 @@
       </el-form-item>
 
       <!-- 确认提交 -->
-      <el-form-item>
+      <el-form-item class="footer-button">
         <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
@@ -414,6 +414,9 @@ export default CoursePost
 @import "~cropperjs/dist/cropper.min.css";
 #course-post {
   background: white;
+  .el-form-item {
+    margin-bottom: 32px;
+  }
   .el-form {
     margin-bottom: 50px;
   }
@@ -427,11 +430,12 @@ export default CoursePost
   }
   .walk-title {
     font-size: 16px;
-    line-height: 1;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(220,223,230,1);
+    line-height: 1;
+    border-bottom: 1px solid #ebeef5;
     font-size: 20px;
     margin: 40px 44px 30px 0px;
+    color: #354048;
   }
   .customize-html-content {
     flex-grow: 1;
@@ -538,23 +542,43 @@ export default CoursePost
       }
     }
   }
-  .el-radio {
-    margin: 10px 30px 10px 0px;
+  .item_cover {
+    .upload-image {
+      padding: 12px 0;
+      width: 96px;
+      height: 40px;
+    }
   }
+  .el-form-item__label {
+    padding-right: 16px;
+  }
+
+  .el-radio {
+    margin: 10px 32px 10px 0px;
+    &.is-checked {
+      .el-radio__inner {
+        border-color: rgba(215,171,112,1);
+        background:rgba(215,171,112,1);
+      }
+      .el-radio__label {
+        color:rgba(215,171,112,1);
+      }
+    }
+    color:rgba(188,188,188,1);
+  }
+
   .el-checkbox {
     margin-top: 10px !important;
     margin-left: 0px !important;
     margin-bottom: 10px !important;
     margin-right: 10px !important;
   }
-  .el-radio__label {
-    box-sizing: border-box;
-    min-width: 70px;
-    padding-left: 5px;
-    display: inline-block; 
-  }
+
   .el-icon-question {
     color: rgba(214,214,214,1);
+    &::before {
+      font-size: 16px;
+    }
   }
   .selected-item {
     font-size: 12px;
@@ -726,6 +750,7 @@ export default CoursePost
     height: 36px;
     line-height: 36px;
     font-size: 12px;
+    border: 1px solid #bcbcbc;
   }
   .el-button:focus, .el-button:hover {
     color: unset;
@@ -734,6 +759,12 @@ export default CoursePost
   }
   .el-checkbox__label{
     min-width: 70px;
+  }
+}
+.footer-button {
+  margin: 40px 0;
+  button {
+    width: 120px;
   }
 }
 </style>

@@ -8,13 +8,11 @@ import { getMemberListApi, getGroupListApi, deleteGroupApi, addGroupApi, editGro
   methods: {
     ...mapActions([
       'showMsg',
-      'getMenberListsApi'
     ])
   },
   computed: {
     ...mapGetters([
       'jobCircleLists',
-      'menberLists'
     ])
   },
   watch: {
@@ -44,14 +42,11 @@ export default class MenberList extends Vue {
   }
 
 
-  checkList = {
-    tem: [],
-    value: []
-  }
+  checkList = []
 
   groupList = []
 
-  temMenberLists = []
+  memberList = []
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -81,10 +76,8 @@ export default class MenberList extends Vue {
     const params = {
       id: this.$route.params.id
     }
-    const data = {
-      tem: [],
-      value: []
-    }
+
+    this.checkList = []
 
     getGroupListApi().then(res=>{
       if(res.data.data.length>0){
@@ -101,24 +94,16 @@ export default class MenberList extends Vue {
       }
     })
 
-    this.getMenberListsApi().then((res) => {
-      this.temMenberLists = [...this.menberLists]
-      this.checkList = data
+    getMemberListApi().then((res) => {
+      res.data.data.map(res=>{
+        res.active = false
+        res.selfGroup = []
+        if(res.group) res.group.map(val => res.selfGroup.push(val.groupId))
+      })
+      this.memberList = res.data.data
 
       if(this.$route.name === 'editGroup'){
         this.getEditMsg()
-      }
-      if(this.groupLists.length>0){
-        let groupList = [{
-          groupName:'所有人',
-          groupId:'all',
-          active: false
-        }]
-        this.groupLists.map(item=>{
-          item.active = false
-          groupList.push(item)
-        })
-        this.groupList = groupList
       }
     })
   }
@@ -126,16 +111,15 @@ export default class MenberList extends Vue {
   //编辑信息操作
   getEditMsg(){
     getMemberListApi({groupId: this.$route.params.groupId}).then(res=>{
-      const menberLists = [...res.data.data]
-      const list = []
+      let memberList = [...res.data.data]
+      let list = []
 
-      menberLists.map(field => {
+      memberList.map(field => {
         list.push(field.realname)
       })
-      this.checkList.tem = list
+
       this.form.name = res.data.data[0].group[0].groupName
       this.multipleSelection()
-
 
       this.editData.groupId = this.$route.params.groupId
       this.editData.name = this.form.name
@@ -158,83 +142,49 @@ export default class MenberList extends Vue {
       }
     }
     // 获取成员列表
-    this.getMenberListsApi(params)
-      .then(() => {
-        this.temMenberLists = [...this.menberLists]
+    getMemberListApi(params)
+      .then(res => {
+        console.log(res)
+        this.memberList = res.data.data
       })
-  }
-
-  /**
-   * @detail  刷选组员数据
-   */
-  filterWorkZoneMenber(item) {
-    let menberLists = [...this.menberLists]
-    menberLists = menberLists.filter(field => {
-      return field.selfGroup.includes(item.id)
-    })
-    this.temMenberLists = menberLists
   }
 
   /**
    * @detail   多选
    */
-  multipleSelection() {
-    const menberLists = [...this.menberLists]
-    const value = []
+  multipleSelection(item) {
+    let value = []
+    let index = ''
+    let checkList = this.checkList
+    item.active = !item.active
+    if(item.active){
+      checkList.push(item.uid)
+    }else {
+      index = checkList.indexOf(item.uid)
+      checkList.splice(index,1)
+    }
 
-    menberLists.map(field => {
-      if(this.checkList.tem.includes(field.realname)) {
-        value.push(field.uid)
-      }
-    })
-
-    this.checkList.value = value
   }
 
   /**
    * @detail   成员分类
    */
   memberClassification(groupItem) {
-    /*const data = {
-      tem: [],
-      value: []
-    }
-    const menberLists = [...this.menberLists]
-  
-    if(groupId === 'all') {
-      menberLists.map(field => {
-        data.tem.push(field.realname)
-        data.value.push(field.uid)
-      })
-    } else {
-      menberLists.map(field => {
-        if(field.selfGroup.includes(groupId)) {
-          data.tem.push(field.realname)
-          data.value.push(field.uid)
-        }
-      })
-    }*/
-    
-    let data = {
-      tem: [...this.checkList.tem],
-      value: [...this.checkList.value]
-    } 
-    const menberLists = [...this.menberLists]
+    let data = [...this.checkList] 
+    let memberList = this.memberList
     groupItem.active = !groupItem.active
       
     if(groupItem.groupId === 'all'){
-      data = {
-        tem: [],
-        value: []
-      }
+      data = []
     }
-    console.log(groupItem.groupId)
-    menberLists.map(field => {
+    memberList.map(field => {
       if(groupItem.groupId === 'all'){
         if(groupItem.active){
           // 选中
-          data.tem.push(field.realname)
-          data.value.push(field.uid)
+          data.push(field.uid)
+          field.active = true
+        }else {
+          field.active = false
         }
 
         this.groupList.map(item=>{
@@ -242,25 +192,24 @@ export default class MenberList extends Vue {
         })
       }else {
         if(field.selfGroup.includes(groupItem.groupId)) {
-          console.log(field.uid)
           if(groupItem.active ){
             // 选中
-            if(!data.value.includes(field.uid)){
-              data.tem.push(field.realname)
-              data.value.push(field.uid)
+            if(!data.includes(field.uid)){
+              data.push(field.uid)
+              field.active = true
             }
           }else {
             //取消
-            let index = data.value.indexOf(field.uid)
+            let index = data.indexOf(field.uid)
             if(index>-1){
-              data.value.splice(index, 1);
-              data.tem.splice(index, 1);
+              data.splice(index, 1);
+              field.active = false
             }
           }
         }
       }
     })
-    console.log(data)
+    console.log(data,memberList)
     this.checkList = data
   }
 
@@ -318,7 +267,7 @@ export default class MenberList extends Vue {
 
         const params = {
           name: this.form.name,
-          memberList: this.checkList.value.join(',')
+          memberList: this.checkList.join(',')
         }
 
         this.submit(params)

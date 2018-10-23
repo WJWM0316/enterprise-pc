@@ -112,9 +112,20 @@
   margin-left: 0px !important;
   margin-bottom: 10px !important;
   margin-right: 10px !important;
+  line-height: 20px;
+  height: 20px;
+
 }
 .el-checkbox__label {
   width: 100px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  line-height: 20px;
+}
+.el-checkbox__input {
+  position: relative;
+  top: -6px;
 }
 .menber-list {
   margin-top: 16px;
@@ -133,20 +144,6 @@
   color:#D7AB70;
   border-color: #EDEDED;
 }
-
-.limit-row-num-1 {
-    width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    color: #354048;
-    font-size: 14px;
-    line-height: 1.4;
-    
-}
-
 .checkbox {
   display: flex;
   flex-direction: row;
