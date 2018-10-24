@@ -370,22 +370,28 @@ export default class CoursePost extends Vue {
         if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value})
   			break
   		case 'members':
-        this.models.show = true
   			this.models.title = '参与课程学员'
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+              })
+            })
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
-        this.models.show = true
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+              })
+            })
         break
   		default:
   			break

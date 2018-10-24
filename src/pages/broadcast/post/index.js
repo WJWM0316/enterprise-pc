@@ -367,21 +367,27 @@ export default class BroadcastPost extends Vue {
         break
   		case 'memberList':
   			this.models.title = '参与直播学员'
-        this.models.show = true
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
+              })
+            })
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
-        this.models.show = true
-        this.setSelfDefinedGroup()
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.setSelfDefinedGroup()
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
+              })
+            })
         break
   		default:
   			break
@@ -400,7 +406,7 @@ export default class BroadcastPost extends Vue {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
       this.getGroupListsApi(),
-      this.getMenberListsApi({selectAll: 1}),
+      this.getMenberListsApi(),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
     ])
@@ -426,7 +432,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getMenberListsApi(),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]
