@@ -30,7 +30,6 @@ import RightComponent from './right-content.vue'
   	'personalInfoBase': {
       handler(val) {
       	console.log(this.$route.query)
-      	console.log(val)
       	if(!val.uid) {
       		this.clock()
       	}
@@ -43,7 +42,7 @@ export default class pageIndex extends Vue {
 	leaveTime = 5
 	timer = null
 	clock() {
-		console.log(111)
+		console.log(this.personalInfoBase)
 		this.timer = setInterval(() =>{
 			this.leaveTime--
 			if(this.leaveTime === 0) {
