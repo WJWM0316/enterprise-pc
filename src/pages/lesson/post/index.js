@@ -276,6 +276,9 @@ export default class WorkZonePost extends Vue {
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
       }
+
+
+      console.log(11111)
       if(msg.avId>0){
         //音视频id
         this.form.av_id = msg.avId
