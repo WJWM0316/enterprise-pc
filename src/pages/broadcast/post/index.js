@@ -57,7 +57,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'categoryList',
       'tutorLists',
       'liveDetails',
-      'tutorLists'
+      'tutorLists',
+      'hasMemberGroupList'
     ])
   }
 })
@@ -372,7 +373,7 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '参与直播学员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
         })
@@ -380,7 +381,7 @@ export default class BroadcastPost extends Vue {
       case 'invisibleList':
         this.models.title = '对这些人不可见'
         this.models.show = true
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
@@ -402,7 +403,7 @@ export default class BroadcastPost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
-      this.getGroupListsApi({isHaveMember: 1}),
+      this.getGroupListsApi(),
       this.getMenberListsApi({selectAll: 1}),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
@@ -428,7 +429,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveDetailApi(params),
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
-        this.getGroupListsApi({isHaveMember: 1}),
+        this.getGroupListsApi(),
         this.getMenberListsApi({selectAll: 1}),
         this.getCategoryListsApi(),
         this.getTutorListApi()

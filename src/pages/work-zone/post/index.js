@@ -50,7 +50,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'menberLists',
       'jobCircleDetails',
       'jobCircleOrganizationLists',
-      'jobCircleHitLists'
+      'jobCircleHitLists',
+      'hasMemberGroupList'
     ])
   }
 })
@@ -302,7 +303,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -319,7 +320,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择不可见成员'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -340,7 +341,7 @@ export default class WorkZonePost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'workZonePost') return
     // 获取组列表
-    this.getGroupListsApi({isHaveMember: 1})
+    this.getGroupListsApi()
     this.getMenberListsApi()
   }
   /**
@@ -357,7 +358,7 @@ export default class WorkZonePost extends Vue {
         this.getJobCircleDetailsApi(params),
         this.getJobCircleHitListsApi(params),
         this.getJobCircleOrganizationListsApi(params),
-        this.getGroupListsApi({isHaveMember: 1}),
+        this.getGroupListsApi(),
         this.getMenberListsApi(),
         this.getJobCircleMemberListsApi(params)
       ]
@@ -411,7 +412,6 @@ export default class WorkZonePost extends Vue {
           this.form.organizations.noEdit.show = true
         }
       })
-
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
       this.form.sort = jobCircleDetails.sort
