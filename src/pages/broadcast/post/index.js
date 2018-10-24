@@ -514,7 +514,6 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -607,7 +606,7 @@ export default class BroadcastPost extends Vue {
         break
       case 'uid':
         if(this.models.editType === 'tutor') {
-          this.temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+          this.temTutorLists.map(field => field.active = (field.uid && item.uid === field.uid) || (field.id && item.uid === field.id) ? !field.active : false)
         } else {
           this.updateMenberListsByIdApi({uid: item.uid})
           this.temTutorLists = this.menberLists

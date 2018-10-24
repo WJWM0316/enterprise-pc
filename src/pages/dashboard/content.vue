@@ -383,7 +383,7 @@ export default class pageDashboard extends Vue {
 		box-sizing: border-box;
 		h1 {
 			font-size:30px;
-			font-weight:500;
+			font-weight:700;
 			color:rgba(53,64,72,1);
 			line-height:1;
 			margin: 0;
@@ -421,7 +421,7 @@ export default class pageDashboard extends Vue {
 		font-weight:400;
 		color:rgba(255,255,255,1);
 		line-height:20px;
-		padding: 0 15px;
+		padding: 0 14px;
 	}
 	.todo-action{
 		color: #4080AD;
@@ -440,7 +440,7 @@ export default class pageDashboard extends Vue {
 			margin: 0;
 			padding: 0;
 			display: block;
-			font-weight: 500;
+			font-weight: 700;
 		}
 		p{
 			font-size:14px;
@@ -631,6 +631,8 @@ export default class pageDashboard extends Vue {
 		background: #fff;
 		padding: 20px;
 		margin-top: 22px;
+		border-radius: 2px;
+		overflow: hidden;
 		.member-dynamics-header {
 			font-size:16px;
 			font-weight:500;
@@ -767,5 +769,19 @@ export default class pageDashboard extends Vue {
 		font-weight:500;
 		color:rgba(215,171,112,1);
 	}
+}
+.my-popover1234571000 {
+	position: absolute;
+  background: #fff;
+  min-width: 150px;
+  border: 1px solid #ebeef5;
+  padding: 12px;
+  z-index: 2000;
+  color: #606266;
+  line-height: 1.4;
+  text-align: justify;
+  font-size: 14px;
+  -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 }
 </style>

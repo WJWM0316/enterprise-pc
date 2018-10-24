@@ -605,7 +605,7 @@ export default class CoursePost extends Vue {
         break
       case 'master_uid':
         if(this.models.editType === 'tutor') {
-          this.temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+          this.temTutorLists.map(field => field.active = (field.uid && item.uid === field.uid) || (field.id && item.uid === field.id) ? !field.active : false)
         } else {
           this.updateMenberListsByIdApi({uid: item.uid})
           this.temTutorLists = this.menberLists

@@ -81,6 +81,7 @@ export default class pageDashboard extends Vue {}
 		.view{
 			float: right;
 			margin: 21px 12px;
+			color:#4080ad;
 		}
 		ul {
 			margin: 10px 0;
@@ -88,14 +89,13 @@ export default class pageDashboard extends Vue {}
 		li{
 			font-size:14px;
 			font-weight:300;
-			color:#1D2D35;
 			padding: 10px 20px;
 			transition: all ease .4s;
 			cursor: pointer;
 			line-height: 1;
+			color: #666666;
 			&:hover{
-				background: rgba(0,0,0,.1);
-				color: #409eff;
+				color:#d7ab70;
 			};
 		}
 	}

@@ -289,7 +289,7 @@
             </div>
             <div class="selected-item" v-show="form.master_uid.show">
               已选择：
-              <span @click="removeSingleChecked('master_uid')">
+              <span @click="removeSingleChecked('master_uid', form.master_uid.tem)">
                 {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
               </span>
             </div>

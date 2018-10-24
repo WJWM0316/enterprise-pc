@@ -82,6 +82,8 @@ export default ComponentTableList
   }
   .img-box {
     margin-right: 20px;
+    border-radius: 2px;
+    overflow: hidden;
   }
   .flex-box {
     display: flex;
@@ -149,6 +151,7 @@ export default ComponentTableList
       border-radius:2px;
       border:1px solid rgba(219,219,219,1);
       color:rgba(215,171,112,1) !important;
+      font-weight: 300;
     }
     .btn-prev,.btn-next{
       padding: 0 10px;

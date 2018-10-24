@@ -44,12 +44,6 @@ export default ComponentVideoViewer
       };
     }
   }
-  .content {
-    video {
-      width: 100%;
-      display: block;
-    }
-  }
   .mask {
     position: fixed;
     left: 0;
@@ -86,8 +80,9 @@ export default ComponentVideoViewer
     border:8px solid rgba(255,255,255,1);
     width:980px;
     height: 560px;
+    text-align: center;
     video {
-      height: 560px;
+      height: 544px;
       margin: 0 auto;
     }
   }
