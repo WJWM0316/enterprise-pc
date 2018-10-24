@@ -279,11 +279,15 @@ export default class WorkZonePost extends Vue {
       this.form = {
         course_id: msg.courseSectionId, // 课程id
         title: msg.title, // 课节标题
-        av_id: msg.avId, // 音视频id
         details:  msg.details, // 内容详情
         punch_card_title:  msg.punchCardTitle, // 打卡题目
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
+      }
+
+      if(msg.avId>0){
+        //音视频id
+        this.form.av_id = msg.avId
       }
     })
   }

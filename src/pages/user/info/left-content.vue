@@ -90,17 +90,13 @@ export default class ComponentLeft extends Vue {
 	isShowEdit = false //是否显示编辑
 	isMe = false //是否自己
 	created() {
-
 		const params = {
 			id: this.$route.query.id
 		}
-		
+		console.log('left')
 		this.getPersonalInfoStudyApi(params)
-	  	this.getPersonalInfoBaseApi(params)
+	  	//this.getPersonalInfoBaseApi(params)
 	    this.getPersonalInfoLessonsApi(params)
-
-
-
 	}
 
 	//编辑权限判断
@@ -129,16 +125,10 @@ export default class ComponentLeft extends Vue {
 	
 	//当前用户信息
 	getUserInfo() {
-		console.log('this.userInfo')
-		console.log(this.personalInfoBase)
-
 		if(this.personalInfoBase.uid){
 			getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
-				console.log(this.userInfo)
-
 				this.userInfo = res.data.data
 				this.isJurisdiction()
-				console.log(this.userInfo.id)
 			})
 		}
 		

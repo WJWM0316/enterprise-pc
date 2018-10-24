@@ -1,13 +1,15 @@
 <template>
-  <div id="user-info" v-if="personalInfoBase.length>0">
-		<left-component />
-		<right-component />
-  </div>
-  <div v-else class="no-user-data">
-  	<div>
-	  	<img src="~IMAGES/no-data.png" alt="">
-	  	<p>该员工已被删除 | {{leaveTime}}秒后<span @click="routeJump">返回首页</span></p>
-  	</div>
+  <div id="user-info" v-if="show">
+  		<div id="user-info-cont"  v-if="!isDelete">
+  			<left-component />
+  			<right-component />
+  		</div>
+  		<div class="no-user-data" v-else>
+		  	<div>
+			  	<img src="~IMAGES/no-data.png" alt="">
+			  	<p>该员工已被删除 | {{leaveTime}}秒后<span @click="routeJump">返回首页</span></p>
+		  	</div>
+  		</div>
   </div>
 </template>
 <script>
@@ -17,6 +19,11 @@ import LeftComponent from './left-content.vue'
 import RightComponent from './right-content.vue'
 
 @Component({
+	methods: {
+		...mapActions([
+			'getPersonalInfoBaseApi'
+		])
+	},
 	components: {
 		LeftComponent,
 		RightComponent
@@ -27,27 +34,19 @@ import RightComponent from './right-content.vue'
     ])
   },
   watch: {
-  	'personalInfoBase': {
-      handler(val) {
-      	console.log(this.$route.query)
-      	if(!val.uid) {
-      		this.clock()
-      	}
-      },
-      immediate: true
-    }
   }
 })
 export default class pageIndex extends Vue {
 	leaveTime = 5
 	timer = null
+	isDelete = false
+	show = false
 	clock() {
 		console.log(this.personalInfoBase)
 		this.timer = setInterval(() =>{
 			this.leaveTime--
 			if(this.leaveTime === 0) {
 				clearInterval(this.timer)
-				console.log(111)
 				this.$router.push({name: 'dashboard'})
 			}
 		}, 1000 )
@@ -57,10 +56,27 @@ export default class pageIndex extends Vue {
 		clearInterval(this.timer)
 		this.$router.push({name: 'dashboard'})
 	}
+
+	created(){
+		const params = {
+			id: this.$route.query.id
+		}
+		console.log(this.personalInfoBase)
+	  	this.getPersonalInfoBaseApi(params).then(()=>{
+			console.log('22222',this.personalInfoBase)
+  			this.show = true
+	  		if(this.personalInfoBase && this.personalInfoBase.uid){
+
+	  		}else {
+	  			this.isDelete = true
+	  			this.clock()
+	  		}
+	  	})
+	}
 }
 </script>
 <style lang="scss">
-#user-info {
+#user-info-cont {
 	display: -webkit-box;
 }
 .no-user-data {
