@@ -346,9 +346,9 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
-    const isLt100M = file.size / 1024 / 1024 < 100;
-    if(!isLt100M){
-      this.$message.error('上传文件大小不能超过 100MB!');
+    const isLt200M = file.size / 1024 / 1024 < 200;
+    if(!isLt200M){
+      this.$message.error('上传文件大小不能超过 200MB!');
     }else {
       this.fileUpload.status = 'loading'
       this.fileUpload.progress = 0
@@ -361,7 +361,7 @@ export default class WorkZonePost extends Vue {
       this.fileUpload.params.attach_type = file.type.split('/')[0]
     }
 
-    return isLt100M
+    return isLt200M
   }
 
   /**

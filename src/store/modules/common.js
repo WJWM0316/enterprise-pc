@@ -189,7 +189,7 @@ const mutations = {
   },
   // 组织切换选中
   [SWITCH_SINGLE_GROUP_LISTS] (state, params) {
-    state.groupLists.map(field => {
+    state.hasMemberGroupList.map(field => {
       if(params.groupId === field.groupId) field.active = params.bool
     })
   },
@@ -197,7 +197,7 @@ const mutations = {
   [CLASSIFY_MENBER_LISTS_BY_GROUPID] (state, params) {
     if(params.groupId === 'all') {
       params.bool ? state.menberLists.map(field => field.active = false) : state.menberLists.map(field => field.active = true)
-      params.bool ? state.groupLists.map(field => field.active = false) : state.groupLists.map(field => field.active = true)
+      params.bool ? state.hasMemberGroupList.map(field => field.active = false) : state.hasMemberGroupList.map(field => field.active = true)
     } else {
       state.menberLists.map(field => {
         if(field.selfGroup && field.selfGroup.includes(params.groupId)) field.active = !field.active
@@ -209,10 +209,12 @@ const mutations = {
     state.memberDynamics = data
   },
   [ADD_SELF_GROUP_BY_USER] (state) {
-    state.groupLists = [{groupName: '所有人', isUserDedined: true, active: false, groupId: 'all', sort: 'self'}, ...state.groupLists]
+    const bool = state.hasMemberGroupList.every(field => field.groupId !== 'all')
+    if(bool) state.hasMemberGroupList.unshift({groupName: '所有人', isUserDedined: true, active: false, groupId: 'all', sort: 'self'})
   },
   [REMOVE_SELF_GROUP_ITEM] (state) {
-    state.groupLists = state.groupLists
+    const bool = state.hasMemberGroupList.every(field => field.groupId !== 'all')
+    if(!bool) state.hasMemberGroupList.shift()
   }
 }
 

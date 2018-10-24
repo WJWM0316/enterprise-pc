@@ -356,7 +356,6 @@ export default class CoursePost extends Vue {
   		case 'master_uid':
   			this.models.title = '选择导师'
         this.models.show = true
-        this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.id || this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid || Number(this.form.master_uid.value) === field.id ? true : false)
         } else {
@@ -367,11 +366,8 @@ export default class CoursePost extends Vue {
   			break
   		case 'group_id':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
-            .then(() => {
-              this.models.show = true
-              if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value})
-            })
+        this.models.show = true
+        if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value})
   			break
   		case 'members':
         this.models.show = true

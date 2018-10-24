@@ -352,7 +352,6 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.models.show = true
-        this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
           temTutorLists.map(field => field.active = this.form.uid.value === field.id || this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid || Number(this.form.uid.value) === field.id ? true : false)
           this.temTutorLists = temTutorLists
@@ -363,11 +362,8 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
-            .then(() => {
-              this.models.show = true
-              this.form.groupList.value.length ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')}) : this.noCheckGroupListsApi()
-            })
+        this.models.show = true
+        this.form.groupList.value.length ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')}) : this.noCheckGroupListsApi()
         break
   		case 'memberList':
   			this.models.title = '参与直播学员'

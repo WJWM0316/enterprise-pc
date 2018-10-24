@@ -294,7 +294,7 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择圈主'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
+        // this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: [this.form.owner_uid.value]
         })
@@ -310,11 +310,8 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
-            .then(() => {
-              this.models.show = true
-              if(this.form.organizations.value.length) this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
-            })
+        this.models.show = true
+        if(this.form.organizations.value.length) this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
