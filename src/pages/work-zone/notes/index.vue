@@ -74,7 +74,7 @@
         <div
           v-else-if="props.scope.column.property === 'type'"
           :class="{'can-click': props.scope.row.type !== '无文件', 'no-click': props.scope.row.type === '无文件'}"
-          class="limit-row-num-2-2" @click="showModal(props.scope.row)">
+          @click="showModal(props.scope.row)">
           {{ props.scope.row.type === '无文件' ? '-' : props.scope.row.type }}
         </div>
         <div v-else-if="props.scope.column.property === 'createdAt'">
@@ -143,6 +143,8 @@ export default NoteList
   }
   .can-click{
     color: #4080AD;
+    cursor: pointer;
+    display: inline;
   }
   .no-click{
     color: #929292;

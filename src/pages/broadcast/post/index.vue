@@ -305,7 +305,7 @@
             </div>
             <div class="selected-item" v-show="form.uid.show">
               已选择：
-              <span @click="removeSingleChecked('uid')">
+              <span @click="removeSingleChecked('uid', form.uid.tem)">
                 {{ form.uid.tem.realname }}<i class="el-icon-close"></i>
               </span>
             </div>
@@ -313,7 +313,7 @@
               <button class="common-btn" @click="tutorClassification('uid', 'outer')">外部导师</button>
               <button class="common-btn" @click="tutorClassification('uid', 'all')">所有人</button>
               <button class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="tutorClassification('uid', groupItem)">
@@ -364,7 +364,7 @@
             <div class="group-list">
               <button
                 class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">
@@ -398,7 +398,7 @@
             <div class="group-list">
               <button
                 class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('groupList', groupItem)">

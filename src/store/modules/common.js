@@ -43,6 +43,8 @@ import {
 
 const state = {
   groupLists: [],
+  // 有成员的组织列表
+  hasMemberGroupList: [],
   categoryList: {},
   uploadConfig: {},
   menberLists: [],
@@ -153,7 +155,10 @@ const mutations = {
   },
   // 获取组列表
   [GET_GROUP_LISTS] (state, data) {
-    data.map(field => {field.active = false})
+    data.map(field => {
+      field.active = false
+      if(field.count) state.hasMemberGroupList.push(field)
+    })
     state.groupLists = data
   },
   // 更新组列表
@@ -221,7 +226,8 @@ const getters = {
   menberLists: state => state.menberLists,
   categoryList: state => state.categoryList,
   companyInfo: state => state.companyInfo,
-  memberDynamics: state => state.memberDynamics
+  memberDynamics: state => state.memberDynamics,
+  hasMemberGroupList: state => state.hasMemberGroupList
 }
 
 const actions = {

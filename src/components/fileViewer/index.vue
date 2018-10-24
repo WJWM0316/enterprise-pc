@@ -46,6 +46,8 @@ export default ComponentVideoViewer
     z-index: 10;
     box-sizing: border-box;
     display: flex;
+    border-radius: 4px;
+    overflow: hidden;
     .filename {
       margin: 0;
       line-height: 1;

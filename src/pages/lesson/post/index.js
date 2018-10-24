@@ -189,7 +189,6 @@ export default class WorkZonePost extends Vue {
 
   // 提交表单数据
   submit(params) {
-    console.log(params)
     let that = this
     let obj = {
       suc: function(res){
@@ -215,7 +214,6 @@ export default class WorkZonePost extends Vue {
       },
     }
     params.title = params.title.replace(/(^\s*)|(\s*$)/g, "")
-    console.log(params.title.length)
 
     if(this.action === 'add'){
       postLessonApi(params)
@@ -287,8 +285,6 @@ export default class WorkZonePost extends Vue {
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
       }
-
-      console.log(this.form)
     })
   }
 
@@ -299,8 +295,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleImageSuccess(res) {
-    console.log(res)
-
     res.data[0].show = false
     this.imageUpload.list.push(res.data[0])
     this.imageUpload.status = 'success'
@@ -334,9 +328,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileSuccess(res) {
-    console.log(res)
       this.form.av_id = res.data[0].id
-
       this.fileUpload.status = 'success'
       this.fileUpload.progress = 100
       this.fileUpload.progressText = '上传成功'
@@ -350,10 +342,9 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
-    console.log(file,file.size / 1024 / 1024)
-    const isLt200M = file.size / 1024 / 1024 < 200;
-    if(!isLt200M){
-      this.$message.error('上传文件大小不能超过 200MB!');
+    const isLt100M = file.size / 1024 / 1024 < 100;
+    if(!isLt100M){
+      this.$message.error('上传文件大小不能超过 100MB!');
     }else {
       this.fileUpload.status = 'loading'
       this.fileUpload.progress = 0
@@ -366,7 +357,7 @@ export default class WorkZonePost extends Vue {
       this.fileUpload.params.attach_type = file.type.split('/')[0]
     }
 
-    return isLt200M
+    return isLt100M
   }
 
   /**
@@ -386,7 +377,6 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleFileError(err, file, fileList) {
-    console.log(err)
     this.fileUpload.status = 'error'
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'

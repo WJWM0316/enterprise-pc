@@ -230,7 +230,7 @@
               <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
               <button
                 class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 @click="filterOwnerUid('owner_uid', groupItem)">
                 {{groupItem.groupName}}
@@ -263,7 +263,7 @@
             <div class="group-list">
               <button
                 class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('members', groupItem)">
@@ -314,7 +314,7 @@
             <div class="group-list">
               <button
                 class="common-btn"
-                v-for="(groupItem, groupIndex) in groupLists"
+                v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="filterMenber('hits', groupItem)">

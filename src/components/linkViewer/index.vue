@@ -50,6 +50,8 @@ export default ComponentLinkViewer
     z-index: 10;
     box-sizing: border-box;
     display: flex;
+    border-radius: 4px;
+    overflow: hidden;
     .filename {
       margin: 0;
       line-height: 1.4;
@@ -64,7 +66,7 @@ export default ComponentLinkViewer
   .img-box {
     width: 72px;
     height: 72px;
-    background: #4080AD;
+    background: #0097e6;
     line-height: 72px;
     text-align: center;
     color: white;

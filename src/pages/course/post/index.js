@@ -59,7 +59,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'courseOrganizations',
       'courseCategory',
       'coursePeaple',
-      'coursePeapleHits'
+      'coursePeapleHits',
+      'hasMemberGroupList'
     ])
   }
 })
@@ -376,7 +377,7 @@ export default class CoursePost extends Vue {
         this.models.show = true
   			this.models.title = '参与课程学员'
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
         })
@@ -385,7 +386,7 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1}).then(() => {this.setSelfDefinedGroup()})
+        this.setSelfDefinedGroup()
         this.updateMultipleMenberListsApi({
           list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
         })
@@ -406,7 +407,7 @@ export default class CoursePost extends Vue {
   initPageByPost() {
     if(this.$route.name !== 'coursePost') return
     Promise.all([
-      this.getGroupListsApi({isHaveMember: 1}),
+      this.getGroupListsApi(),
       this.getMenberListsApi(),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
@@ -435,7 +436,7 @@ export default class CoursePost extends Vue {
         this.getCourseCategoryApi(params),
         this.getCoursePeopleHitsApi(params),
         this.getMenberListsApi(),
-        this.getGroupListsApi({isHaveMember: 1}),
+        this.getGroupListsApi(),
         this.getCategoryListsApi(),
         this.getTutorListApi({type: 2})
       ]
@@ -605,7 +606,7 @@ export default class CoursePost extends Vue {
         break
       case 'master_uid':
         if(this.models.editType === 'tutor') {
-          this.temTutorLists.map(field => field.active = item.uid === field.uid ? !field.active : false)
+          this.temTutorLists.map(field => field.active = (field.uid && item.uid === field.uid) || (field.id && item.uid === field.id) ? !field.active : false)
         } else {
           this.updateMenberListsByIdApi({uid: item.uid})
           this.temTutorLists = this.menberLists
