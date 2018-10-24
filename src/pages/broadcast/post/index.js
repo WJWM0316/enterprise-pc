@@ -352,7 +352,6 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.models.show = true
-        this.getGroupListsApi({isHaveMember: 1})
         if(this.models.editType === 'tutor') {
           temTutorLists.map(field => field.active = this.form.uid.value === field.id || this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid || Number(this.form.uid.value) === field.id ? true : false)
           this.temTutorLists = temTutorLists
@@ -363,29 +362,32 @@ export default class BroadcastPost extends Vue {
   			break
   		case 'groupList':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
-            .then(() => {
-              this.models.show = true
-              this.form.groupList.value.length ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')}) : this.noCheckGroupListsApi()
-            })
+        this.models.show = true
+        this.form.groupList.value.length ? this.updateGroupListsApi({list: this.form.groupList.value.split(',')}) : this.noCheckGroupListsApi()
         break
   		case 'memberList':
   			this.models.title = '参与直播学员'
-        this.models.show = true
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
+              })
+            })
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
-        this.models.show = true
-        this.setSelfDefinedGroup()
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.setSelfDefinedGroup()
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
+              })
+            })
         break
   		default:
   			break
@@ -404,7 +406,7 @@ export default class BroadcastPost extends Vue {
     if(this.$route.name !== 'broadcastPost') return
     Promise.all([
       this.getGroupListsApi(),
-      this.getMenberListsApi({selectAll: 1}),
+      this.getMenberListsApi(),
       this.getCategoryListsApi(),
       this.getTutorListApi({type: 2})
     ])
@@ -430,7 +432,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi(),
-        this.getMenberListsApi({selectAll: 1}),
+        this.getMenberListsApi(),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]

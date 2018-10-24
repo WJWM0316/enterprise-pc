@@ -294,36 +294,38 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择圈主'
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
-        this.getGroupListsApi({isHaveMember: 1})
         this.updateMultipleMenberListsApi({
           list: [this.form.owner_uid.value]
         })
   			break
   		case 'members':
   			this.models.title = '选择成员'
-        this.models.show = true
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+              })
+            })
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
-        this.getGroupListsApi()
-            .then(() => {
-              this.models.show = true
-              if(this.form.organizations.value.length) this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
-            })
+        this.models.show = true
+        if(this.form.organizations.value.length) this.updateGroupListsApi({list: this.form.organizations.value.split(',')})
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
-        this.models.show = true
-        this.updateMenberListsAllApi({bool: false})
-        this.setSelfDefinedGroup()
-        this.updateMultipleMenberListsApi({
-          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
-        })
+        this.getMenberListsApi()
+            .then(() => {
+              this.models.show = true
+              this.updateMenberListsAllApi({bool: false})
+              this.setSelfDefinedGroup()
+              this.updateMultipleMenberListsApi({
+                list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+              })
+            })
   			break
   		default:
   			break
