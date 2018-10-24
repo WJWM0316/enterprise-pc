@@ -123,6 +123,8 @@ export default class CourseList extends Vue {
 
   pageData={
   }
+
+  postId = null
   /**
    * 初始化表单、分页页面数据
    */
@@ -130,6 +132,10 @@ export default class CourseList extends Vue {
     this.form = Object.assign(this.form,this.$route.query || {})
 
     this.pageData = Object.assign(this.$route.query || {})
+
+    if(this.$route.query.postId){
+      this.postId = this.$route.query.postId
+    }
     //测试结束删除
     this.getLists()
   }

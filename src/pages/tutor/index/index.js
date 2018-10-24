@@ -217,11 +217,11 @@ export default class CourseList extends Vue {
     this.delateModels.show = false
     let item = this.nowSelectDeleteItem
     console.log(item)
-    if(!item.uid){
+    if(!item.id){
       return
     }
 
-    deletetTutorApi({id: item.uid}).then(res=>{
+    deletetTutorApi({id: item.id}).then(res=>{
       this.nowSelectDeleteItem = {}
       this.$message(res.data.msg)
       this.getTutorList()

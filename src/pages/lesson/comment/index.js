@@ -259,7 +259,8 @@ export default class CourseList extends Vue {
             query: {
               course_section_id: this.pageData.course_section_id,
               course_id: this.pageData.course_id,
-              commentId: item.id
+              commentId: item.id,
+              postId: this.pageData.postId
             }
           }
         )

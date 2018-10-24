@@ -9,7 +9,8 @@
       }}">打卡管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'comment' , query:{
         'course_id': pageData.course_id,
-        'course_section_id': pageData.course_section_id
+        'course_section_id': pageData.course_section_id,
+        'postId': postId
       }}">评论管理</el-breadcrumb-item>
       <el-breadcrumb-item>评论</el-breadcrumb-item>
     </el-breadcrumb>

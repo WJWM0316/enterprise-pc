@@ -268,14 +268,6 @@ export default class WorkZonePost extends Vue {
       
       this.imageUpload.list = msg.punchCardCImgInfo
       this.ContentEditor.content = msg.details
-      if(msg.av){
-        this.fileUpload.infos.name = msg.av.fileName
-        this.fileUpload.status = 'success'
-        this.fileUpload.progress = 100
-        this.fileUpload.progressText = ''
-        this.fileUpload.btnTxt = '重新上传'
-        this.fileUpload.show = true
-      }
       this.form = {
         course_id: msg.courseSectionId, // 课程id
         title: msg.title, // 课节标题
@@ -284,10 +276,17 @@ export default class WorkZonePost extends Vue {
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
       }
-
       if(msg.avId>0){
         //音视频id
         this.form.av_id = msg.avId
+        if(msg.av){
+          this.fileUpload.infos.name = msg.av.fileName
+          this.fileUpload.status = 'success'
+          this.fileUpload.progress = 100
+          this.fileUpload.progressText = ''
+          this.fileUpload.btnTxt = '重新上传'
+          this.fileUpload.show = true
+        }
       }
     })
   }
