@@ -19,6 +19,7 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { removeAccessToken } from '@/store/cacheService'
 
 @Component({
   methods: {
@@ -91,6 +92,8 @@ export default class pageLogin extends Vue {
 
   mounted() {
   	this.onEnterLogin()
+    // 来到登录页 则清空登录信息
+    removeAccessToken()
   }
 }
 </script>

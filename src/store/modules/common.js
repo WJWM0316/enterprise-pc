@@ -26,7 +26,8 @@ import {
   UPDATE_All_GROUP_LISTS_STATUS,
   SWITCH_SINGLE_GROUP_LISTS,
   UPDATE_MENBER_SINGLE,
-  UPDATE_ALL_MENBER_STATUS
+  UPDATE_ALL_MENBER_STATUS,
+  CURRENT_ROUTE_NAME
 } from '../mutation-types'
 
 import {
@@ -57,7 +58,8 @@ const state = {
   ajaxLoading: false,
   openModal: false, // 是否处于打开modal层状态
   companyInfo: {},
-  memberDynamics: {}
+  memberDynamics: {},
+  pageName: ''
 }
 
 const mutations = {
@@ -215,6 +217,9 @@ const mutations = {
   [REMOVE_SELF_GROUP_ITEM] (state) {
     const bool = state.hasMemberGroupList.every(field => field.groupId !== 'all')
     if(!bool) state.hasMemberGroupList.shift()
+  },
+  [CURRENT_ROUTE_NAME](state, options) {
+    state.pageName = options.name
   }
 }
 
@@ -229,7 +234,8 @@ const getters = {
   categoryList: state => state.categoryList,
   companyInfo: state => state.companyInfo,
   memberDynamics: state => state.memberDynamics,
-  hasMemberGroupList: state => state.hasMemberGroupList
+  hasMemberGroupList: state => state.hasMemberGroupList,
+  pageName: state => state.pageName
 }
 
 const actions = {
@@ -539,6 +545,9 @@ const actions = {
    */
   updateAllMemberStatus(store, params) {
     store.commit(UPDATE_ALL_MENBER_STATUS, params)
+  },
+  setPageName(store, options) {
+    store.commit(CURRENT_ROUTE_NAME, options)
   }
 }
 

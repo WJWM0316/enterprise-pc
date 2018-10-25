@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { routes } from './routes.js'
-
+import store from '../store'
 Vue.use(Router)
 
 const base = location.href.split('/')[3]
@@ -16,10 +16,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (from.name !== to.name) {
-    window.scrollTo(0, 0)
-  }
-  next(true)
+  store.dispatch('setPageName', {name: to.name})
+  next()
 })
 
 export default router
