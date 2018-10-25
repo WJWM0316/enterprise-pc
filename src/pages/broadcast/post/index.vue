@@ -142,6 +142,7 @@
       
       <!-- 直播简介 -->
       <el-form-item
+        prop="intro"
         label="直播简介"
         >
           <editor
@@ -150,6 +151,7 @@
             v-model="form.intro"
             :path="ContentEditor.path"
             :height="ContentEditor.height"
+            @input="handleContentEditorInput"
             @blur="handleContentEditorBlur" />
       </el-form-item>
       

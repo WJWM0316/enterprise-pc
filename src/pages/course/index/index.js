@@ -128,7 +128,7 @@ export default class CourseList extends Vue {
     }
     if(this.form.name) {
       params.name = this.form.name
-      params.page = 1
+      params.page = this.form.page ? this.form.page : 1
     }
     if(this.form.status) {
       params.status = Number(this.form.status) === 3 ? '' : this.form.status

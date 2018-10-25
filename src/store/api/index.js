@@ -1,3 +1,4 @@
+// http://web.xplus.ziwork.com/laohu/api/docs#
 import axios from 'axios'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
