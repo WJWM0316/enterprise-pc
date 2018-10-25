@@ -282,6 +282,14 @@ export default class CoursePost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
+        if(res.status === 500) {
+          this.$message.error(`${res.data.msg}~`);
+          setTimeout(() => {
+            this.submitBtnClick = !this.submitBtnClick
+            this.submitBtnTxt = '提交'
+          }, 3000)
+          return
+        }
         this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick

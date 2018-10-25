@@ -1,6 +1,6 @@
-import router from '@/router/index.js'
-import localstorage from '@u/localstorage'
-import store from '@/store/index.js'
+// import router from '@/router/index.js'
+// import localstorage from '@u/localstorage'
+// import store from '@/store/index.js'
 class WS {
   ws = null
   url = ''
@@ -28,9 +28,9 @@ class WS {
       ws.onopen = () => {
         this.lastTealthTime = 0
         // 未登录先登录再加入直播间
-        if (!store.getters.wsLogin) {
-          this.login()
-        }
+        // if (!store.getters.wsLogin) {
+        //   this.login()
+        // }
         if (this.ws.readyState === 1) { // 为1表示连接处于open状态
           clearInterval(this.keepAliveTimer)
           this.keepAliveTimer = setInterval(() => { // 开启心跳检查
@@ -52,12 +52,12 @@ class WS {
             console.log('======WebSocket======' + data.msg)
             if (data.code === 200) {
               this.isLogin = true
-              store.dispatch('updata_wsStatus', 1)
-              store.dispatch('updata_wsLogin', true)
+              // store.dispatch('updata_wsStatus', 1)
+              // store.dispatch('updata_wsLogin', true)
             } else if (data.code === 401) { // 登录失败重新登录
               this.isLogin = false
-              store.dispatch('updata_wsLogin', false)
-              router.push('/login')
+              // store.dispatch('updata_wsLogin', false)
+              // router.push('/login')
             }
             break
           case 'live.add':
@@ -68,7 +68,7 @@ class WS {
             break
           case 'msg.push': // 不是心跳返回的数据和登录的返回的数据, 存储起来
             let time = new Date().getTime()
-            store.dispatch('updata_resolveTime', time)
+            // store.dispatch('updata_resolveTime', time)
             break
         }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
@@ -79,7 +79,7 @@ class WS {
       // 关闭监听
       ws.onclose = (e) => {
         console.log('======WebSocket连接已关闭======')
-        store.dispatch('updata_wsLogin', false)
+        // store.dispatch('updata_wsLogin', false)
         this.reConnect()
       }
       // 错误监听
@@ -94,7 +94,7 @@ class WS {
   login = () => {
     let data = {
       cmd: 'login.token',
-      token: localstorage.get('token'),
+      token: 123,
       data: {}
     }
     this.send(data)
@@ -178,10 +178,10 @@ class WS {
     }
     if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
       console.log('======websocket重连不上，自动关闭')
-      store.dispatch('updata_wsStatus', 2)
+      // store.dispatch('updata_wsStatus', 2)
       this.close()
     } else {
-      store.dispatch('updata_wsStatus', 0)
+      // store.dispatch('updata_wsStatus', 0)
       this.create(this.url, this.liveId) // 断线重连
     }
   }
