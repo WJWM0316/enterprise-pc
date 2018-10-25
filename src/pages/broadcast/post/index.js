@@ -493,6 +493,7 @@ export default class BroadcastPost extends Vue {
       })
 
       this.form.id = info.id
+      this.form.status = info.status
       this.form.startTime = new Date(info.expectedStartTime)
       this.form.coverImgId.value = info.coverImgId
       this.form.coverImgId.tem = info.cover.smallUrl
@@ -517,6 +518,7 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
+      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');

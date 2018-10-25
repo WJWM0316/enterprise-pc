@@ -157,9 +157,11 @@ const mutations = {
   },
   // 获取组列表
   [GET_GROUP_LISTS] (state, data) {
+    // 先清空之前的数据
+    state.hasMemberGroupList = []
     data.map(field => {
       field.active = false
-      if(field.count) state.hasMemberGroupList.push(field)
+      if(field.count > 0) state.hasMemberGroupList.push(field)
     })
     state.groupLists = data
   },

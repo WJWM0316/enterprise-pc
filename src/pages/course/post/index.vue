@@ -51,15 +51,19 @@
         prop="check_master_uid"
         class="limit-width"
         > 
-          <div class="selected-item" v-show="form.master_uid.show">
-            <span @click="removeSingleChecked('master_uid', form.master_uid.tem)">
+          <div class="selected-item" v-show="form.master_uid.show" :class="{'no-margin-bottom': form.id}">
+            <span @click="removeSingleChecked('master_uid', form.master_uid.tem)" v-if="!form.id">
               {{ form.master_uid.tem.realname }}<i class="el-icon-close"></i>
+            </span>
+            <span v-else>
+              {{ form.master_uid.tem.realname }}
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
             @click="openModal('master_uid')"
+            v-if="!form.id"
             :class="{'zike-btn-selected': form.master_uid.show}">
               {{form.master_uid.show ? '重新选择' : '点击选择'}}
           </el-button>

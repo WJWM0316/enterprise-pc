@@ -52,14 +52,18 @@
         class="limit-width"
         > 
           <div class="selected-item" v-show="form.uid.show">
-            <span @click="removeSingleChecked('uid', form.uid.tem)">
+            <span @click="removeSingleChecked('uid', form.uid.tem)" v-if="form.status === 1">
               {{ form.uid.tem.realname }}<i class="el-icon-close"></i>
+            </span>
+            <span v-else>
+              {{ form.uid.tem.realname }}
             </span>
           </div>
           <el-button
             class="click-item"
             type="primary"
             @click="openModal('uid')"
+            v-if="form.status === 1"
             :class="{'zike-btn-selected': form.uid.show}">
               {{form.uid.show ? '重新选择' : '点击选择'}}
           </el-button>
