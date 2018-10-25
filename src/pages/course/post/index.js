@@ -949,7 +949,7 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   switchOnLine() {
-    console.log(1)
+    // console.log(1)
   }
   /**
    * @Author   小书包

@@ -102,7 +102,6 @@ export default class CourseList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
-    console.log('init----',this.$route)
     this.form = Object.assign(this.form, this.$route.query || {})
     this.course_id = this.$route.query.course_id
     this.getLists()
@@ -123,7 +122,6 @@ export default class CourseList extends Vue {
       course_id: this.course_id
     }
     let jsonDataString = JSON.stringify({search: data})
-    console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,

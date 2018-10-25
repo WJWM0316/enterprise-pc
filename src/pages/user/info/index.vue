@@ -42,7 +42,6 @@ export default class pageIndex extends Vue {
 	isDelete = false
 	show = false
 	clock() {
-		console.log(this.personalInfoBase)
 		this.timer = setInterval(() =>{
 			this.leaveTime--
 			if(this.leaveTime === 0) {
@@ -61,17 +60,13 @@ export default class pageIndex extends Vue {
 		const params = {
 			id: this.$route.query.id
 		}
-		console.log(this.personalInfoBase)
-	  	this.getPersonalInfoBaseApi(params).then(()=>{
-			console.log('22222',this.personalInfoBase)
-  			this.show = true
-	  		if(this.personalInfoBase && this.personalInfoBase.uid){
-
-	  		}else {
-	  			this.isDelete = true
-	  			this.clock()
-	  		}
-	  	})
+  	this.getPersonalInfoBaseApi(params).then(()=>{
+			this.show = true
+  		if(!this.personalInfoBase && this.personalInfoBase.uid) {
+  			this.isDelete = true
+  			this.clock()
+  		}
+  	})
 	}
 }
 </script>

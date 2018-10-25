@@ -184,7 +184,6 @@ export default class classifyList extends Vue {
       this.getList()
     },res=>{
       this.form.hintTXt = res.data.msg
-      console.log(res)
     })
   }
 
@@ -200,7 +199,6 @@ export default class classifyList extends Vue {
       return
     }
     editCategoryApi(data).then(res=>{
-      console.log(res)
       this.model.show = false
       this.form.hintTXt = ''
       this.$message({
@@ -224,7 +222,6 @@ export default class classifyList extends Vue {
   }
 
   confirm(){
-    console.log(this[this.model.confirm])
     this[this.model.confirm]()
   }
 

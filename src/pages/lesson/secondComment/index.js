@@ -141,7 +141,6 @@ export default class CourseList extends Vue {
   }
 
   confirm(){
-    console.log(this[this.model.confirm])
     this[this.model.confirm]()
   }
   /**
@@ -159,8 +158,6 @@ export default class CourseList extends Vue {
     if(this.form.status === '0' || this.form.status === '1'){
       param.status = this.form.status
     }
-
-    console.log(param)
     getCommentSecondListsApi(param).then(res=>{
       this.commentData = {
         list : res.data.data,

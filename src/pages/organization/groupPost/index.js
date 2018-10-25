@@ -144,7 +144,6 @@ export default class MenberList extends Vue {
     // 获取成员列表
     getMemberListApi(params)
       .then(res => {
-        console.log(res)
         this.memberList = res.data.data
       })
   }
@@ -208,7 +207,6 @@ export default class MenberList extends Vue {
         }
       }
     })
-    console.log(data,memberList)
     this.checkList = data
   }
 

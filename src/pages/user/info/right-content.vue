@@ -101,7 +101,6 @@ import Component from 'vue-class-component'
 export default class ComponentRight extends Vue {
 	currentType = 'getPersonalInfoLessonsApi'
 	tabClick(api) {
-		console.log(api)
 		const params = this.$route.params
 		this[api](params)
 		this.currentType = api
@@ -114,8 +113,6 @@ export default class ComponentRight extends Vue {
 	//导师跳转
 	fromTutor(){
 		const query = this.$route.query
-
-		console.log(query.joinType)
 		if(query.joinType && query.joinType==='live'){
 			this.getPersonalInfoLivesApi(this.$route.params)
 			this.currentType = 'getPersonalInfoLivesApi'

@@ -153,13 +153,12 @@ export default class CourseList extends Vue {
     if(this.form.status === '0' || this.form.status === '1'){
       param.status = this.form.status
     }
-    param.keyword.replace(/\s*/g,"")
+    param.keyword.replace(/\s*/g, '')
     if(param.keyword.length<1){
       delete param.keyword
     }
 
     getSearchCommentListsApi(param).then(res=>{
-      console.log(res)
       this.commentData = {
         list : res.data.data,
         total: res.data.meta.total,

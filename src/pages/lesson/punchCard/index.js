@@ -125,14 +125,12 @@ export default class CourseList extends Vue {
    */
   init() {
     this.form = Object.assign(this.form,this.$route.query || {})
-    console.log(this.form)
     this.course_section_id = this.$route.query.course_section_id
     this.course_id = this.$route.query.course_id
     this.getLists()
   }
 
   confirm(){
-    console.log(this[this.model.confirm])
     this[this.model.confirm]()
   }
   /**
@@ -150,15 +148,12 @@ export default class CourseList extends Vue {
         otherSearch:{ realname: this.form.name}
       }
     let jsonDataString = JSON.stringify(data)
-    console.log(jsonDataString)
     let UrlString = encodeURIComponent(jsonDataString)
     let param = {
       jsonData: UrlString,
       page: page || this.form.page || 1,
       pageCount: this.zikeDefaultPageSize
     }
-
-    console.log(param)
     getLessonPunchListsApi(param).then(res=>{
       this.cardList = {
         list : res.data.data,
@@ -210,8 +205,6 @@ export default class CourseList extends Vue {
     setExcellentCourseCardApi(data).then(res=>{
       this.model.show = false
       this.getLists()
-
-      console.log(res)
     }).catch(err => {
       this.$message.error(err.data.msg);
     })
@@ -234,8 +227,6 @@ export default class CourseList extends Vue {
   
 
   todoAction(type, item) {
-    console.log(item)
-
     if(type!=='comment'){
       this.model.show = true
     }

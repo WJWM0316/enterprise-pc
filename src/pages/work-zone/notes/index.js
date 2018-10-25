@@ -340,7 +340,6 @@ export default class NoteList extends Vue {
             .then(res=> {
               this.linkViewer.show = true
               this.linkViewer.data = this.jobCircleFiles
-              console.log(this.jobCircleFiles)
             })
         break
       default:

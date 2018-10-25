@@ -68,7 +68,6 @@ export default class groupList extends Vue {
 
   // 设置排序
   setSort(type,item){
-    console.log(item)
     let data = {
       id: item.groupId,
       type: 1
@@ -115,8 +114,6 @@ export default class groupList extends Vue {
     this.form.page = data.page
     
     getGroupListApi(data).then(res => {
-      console.log(res.data.data)
-
       res.data.data.map(function(value,index){
           value.sort="1"
           value.index = index
@@ -130,7 +127,6 @@ export default class groupList extends Vue {
 
   deleteGroup(item) {
     deleteGroupApi({id: item.groupId}).then(res=>{
-      console.log(res)
       this.$message({
         message: res.data.msg,
         type: 'success'
@@ -152,7 +148,6 @@ export default class groupList extends Vue {
   }
 
   todoAction(type, item) {
-    console.log(item)
     switch(type) {
       case 'add':
         this.$router.push({

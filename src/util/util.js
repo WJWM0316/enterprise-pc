@@ -195,7 +195,6 @@ class Util {
    */
   toFixed (num, fractionDigits, type = 'round') {
     if (typeof num !== 'number') {
-      console.log('请传入数字')
       return
     }
     const offsets = {

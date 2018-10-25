@@ -97,7 +97,7 @@ export default class WorkZonePost extends Vue {
 
   //验证---start
   validatorBlank(rule, value, callback){
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
     if (val.length === 0) {
       callback(new Error('请填写课节标题'));
     } else if(val.length > 25) {
@@ -213,7 +213,7 @@ export default class WorkZonePost extends Vue {
         }
       },
     }
-    params.title = params.title.replace(/(^\s*)|(\s*$)/g, "")
+    params.title = params.title.replace(/(^\s*)|(\s*$)/g, '')
 
     if(this.action === 'add'){
       postLessonApi(params)
@@ -223,7 +223,7 @@ export default class WorkZonePost extends Vue {
         obj.catch(res)
       })
       .catch(err => {
-        obj.catch(res)
+        obj.catch(err)
       })
     }else {
       params.lessonId = this.lessonId
@@ -276,9 +276,7 @@ export default class WorkZonePost extends Vue {
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
       }
-
-
-      console.log(11111)
+      
       if(msg.avId>0){
         //音视频id
         this.form.av_id = msg.avId
@@ -387,7 +385,7 @@ export default class WorkZonePost extends Vue {
     this.fileUpload.progress = 0
     this.fileUpload.progressText = '上传失败'
     this.fileUpload.btnTxt = '重新上传'
-    this.showMsg({ content: `上传失败 ~`, type: 'error', duration: 3000 })
+    this.showMsg({ content: '上传失败 ~', type: 'error', duration: 3000 })
   }
 
 

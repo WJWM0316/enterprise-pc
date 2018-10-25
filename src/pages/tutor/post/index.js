@@ -101,10 +101,7 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
-
-    console.log(this.form)
     this.$refs['form'].validate((valid) => {
-      console.log(valid)
       if (valid) {
         // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
@@ -112,8 +109,6 @@ export default class WorkZonePost extends Vue {
         this.submitBtnTxt = '正在提交'
         const need = ['name', 'title', 'mobile', 'password', 'gender']
         const params = this.transformData(this.form, need)
-
-        console.log(params)
         this.submit(params)
       }
     })

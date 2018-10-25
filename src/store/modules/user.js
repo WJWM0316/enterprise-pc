@@ -158,7 +158,6 @@ const actions = {
   getPersonalInfoJobCirclesApi (store, params) {
     return getPersonalInfoJobCirclesApi(params)
       .then(res => {
-        // console.log()
         store.commit(GET_PERSONAL_INFO_JOB_CIRCLES, res.data.data)
         return res
       })
@@ -175,7 +174,6 @@ const actions = {
   getMemberInfosApi (store, params) {
     return getMemberInfosApi(params)
       .then(res => {
-        // console.log()
         store.commit(GET_MEMBER_INFOS, res.data.data)
         return res
       })

@@ -168,7 +168,6 @@ export default class CourseList extends Vue {
 
   //跳转个人空间
   viewMenberInfo(id,type) {
-    console.log(id,type)
     let query = {}
     if(id){
       query.id = id
@@ -216,7 +215,6 @@ export default class CourseList extends Vue {
 
     this.delateModels.show = false
     let item = this.nowSelectDeleteItem
-    console.log(item)
     if(!item.id){
       return
     }
@@ -246,7 +244,6 @@ export default class CourseList extends Vue {
 
     this.searchData.type = true
     searchTutorApi({mobile: this.searchData.value}).then(res=>{
-      console.log('===',res)
       this.models.isHideBtn = '2'
       this.searchData.hintTXt = ''
       if(res.data.data){
@@ -257,7 +254,6 @@ export default class CourseList extends Vue {
     },res=>{
       this.searchData.list = {}
       this.searchData.hintTXt = res.data.msg ||''
-      console.log(res)
       that.$message(res.data.msg);
     })
   }

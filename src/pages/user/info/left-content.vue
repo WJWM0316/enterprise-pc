@@ -93,7 +93,6 @@ export default class ComponentLeft extends Vue {
 		const params = {
 			id: this.$route.query.id
 		}
-		console.log('left')
 		this.getPersonalInfoStudyApi(params)
 	  	//this.getPersonalInfoBaseApi(params)
 	    this.getPersonalInfoLessonsApi(params)

@@ -252,7 +252,6 @@ export default class WorkZonePost extends Vue {
   //编辑时初始化
   editInitMsg(){
     getMemberInfoApi({id: this.user_id}).then(res=>{
-      console.log('edit========',res.data.data)
       let data = res.data.data
       this.form.name = data.realname
       this.form.avatarId = data.avatarId
@@ -325,7 +324,6 @@ export default class WorkZonePost extends Vue {
 
   // 检测是否可以提交
   checkSubmit() {
-    console.log(this.form)
     this.$refs['form'].validate((valid) => {
       if (valid) {
         // 给提交按钮加个loading
@@ -339,7 +337,6 @@ export default class WorkZonePost extends Vue {
         }
         const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
-        console.log(params)
         this.submit(params)
       }
     })
@@ -437,8 +434,6 @@ export default class WorkZonePost extends Vue {
    * @detail   图片上传成功
    */
   imageUploadSuccess(res) {
-    console.log(res)
-
     this.form.avatarId = res.id
     this.form.icon.tem = res.url
     this.imageUpload.hasUploaded = true
@@ -448,10 +443,7 @@ export default class WorkZonePost extends Vue {
   }
 
   handleImageError(res) {
-
-    console.log(res)
     this.imageUpload.status = 'error'
-
     this.imageUpload.hasUploaded = false
     this.imageUpload.btnTxt = '重新上传'
     this.imageUpload.showError = true

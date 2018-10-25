@@ -45,7 +45,6 @@ export default class ComponentLinkViewer extends Vue {
 
   copy(e) {
     const clipboard = new Clipboard('.filelink')
-    console.log(11)
     clipboard.on('success', (e) => {
       this.$message({message: '复制成功~', type: 'success'})
       e.clearSelection();
