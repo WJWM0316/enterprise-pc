@@ -30,7 +30,7 @@
 				</li>
 			</ul>
 			<ul class="user-his-infos" v-else></ul>
-			<div class="edit-enter" v-if="isShowEdit && userInfo && userInfo.roleId!==5">
+			<div class="edit-enter" v-if="isShowEdit && userInfo && userInfo.roleId!==5 || isMe">
 				<router-link :to="{name: 'editMember',query: {user_id: userInfo.uid } }" class="set">编辑</router-link>
 			</div>
 		</div>
@@ -80,7 +80,7 @@ import { getMemberInfosApi } from 'STORE/api/user.js'
   },
   watch: {
   	personalInfoBase(res){
-  		this.getUserInfo()
+		this.getUserInfo()
   	}
   }
 })
@@ -93,15 +93,23 @@ export default class ComponentLeft extends Vue {
 		const params = {
 			id: this.$route.query.id
 		}
+		console.log(this.personalInfoBase)
 		this.getPersonalInfoStudyApi(params)
-	  	//this.getPersonalInfoBaseApi(params)
 	    this.getPersonalInfoLessonsApi(params)
+
+	    if(this.personalInfoBase.uid){
+			this.getUserInfo()
+	    }else {
+	    	this.getPersonalInfoBaseApi(params)
+	    }
 	}
 
 	//编辑权限判断
 	isJurisdiction() {
 		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
 			this.loginInfo = res.data.data
+
+			console.log('======',this.loginInfo)
 			if(this.loginInfo.roleName === '超级管理员'){
 				if(this.userInfo.roleName !== '超级管理员'){
 					this.isShowEdit = true
@@ -124,12 +132,10 @@ export default class ComponentLeft extends Vue {
 	
 	//当前用户信息
 	getUserInfo() {
-		if(this.personalInfoBase.uid){
-			getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
-				this.userInfo = res.data.data
-				this.isJurisdiction()
-			})
-		}
+		getMemberInfosApi({id: this.personalInfoBase.uid }).then(res=>{
+			this.userInfo = res.data.data
+			this.isJurisdiction()
+		})
 		
 	}
 }

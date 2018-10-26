@@ -54,7 +54,7 @@ import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMembe
 export default class WorkZonePost extends Vue {
   // 图片上传
   imageUpload = {
-
+    list:[],
     hasUploaded: false,
     btnTxt: '上传头像',
     tips: '建议尺寸160X160px ，JPG、PNG格式，图片小于5M',
@@ -183,67 +183,18 @@ export default class WorkZonePost extends Vue {
   pageStatus = ''  
   user_id = ''
   userInfo = {}
-
-  //职位or名字
-  validatorOccupation(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-
-    if (val.length === 0) {
-      callback(new Error('职位必须填写，最多10个字符'));
-    } else if(val.length>10) {
-      callback(new Error('职位必须填写，最多10个字符'));
-    }else {
-      callback();
-    }
-  }
-  //密码
-  validatorPassword(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    if (val.length === 0) {
-      callback(new Error('密码必须填写，6-20个字符'));
-    } else if(val.length<6 || val.length>20) {
-      callback(new Error('密码必须填写，6-20个字符'));
-    }else {
-      callback();
-    }
-  }
-
-  //邮箱
-  validatorEmail(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/);
-    if (val.length === 0) {
-      callback(new Error('邮箱必须填写，可作为成员登陆邮箱'));
-    } else if(!re.test(val)) {
-      callback(new Error('邮箱格式不正确'));
-    }else {
-      callback();
-    }
-  }
-
-  //手机
-  validatorMobile(rule, value, callback){
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    let re = new RegExp(/^1[3-578]\d{9}$/);
-    if (val.length === 0) {
-      callback();
-    } else if(val.length>0) {
-      if(!re.test(val)){
-        callback(new Error('手机格式不正确'));
-      }else {
-        callback();
-      }
-
-    }
-  }
-
-
+  isMe = false
   init() {
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
       this.form.password = '123456'
     }else {
       this.user_id = this.$route.query.user_id
+      if(this.user_id.toString() === this.userInfos.id.toString()){
+        this.isMe = true
+        delete this.rules.roleId
+        console.log(this.rules)
+      }
       this.editInitMsg()
     }
     this.getGroupList()
@@ -486,6 +437,60 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form.group_management = data
+  }
+
+
+  //职位or名字
+  validatorOccupation(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+
+    if (val.length === 0) {
+      callback(new Error('职位必须填写，最多10个字符'));
+    } else if(val.length>10) {
+      callback(new Error('职位必须填写，最多10个字符'));
+    }else {
+      callback();
+    }
+  }
+  //密码
+  validatorPassword(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    if (val.length === 0) {
+      callback(new Error('密码必须填写，6-20个字符'));
+    } else if(val.length<6 || val.length>20) {
+      callback(new Error('密码必须填写，6-20个字符'));
+    }else {
+      callback();
+    }
+  }
+
+  //邮箱
+  validatorEmail(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/);
+    if (val.length === 0) {
+      callback(new Error('邮箱必须填写，可作为成员登陆邮箱'));
+    } else if(!re.test(val)) {
+      callback(new Error('邮箱格式不正确'));
+    }else {
+      callback();
+    }
+  }
+
+  //手机
+  validatorMobile(rule, value, callback){
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let re = new RegExp(/^1[3-578]\d{9}$/);
+    if (val.length === 0) {
+      callback();
+    } else if(val.length>0) {
+      if(!re.test(val)){
+        callback(new Error('手机格式不正确'));
+      }else {
+        callback();
+      }
+
+    }
   }
 
 }

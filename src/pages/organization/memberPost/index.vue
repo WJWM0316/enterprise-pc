@@ -130,6 +130,8 @@
           label="权限管理"
           prop="roleId"
           class="limit-width"
+
+          v-if="!isMe"
           >
             <el-select v-model="form.roleId" placeholder="请选择权限">
               <el-option
@@ -169,7 +171,7 @@
         <!-- 确认提交 -->
         <el-form-item class="footer-button">
           <el-button type="primary" class="click-item" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
-          <el-button type="info" class="click-item deleteBtn" @click="delateModels.show=true" v-if="pageStatus==='edit' && isDelete" >删除该账号</el-button>
+          <el-button type="info" class="click-item deleteBtn" @click="delateModels.show=true" v-if="pageStatus==='edit' && isDelete && !isMe" >删除该账号</el-button>
         </el-form-item>
     </el-form>
 
