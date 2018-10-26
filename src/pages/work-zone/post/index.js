@@ -455,7 +455,7 @@ export default class WorkZonePost extends Vue {
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'members':
         this.menberLists.map(field => {
@@ -495,7 +495,7 @@ export default class WorkZonePost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
   }
 
   /**
