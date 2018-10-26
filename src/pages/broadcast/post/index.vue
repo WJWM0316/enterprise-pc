@@ -52,7 +52,7 @@
         class="limit-width"
         > 
           <div class="selected-item" v-show="form.uid.show">
-            <span @click="removeSingleChecked('uid', form.uid.tem)" v-if="form.status === 1">
+            <span @click="removeSingleChecked('uid', form.uid.tem)" v-if="form.status === 1 || !form.status">
               {{ form.uid.tem.realname }}<i class="el-icon-close"></i>
             </span>
             <span v-else>
@@ -63,7 +63,7 @@
             class="click-item"
             type="primary"
             @click="openModal('uid')"
-            v-if="form.status === 1"
+            v-if="form.status === 1 || !form.status"
             :class="{'zike-btn-selected': form.uid.show}">
               {{form.uid.show ? '重新选择' : '点击选择'}}
           </el-button>
@@ -142,6 +142,7 @@
       
       <!-- 直播简介 -->
       <el-form-item
+        prop="intro"
         label="直播简介"
         >
           <editor
@@ -150,6 +151,7 @@
             v-model="form.intro"
             :path="ContentEditor.path"
             :height="ContentEditor.height"
+            @input="handleContentEditorInput"
             @blur="handleContentEditorBlur" />
       </el-form-item>
       

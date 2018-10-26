@@ -1,3 +1,4 @@
+// http://web.xplus.ziwork.com/laohu/api/docs#
 import axios from 'axios'
 import { Loading } from 'element-ui'
 import router from '@/router/index'
@@ -7,7 +8,7 @@ const company = location.href.split('/')[3] || 'tiger'
 
 import { getAccessToken, removeAccessToken } from '@/store/cacheService'
 
-const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${company}` : `${process.env.VUE_APP_API}/${company}`
+export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${company}` : `${process.env.VUE_APP_API}/${company}`
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`

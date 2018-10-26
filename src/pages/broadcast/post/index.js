@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import Editor from 'COMPONENTS/editor'
-// import { editorRules } from 'FILTERS/rules'
+import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
 
@@ -174,6 +174,9 @@ export default class BroadcastPost extends Vue {
     ],
     startTime: [
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
+    ],
+    intro: [
+      {required: true, message: '请填写工作圈介绍', trigger: 'change', validator: editorRules.validator}
     ]
   }
 
@@ -298,9 +301,19 @@ export default class BroadcastPost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    // this.$refs.form.validateField('content')
+    this.$refs.form.validateField('intro')
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-25
+   * @detail   编辑器文字改变
+   * @return   {[type]}   [description]
+   */
+  handleContentEditorInput(dom) {
+    this.form.intro = dom
+    // this.$refs.form.validateField('intro')
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17
@@ -432,7 +445,7 @@ export default class BroadcastPost extends Vue {
         this.getLiveMenberListApi(params),
         this.getLiveInvisibleMenberListApi(params),
         this.getGroupListsApi(),
-        this.getMenberListsApi(),
+        this.getMenberListsApi({selectAll: 2}),
         this.getCategoryListsApi(),
         this.getTutorListApi()
       ]
@@ -518,7 +531,6 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -539,7 +551,7 @@ export default class BroadcastPost extends Vue {
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'memberList':
         this.menberLists.map(field => {
@@ -578,7 +590,7 @@ export default class BroadcastPost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'uid':
         if(this.models.editType === 'tutor') {

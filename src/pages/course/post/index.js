@@ -282,6 +282,14 @@ export default class CoursePost extends Vue {
   submit(params, action) {
     this[action](params)
       .then(res => {
+        if(res.status === 500) {
+          this.$message.error(`${res.data.msg}~`);
+          setTimeout(() => {
+            this.submitBtnClick = !this.submitBtnClick
+            this.submitBtnTxt = '提交'
+          }, 3000)
+          return
+        }
         this.$message({message: res.data.msg, type: 'success'})
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
@@ -541,7 +549,7 @@ export default class CoursePost extends Vue {
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'members':
         this.menberLists.map(field => {
@@ -580,7 +588,7 @@ export default class CoursePost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
-    this.removeSelfDefinedGroup()
+    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'master_uid':
         this.updateAllMemberStatus({bool: false})
