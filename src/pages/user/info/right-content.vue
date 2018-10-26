@@ -101,7 +101,7 @@ import Component from 'vue-class-component'
 export default class ComponentRight extends Vue {
 	currentType = 'getPersonalInfoLessonsApi'
 	tabClick(api) {
-		const params = this.$route.params
+		const params = this.$route.query
 		this[api](params)
 		this.currentType = api
 	}
