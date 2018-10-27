@@ -160,6 +160,8 @@ export default class CourseList extends Vue {
     if(query.tutorType){
       this.tutorType = query.tutorType
       this.pagination.type = query.tutorType === 'inner'?1:2
+    }else {
+      this.tutorType = 'inner'
     }
 
     this.form = Object.assign(this.form, query)
@@ -193,7 +195,8 @@ export default class CourseList extends Vue {
     getTutorListApi(params).then(res=>{
       this.form = {
         list : res.data.data,
-        total: res.data.meta.total
+        total: res.data.meta.total,
+        page: params.page
       }
     })
   }
