@@ -18,6 +18,9 @@ axios.defaults.baseURL = API_ROOT
 axios.interceptors.request.use(
   config => {
     config.headers.common['Authorization'] = getAccessToken()
+    // if(window.localStorage.getItem('AuthorizationSso')) {
+    //   config.headers.common['Authorization-Sso'] = getAccessToken()
+    // }
     return config
   },
   error => {

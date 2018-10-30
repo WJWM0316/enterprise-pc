@@ -2,7 +2,7 @@
   <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
-      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'notesList', query: {id: this.$route.query.noteId} }">帖子管理</el-breadcrumb-item>
       <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
