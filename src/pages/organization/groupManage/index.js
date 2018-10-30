@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getMemberListApi, getGroupListApi, deleteGroupApi, putGroupApi } from '@/store/api/organization.js'
+import { getGroupListApi, deleteGroupApi, putGroupApi } from '@/store/api/organization.js'
 
 @Component({
   name: 'group-manage',
@@ -115,7 +115,7 @@ export default class groupList extends Vue {
     
     getGroupListApi(data).then(res => {
       res.data.data.map(function(value,index){
-          value.sort="1"
+          value.sort = '1'
           value.index = index
       })
       this.groupList = {
@@ -158,7 +158,8 @@ export default class groupList extends Vue {
         this.$router.push({
           name: 'editGroup',
           params: {
-            groupId: item.groupId
+            groupId: item.groupId,
+            groupName: item.groupName
           }
         })
         break

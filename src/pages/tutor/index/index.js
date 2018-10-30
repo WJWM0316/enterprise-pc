@@ -94,7 +94,7 @@ export default class CourseList extends Vue {
     show: false,
     title: '提示',
     showClose: true,
-    confirmText: '添加新外部老师',
+    confirmText: '添加新外部导师',
     type: 'alert',
     width: '670px',
     height: '400px',
@@ -174,7 +174,7 @@ export default class CourseList extends Vue {
     if(id){
       query.id = id
       if(type){
-        query = {joinType: type}
+        query.joinType = type
       }
       
       this.$router.push({ 
@@ -204,7 +204,6 @@ export default class CourseList extends Vue {
   // 点击搜索时触发
   handleSearch () {
     this.form.page = 1
-    //this.$router.push({query: {page:1}})
     this.getTutorList()
   }
 
@@ -247,17 +246,24 @@ export default class CourseList extends Vue {
 
     this.searchData.type = true
     searchTutorApi({mobile: this.searchData.value}).then(res=>{
+      console.log('=====>',res.data.data)
       this.models.isHideBtn = '2'
       this.searchData.hintTXt = ''
-      if(res.data.data){
+      this.searchData.list = {}
+      if(Object.keys(res.data.data).length>0){
+        this.models.confirmText = '添加该导师'
         this.searchData.list = res.data.data
       }else {
-        this.models.confirmText = '添加该导师'
+        this.models.confirmText = '添加新外部导师'
       }
+      console.log(Object.keys(res.data.data))
     },res=>{
       this.searchData.list = {}
       this.searchData.hintTXt = res.data.msg ||''
-      that.$message(res.data.msg);
+      //this.searchData.type = true
+
+      console.log(this.searchData.hintTXt)
+      //that.$message(res.data.msg);
     })
   }
 
@@ -275,6 +281,16 @@ export default class CourseList extends Vue {
     addSearchTutorApi({mobile: this.searchData.value}).then(res=>{
       this.searchData.type = false
       this.$message(res.data.msg)
+
+      this.searchData = {
+        type : false,
+        value : '',
+        hintTxt: '',
+        list : {}
+      }
+
+      this.models.show = false
+      this.handleSearch()
     },res=>{
       this.$message(res.data.msg)
     })
@@ -285,9 +301,9 @@ export default class CourseList extends Vue {
   }
 
   confirm(){
-    if( this.searchData.list&& this.searchData.list.length>0){
+    console.log('confirm')
+    if( Object.keys(this.searchData.list>0)){
       this.addTea()
-      
     }else {
       this.searchData.type = false
       this.toTea()

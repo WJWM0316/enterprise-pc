@@ -65,7 +65,7 @@
           prop="occupation"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.occupation" :maxlength="30" placeholder="请填写职位信息"/>
+            <el-input style="width: 300px;" v-model="form.occupation" :maxlength="40" placeholder="请填写职位信息"/>
         </el-form-item>
 
         <!-- 性别 -->

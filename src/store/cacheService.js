@@ -76,8 +76,6 @@ export function saveAccessToken(token, expiredIn) {
 }
 
 export function getAccessToken() {
-
-  console.log(KEYS.token,'====')
   return lsCache.get(KEYS.token)
 }
 

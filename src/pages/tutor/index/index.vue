@@ -102,14 +102,11 @@
               placeholder="请输入手机号搜索" />
             <div class="fetch-result" v-if="searchData.type">
 
-            <p class="model_hint" v-show="searchData.hintTXt">
-              {{searchData.hintTXt}}
-            </p>
-
+            <p class="model_hint" v-show="searchData.hintTXt">{{searchData.hintTXt}}</p>
             <el-collapse-transition v-if="models.isHideBtn==='2'">
               <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
                 <div class="img-box">
-                  <img :src="searchData.list.avatar.smallUrl" />
+                  <img :src="searchData.list.avatar.middleUrl" />
                 </div>
                 <div class="text-inner-content">
                   <p class="user-name" v-if="searchData.list.realname">{{searchData.list.realname}}</p>
@@ -317,16 +314,11 @@ export default CourseList
   .cell {
     overflow: inherit;
   }
-
-
 }
 
 .el-radio {
   margin: 10px 32px 10px 0px;
   &.is-checked {
-    //border:1px solid rgba(215,171,112,1);
-    //box-sizing: border-box;
-    //border-radius: 50%;
     .el-radio__inner {
       border-color: rgba(215,171,112,1);
       background:rgba(215,171,112,1);

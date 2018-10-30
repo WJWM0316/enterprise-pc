@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import { getMemberListApi, getGroupListApi, deleteGroupApi, addGroupApi, editGroupApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, addGroupApi, editGroupApi } from '@/store/api/organization.js'
 
 @Component({
   name: 'groupPost',
@@ -36,7 +36,6 @@ export default class MenberList extends Vue {
 
   rules = {
     name: [
-      //{ required: true, message: '分组名必须填写，最多20个字', trigger: 'blur' }
       { required: true,validator: this.validatePass,  trigger: 'blur' }
     ]
   }
@@ -62,6 +61,8 @@ export default class MenberList extends Vue {
     groupNameList:[]
   }
 
+  groupMsg = {}
+
   validatePass(rule, value, callback){
     if (value === '') {
       callback(new Error('分组名必须填写，最多20个字'));
@@ -73,12 +74,10 @@ export default class MenberList extends Vue {
   }
 
   init() {
-    const params = {
-      id: this.$route.params.id
-    }
-
+    this.groupMsg = this.$route.params
     this.checkList = []
 
+    console.log( this.groupMsg )
     getGroupListApi().then(res=>{
       if(res.data.data.length>0){
         let data = [{
@@ -103,26 +102,38 @@ export default class MenberList extends Vue {
       this.memberList = res.data.data
 
       if(this.$route.name === 'editGroup'){
+        this.form.name = this.groupMsg.groupName
         this.getEditMsg()
+      }else {
+
       }
     })
   }
 
   //编辑信息操作
   getEditMsg(){
-    getMemberListApi({groupId: this.$route.params.groupId}).then(res=>{
+    if(!this.groupMsg.groupId){
+      return
+    }
+    getMemberListApi({groupId: this.groupMsg.groupId}).then(res=>{
+      console.log('======',res.data.data)
       let memberList = [...res.data.data]
       let list = []
-
+      if(res.data.data.length<1){
+        return
+      }
       memberList.map(field => {
-        list.push(field.realname)
+        list.push(field.uid)
       })
-
-      this.form.name = res.data.data[0].group[0].groupName
-      this.multipleSelection()
-
-      this.editData.groupId = this.$route.params.groupId
-      this.editData.name = this.form.name
+      this.memberList.map(field => {
+        if(list.includes(field.uid)){
+          this.checkList.push(field.uid)
+          field.active = true
+        }
+      })
+      //this.multipleSelection()
+      this.editData.groupId = this.groupMsg.groupId
+      this.editData.name = this.groupMsg.groupId
       this.groupList.map(item=>{
         if(item.groupName != this.form.name){
           this.editData.groupNameList.push(item.groupName)
@@ -154,6 +165,7 @@ export default class MenberList extends Vue {
   multipleSelection(item) {
     let index = ''
     let checkList = this.checkList
+    console.log('-----',item)
     item.active = !item.active
     if(item.active){
       checkList.push(item.uid)
@@ -228,7 +240,6 @@ export default class MenberList extends Vue {
         setTimeout(() => {
           this.submitBtnClick = !this.submitBtnClick
           this.submitBtnTxt = '提交'
-          //this.$router.push({name: 'groupManage'})
         }, 3000)
       }
     }
@@ -241,7 +252,7 @@ export default class MenberList extends Vue {
           obj.err(err)
         })
     }else {
-      params.id = this.$route.params.groupId
+      params.id = this.groupMsg.groupId
       editGroupApi(params)
         .then(res => {
           obj.suc(res)
@@ -262,11 +273,14 @@ export default class MenberList extends Vue {
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
 
-        const params = {
+        let params = {
           name: this.form.name,
           memberList: this.checkList.join(',')
         }
 
+        if(params.memberList.length<1){
+          delete params.memberList
+        }
         this.submit(params)
       }
     })

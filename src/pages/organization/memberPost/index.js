@@ -99,13 +99,13 @@ export default class WorkZonePost extends Vue {
 
   rules = {
     name: [
-      { required: true, validator: this.validatorOccupation, message: '姓名必须填写，最多10个字符', trigger: 'blur' }
+      { required: true, validator: this.validatorName, message: '姓名必须填写，最多10个字符', trigger: 'blur' }
     ],
     groupId: [
       { required: true, message: '请选择部门', trigger: 'blur' }
     ],
     occupation: [
-      { required: true, validator: this.validatorOccupation, message:'职位必须填写，最多10个字符', trigger: 'blur'}
+      { required: true, validator: this.validatorOccupation, message:'职位必须填写，最多40个字符', trigger: 'blur'}
     ],
     email: [
       { required: true, validator: this.validatorEmail,  trigger: 'blur' }
@@ -440,18 +440,32 @@ export default class WorkZonePost extends Vue {
   }
 
 
-  //职位or名字
+  //职位
   validatorOccupation(rule, value, callback) {
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
 
     if (val.length === 0) {
-      callback(new Error('职位必须填写，最多10个字符'));
-    } else if(val.length>10) {
-      callback(new Error('职位必须填写，最多10个字符'));
+      callback(new Error('职位必须填写，最多40个字符'));
+    } else if(val.length>40) {
+      callback(new Error('职位必须填写，最多40个字符'));
     }else {
       callback();
     }
   }
+
+  //名字
+  validatorName(rule, value, callback) {
+    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+
+    if (val.length === 0) {
+      callback(new Error('名字必须填写，最多10个字符'));
+    } else if(val.length>10) {
+      callback(new Error('名字必须填写，最多10个字符'));
+    }else {
+      callback();
+    }
+  }
+
   //密码
   validatorPassword(rule, value, callback) {
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
@@ -480,7 +494,7 @@ export default class WorkZonePost extends Vue {
   //手机
   validatorMobile(rule, value, callback){
     let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    let re = new RegExp(/^1[3-578]\d{9}$/);
+    let re = new RegExp(/^[1][3,4,5,7,8,9][0-9]{9}$/);
     if (val.length === 0) {
       callback();
     } else if(val.length>0) {
