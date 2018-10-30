@@ -357,7 +357,7 @@ export default class pageDashboard extends Vue {
 		  		.then(res => {
 		  			this.isHaveNew = res.data.data.isHaveNew
 		  		})
-		}, 1000 * 10)
+		}, 1000 * 60 * 5)
 	}
 
 	created() {
