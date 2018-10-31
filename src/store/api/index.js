@@ -21,8 +21,8 @@ axios.interceptors.request.use(
     if(window.localStorage.getItem('Authorization')) {
       config.headers.common['Authorization'] = window.localStorage.getItem('Authorization')
     }
-    if(window.localStorage.getItem('SsoToken')) {
-      config.headers.common['Authorization-Sso'] = window.localStorage.getItem('Authorization')
+    if(window.localStorage.getItem('Authorization-Sso')) {
+      config.headers.common['Authorization-Sso'] = window.localStorage.getItem('Authorization-Sso')
     }
     return config
   },
@@ -43,7 +43,7 @@ axios.interceptors.response.use(
       if(location.origin === 'http://ent.xplus.ziwork.com') {
         window.location.href = 'http://www.xplus.ziwork.com/login-manager'
       } else {
-        window.location.href = 'http://www.xplus.xiaodengta.com/login-manager'
+        window.location.href = 'https://www.xplus.xiaodengta.com/login-manager'
       }
       return
     }
