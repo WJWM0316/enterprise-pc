@@ -38,15 +38,15 @@ axios.interceptors.response.use(
   },
   err => {
     // 登陆过期或者未登录
-    if(err.response.data.httpStatus === 401) {
-      removeAccessToken()
-      if(location.origin === 'http://ent.xplus.ziwork.com') {
-        window.location.href = 'http://www.xplus.ziwork.com/login-manager'
-      } else {
-        window.location.href = 'https://www.xplus.xiaodengta.com/login-manager'
-      }
-      return
-    }
+    // if(err.response.data.httpStatus === 401) {
+    //   removeAccessToken()
+    //   if(location.origin === 'http://ent.xplus.ziwork.com') {
+    //     window.location.href = 'http://www.xplus.ziwork.com/login-manager'
+    //   } else {
+    //     window.location.href = 'https://www.xplus.xiaodengta.com/login-manager'
+    //   }
+    //   return
+    // }
     if (loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
   }
