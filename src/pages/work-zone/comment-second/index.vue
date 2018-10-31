@@ -2,7 +2,8 @@
   <section class="page-note-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
-      <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'notesList',query: {id: this.$route.query.noteId} }">帖子管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'commentList',query: {noteId: this.$route.query.noteId, id: this.$route.query.firstId} }">评论管理</el-breadcrumb-item>
       <el-breadcrumb-item>二级评论</el-breadcrumb-item>
     </el-breadcrumb>
     <table-list

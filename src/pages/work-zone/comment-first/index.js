@@ -115,6 +115,9 @@ export default class CommentList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
+
+
+    console.log(this.$route.query)
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
     this.getJobCircleCommentFirstLists()
   }
@@ -154,7 +157,14 @@ export default class CommentList extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'comment':
-        this.$router.push({name: 'commentSecondList', query: {id: item.id}})
+        this.$router.push({
+          name: 'commentSecondList',
+          query: {
+            noteId: this.$route.query.noteId,
+            firstId: this.$route.query.id,
+            id: item.id
+          }
+        })
         break
       case 'delete':
         this.$confirm('是否删除该评论, 是否继续?', '提示', {
