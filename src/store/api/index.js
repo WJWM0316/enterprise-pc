@@ -4,9 +4,9 @@ import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
 
-const company = location.href.split('/')[3] || 'tiger'
+const company = location.href.split('/')[3]
 
-import { getAccessToken, removeAccessToken } from '@/store/cacheService'
+import { removeAccessToken } from '@/store/cacheService'
 
 export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${company}` : `${process.env.VUE_APP_API}/${company}`
 
@@ -17,10 +17,13 @@ axios.defaults.baseURL = API_ROOT
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    config.headers.common['Authorization'] = getAccessToken()
-    // if(window.localStorage.getItem('AuthorizationSso')) {
-    //   config.headers.common['Authorization-Sso'] = getAccessToken()
-    // }
+    // config.headers.common['Authorization'] = getAccessToken()
+    if(window.localStorage.getItem('Authorization')) {
+      config.headers.common['Authorization'] = window.localStorage.getItem('Authorization')
+    }
+    if(window.localStorage.getItem('SsoToken')) {
+      config.headers.common['Authorization-Sso'] = window.localStorage.getItem('Authorization')
+    }
     return config
   },
   error => {
@@ -36,8 +39,12 @@ axios.interceptors.response.use(
   err => {
     // 登陆过期或者未登录
     if(err.response.data.httpStatus === 401) {
-      router.push({name: 'login'})
       removeAccessToken()
+      if(location.origin === 'http://ent.xplus.ziwork.com') {
+        window.location.href = 'http://www.xplus.ziwork.com/login-manager'
+      } else {
+        window.location.href = 'http://www.xplus.xiaodengta.com/login-manager'
+      }
       return
     }
     if (loadingInstance) loadingInstance.close()

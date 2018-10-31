@@ -471,15 +471,15 @@ export const routes = [
     }
   },
   // 登陆模块
-  {
-    path: '/login',
-    name: 'login',
-    title: '登陆',
-    component: () => import(/* webpackChunkName: "login" */ '@/pages/auth/login.vue'),
-    meta: {
-      useNav: false
-    }
-  },
+  // {
+  //   path: '/login',
+  //   name: 'login',
+  //   title: '登陆',
+  //   component: () => import( webpackChunkName: "login"  '@/pages/auth/login.vue'),
+  //   meta: {
+  //     useNav: false
+  //   }
+  // },
   // 帮助页面
   {
     path: '/help',
