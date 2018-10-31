@@ -301,8 +301,9 @@ export default class CourseList extends Vue {
   }
 
   confirm(){
-    console.log('confirm')
-    if( Object.keys(this.searchData.list>0)){
+    console.log('confirm',this.searchData.list)
+
+    if( Object.keys(this.searchData.list).length>0){
       this.addTea()
     }else {
       this.searchData.type = false

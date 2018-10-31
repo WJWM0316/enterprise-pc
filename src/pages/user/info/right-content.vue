@@ -114,7 +114,7 @@ export default class ComponentRight extends Vue {
 	fromTutor(){
 		const query = this.$route.query
 		if(query.joinType && query.joinType==='live'){
-			this.getPersonalInfoLivesApi(this.$route.params)
+			this.getPersonalInfoLivesApi(query)
 			this.currentType = 'getPersonalInfoLivesApi'
 		}
 	}
