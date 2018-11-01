@@ -8,6 +8,8 @@ import {
   LOGOUT
 } from '../mutation-types'
 
+import axios from 'axios'
+
 import {
   loginApi,
   logoutApi
@@ -19,6 +21,14 @@ const state = {
   userInfos: getUserInfo() || null,
   token: getAccessToken(),
   loginValidTime: 60 * 60 * 24 * 7 * 1000
+}
+
+// 获取cookie
+const getcookie = (name) =>{
+ const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
+ if(arr !== null)
+  return unescape(arr[1])
+ return null
 }
 
 const mutations = {
@@ -41,14 +51,14 @@ const getters = {
 
 const actions = {
   loginApi(store, data) {
-    return loginApi(data)
-      .then(res => {
-        store.commit(LOGIN, res.data.data)
-        return res
-      })
-      .catch(error => {
-        return Promise.reject(error.data || {})
-      })
+    return axios.post(`${process.env.VUE_APP__TOKEN_URL}/${getcookie('code')}/auth/token`, {sso_token: getcookie('Authorization-Sso')})
+                .then(res => {
+                  store.commit(LOGIN, res.data.data)
+                  return res
+                })
+                .catch(error => {
+                  return Promise.reject(error.data || {})
+                })
   },
   logoutApi(store) {
     return logoutApi()

@@ -208,7 +208,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 			'getUserListsApi',
 			'getCompanyInfoApi',
 			'getMemberCheckNewDynamicsApi',
-			'getMemberDynamicsListApi'
+			'getMemberDynamicsListApi',
+			'loginApi'
 		])
 	},
 	components: {
@@ -361,14 +362,17 @@ export default class pageDashboard extends Vue {
 	}
 
 	created() {
-		this.getMemberDynamicsListApi({count: 20})
+		this.loginApi()
 				.then(() => {
-					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
-					this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
-				  		.then(res => {
-				  			this.isHaveNew = res.data.data.isHaveNew
-				  			this.clock()
-				  		})
+					this.getMemberDynamicsListApi({count: 20})
+							.then(() => {
+								this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+								this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
+							  		.then(res => {
+							  			this.isHaveNew = res.data.data.isHaveNew
+							  			this.clock()
+							  		})
+							})
 				})
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
 		// websocket.create('ws://web.xplus.ziwork.com/laohu/member/checkNewDynamics/123')
