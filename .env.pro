@@ -1,5 +1,5 @@
 NODE_ENV = 'production'
 VUE_APP_API = 'https://web-api.xplus.xiaodengta.com'
 VUE_APP_URL = 'https://ent.xplus.xiaodengta.com'
-VUE_APP__TOKEN_URL = 'https://work-api.xplus.xiaodengta.com'
+VUE_APP__TOKEN_URL = 'https://work.xplus.xiaodengta.com'
 VUE_APP__LOGIN_URL = 'https://www.xplus.xiaodengta.com/login-manager'
