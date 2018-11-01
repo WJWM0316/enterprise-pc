@@ -14,7 +14,7 @@ const getcookie = (name) =>{
 
 import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 
-export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${getcookie('code')}` : `${process.env.VUE_APP_API}/${getcookie('code')}`
+export const API_ROOT = process.env.NODE_ENV === 'development' ? `${process.env.VUE_APP_API}/${getcookie('code')}`
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
