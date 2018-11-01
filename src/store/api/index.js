@@ -12,6 +12,7 @@ const getcookie = (name) =>{
  return null
 }
 
+console.log(getAccessToken(), 'dddddddddd')
 const company = location.href.split('/')[3]
 
 import { removeAccessToken } from '@/store/cacheService'
@@ -25,10 +26,10 @@ axios.defaults.baseURL = API_ROOT
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    // config.headers.common['Authorization'] = getAccessToken()
-    if(getcookie('Authorization')) {
-      config.headers.common['Authorization'] = getcookie('Authorization')
-    }
+    config.headers.common['Authorization'] = getAccessToken()
+    // if(getcookie('Authorization')) {
+    //   config.headers.common['Authorization'] = getcookie('Authorization')
+    // }
     if(getcookie('Authorization-Sso')) {
       config.headers.common['Authorization-Sso'] = getcookie('Authorization-Sso')
     }
