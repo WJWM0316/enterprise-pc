@@ -14,24 +14,9 @@ import MainContent from './content.vue'
 	components: {
 		AsiderBar,
 		MainContent
-	},
-	methods: {
-		...mapActions([
-			'getDesktopInfosApi'
-		])
-	},
-	computed: {
-    ...mapGetters([
-      'companyInfo',
-      'desktopInfos'
-    ])
-  }
-})
-export default class pageDashboard extends Vue {
-	created() {
-		this.getDesktopInfosApi()
 	}
-}
+})
+export default class pageDashboard extends Vue {}
 </script>
 <style lang="scss" scoped>
 #dashboard {

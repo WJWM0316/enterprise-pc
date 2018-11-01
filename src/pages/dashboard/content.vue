@@ -209,7 +209,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 			'getCompanyInfoApi',
 			'getMemberCheckNewDynamicsApi',
 			'getMemberDynamicsListApi',
-			'loginApi'
+			'loginApi',
+			'getDesktopInfosApi'
 		])
 	},
 	components: {
@@ -372,6 +373,7 @@ export default class pageDashboard extends Vue {
 	created() {
 		this.loginApi({code : this.getcookie('code'), 'Authorization-Sso': this.getcookie('Authorization-Sso')})
 				.then(() => {
+					this.getDesktopInfosApi()
 					this.getMemberDynamicsListApi({count: 20})
 							.then(() => {
 								this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
