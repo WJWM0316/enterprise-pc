@@ -12,12 +12,12 @@ const getcookie = (name) =>{
  return null
 }
 
-console.log(getAccessToken(), 'dddddddddd')
 const company = location.href.split('/')[3]
 
-import { removeAccessToken } from '@/store/cacheService'
+import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 
 export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${company}` : `${process.env.VUE_APP_API}/${company}`
+console.log(getAccessToken(), 'dddddddddd')
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
