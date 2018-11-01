@@ -64,6 +64,7 @@ const actions = {
                 .then(res => {
                   removeAccessToken()
                   store.commit(LOGOUT)
+                  window.location.href = process.env.VUE_APP__LOGIN_URL
                   return res
                 })
                 .catch(error => {

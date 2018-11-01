@@ -77,10 +77,7 @@ import Component from 'vue-class-component'
 })
 export default class ComponentHeader extends Vue {
 	logout(command) {
-		this.logoutApi()
-			.then(() => {
-				this.$router.push({name: 'login'})
-			})
+		this.logoutApi({code : this.getcookie('code')})
 	}
 }
 </script>

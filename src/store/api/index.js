@@ -14,7 +14,7 @@ const getcookie = (name) =>{
  return null
 }
 
-const company = getcookie('code') ? getcookie('code') : 'laohu'
+const company = getcookie('code')
 import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 
 export const API_ROOT = `${process.env.VUE_APP_API}/${company}`

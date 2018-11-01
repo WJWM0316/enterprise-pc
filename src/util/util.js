@@ -94,6 +94,14 @@ class Util {
     return obj
   }
 
+  // 获取cookie
+  getcookie(name) {
+   const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
+   if(arr !== null)
+    return unescape(arr[1])
+   return null
+  }
+  
   /**
    * 改变数组某项索引（直接修改源数组）
    * @param {Array} array 操作数组
