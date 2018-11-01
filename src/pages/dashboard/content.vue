@@ -361,8 +361,16 @@ export default class pageDashboard extends Vue {
 		}, 1000 * 60 * 5)
 	}
 
+	// 获取cookie
+	getcookie(name) {
+	 const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
+	 if(arr !== null)
+	  return unescape(arr[1])
+	 return null
+	}
+
 	created() {
-		this.loginApi()
+		this.loginApi({code : this.getcookie('code'), 'Authorization-Sso': this.getcookie('Authorization-Sso')})
 				.then(() => {
 					this.getMemberDynamicsListApi({count: 20})
 							.then(() => {

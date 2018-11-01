@@ -1,8 +1,10 @@
 // http://web.xplus.ziwork.com/laohu/api/docs#
 import axios from 'axios'
 import { Loading } from 'element-ui'
-import router from '@/router/index'
 let loadingInstance = null
+
+// 请求的跟地址
+export const upload_api = `${API_ROOT}/attaches`
 
 // 获取cookie
 const getcookie = (name) =>{
@@ -12,12 +14,10 @@ const getcookie = (name) =>{
  return null
 }
 
+const company = getcookie('code') ? getcookie('code') : 'laohu'
 import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 
-export const API_ROOT = process.env.NODE_ENV === 'development' ? `${process.env.VUE_APP_API}/${getcookie('code')}`
-
-// 请求的跟地址
-export const upload_api = `${API_ROOT}/attaches`
+export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
 
 axios.defaults.baseURL = API_ROOT
 // 请求拦截器

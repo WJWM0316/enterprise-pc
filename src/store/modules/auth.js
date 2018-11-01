@@ -10,25 +10,12 @@ import {
 
 import axios from 'axios'
 
-import {
-  loginApi,
-  logoutApi
-} from 'API/auth'
-
 import { saveAccessToken, removeAccessToken, getAccessToken, getUserInfo, saveUserInfo } from '@/store/cacheService'
 
 const state = {
   userInfos: getUserInfo() || null,
   token: getAccessToken(),
   loginValidTime: 60 * 60 * 24 * 7 * 1000
-}
-
-// 获取cookie
-const getcookie = (name) =>{
- const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
- if(arr !== null)
-  return unescape(arr[1])
- return null
 }
 
 const mutations = {
@@ -50,8 +37,14 @@ const getters = {
 }
 
 const actions = {
-  loginApi(store, data) {
-    return axios.post(`${process.env.VUE_APP__TOKEN_URL}/${getcookie('code')}/auth/token`, {sso_token: getcookie('Authorization-Sso')})
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-01
+   * @detail   获取登陆信息
+   * @return   {[type]}         [description]
+   */
+  loginApi(store, params) {
+    return axios.post(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/token`, {sso_token: params['Authorization-Sso']})
                 .then(res => {
                   store.commit(LOGIN, res.data.data)
                   return res
@@ -60,16 +53,22 @@ const actions = {
                   return Promise.reject(error.data || {})
                 })
   },
-  logoutApi(store) {
-    return logoutApi()
-      .then(res => {
-        removeAccessToken()
-        store.commit(LOGOUT)
-        return res
-      })
-      .catch(error => {
-        return Promise.reject(error.data || {})
-      })
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-01
+   * @detail   用户退出
+   * @return   {[type]}         [description]
+   */
+  logoutApi(store, params) {
+    return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
+                .then(res => {
+                  removeAccessToken()
+                  store.commit(LOGOUT)
+                  return res
+                })
+                .catch(error => {
+                  return Promise.reject(error.data || {})
+                })
   }
 }
 
