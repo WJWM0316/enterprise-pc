@@ -76,6 +76,13 @@ import Component from 'vue-class-component'
   }
 })
 export default class ComponentHeader extends Vue {
+	// 获取cookie
+  getcookie(name) {
+   const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
+   if(arr !== null)
+    return unescape(arr[1])
+   return null
+  }
 	logout(command) {
 		this.logoutApi({code : this.getcookie('code')})
 	}
