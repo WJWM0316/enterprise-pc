@@ -4,6 +4,14 @@ import { Loading } from 'element-ui'
 import router from '@/router/index'
 let loadingInstance = null
 
+// 获取cookie
+const getcookie = (name) =>{
+ const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
+ if(arr !== null)
+  return unescape(arr[1])
+ return null
+}
+
 const company = location.href.split('/')[3]
 
 import { removeAccessToken } from '@/store/cacheService'
@@ -18,11 +26,11 @@ axios.defaults.baseURL = API_ROOT
 axios.interceptors.request.use(
   config => {
     // config.headers.common['Authorization'] = getAccessToken()
-    if(window.localStorage.getItem('Authorization')) {
-      config.headers.common['Authorization'] = window.localStorage.getItem('Authorization')
+    if(getcookie('Authorization')) {
+      config.headers.common['Authorization'] = getcookie('Authorization')
     }
-    if(window.localStorage.getItem('Authorization-Sso')) {
-      config.headers.common['Authorization-Sso'] = window.localStorage.getItem('Authorization-Sso')
+    if(getcookie('Authorization-Sso')) {
+      config.headers.common['Authorization-Sso'] = getcookie('Authorization-Sso')
     }
     return config
   },
