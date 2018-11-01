@@ -12,12 +12,9 @@ const getcookie = (name) =>{
  return null
 }
 
-const company = location.href.split('/')[3]
-
 import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 
-export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${company}` : `${process.env.VUE_APP_API}/${company}`
-console.log(getAccessToken(), 'dddddddddd')
+export const API_ROOT = process.env.NODE_ENV === 'development' ? `http://web.xplus.ziwork.com/${getcookie('code')}` : `${process.env.VUE_APP_API}/${getcookie('code')}`
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`
@@ -27,12 +24,7 @@ axios.defaults.baseURL = API_ROOT
 axios.interceptors.request.use(
   config => {
     config.headers.common['Authorization'] = getAccessToken()
-    // if(getcookie('Authorization')) {
-    //   config.headers.common['Authorization'] = getcookie('Authorization')
-    // }
-    if(getcookie('Authorization-Sso')) {
-      config.headers.common['Authorization-Sso'] = getcookie('Authorization-Sso')
-    }
+    config.headers.common['Authorization-Sso'] = getcookie('Authorization-Sso')
     return config
   },
   error => {
@@ -47,15 +39,11 @@ axios.interceptors.response.use(
   },
   err => {
     // 登陆过期或者未登录
-    // if(err.response.data.httpStatus === 401) {
-    //   removeAccessToken()
-    //   if(location.origin === 'http://ent.xplus.ziwork.com') {
-    //     window.location.href = 'http://www.xplus.ziwork.com/login-manager'
-    //   } else {
-    //     window.location.href = 'https://www.xplus.xiaodengta.com/login-manager'
-    //   }
-    //   return
-    // }
+    if(err.response.data.httpStatus === 401) {
+      removeAccessToken()
+      window.location.href = process.env.VUE_APP__LOGIN_URL
+      return
+    }
     if (loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
   }
