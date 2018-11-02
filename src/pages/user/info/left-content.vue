@@ -181,7 +181,7 @@ export default class ComponentLeft extends Vue {
 	    width: 108px;
 	    display: inline-block;
 	    vertical-align: middle;
-	    margin-left: 30px;
+	    margin-left: 18px;
 			img{
 				width: 100%;
 				height: 100%;

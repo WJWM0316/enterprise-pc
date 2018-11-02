@@ -402,7 +402,7 @@ export default class pageDashboard extends Vue {
 					this.init()
 				})
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
-		// websocket.create(`${WEBSOKET_API}/member/checkNewDynamics/${Date.parse(new Date()) / 1000}`)
+		// websocket.create(`${WEBSOKET_API}`)
 	}
 }
 </script>
