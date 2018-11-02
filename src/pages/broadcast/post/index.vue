@@ -71,7 +71,7 @@
 
       <!-- 所属组织 -->
       <el-form-item
-        label="所属组织"
+        label="归属于"
         prop="check_groupList"
         class="limit-width"
         >

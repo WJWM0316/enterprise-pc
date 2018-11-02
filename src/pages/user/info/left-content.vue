@@ -93,7 +93,6 @@ export default class ComponentLeft extends Vue {
 		const params = {
 			id: this.$route.query.id
 		}
-		console.log(this.personalInfoBase)
 		this.getPersonalInfoStudyApi(params)
 	    this.getPersonalInfoLessonsApi(params)
 
@@ -108,8 +107,6 @@ export default class ComponentLeft extends Vue {
 	isJurisdiction() {
 		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
 			this.loginInfo = res.data.data
-
-			console.log('======',this.loginInfo)
 			if(this.loginInfo.roleName === '超级管理员'){
 				if(this.userInfo.roleName !== '超级管理员'){
 					this.isShowEdit = true

@@ -16,7 +16,6 @@ let loadingInstance = null
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
-  console.log(process.env.VUE_APP__TEST_SSO_TOKEN)
   document.cookie=`Authorization-Sso=${process.env.VUE_APP__TEST_SSO_TOKEN};`
 }
 

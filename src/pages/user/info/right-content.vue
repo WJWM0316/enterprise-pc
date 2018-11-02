@@ -161,6 +161,7 @@ export default class ComponentRight extends Vue {
 		.active{
 			pointer-events: none;
 			color: #000;
+			font-weight: 700;
 			.cell{
 				&:before{
 	        opacity: 1;
@@ -287,7 +288,7 @@ export default class ComponentRight extends Vue {
 		.u-info{
 			overflow: hidden;
 			line-height: 1;
-			margin: 13px 0;
+			margin: 10px 0;
 		}
 	}
 }

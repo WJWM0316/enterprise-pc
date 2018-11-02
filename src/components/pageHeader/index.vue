@@ -9,11 +9,11 @@
 					<el-dropdown trigger="hover" @command="logout" placement="bottom">
 					  <div class="el-dropdown-link" style="color:#354048">
 					  	<img :src="userInfos.avatarInfo.middleUrl" alt="" v-if="userInfos.avatarInfo">
-					    <span style="margin-left: 10px;">欢迎登陆，&nbsp;&nbsp;{{userInfos.realname}}</span>
+					    <span style="margin-left: 10px;">欢迎登录，&nbsp;&nbsp;{{userInfos.realname}}</span>
 					    <i class="el-icon-caret-bottom el-icon--right"></i>
 					  </div>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="out">退出登陆</el-dropdown-item>
+					    <el-dropdown-item command="out">退出登录</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>

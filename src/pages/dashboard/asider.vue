@@ -4,7 +4,7 @@
 			<header class="contact-box-header">客服电话</header>
 			<section class="company-phone-box"><i class="icon iconfont icon-phone"></i>{{desktopInfos.customerServicePhone}}</section>
 		</section>
-		<section class="using-help-box">
+		<section class="using-help-box" v-if="false">
 			<header class="using-help-box-header">使用帮助<button class="view click-item">查看更多</button></header>
 			<ul>
 				<li v-for="(helpItem, helpIndex) in desktopInfos.helpList" :key="helpIndex">{{helpItem.title}}</li>
