@@ -199,8 +199,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-// import websocket from 'UTIL/websocket'
-// import { API_ROOT } from 'API/index.js'
+import websocket from 'UTIL/websocket'
+import { WEBSOKET_API } from 'API/index.js'
 @Component({
 	methods: {
 		...mapActions([
@@ -388,7 +388,7 @@ export default class pageDashboard extends Vue {
 					this.init()
 				})
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
-		// websocket.create('ws://web.xplus.ziwork.com/laohu/member/checkNewDynamics/123')
+		websocket.create(`${WEBSOKET_API}/`)
 	}
 }
 </script>

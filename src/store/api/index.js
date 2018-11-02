@@ -19,7 +19,9 @@ if(process.env.NODE_ENV === 'development') {
   console.log(process.env.VUE_APP__TEST_SSO_TOKEN)
   document.cookie=`Authorization-Sso=${process.env.VUE_APP__TEST_SSO_TOKEN};`
 }
+
 export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
+export const WEBSOKET_API = `${process.env.VUE_APP__WEBSOKET_API}/${company}`
 
 // 请求的跟地址
 export const upload_api = `${API_ROOT}/attaches`

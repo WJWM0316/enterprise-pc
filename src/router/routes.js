@@ -494,7 +494,7 @@ export const routes = [
   {
     path: '/setSort',
     name: 'setSort',
-    title: '排序设置',
+    title: '分类设置',
     component: () => import(/* webpackChunkName: "setSort" */ '@/pages/setSort/index.vue'),
     meta: {
       icon: 'icon-set',
