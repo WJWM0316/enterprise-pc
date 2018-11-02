@@ -70,7 +70,12 @@ export default {
   },
   watch: {
     audioList () {},
-    messageData () {},
+    messageData: {
+      handler(val) {
+        this.messageData = val
+      },
+      immediate: true
+    }
   },
   methods: {
     touchstart (e) {
@@ -138,12 +143,6 @@ export default {
   mounted () {
     if (!window.audio) window.audio = new Audio()
     this.audio = window.audio
-    this.audioList.filter((item, index) => {
-      if (this.messageData.messageId === item.messageId) {
-        this.curIndex = index
-        return false
-      }
-    })
     this.$nextTick(() => {
       this.length = this.$refs.progress.clientWidth
       this.offsetX = this.$refs.progress.offsetLeft * window.dpr
@@ -188,128 +187,128 @@ export default {
 }
 </script>
 <style lang="less">
-  .aduio {
-    width: 213px;
-    height: 40px;
-    padding: 0 15px 0 10px;
-    white-space: nowrap;
-    background: #FFF5CA;
-    box-sizing: border-box;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    font-size: 0;
-    white-space: nowrap;
-    position: relative;
-    &.isRead:before {
-      position: absolute;
-      top: 0;
-      right: -10px;
-      content: '';
-      width: 7px;
-      height: 7px;
-      background: #FF3434;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-    &.isReadEnd:after {
-      position: absolute;
-      top: 50%;
-      margin-top: -6px;
-      right: -26px;
-      content: '';
-      width: 15px;
-      height: 12px;
-      background: url('~IMAGES/live_icon_playend@3x.png');
-      background-size: 100% 100%;
-    }
-    .playBtn {
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
-      display: inline-block;
-      img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        &.load {
-          animation: loading 1s linear infinite;
-        }
+.aduio {
+  width: 213px;
+  height: 40px;
+  padding: 0 15px 0 10px;
+  white-space: nowrap;
+  background: #FFF5CA;
+  box-sizing: border-box;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 0;
+  white-space: nowrap;
+  position: relative;
+  &.isRead:before {
+    position: absolute;
+    top: 0;
+    right: -10px;
+    content: '';
+    width: 7px;
+    height: 7px;
+    background: #FF3434;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  &.isReadEnd:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -6px;
+    right: -26px;
+    content: '';
+    width: 15px;
+    height: 12px;
+    background: url('~IMAGES/live_icon_playend@3x.png');
+    background-size: 100% 100%;
+  }
+  .playBtn {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    display: inline-block;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      &.load {
+        animation: loading 1s linear infinite;
       }
-    }
-    .lessonPlayBtn{
-      /*margin-right: 29px;*/
-    }
-    .progress {
-      width: 125px;
-      height: 3px;
-      background: #fff;
-      border-radius:3px;
-      position: relative;
-      display: inline-block;
-      .realBar {
-        width: 50%;
-        height: 3px;
-        border-radius: 3px;
-        position: absolute;
-        top: 50%;
-        margin-top: -1.5px;
-        left: 0;
-        background: #FFE266;
-        .slider {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #fff;
-          box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06);
-          border:1px solid #F9F9F9;
-          position: absolute;
-          top: 50%;
-          margin-top: -6px;
-          right: 0;
-          margin-right: -6px;
-          box-sizing: border-box;
-          &.start {
-            margin-right: -12px;
-          }
-          &.end {
-            margin-right: 0;
-          }
-          &.cursor::before {
-            content: attr(currentTime);
-            width: 33px;
-            height: 24px;
-            color: #354048;
-            font-weight: 300;
-            font-size: 24px; /*px*/
-            line-height: 20px;
-            text-align: center;
-            background: url('~IMAGES/course.png') no-repeat;
-            background-size: 100% 100%;
-            position: absolute;
-            top: -250%;
-            left: 50%;
-            margin-left: -16.5px;
-          }
-        }
-      }
-    }
-    .lessonProgress{
-      width: 188px;
-    }
-    .duration {
-      float: right;
-      font-size: 28px; /*px*/
-      color: #354048;
-      font-weight: 300;
-      display: inline-block;
-      position: absolute;
-      right: 15px;
-    }
-    .lessonDuration{
-      font-size: 28px;/*px*/
-      color: #929292;
-      right: 25px;
     }
   }
+  .lessonPlayBtn{
+    /*margin-right: 29px;*/
+  }
+  .progress {
+    width: 125px;
+    height: 3px;
+    background: #fff;
+    border-radius:3px;
+    position: relative;
+    display: inline-block;
+    .realBar {
+      width: 50%;
+      height: 3px;
+      border-radius: 3px;
+      position: absolute;
+      top: 50%;
+      margin-top: -1.5px;
+      left: 0;
+      background: #FFE266;
+      .slider {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06);
+        border:1px solid #F9F9F9;
+        position: absolute;
+        top: 50%;
+        margin-top: -6px;
+        right: 0;
+        margin-right: -6px;
+        box-sizing: border-box;
+        &.start {
+          margin-right: -12px;
+        }
+        &.end {
+          margin-right: 0;
+        }
+        &.cursor::before {
+          content: attr(currentTime);
+          width: 33px;
+          height: 24px;
+          color: #354048;
+          font-weight: 300;
+          font-size: 24px; /*px*/
+          line-height: 20px;
+          text-align: center;
+          background: url('~IMAGES/course.png') no-repeat;
+          background-size: 100% 100%;
+          position: absolute;
+          top: -250%;
+          left: 50%;
+          margin-left: -16.5px;
+        }
+      }
+    }
+  }
+  .lessonProgress{
+    width: 188px;
+  }
+  .duration {
+    float: right;
+    font-size: 28px; /*px*/
+    color: #354048;
+    font-weight: 300;
+    display: inline-block;
+    position: absolute;
+    right: 15px;
+  }
+  .lessonDuration{
+    font-size: 28px;/*px*/
+    color: #929292;
+    right: 25px;
+  }
+}
 </style>

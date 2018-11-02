@@ -201,7 +201,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import MyAudio from 'COMPONENTS/myAudio/audio.vue'
-
 // import websocket from 'UTIL/websocket'
 // import { WEBSOKET_API } from 'API/index.js'
 @Component({
@@ -240,10 +239,9 @@ export default class pageDashboard extends Vue {
 	timer = null
 	timestamp = null
 	messageData = {
-		// url: 'http://attach.xplus.ziwork.com/laohu/audio/2018/1102/15/5bdc012cdbba8.mp3',
 		attachTypeDesc: '音频',
 		createdAt: '2018-10-10 16:10:12',
-		duration: 0,
+		duration: 230,
 		durationDesc: '0秒',
 		fileName: '5bbdb3e49f347.mp3',
 		id: 18,
