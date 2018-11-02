@@ -1,6 +1,7 @@
 <template>
 	<div class="left-content">
 		<section class="company-infos">
+			<!-- <MyAudio :messageData="messageData" :isLesson="true"/> -->
 			<h1>{{desktopInfos.company}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
@@ -33,7 +34,7 @@
 			    	</div>
 			    </div>
 			    <button class="click-item time-button" slot="reference">
-			    	{{!desktopVerInfo.isOfficial ? `试用期：${desktopVerInfo.remainDay} 天` : `标准版,${desktopVerInfo.remainDay}天后过期`}}
+			    	{{!desktopVerInfo.isOfficial ? `试用期：${desktopVerInfo.remainDay} 天` : `标准版，${desktopVerInfo.remainDay}天后过期`}}
 			    </button>
 			  </el-popover>
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
@@ -199,6 +200,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import MyAudio from 'COMPONENTS/myAudio/audio.vue'
+
 // import websocket from 'UTIL/websocket'
 // import { WEBSOKET_API } from 'API/index.js'
 @Component({
@@ -214,7 +217,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 		])
 	},
 	components: {
-		ModalDialog
+		ModalDialog,
+		MyAudio
 	},
 	computed: {
     ...mapGetters([
@@ -235,6 +239,19 @@ export default class pageDashboard extends Vue {
 	isHaveNew = 0
 	timer = null
 	timestamp = null
+	messageData = {
+		// url: 'http://attach.xplus.ziwork.com/laohu/audio/2018/1102/15/5bdc012cdbba8.mp3',
+		attachTypeDesc: '音频',
+		createdAt: '2018-10-10 16:10:12',
+		duration: 0,
+		durationDesc: '0秒',
+		fileName: '5bbdb3e49f347.mp3',
+		id: 18,
+		size: 851315,
+		sizeM: '831.362KB',
+		uid: 1,
+		url: 'http://attach.xplus.ziwork.com/tiger/audio/2018/1010/16/5bbdb3e49f347.mp3'
+	}
 	// 确认信息弹窗
   models = {
     show: false,

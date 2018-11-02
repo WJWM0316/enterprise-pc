@@ -1,9 +1,9 @@
 <template>
   <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd}"  @click.stop="play">
     <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
-      <img src="@a/icon/playing.png" v-show="status === 0">
-      <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
-      <img src="@a/icon/playing.gif" v-show="status === 2">
+      <img src="~IMAGES/playing.png" v-show="status === 0">
+      <img src="~IMAGES/music_loading.png" class="load" v-show="status === 1">
+      <img src="~IMAGES/playing.gif" v-show="status === 2">
     </div>
     <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
@@ -16,14 +16,11 @@
         ></div>
       </div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
+    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration}}</div>
     <div class="duration" v-else>{{messageData.file.duration}}s</div>
   </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import browser from '@u/browser'
-import Vue from 'vue'
 export default {
   props: {
     isNeedRead: { // 是否需要红点标识
@@ -74,25 +71,8 @@ export default {
   watch: {
     audioList () {},
     messageData () {},
-    audioCurId (val) {
-    }
-  },
-  computed: {
-    ...mapState({
-      audioCurId: state => state.global.audioCurId
-    }),
-    isCurAudio () { // 判断播放的是否当前audio
-      if (this.messageData.file) {
-        return this.audioCurId === this.messageData.file.id
-      } else {
-        return this.audioCurId === this.messageData.id
-      }
-    }
   },
   methods: {
-    ...mapActions([
-      'updata_audioCurId'
-    ]),
     touchstart (e) {
       this.startX = e.changedTouches[0].clientX
     },
@@ -138,7 +118,6 @@ export default {
             } else {
               nowId = this.messageData.id
             }
-            this.updata_audioCurId(nowId)
             this.audio.play()
           }, 200)
         } catch (e) {
@@ -216,7 +195,7 @@ export default {
     white-space: nowrap;
     background: #FFF5CA;
     box-sizing: border-box;
-    border-radius: 0px 20px 20px 19px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     font-size: 0;
@@ -241,13 +220,13 @@ export default {
       content: '';
       width: 15px;
       height: 12px;
-      background: url('../../assets/icon/live_icon_playend@3x.png');
+      background: url('~IMAGES/live_icon_playend@3x.png');
       background-size: 100% 100%;
     }
     .playBtn {
       width: 20px;
       height: 20px;
-      margin-right: 10px;
+      margin-right: 5px;
       display: inline-block;
       img {
         width: 100%;
@@ -259,7 +238,7 @@ export default {
       }
     }
     .lessonPlayBtn{
-      margin-right: 29px;
+      /*margin-right: 29px;*/
     }
     .progress {
       width: 125px;
@@ -305,7 +284,7 @@ export default {
             font-size: 24px; /*px*/
             line-height: 20px;
             text-align: center;
-            background: url('../../assets/icon/course.png') no-repeat;
+            background: url('~IMAGES/course.png') no-repeat;
             background-size: 100% 100%;
             position: absolute;
             top: -250%;

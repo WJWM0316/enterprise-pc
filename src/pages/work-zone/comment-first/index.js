@@ -115,9 +115,6 @@ export default class CommentList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
-
-
-    console.log(this.$route.query)
     this.form = Object.assign(this.form, this.$route.query, this.$route.params)
     this.getJobCircleCommentFirstLists()
   }
