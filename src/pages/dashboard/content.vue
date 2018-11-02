@@ -370,19 +370,22 @@ export default class pageDashboard extends Vue {
    return null
   }
   
-	created() {
-		this.loginApi({code : this.getcookie('code'), 'Authorization-Sso': this.getcookie('Authorization-Sso')})
+  init() {
+  	this.getDesktopInfosApi()
+		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
-					this.getDesktopInfosApi()
-					this.getMemberDynamicsListApi({count: 20})
-							.then(() => {
-								this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
-								this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
-							  		.then(res => {
-							  			this.isHaveNew = res.data.data.isHaveNew
-							  			this.clock()
-							  		})
-							})
+					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
+					this.getMemberCheckNewDynamicsApi({timestamp: this.timestamp})
+				  		.then(res => {
+				  			this.isHaveNew = res.data.data.isHaveNew
+				  			this.clock()
+				  		})
+				})
+  }
+	created() {
+		this.loginApi({code : this.getcookie('code') ? this.getcookie('code') : process.env.VUE_APP__TEST_COMPANY, 'Authorization-Sso': this.getcookie('Authorization-Sso')})
+				.then(() => {
+					this.init()
 				})
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
 		// websocket.create('ws://web.xplus.ziwork.com/laohu/member/checkNewDynamics/123')
