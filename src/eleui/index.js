@@ -6,14 +6,9 @@ import './theme/index.css'
 import {
   Pagination,
   Dialog,
-  Autocomplete,
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Menu,
-  Submenu,
-  MenuItem,
-  MenuItemGroup,
   Input,
   InputNumber,
   Radio,
@@ -39,52 +34,24 @@ import {
   BreadcrumbItem,
   Form,
   FormItem,
-  Tabs,
-  TabPane,
-  Tag,
-  Tree,
   Alert,
-  Slider,
   Icon,
   Row,
   Col,
   Upload,
-  Progress,
-  Badge,
-  Card,
-  Rate,
-  Steps,
-  Step,
-  Carousel,
-  CarouselItem,
-  Collapse,
-  CollapseItem,
-  Cascader,
-  ColorPicker,
-  Container,
-  Header,
-  Aside,
-  Main,
-  Footer,
   Loading,
   MessageBox,
   Message,
-  Notification,
-  Scrollbar
+  Notification  
 } from 'element-ui';
 
 Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use(Pagination)
 Vue.use(Dialog)
-Vue.use(Autocomplete)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
-Vue.use(Menu)
-Vue.use(Submenu)
-Vue.use(MenuItem)
-Vue.use(MenuItemGroup)
 Vue.use(Input)
 Vue.use(InputNumber)
 Vue.use(Radio)
@@ -110,34 +77,11 @@ Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Form)
 Vue.use(FormItem)
-Vue.use(Tabs)
-Vue.use(TabPane)
-Vue.use(Tag)
-Vue.use(Tree)
 Vue.use(Alert)
-Vue.use(Slider)
 Vue.use(Icon)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Upload)
-Vue.use(Progress)
-Vue.use(Badge)
-Vue.use(Card)
-Vue.use(Rate)
-Vue.use(Steps)
-Vue.use(Step)
-Vue.use(Carousel)
-Vue.use(CarouselItem)
-Vue.use(Collapse)
-Vue.use(CollapseItem)
-Vue.use(Cascader)
-Vue.use(ColorPicker)
-Vue.use(Container)
-Vue.use(Header)
-Vue.use(Aside)
-Vue.use(Main)
-Vue.use(Footer)
-Vue.use(Scrollbar)
 Vue.use(Loading.directive)
 
 Vue.prototype.$loading = Loading.service

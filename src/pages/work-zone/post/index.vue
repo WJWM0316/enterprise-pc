@@ -228,8 +228,8 @@
                 placeholder="请输入圈主名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
-              <button
+<!--               <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
+ -->              <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"

@@ -127,18 +127,17 @@ ul {
   min-width: 128px;
   outline: unset;
   margin: 0px 16px 16px 0px;
+  border-radius: 4px;
   &:hover{
-    background: rgba(255, 226, 102, 0.2);
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #D7AB70;
-    border-color: #EDEDED;
+    /*background: rgba(255, 226, 102, 0.2);*/
+    /*font-size: 14px;*/
+    /*font-weight: 400;*/
+    /*color: #D7AB70;*/
+    /*border-color: #EDEDED;*/
   };
 }
 .common-btn-active {
   background: rgba(255, 226, 102, 0.2);
-  border-radius: 4px;
   font-size: 14px;
   font-weight: 400;
   color: #D7AB70;

@@ -292,6 +292,7 @@ export default class WorkZonePost extends Vue {
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
+        this.setSelfDefinedGroup()
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateMultipleMenberListsApi({
@@ -304,6 +305,7 @@ export default class WorkZonePost extends Vue {
             .then(() => {
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
+              this.updateAllGroupListStatus({bool: false})
               this.setSelfDefinedGroup()
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
@@ -321,6 +323,7 @@ export default class WorkZonePost extends Vue {
             .then(() => {
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
+              this.updateAllGroupListStatus({bool: false})
               this.setSelfDefinedGroup()
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
@@ -450,32 +453,39 @@ export default class WorkZonePost extends Vue {
     const data = { show: true, tem: [], value: [] }
     this.models.show = false
     this.ownerUidName = ''
+    let list = []
+    list = this.menberLists.filter(field => field.active)
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'members':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.hits.value.split(',').includes(String(field.uid)))
+        }
+        list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
         this.form.check_members = this.form.members.value
         break
       case 'hits':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.members.value.split(',').includes(String(field.uid)))
+        }
+        list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
         break
       default:
@@ -572,7 +582,7 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   filterOwnerUid(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]') {
+    if(Object.prototype.toString.call(item.groupId) === '[object String]') {
       this.getMenberListsApi({selectAll: 1})
           .then(() => {
             if(Object.prototype.toString.call(this.form[type].value) !== '[object Array]') {

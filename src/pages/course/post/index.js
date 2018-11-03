@@ -364,6 +364,7 @@ export default class CoursePost extends Vue {
   		case 'master_uid':
   			this.models.title = '选择导师'
         this.models.show = true
+        this.setSelfDefinedGroup()
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.id || this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid || Number(this.form.master_uid.value) === field.id ? true : false)
         } else {
@@ -384,6 +385,7 @@ export default class CoursePost extends Vue {
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()
+              this.updateAllGroupListStatus({bool: false})
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
               })
@@ -396,6 +398,7 @@ export default class CoursePost extends Vue {
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()
+              this.updateAllGroupListStatus({bool: false})
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
               })
@@ -543,32 +546,40 @@ export default class CoursePost extends Vue {
   confirm() {
     const type = this.models.currentModalName
     const data = { show: true, tem: [], value: [] }
+    let list = []
+    list = this.menberLists.filter(field => field.active)
     this.models.show = false
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'members':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.hits.value.split(',').includes(String(field.uid)))
+        }
+        list = list.filter(field => field.uid !== Number(this.form.master_uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
         break
       case 'hits':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.members.value.split(',').includes(String(field.uid)))
+        }
+        // 不可见学员不能和导师重复
+        list = list.filter(field => field.uid !== Number(this.form.master_uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
         break
       default:
@@ -698,7 +709,6 @@ export default class CoursePost extends Vue {
     const checkedMenberLists = this.menberLists.filter(field => field.active)
     checkedMenberLists.length === this.menberLists.length ? this.updateSingleGrouptatus({groupId: 'all', bool: true}) : this.updateSingleGrouptatus({groupId: 'all', bool: false})
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-11
@@ -708,30 +718,34 @@ export default class CoursePost extends Vue {
   tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2}).then(() => {
-        this.tutorLists.map(field => {
-          field.active = String(field.uid) === this.form.master_uid.value ? true : false
-        })
-        this.temTutorLists = this.tutorLists
-      })
-    } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
-      this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1}).then(() => {
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: [this.form.master_uid.value]
-        })
-        this.temTutorLists = this.menberLists
-      })
+      this.getTutorListApi({type: 2})
+          .then(() => {
+            this.tutorLists.map(field => {
+              field.active = String(field.uid) === this.form.master_uid.value ? true : false
+            })
+            this.temTutorLists = this.tutorLists
+          })
     } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId}).then(() => {
-        this.updateMenberListsAllApi({bool: false})
-        this.updateMultipleMenberListsApi({
-          list: [this.form.master_uid.value]
-        })
-        this.temTutorLists = this.menberLists
-      })
+      if(item.groupId === 'all') {
+        this.getMenberListsApi({selectAll: 1})
+            .then(() => {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({
+                list: [this.form.master_uid.value]
+              })
+              this.temTutorLists = this.menberLists
+            })
+      } else {
+        this.getMenberListsApi({groupId: item.groupId})
+            .then(() => {
+              this.updateMenberListsAllApi({bool: false})
+              this.updateMultipleMenberListsApi({
+                list: [this.form.master_uid.value]
+              })
+              this.temTutorLists = this.menberLists
+            })
+      }
     }
   }
 

@@ -298,7 +298,7 @@
             </div>
             <div class="group-list">
               <button class="common-btn" @click="tutorClassification('uid', 'outer')">外部导师</button>
-              <button class="common-btn" @click="tutorClassification('uid', 'all')">所有人</button>
+              <!-- <button class="common-btn" @click="tutorClassification('uid', 'all')">所有人</button> -->
               <button class="common-btn"
                 v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"

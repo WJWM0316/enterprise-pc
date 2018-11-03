@@ -180,6 +180,7 @@ const mutations = {
   // 更新全部组列表
   [UPDATE_All_GROUP_LISTS_STATUS] (state, params) {
     state.groupLists.map(field => field.active = params.bool)
+    state.hasMemberGroupList.map(field => field.active = params.bool)
   },
   // 取消圈闭选中
   [NO_CHECK_UPDATE_GROUP_LISTS] (state) {
