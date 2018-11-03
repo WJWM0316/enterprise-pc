@@ -375,7 +375,7 @@
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"
@@ -409,7 +409,7 @@
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"

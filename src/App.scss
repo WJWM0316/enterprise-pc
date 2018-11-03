@@ -229,3 +229,22 @@ ul {
 .no-margin-bottom{
   margin-bottom: 0 !important;
 }
+
+.limit-menber-height {
+  max-height: 207px;
+  margin-bottom: 34px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.limit-menber-height::-webkit-scrollbar {
+  width: 5px;
+}
+.limit-menber-height::-webkit-scrollbar-track {
+  background-color:rgba(0,0,0,.1);
+  border-radius: 5px;
+}
+.limit-menber-height::-webkit-scrollbar-thumb {
+  background-color:rgba(0,0,0,1);
+  border-radius: 5px;
+}

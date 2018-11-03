@@ -237,7 +237,7 @@
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"
@@ -271,7 +271,7 @@
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"
@@ -322,7 +322,7 @@
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 v-for="(menberItem, menberIndex) in menberLists"
                 :key="menberIndex"
@@ -333,13 +333,6 @@
                 <i class="icon iconfont icon-radio_default" v-show="!menberItem.active"></i>
                 <span>{{menberItem.realname}}</span>
               </div>
-              <!-- <el-checkbox-group v-model="form.hits.tem">
-                <el-checkbox
-                  :label="menberItem.realname"
-                  :key="menberIndex"
-                  @change="multipleSelection('hits', menberItem)"
-                  v-for="(menberItem, menberIndex) in menberLists" />
-              </el-checkbox-group> -->
             </div>
           </div>
           <!-- 选择不可见学员-end -->

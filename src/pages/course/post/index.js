@@ -567,6 +567,8 @@ export default class CoursePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
+        this.form.members.noEdit = Object.assign(this.form.members, data)
+        delete this.form.members.noEdit.noEdit
         break
       case 'hits':
         if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]') {
@@ -581,6 +583,8 @@ export default class CoursePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
+        this.form.hits.noEdit = Object.assign(this.form.hits, data)
+        delete this.form.hits.noEdit.noEdit
         break
       default:
         break   
