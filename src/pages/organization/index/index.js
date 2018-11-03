@@ -58,7 +58,7 @@ export default class pageOrganization extends Vue {
     fields = [
         {
           prop: 'groupName',
-          width: '30%',
+          width: '17%',
           label: '成员',
           align: 'left'
         },
@@ -138,7 +138,6 @@ export default class pageOrganization extends Vue {
     created(){}
 
     init() {
-
       console.log('init')
       console.log(this.$route)
       let query =  this.$route.query
@@ -214,9 +213,16 @@ export default class pageOrganization extends Vue {
           break
 
         case 'add':
-            this.$router.push({
-              name: 'addMember'
-            })
+          let params = {}
+          if(this.$route.query.groupId){
+            params = {
+              groupId : this.$route.query.groupId
+            }
+          }
+          this.$router.push({
+            name: 'addMember',
+            params: params
+          })
           break
 
         case 'addGroup':
@@ -371,7 +377,7 @@ export default class pageOrganization extends Vue {
       }
 
       if(this.models.confirmText === '正在上传..'){
-        
+
         return
       }
 

@@ -187,6 +187,7 @@ export default class WorkZonePost extends Vue {
   init() {
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
+      this.form.groupId = this.$route.params.groupId? parseInt(this.$route.params.groupId) :''
       this.form.password = '123456'
     }else {
       this.user_id = this.$route.query.user_id
@@ -196,7 +197,26 @@ export default class WorkZonePost extends Vue {
       }
       this.editInitMsg()
     }
+
+    this.getUserInfo()
     this.getGroupList()
+  }
+
+  opEditRoleList(){
+    let rule = this.userInfo.roleId
+    if(rule == 1){
+      this.roleList.length = 3
+    }else if(rule == 2){
+      this.roleList.length = 2
+    }
+  }
+
+  getUserInfo(){
+
+    getMemberInfoApi({id: this.userInfos.id}).then(res=>{
+      this.userInfo = res.data.data
+      this.opEditRoleList()
+    })
   }
 
   //编辑时初始化
@@ -238,9 +258,7 @@ export default class WorkZonePost extends Vue {
       this.rules.password.required = false
     })
 
-    getMemberInfoApi({id: this.userInfos.id}).then(res=>{
-      this.userInfo = res.data.data
-    })
+    
   }
 
   /**

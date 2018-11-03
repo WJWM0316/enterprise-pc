@@ -156,6 +156,10 @@ export default class WorkZonePost extends Vue {
   created() {
 
     console.log(this.$route)
+
+    if(this.$route && this.$route.params.phone){
+      this.form.mobile = this.$route.params.phone
+    }
     this.initPageByPost()
   }
 
