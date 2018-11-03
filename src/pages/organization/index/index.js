@@ -138,6 +138,9 @@ export default class pageOrganization extends Vue {
     created(){}
 
     init() {
+
+      console.log('init')
+      console.log(this.$route)
       let query =  this.$route.query
       this.memberData = {
         selectAll: 1,
@@ -147,7 +150,7 @@ export default class pageOrganization extends Vue {
       this.memberData = Object.assign(this.memberData,query || {})
       if(query.roleId){
         if(query.roleId === '4'){
-          delete this. emberData.roleId
+          delete this.memberData.roleId
         }
         this.rolevalue = query.roleId
       }
@@ -242,6 +245,7 @@ export default class pageOrganization extends Vue {
     }
 
     selectGroup(item){
+      console.log(item)
       let query = {
         page: 1,
         roleId: '4'
@@ -257,18 +261,6 @@ export default class pageOrganization extends Vue {
         name: 'organization',
         query: query
       })
-
-      /*this.groupList.map((field) => {
-        if(field.active) {
-          field.active = false
-        }
-      })
-      item.active = true
-      this.rolevalue = '4'
-      this.memberData.page = 1
-
-      delete this.memberData.roleId
-      this.getMemberList()*/
       
     }
 
@@ -378,6 +370,12 @@ export default class pageOrganization extends Vue {
         return
       }
 
+      if(this.models.confirmText === '正在上传..'){
+        
+        return
+      }
+
+      this.models.confirmText = '正在上传..'
       importMemberByExcelApi({
         fileId: this.av_id
       }).then(res=>{
@@ -385,12 +383,12 @@ export default class pageOrganization extends Vue {
           message: res.data.msg,
           type: 'success'
         })
-
+        this.models.confirmText = '导入成功'
         setTimeout(()=>{
           this.searchData.type = false
         },1000)
       },res=>{
-
+        this.models.confirmText = '导入失败'
         this.models.isHideBtn = '1'
         this.$message.error(res.data.msg);
       })

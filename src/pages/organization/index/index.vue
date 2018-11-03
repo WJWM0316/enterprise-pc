@@ -124,7 +124,7 @@
                   :on-progress="uploadFileProcess"
                   :on-exceed="handleExceed"
                   :limit="1">
-                  <el-button size="small" type="primary">{{fileUpload.btnTxt}}</el-button>
+                  <el-button size="small" type="primary" :class="{'loading': fileUpload.btnTxt==='正在上传..'|| fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
                   <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div>
                 </el-upload>
               </div>
@@ -153,6 +153,10 @@
   }
   .upload-demo {
     margin-top: 20px;
+    .loading {
+      background: #cccccc;
+      color: #666666;
+    }
   }
 }
 .page-position {
