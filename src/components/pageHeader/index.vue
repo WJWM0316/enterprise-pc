@@ -6,7 +6,7 @@
 					<i class="el-icon-bell"></i>
 				</li> -->
 				<li>
-					<el-dropdown trigger="hover" @command="logout" placement="bottom">
+					<el-dropdown trigger="hover" @command="todoAction" placement="bottom">
 					  <div class="el-dropdown-link" style="color:#354048">
 					  	<img :src="userInfos.avatarInfo.middleUrl" alt="" v-if="userInfos.avatarInfo">
 					    <span style="margin-left: 10px;">欢迎登录，&nbsp;&nbsp;{{userInfos.realname}}</span>
@@ -14,6 +14,7 @@
 					  </div>
 					  <el-dropdown-menu slot="dropdown">
 					    <el-dropdown-item command="out">退出登录</el-dropdown-item>
+					    <el-dropdown-item command="modify">修改密码</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>
@@ -83,8 +84,17 @@ export default class ComponentHeader extends Vue {
     return unescape(arr[1])
    return null
   }
-	logout(command) {
-		this.logoutApi({code : this.getcookie('code')})
+	todoAction(command) {
+		switch(command) {
+			case 'out':
+				this.logoutApi({code : this.getcookie('code')})
+				break
+			case 'modify':
+				this.$router.push({name: 'editMember',query: {user_id: this.userInfos.id } })
+				break
+			default:
+				break
+		}
 	}
 }
 </script>

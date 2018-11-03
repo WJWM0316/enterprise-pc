@@ -234,24 +234,11 @@ import MyAudio from 'COMPONENTS/myAudio/index.vue'
   }
 })
 export default class pageDashboard extends Vue {
-
 	// 是否有新的成员动态
 	isHaveNew = 0
 	timer = null
 	timestamp = null
 	theUrl = 'http://attach.xplus.ziwork.com/tiger/audio/2018/1010/16/5bbdb3e49f347.mp3'
-	messageData = {
-		attachTypeDesc: '音频',
-		createdAt: '2018-10-10 16:10:12',
-		duration: 230,
-		durationDesc: '0秒',
-		fileName: '5bbdb3e49f347.mp3',
-		id: 18,
-		size: 851315,
-		sizeM: '831.362KB',
-		uid: 1,
-		url: 'http://attach.xplus.ziwork.com/tiger/audio/2018/1010/16/5bbdb3e49f347.mp3'
-	}
 	// 确认信息弹窗
   models = {
     show: false,

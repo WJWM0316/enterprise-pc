@@ -165,7 +165,7 @@ export default class ComponentCropper extends Vue {
    * @return   {[type]}   [description]
    */
   finishCropImage() {
-    this.flag.btnTips.value = '正在上传'
+    this.flag.btnTips.value = '确定'
     this.flag.btnTips.disable = true
     const croppedCanvas = this.cropper.getCroppedCanvas()
     const croppedDataUrl = croppedCanvas.toDataURL()
