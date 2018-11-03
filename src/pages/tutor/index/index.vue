@@ -99,7 +99,7 @@
               width="464px"
               @search="searchTea"
               v-model="searchData.value"
-              placeholder="请输入手机号搜索" />
+              placeholder="请输入要添加的外部导师手机号" />
             <div class="fetch-result" v-if="searchData.type">
 
             <p class="model_hint" v-show="searchData.hintTXt">{{searchData.hintTXt}}</p>
@@ -135,11 +135,13 @@
       :type="delateModels.type"
       :width="delateModels.width"
       :min-height="delateModels.minHeight"
+      :isHideBtn="delateModels.isHideBtn"
       @confirm="deleteTea"
+      @cancel="cancel"
       >
         <div slot="title">
           <h3 class="dialog-title">
-            {{delateModels.title}} 
+            {{delateModels.title}}
           </h3>
         </div>
         <div slot="customize-html" style="margin-left: 40px;">

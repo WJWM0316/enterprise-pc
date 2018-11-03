@@ -18,6 +18,9 @@ export const deleteMemberApi = params => request(`/member/${params.id}`, 'delete
 // 获取学员信息
 export const getMemberInfoApi = params => request(`/member/info/${params.id}`, 'get', params)
 
+// Excel导入成员信息
+export const importMemberByExcelApi = params => request(`/member/importMemberByExcel/${params.fileId}`, 'post', params)
+
 
 
 //获取分组列表
@@ -41,5 +44,6 @@ export const getContentAdminGroupApi = params => request(`/group/contentAdminGro
 
 // 公司信息
 export const getContentAdminGroupApi1 = params => request(`/group/contentAdminGroup/${params.id}`, 'get', params)
+
 
 

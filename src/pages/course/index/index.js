@@ -126,6 +126,8 @@ export default class CourseList extends Vue {
       count: this.zikeDefaultPageSize,
       // globalLoading: true
     }
+
+    console.log('===',this.zikeDefaultPageSize)
     if(this.form.name) {
       params.name = this.form.name
       params.page = this.form.page ? this.form.page : 1
@@ -137,6 +139,9 @@ export default class CourseList extends Vue {
       params.category_id = this.form.category_id === 'abc' ? '' : this.form.category_id
     }
     this.getCourseListsApi(params).then(() => this.form = {})
+
+
+    console.log(this.courseList)
   }
 
 

@@ -110,6 +110,7 @@ export default class CourseList extends Vue {
     confirmText: '删除',
     type: 'confirm',
     width: '432px',
+    isHideBtn: '2',
     height: '192px'
   }
 
@@ -209,7 +210,12 @@ export default class CourseList extends Vue {
 
   // 添加导师-跳转
   toTea() {
-    this.$router.push({ name: 'tutorPost'})
+    this.$router.push({ 
+      name: 'tutorPost' ,
+      params: {
+        phone: this.searchData.value
+      } 
+    })
   }
 
   //移除老师

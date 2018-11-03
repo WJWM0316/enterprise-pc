@@ -154,6 +154,8 @@ export default class WorkZonePost extends Vue {
   search(type) {}
 
   created() {
+
+    console.log(this.$route)
     this.initPageByPost()
   }
 
@@ -180,7 +182,12 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   confirm() {
-    this.$router.push({ name: 'tutor'})
+    this.$router.push({
+     name: 'tutor',
+     query: {
+      tutorType:'outer'
+     }
+   })
   }
 
   /**

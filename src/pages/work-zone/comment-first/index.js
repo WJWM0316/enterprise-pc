@@ -152,7 +152,7 @@ export default class CommentList extends Vue {
   // 添加课程-跳转
   addWorkZone() {
     this.$router.push({ name: 'workZonePost'})
-  }
+  } 
 
   todoAction(type, item) {
     switch(type) {

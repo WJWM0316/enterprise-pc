@@ -5,6 +5,7 @@
         <el-row class="organization-base " style="margin-top: 14px">
          <el-col :span="24" class="right-content">
           <el-button type="primary" class="click-item button_base margin_0" @click="todoAction('set')">分组管理</el-button>
+          <el-button style="margin-left: 20px" type="primary" class="click-item button_base margin_0" @click="todoAction('addGroup')">新建分组</el-button>
          </el-col>
         </el-row>
         <el-button 
@@ -26,6 +27,9 @@
         </h2>
       </el-col>
       <el-col :span="12" class="right-content">
+        
+        <el-button type="primary" class="click-item button_base" @click="todoAction('upload')">批量导入成员</el-button>
+
         <el-button type="primary" class="click-item button_base" @click="todoAction('add')">添加新成员</el-button>
       </el-col>
     </el-row>
@@ -44,7 +48,7 @@
       </el-option>
     </el-select>
   </div>
-  <table-list
+    <table-list
       :list="courseList.list"
       :fields="fields"
       :total="courseList.total"
@@ -81,15 +85,80 @@
         </template>
       </template>
     </table-list>
+    <modal-dialog
+      headType= '2'
+      v-model="models.show"
+      :title="models.title"
+      :show-close="models.showClose"
+      :confirm-text="models.confirmText"
+      :type="models.type"
+      :width="models.width"
+      :isHideBtn="models.isHideBtn"
+      @confirm="confirm"
+      @cancel="cancel"
+      class="modal_organ"
+      >
+        <div slot="title">
+          <h3 class="dialog-title">
+            {{models.title}} 
+          </h3>
+        </div>
+        <div slot="customize-html" style="margin-top: 20px;">
+          <div class="customize-html-content">
+              <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" href="http://attach.xplus.ziwork.com/test/doc/2018/1103/14/5bdd3f3576c51.xlsx">下载</a></p>
+              <h4 class="pop_tit">第二步：上传填写好的表哥文件</h4>
+              <div class="pop_cont">
+                <!--  -->
+                <el-upload
+                  class="upload-demo"
+                  ref="file"
+                  multiple
+                  name="file"
+                  :action="fileUpload.action"
+                  :on-remove="handleRemove"
+                  :on-error="handleFileError"
+                  :accept="fileUpload.accept"
+                  :data="fileUpload.params"
+                  :on-success="handleFileSuccess"
+                  :before-upload="beforeFileUpload"
+                  :on-progress="uploadFileProcess"
+                  :on-exceed="handleExceed"
+                  :limit="1">
+                  <el-button size="small" type="primary">{{fileUpload.btnTxt}}</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div>
+                </el-upload>
+              </div>
+          </div>
+        </div>
+    </modal-dialog>
   </div>
 </template>
 
 <style lang="scss">
 @import "~COLORS/variables";
-
+.modal_organ {
+  .pop_tit {
+    font-size: 14px;
+    color: #354048;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+  }
+  .pop_cont {
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  .upload-demo {
+    margin-top: 20px;
+  }
+}
 .page-position {
   margin-bottom: 32px;
 }
+
 #organization {
   background: #fff;
   .organization-base {
@@ -167,9 +236,6 @@
     height:40px;
     background:rgba(255,226,102,1);
   }
-
-  
-
 }
 .el-scrollbar {
   }

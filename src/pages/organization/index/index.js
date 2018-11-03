@@ -1,22 +1,31 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
-import { getMemberListApi, getGroupListApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, importMemberByExcelApi } from '@/store/api/organization.js'
+import { upload_api } from '@/store/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
+import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
 @Component({
   name: 'member-list',
   components: {
-      TableList
-    },
-    watch: {
-      groupList (val) {},
-      '$route': {
-        handler() {
-          this.init()
-        },
-        immediate: true
-      }
-    },
+    TableList,
+    ModalDialog
+  },
+  watch: {
+    groupList (val) {},
+    '$route': {
+      handler() {
+        this.init()
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    ...mapActions([
+      'showMsg',
+    ])
+  },
 })
 export default class pageOrganization extends Vue {
   groupList = [
@@ -95,6 +104,37 @@ export default class pageOrganization extends Vue {
       page: 1
     }
 
+    // 文件上传
+    fileUpload = {
+      action: upload_api,
+      list: [],
+      limit: 2,
+      accept: '.xlsx',
+      progress: 0,
+      tips: '格式支持xlsx',
+      btnTxt: '上传表格成员',
+      progressText: '上传中',
+      params: {
+        token: getAccessToken(),
+        attach_type: 'doc',
+      },
+      status: 'processing',
+      infos: {},
+      show: false
+    }
+
+    // 确认信息弹窗
+    models = {
+      show: false,
+      title: '第一步：下载标准表哥模版，按要求填写',
+      showClose: true,
+      confirmText: '开始导入',
+      type: 'alert',
+      width: '670px',
+      height: '400px',
+      isHideBtn: '1',
+    }
+    av_id = null
     created(){}
 
     init() {
@@ -107,13 +147,12 @@ export default class pageOrganization extends Vue {
       this.memberData = Object.assign(this.memberData,query || {})
       if(query.roleId){
         if(query.roleId === '4'){
-          delete this.memberData.roleId
+          delete this. emberData.roleId
         }
         this.rolevalue = query.roleId
       }
       this.getMemberList()
       this.getMsgList()
-
     }
 
     getMsgList() {
@@ -170,9 +209,16 @@ export default class pageOrganization extends Vue {
             name: 'groupManage'
           })
           break
+
         case 'add':
             this.$router.push({
               name: 'addMember'
+            })
+          break
+
+        case 'addGroup':
+            this.$router.push({
+              name: 'addGroup'
             })
           break
 
@@ -183,6 +229,11 @@ export default class pageOrganization extends Vue {
                 user_id: 108,
               }
             })
+          break
+
+        case 'upload':
+            this.models.show = true
+            console.log('upload')
           break
 
         default:
@@ -238,6 +289,110 @@ export default class pageOrganization extends Vue {
       this.$router.push({
         name: 'organization',
         query: query
+      })
+    }
+
+    handleRemove(e){
+      console.log(e)
+      this.fileUpload.show = false
+      this.fileUpload.btnTxt = '选择文件'
+      this.fileUpload.progress = 0
+      this.fileUpload.status = 'processing'
+      this.fileUpload.progressText = ''
+
+      this.models.isHideBtn = '1'
+      this.$refs.file.abort()
+      this.av_id = null
+
+    }
+
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，请先删除当前上传文件（鼠标浮动到文件）`);
+      return false
+    }
+
+    /**
+     * @detail   文件上传成功
+     */
+    handleFileSuccess(res) {
+
+       console.log(res)
+        this.av_id = res.data[0].id
+        this.fileUpload.status = 'success'
+        this.fileUpload.progress = 100
+        this.fileUpload.progressText = '上传成功'
+        this.fileUpload.btnTxt = '重新上传'
+
+        this.models.isHideBtn = '2'
+    }
+
+    /**
+     * @detail   文件上传之前的处理
+     */
+    beforeFileUpload(file) {
+      const isLt200M = file.size / 1024 / 1024 < 200;
+      if(!isLt200M){
+        this.$message.error('上传文件大小不能超过 200MB!');
+      }else {
+        this.fileUpload.status = 'loading'
+        this.fileUpload.progress = 0
+        this.fileUpload.progressText = '上传中'
+
+        this.nowLoadUid = file.uid
+        this.fileUpload.infos = file
+        this.fileUpload.show = true
+        this.fileUpload.btnTxt = '重新上传'
+      }
+
+      console.log(this.fileUpload.params.attach_type)
+
+      return isLt200M
+    }
+
+    /**
+     * @detail   上传进度
+     */
+    uploadFileProcess(event, file, fileList){
+      this.fileUpload.progress = file.percentage.toFixed(0)
+    }
+
+    /**
+     * @detail   文件上传失败
+     */
+    handleFileError(err, file, fileList) {
+      console.log(err.msg)
+      this.fileUpload.status = 'error'
+      this.fileUpload.progress = 0
+      this.fileUpload.progressText = '上传失败'
+      this.fileUpload.btnTxt = '重新上传'
+      this.showMsg({ content: '上传失败 ~', type: 'error', duration: 3000 })
+    }
+
+    cancel(){
+      //this.searchData.type = false
+    }
+
+    confirm(){
+      if(!this.av_id){
+        this.$message.error('缺少文件')
+        return
+      }
+
+      importMemberByExcelApi({
+        fileId: this.av_id
+      }).then(res=>{
+        this.$message({
+          message: res.data.msg,
+          type: 'success'
+        })
+
+        setTimeout(()=>{
+          this.searchData.type = false
+        },1000)
+      },res=>{
+
+        this.models.isHideBtn = '1'
+        this.$message.error(res.data.msg);
       })
     }
 }
