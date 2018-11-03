@@ -63,36 +63,6 @@
           </el-button>
       </el-form-item>
 
-      <!-- 所属组织 -->
-      <el-form-item
-        label="归属于"
-        prop="check_organizations"
-        class="limit-width"
-        >
-          <div class="selected-item" v-show="form.organizations.show">
-            <span
-              @click="removeMultipleCheck('organizations', oIndex, oItem)"
-              :key="oIndex"
-              v-for="(oItem, oIndex) in form.organizations.tem">
-                {{oItem}}<i class="el-icon-close"></i>
-            </span>
-          </div>
-          <el-button
-            class="click-item"
-            type="primary"
-            :class="{'zike-btn-selected': form.organizations.show}"
-            @click="openModal('organizations')">
-              {{form.organizations.show ? '重新选择' : '点击选择'}}
-          </el-button>
-          <el-popover
-            placement="top-start"
-            ref="organizations"
-            width="200"
-            trigger="hover"
-            content="选择此内容的管理权限所属的部门组织">
-          </el-popover>
-          <i class="el-icon-question" v-popover:organizations></i>
-      </el-form-item>
 
       <div class="walk-title">工作圈详细信息</div>
 
@@ -192,7 +162,38 @@
         <el-radio v-model="form.status" :label="1">上线</el-radio>
         <el-radio v-model="form.status" :label="0">下线</el-radio>
       </el-form-item>
-
+      
+      <!-- 所属组织 -->
+      <el-form-item
+        label="归属于"
+        prop="check_organizations"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.organizations.show">
+            <span
+              @click="removeMultipleCheck('organizations', oIndex, oItem)"
+              :key="oIndex"
+              v-for="(oItem, oIndex) in form.organizations.tem">
+                {{oItem}}<i class="el-icon-close"></i>
+            </span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.organizations.show}"
+            @click="openModal('organizations')">
+              {{form.organizations.show ? '重新选择' : '点击选择'}}
+          </el-button>
+          <el-popover
+            placement="top-start"
+            ref="organizations"
+            width="200"
+            trigger="hover"
+            content="选择此内容的管理权限所属的部门组织">
+          </el-popover>
+          <i class="el-icon-question" v-popover:organizations></i>
+      </el-form-item>
+    
       <!-- 确认提交 -->
       <el-form-item>
         <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
@@ -227,8 +228,8 @@
                 placeholder="请输入圈主名称" />
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
-              <button
+<!--               <button class="common-btn" @click="filterOwnerUid('owner_uid', 'all')">所有人</button>
+ -->              <button
                 class="common-btn"
                 v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"

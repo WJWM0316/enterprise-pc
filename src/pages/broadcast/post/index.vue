@@ -68,37 +68,6 @@
               {{form.uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
-
-      <!-- 所属组织 -->
-      <el-form-item
-        label="归属于"
-        prop="check_groupList"
-        class="limit-width"
-        >
-          <div class="selected-item" v-show="form.groupList.show">
-            <span
-              @click="removeMultipleCheck('groupList', groupIndex, groupItem)"
-              :key="groupIndex"
-              v-for="(groupItem, groupIndex) in form.groupList.tem">
-                {{groupItem.groupName}}<i class="el-icon-close"></i>
-            </span>
-          </div>
-          <el-button
-            class="click-item"
-            type="primary"
-            :class="{'zike-btn-selected': form.groupList.show}"
-            @click="openModal('groupList')">
-              {{form.groupList.show ? '重新选择' : '点击选择'}}
-          </el-button>
-          <el-popover
-            placement="top-start"
-            ref="groupList"
-            width="200"
-            trigger="hover"
-            content="选择此内容的管理权限所属的部门组织">
-          </el-popover>
-          <i class="el-icon-question" v-popover:groupList></i>
-      </el-form-item>
       
       <!-- 直播开始时间 -->
       <el-form-item
@@ -238,7 +207,37 @@
         <el-radio v-model="form.isOnline" :label="1">上线</el-radio>
         <el-radio v-model="form.isOnline" :label="0">下线</el-radio>
       </el-form-item>
-
+      
+      <!-- 所属组织 -->
+      <el-form-item
+        label="归属于"
+        prop="check_groupList"
+        class="limit-width"
+        >
+          <div class="selected-item" v-show="form.groupList.show">
+            <span
+              @click="removeMultipleCheck('groupList', groupIndex, groupItem)"
+              :key="groupIndex"
+              v-for="(groupItem, groupIndex) in form.groupList.tem">
+                {{groupItem.groupName}}<i class="el-icon-close"></i>
+            </span>
+          </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            :class="{'zike-btn-selected': form.groupList.show}"
+            @click="openModal('groupList')">
+              {{form.groupList.show ? '重新选择' : '点击选择'}}
+          </el-button>
+          <el-popover
+            placement="top-start"
+            ref="groupList"
+            width="200"
+            trigger="hover"
+            content="选择此内容的管理权限所属的部门组织">
+          </el-popover>
+          <i class="el-icon-question" v-popover:groupList></i>
+      </el-form-item>
       <!-- 确认提交 -->
       <el-form-item>
         <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
@@ -317,7 +316,6 @@
             </div>
             <div class="group-list">
               <button class="common-btn" @click="tutorClassification('uid', 'outer')">外部导师</button>
-              <button class="common-btn" @click="tutorClassification('uid', 'all')">所有人</button>
               <button class="common-btn"
                 v-for="(groupItem, groupIndex) in hasMemberGroupList"
                 :key="groupIndex"

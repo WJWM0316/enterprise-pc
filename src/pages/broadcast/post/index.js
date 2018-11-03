@@ -365,6 +365,7 @@ export default class BroadcastPost extends Vue {
   		case 'uid':
   			this.models.title = '选择导师'
         this.models.show = true
+        this.setSelfDefinedGroup()
         if(this.models.editType === 'tutor') {
           temTutorLists.map(field => field.active = this.form.uid.value === field.id || this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid || Number(this.form.uid.value) === field.id ? true : false)
           this.temTutorLists = temTutorLists
@@ -384,6 +385,7 @@ export default class BroadcastPost extends Vue {
             .then(() => {
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
+              this.updateAllGroupListStatus({bool: false})
               this.setSelfDefinedGroup()
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
@@ -397,6 +399,7 @@ export default class BroadcastPost extends Vue {
               this.models.show = true
               this.setSelfDefinedGroup()
               this.updateMenberListsAllApi({bool: false})
+              this.updateAllGroupListStatus({bool: false})
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
               })
@@ -531,6 +534,7 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
+      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -546,31 +550,38 @@ export default class BroadcastPost extends Vue {
     const type = this.models.currentModalName
     const data = { show: true, tem: [], value: [] }
     this.models.show = false
+    let list = []
+    list = this.menberLists.filter(field => field.active)
     this.form[`check_${type}`] = this.form[type].value
     this.form[type].noEdit.value = this.form[type].value
     this.form[type].noEdit.tem = this.form[type].tem
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
-    // this.removeSelfDefinedGroup()
     switch(type) {
       case 'memberList':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.invisibleList.value.split(',').includes(String(field.uid)))
+        }
+        list = list.filter(field => field.uid !== Number(this.form.uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.memberList = Object.assign(this.form.memberList, data)
         break
       case 'invisibleList':
-        this.menberLists.map(field => {
-          if(field.active) {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          }
+        if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]') {
+          list = list.filter(field => !this.form.memberList.value.split(',').includes(String(field.uid)))
+        }
+        list = list.filter(field => field.uid !== Number(this.form.uid.value))
+        list.map(field => {
+          data.value.push(field.uid)
+          data.tem.push(field)
         })
         data.value = data.value.join(',')
+        data.show = list.length > 0 ? true : false
         this.form.invisibleList = Object.assign(this.form.invisibleList, data)
         break
       default:
@@ -750,27 +761,30 @@ export default class BroadcastPost extends Vue {
   tutorClassification(type, item) {
     if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
       this.models.editType = 'tutor'
-      this.getTutorListApi({type: 2}).then(() => {
-        this.tutorLists.map(field => {
-          field.active = String(field.uid) === this.form.uid.value ? true : false
-        })
-        this.temTutorLists = this.tutorLists
-      })
-    } else if(Object.prototype.toString.call(item) === '[object String]' && item === 'all'){
+      this.getTutorListApi({type: 2})
+          .then(() => {
+            this.tutorLists.map(field => {
+              field.active = String(field.uid) === this.form.uid.value ? true : false
+            })
+            this.temTutorLists = this.tutorLists
+          })
+    } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1})
+      if(item.groupId === 'all') {
+        this.getMenberListsApi({selectAll: 1})
           .then(() => {
             this.updateAllMemberStatus({bool: false})
             this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
             this.temTutorLists = this.menberLists
           })
-    } else {
-      this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId}).then(() => {
-        this.updateAllMemberStatus({bool: false})
-        this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
-        this.temTutorLists = this.menberLists
-      })
+      } else {
+        this.getMenberListsApi({groupId: item.groupId})
+            .then(() => {
+              this.updateAllMemberStatus({bool: false})
+              this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
+              this.temTutorLists = this.menberLists
+            })
+      }
     }
   }
 

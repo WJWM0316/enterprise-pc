@@ -1,6 +1,8 @@
 // import router from '@/router/index.js'
 // import localstorage from '@u/localstorage'
 // import store from '@/store/index.js'
+import { getAccessToken } from '@/store/cacheService'
+
 class WS {
   ws = null
   url = ''
@@ -28,9 +30,7 @@ class WS {
       ws.onopen = () => {
         this.lastTealthTime = 0
         // 未登录先登录再加入直播间
-        // if (!store.getters.wsLogin) {
-        //   this.login()
-        // }
+        this.login()
         if (this.ws.readyState === 1) { // 为1表示连接处于open状态
           clearInterval(this.keepAliveTimer)
           this.keepAliveTimer = setInterval(() => { // 开启心跳检查
@@ -47,6 +47,7 @@ class WS {
         // 自定义一个接收监听事件，暴露出去接收信息
         this.event = new CustomEvent('wsOnMessage', {detail: data})
         window.dispatchEvent(this.event)
+        console.log(11111111)
         switch (data.cmd) {
           case 'login.token': // 登录处理
             console.log('======WebSocket======' + data.msg)
@@ -94,7 +95,7 @@ class WS {
   login = () => {
     let data = {
       cmd: 'login.token',
-      token: 123,
+      token: getAccessToken(),
       data: {}
     }
     this.send(data)

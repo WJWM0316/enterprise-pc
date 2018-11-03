@@ -193,7 +193,6 @@ export default class WorkZonePost extends Vue {
       if(this.user_id.toString() === this.userInfos.id.toString()){
         this.isMe = true
         delete this.rules.roleId
-        console.log(this.rules)
       }
       this.editInitMsg()
     }

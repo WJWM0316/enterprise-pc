@@ -1,6 +1,7 @@
 <template>
 	<div class="left-content">
 		<section class="company-infos">
+			<!-- <my-audio :theUrl="theUrl" /> -->
 			<h1>{{desktopInfos.company}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
@@ -33,11 +34,12 @@
 			    	</div>
 			    </div>
 			    <button class="click-item time-button" slot="reference">
-			    	{{!desktopVerInfo.isOfficial ? `试用期：${desktopVerInfo.remainDay} 天` : `标准版,${desktopVerInfo.remainDay}天后过期`}}
+			    	{{!desktopVerInfo.isOfficial ? `试用期：${desktopVerInfo.remainDay} 天` : `${desktopVerInfo.name}，${desktopVerInfo.remainDay}天后过期`}}
 			    </button>
 			  </el-popover>
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
-				<button class="todo-action click-item" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
+				<button class="click-item todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
+				<button class="click-item todo-action" @click="openModal" v-if="!desktopVerInfo.isOfficial">开通正式版</button>
 			</div>
 			<div class="statistics-flex-box">
 				<div>
@@ -199,6 +201,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import MyAudio from 'COMPONENTS/myAudio/index.vue'
 // import websocket from 'UTIL/websocket'
 // import { WEBSOKET_API } from 'API/index.js'
 @Component({
@@ -214,7 +217,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 		])
 	},
 	components: {
-		ModalDialog
+		ModalDialog,
+		MyAudio
 	},
 	computed: {
     ...mapGetters([
@@ -230,11 +234,11 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   }
 })
 export default class pageDashboard extends Vue {
-
 	// 是否有新的成员动态
 	isHaveNew = 0
 	timer = null
 	timestamp = null
+	theUrl = 'http://attach.xplus.ziwork.com/tiger/audio/2018/1010/16/5bbdb3e49f347.mp3'
 	// 确认信息弹窗
   models = {
     show: false,
@@ -270,10 +274,7 @@ export default class pageDashboard extends Vue {
    * @return   {[type]}   [description]
    */
   openModal() {
-  	// this.models.show = !this.models.show
-  	// this.models.type = 'alert'
-  	// this.models.confirmText = '我知道了'
-  	this.$alert('客服电话：020-2816-3063', '开通正式版、升级和续费请联系客服', {
+  	this.$alert(`客服电话：${this.desktopInfos.customerServicePhone}`, '开通正式版、升级和续费请联系客服', {
       confirmButtonText: '我知道了',
       callback: action => {}
     })
@@ -388,7 +389,7 @@ export default class pageDashboard extends Vue {
 					this.init()
 				})
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
-		// websocket.create(`${WEBSOKET_API}/member/checkNewDynamics/${Date.parse(new Date()) / 1000}`)
+		// websocket.create(`${WEBSOKET_API}`)
 	}
 }
 </script>

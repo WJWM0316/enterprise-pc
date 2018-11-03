@@ -1,9 +1,9 @@
 <template>
   <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd}"  @click.stop="play">
     <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
-      <img src="@a/icon/playing.png" v-show="status === 0">
-      <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
-      <img src="@a/icon/playing.gif" v-show="status === 2">
+      <img src="~IMAGES/playing.png" v-show="status === 0">
+      <img src="~IMAGES/music_loading.png" class="load" v-show="status === 1">
+      <img src="~IMAGES/playing.gif" v-show="status === 2">
     </div>
     <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
@@ -16,321 +16,264 @@
         ></div>
       </div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
+    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration}}</div>
     <div class="duration" v-else>{{messageData.file.duration}}s</div>
   </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import browser from '@u/browser'
-import Vue from 'vue'
 export default {
-  props: {
-    isNeedRead: { // 是否需要红点标识
-      type: Boolean,
-      default: false
-    },
-    isNeedEnd: { // 是否需要已结束标识
-      type: Boolean,
-      default: false
-    },
-    audioList: { // 需要续播的音频列表
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
-    messageData: { // 需要播放音频数据
-      type: Object,
-      default: () => {
-        return {
-          path: ''
-        }
-      }
-    },
-    isLesson: {
-      type: Boolean,
-      default: false
-    }
+  name: 'music-view',
+
+  components: {
+
   },
+
+  props: {
+    type: '',
+  },
+
   data () {
     return {
-      audio: null,
-      status: 0, // 0未播放 1加载中 2播放中
-      length: 0,
-      offsetX: 0,
-      progress: 0,
-      startX: 0,
-      moveX: 0,
-      endX: 0,
-      isReaded: this.messageData.isView, // 0 未读 1已读
-      isReadEnded: this.messageData.listenStatus, // 0未播完 1播完
-      operation: false,
-      currentTime: 0, // 当前播放进度
-      duration: 0, // 音频时长
-      curIndex: 0 // 当前播放音频在audioList的索引值
+      cTime: '00:00', // 已播放时间
+      dTime: '00:00', // 总播放时间
+      play: false, // 播放暂停按钮
+      audioHttp: 'http://up.mcyt.net/?down/46426.mp3', // 音频链接
     }
   },
-  watch: {
-    audioList () {},
-    messageData () {},
-    audioCurId (val) {
-    }
-  },
-  computed: {
-    ...mapState({
-      audioCurId: state => state.global.audioCurId
-    }),
-    isCurAudio () { // 判断播放的是否当前audio
-      if (this.messageData.file) {
-        return this.audioCurId === this.messageData.file.id
-      } else {
-        return this.audioCurId === this.messageData.id
-      }
-    }
-  },
-  methods: {
-    ...mapActions([
-      'updata_audioCurId'
-    ]),
-    touchstart (e) {
-      this.startX = e.changedTouches[0].clientX
-    },
-    touchmove (e) {
-      if (!this.audio.src) return
-      this.moveX = e.changedTouches[0].clientX - this.offsetX
-      if (this.moveX < 0) {
-        this.moveX = 0
-      }
-      if (this.moveX > this.length) this.moveX = this.length
-      this.progress = this.moveX / this.length * 100
-      this.currentTime = this.progress * 0.01 * this.audio.duration
-      this.operation = true
-      this.audio.pause()
-      if (this.progress < 0) this.progress = 0
-      if (this.progress > 100) this.progress = 100
-    },
-    touchend (e) {
-      if (!this.audio.src) return
-      this.operation = false
-      this.audio.currentTime = parseInt(this.progress * 0.01 * this.audio.duration) // 取整防止超过音频本身的时长重新播放
-      this.audio.play()
-    },
-    play () {
-      let playFun = () => {
-        if (!this.audio.src || !this.isCurAudio) {
-          if (this.messageData.file) {
-            this.audio.src = this.messageData.file.url
-          } else {
-            this.audio.src = this.messageData.url
-          }
-        }
-        // 消除红点
-        if (!this.isReaded && this.isNeedRead) {
-          this.isReaded = true
-          this.$emit('removeRed')
-        }
-        try {
-          setTimeout(() => {
-            let nowId = ''
-            if (this.messageData.file) {
-              nowId = this.messageData.file.id
-            } else {
-              nowId = this.messageData.id
-            }
-            this.updata_audioCurId(nowId)
-            this.audio.play()
-          }, 200)
-        } catch (e) {
-          this.audio.play()
-        }
-      }
-      if (!this.isCurAudio) {
-        playFun()
-      } else {
-        if (this.audio.paused) {
-          playFun()
-        } else {
-          this.audio.pause()
-        }
-      }
-    }
-  },
+
   mounted () {
-    if (!window.audio) window.audio = new Audio()
-    this.audio = window.audio
-    this.audioList.filter((item, index) => {
-      if (this.messageData.messageId === item.messageId) {
-        this.curIndex = index
-        return false
+    const music = this.$refs.player  // 音频所在对象
+    const musicBar = this.$refs.runbar  // 颜色进度条所在对象
+    const musicWidth = this.$refs.runfatbar.offsetWidth // 底部进度条总宽
+    const rightCircle = this.$refs.yuanright.style // 圆形滚动进度条右边
+    const leftCircle = this.$refs.yuanleft.style // 圆形滚动进度条左边
+
+    // 获得音频加载完成可播放时的处理
+    music.addEventListener('canplay', () => {
+      const musicTime = music.duration // 获得音频时长
+      const branch = Math.floor(musicTime / 60) // 计算音频分钟
+      const second = Math.ceil(musicTime % 60) // 计算音频秒
+      if (branch < 10 && second < 10) { // 四种情况判断音频总时间
+        this.dTime = `0${branch}:0${second}`
+      } else if (branch < 10) {
+        this.dTime = `0${branch}:${second}`
+      } else if (second < 10) {
+        this.dTime = `${branch}:0${second}`
+      } else {
+        this.dTime = `${branch}:${second}`
       }
     })
-    this.$nextTick(() => {
-      this.length = this.$refs.progress.clientWidth
-      this.offsetX = this.$refs.progress.offsetLeft * window.dpr
+
+     // 获得音频正在播放时的处理
+    music.addEventListener('timeupdate', () => {
+      const musicTime = music.duration // 获得音频时长
+      const circleTime = musicTime / 360 // 计算总时长占据360度每一度的比例
+      const stopTime = music.currentTime // 获得已播放的音频时长
+      const rightDeg = -135 + (stopTime / circleTime) // 计算出当前旋转度数
+      if (rightDeg < 45) { // 如果当前度数小于45就证明在右边
+        rightCircle.display = 'block' // 显示右边圆
+        rightCircle.transform = `rotate(${rightDeg}deg)` // 赋值给CSS右边圆旋转度数
+        leftCircle.display = 'none' // 隐藏左边园（预防切歌的时候右边已清除）
+      } else if (rightDeg === 45 || rightDeg > 45) { // 如果当前度数等于或大于45就证明在左边
+        rightCircle.display = 'block' // 显示右边圆（预防直接点击快进的时候右边无显示）
+        leftCircle.display = 'block'  // 显示左边圆
+        rightCircle.transform = 'rotate(45deg)' // 固定右边旋转度数
+        const leftDeg = -135 + ((stopTime - (musicTime / 2)) / circleTime) // 计算出当前左边旋转度数
+        leftCircle.transform = `rotate(${leftDeg}deg)` // 赋值给CSS右边圆旋转度数
+      }
+      musicBar.style.width = `${(stopTime / musicTime) * 100}%` // 计算进度条所在比例宽度
+      const branch = Math.floor(stopTime / 60) // 计算已播放的音频分钟
+      const second = Math.floor(stopTime % 60) // 计算已播放的音频秒
+      if (branch < 10 && second < 10) { // 四种情况判断显示音频以播放时间
+        this.cTime = `0${branch}:0${second}`
+      } else if (branch < 10) {
+        this.cTime = `0${branch}:${second}`
+      } else if (second < 10) {
+        this.cTime = `${branch}:0${second}`
+      } else {
+        this.cTime = `${branch}:${second}`
+      }
     })
-    // 缓存阶段
-    this.audio.addEventListener('waiting', () => {
-      if (!this.isCurAudio) return
-      this.status = 1
-    }, false)
-    // 播放阶段
-    this.audio.addEventListener('timeupdate', () => {
-      if (!this.isCurAudio) {
-        this.status = 0
-        return
+// 监听颜色进度条是否触摸拖动
+    musicBar.addEventListener('touchmove', (event) => {
+      const events = event.targetTouches[0].pageX // 获得触摸拖动的距离
+      musicBar.style.width = `${(events / musicWidth) * 100}%` // 计算进度条所在比例宽度
+      music.pause() // 触摸拖动时停止播放
+    })
+
+    // 监听颜色进度条是否触摸拖动结束
+    musicBar.addEventListener('touchend', () => {
+      const touwidth = (musicBar.offsetWidth / musicWidth) // 计算进度条所在比例
+      music.currentTime = music.duration * touwidth // 通过所在比例赋值给音频应在的播放时间
+      music.play() // 根据播放时间开始播放
+      this.play = true // 更改播放暂停按钮为播放
+    })
+
+    // 这里顺便写的，适用于PC端。鼠标事件
+    // musicBar.addEventListener('drag', (e) => {
+    //   const events = e.pageX
+    //   musicBar.style.width = `${(events / musicWidth) * 100}%`
+    // })
+    // musicBar.addEventListener('dragend', (e) => {
+    //   const events = e.pageX
+    //   musicBar.style.width = `${(events / musicWidth) * 100}%`
+    //   this.playMusic()
+    // })
+  },
+
+  computed: {
+  },
+
+  methods: {
+    // 点击进度条事件
+    playMusic (e) {
+      const music = this.$refs.player // 音频所在对象
+      const barWidth = e.pageX / this.$refs.runfatbar.offsetWidth // 计算点击位置相对父元素总宽的比例
+      this.$refs.runbar.style.width = `${barWidth * 100}%` // 进度条应所在的比例总宽
+      music.currentTime = music.duration * barWidth // 计算点击时应播放所在的时间
+      music.play() // 播放音频
+      this.play = true // 更改播放暂停按钮为播放
+    },
+
+    // 点击播放暂停按钮时间
+    audioState () {
+      this.play = !this.play // 更改播放暂停按钮状态
+      const music = this.$refs.player // 音频所在对象
+      if (this.play) {
+        music.play() // 播放音乐
+      } else {
+        music.pause() // 暂停音乐
       }
-      if (this.status !== 2) {
-        this.status = 2
+    },
+
+    // 切换歌曲按钮
+    switchAudio (value) {
+      if (value === 'top') {
+        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-19/1524135488.mp3'
+      } else if (value === 'bottom') {
+        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-20/1524234022.mp3'
       }
-      this.duration = this.audio.duration
-      this.progress = this.audio.currentTime / this.audio.duration * 100
-    }, false)
-    // 暂停监听
-    this.audio.addEventListener('pause', () => {
-      if (this.isCurAudio) {
-        this.status = 0
-      }
-    }, false)
-    // 结束监听
-    this.audio.addEventListener('ended', () => {
-      if (!this.isCurAudio) return
-      this.status = 0
-      if (this.audioList.length - 1 > this.curIndex) {
-        this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
-      }
-      // 播放完毕
-      if (!this.isReadEnded && this.isNeedEnd) {
-        this.$emit('endAudio')
-        this.isReadEnded = true
-      }
-    }, false)
-  }
+      this.play = false // 播放按钮为暂停
+      this.$refs.runbar.style.width = 0 // 清空颜色进度条
+      this.$refs.yuanright.style.display = 'none' // 清空圆形颜色进度条
+      this.$refs.yuanleft.style.display = 'none' // 清空圆形颜色进度条
+    },
+  },
 }
 </script>
 <style lang="less">
-  .aduio {
-    width: 213px;
-    height: 40px;
-    padding: 0 15px 0 10px;
-    white-space: nowrap;
-    background: #FFF5CA;
-    box-sizing: border-box;
-    border-radius: 0px 20px 20px 19px;
-    display: flex;
-    align-items: center;
-    font-size: 0;
-    white-space: nowrap;
+.circleProgress_wrapper{
+    width: px2rem(80);
+    height: px2rem(80);
+    margin: px2rem(50) auto;
     position: relative;
-    &.isRead:before {
-      position: absolute;
-      top: 0;
-      right: -10px;
-      content: '';
-      width: 7px;
-      height: 7px;
-      background: #FF3434;
+    border:1px solid #ddd;
+}
+
+.wrapper{
+    width: px2rem(40);
+    height: px2rem(80);
+    position: absolute;
+    top:0;
+    overflow: hidden;
+}
+
+.right{
+    right:0;
+}
+
+.left{
+    left:0;
+}
+
+.circleProgress{
+    width: px2rem(70);
+    height: px2rem(70);
+    border:px2rem(5) solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    top:0;
+}
+
+.rightcircle{
+    border-top:px2rem(5) solid #1296db;
+    border-right:px2rem(5) solid #1296db;
+    right:0;
+    transform: rotate(-135deg);
+    display: none;
+}
+
+.leftcircle{
+    border-bottom:px2rem(5) solid #1296db;
+    border-left:px2rem(5) solid #1296db;
+    left:0;
+    transform: rotate(-135deg);
+    display: none;
+}
+
+.bar {
+  width: 100%;
+  height: px2rem(30);
+  line-height:  px2rem(30);
+
+  .progressbar {
+    width: 100%;
+    height: px2rem(10);
+    background-color: #999999;
+    margin-top: px2rem(10);
+    border-radius: px2rem(30);
+    position: relative;
+  }
+
+  .greenbar {
+    width: 0%;
+    height: px2rem(10);
+    border-radius: px2rem(30);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #1296db;
+
+    .yuan {
+      display: inline-block;
+      padding: px2rem(10);
+      background-color: #ffffff;
       border-radius: 50%;
-      overflow: hidden;
-    }
-    &.isReadEnd:after {
       position: absolute;
-      top: 50%;
-      margin-top: -6px;
-      right: -26px;
-      content: '';
-      width: 15px;
-      height: 12px;
-      background: url('../../assets/icon/live_icon_playend@3x.png');
-      background-size: 100% 100%;
-    }
-    .playBtn {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-      display: inline-block;
-      img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        &.load {
-          animation: loading 1s linear infinite;
-        }
-      }
-    }
-    .lessonPlayBtn{
-      margin-right: 29px;
-    }
-    .progress {
-      width: 125px;
-      height: 3px;
-      background: #fff;
-      border-radius:3px;
-      position: relative;
-      display: inline-block;
-      .realBar {
-        width: 50%;
-        height: 3px;
-        border-radius: 3px;
-        position: absolute;
-        top: 50%;
-        margin-top: -1.5px;
-        left: 0;
-        background: #FFE266;
-        .slider {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #fff;
-          box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06);
-          border:1px solid #F9F9F9;
-          position: absolute;
-          top: 50%;
-          margin-top: -6px;
-          right: 0;
-          margin-right: -6px;
-          box-sizing: border-box;
-          &.start {
-            margin-right: -12px;
-          }
-          &.end {
-            margin-right: 0;
-          }
-          &.cursor::before {
-            content: attr(currentTime);
-            width: 33px;
-            height: 24px;
-            color: #354048;
-            font-weight: 300;
-            font-size: 24px; /*px*/
-            line-height: 20px;
-            text-align: center;
-            background: url('../../assets/icon/course.png') no-repeat;
-            background-size: 100% 100%;
-            position: absolute;
-            top: -250%;
-            left: 50%;
-            margin-left: -16.5px;
-          }
-        }
-      }
-    }
-    .lessonProgress{
-      width: 188px;
-    }
-    .duration {
-      float: right;
-      font-size: 28px; /*px*/
-      color: #354048;
-      font-weight: 300;
-      display: inline-block;
-      position: absolute;
-      right: 15px;
-    }
-    .lessonDuration{
-      font-size: 28px;/*px*/
-      color: #929292;
-      right: 25px;
+      top: px2rem(-5);
+      right: px2rem(-20);
     }
   }
+}
+
+.time-text {
+  display: inline-block;
+  width: 50%;
+  padding: 0 px2rem(30);
+  box-sizing: border-box;
+}
+
+.right-time {
+  text-align: right;
+}
+
+.audio-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.icon {
+  @include size(80, 80);
+
+  display: inline-block;
+  margin-right: px2rem(20);
+  vertical-align: middle;
+
+  $icon-list: right2 left play stop;
+  @each $icon in $icon-list {
+     &.icon-#{$icon} {
+        @include background-cover("icon-#{$icon}.png");
+    }
+  }
+}
 </style>
