@@ -25,16 +25,6 @@ import PageHeader from 'COMPONENTS/pageHeader/index.vue'
     PageAside,
     PageHeader
   },
-  // watch: {
-  //   '$route': {
-  //     handler() {
-  //       if(!this.token) {
-  //         this.$router.push({name: 'login'})
-  //       }
-  //     },
-  //     immediate: true
-  //   }
-  // },
   computed: {
     ...mapGetters([
       'token',

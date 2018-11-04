@@ -1,158 +1,214 @@
 <template>
-  <div class="zike-audio">
-<!--     <audio :ref="audio"
-      :src="url" :preload="audio.preload"
-      @play="onPlay" 
-      @error="onError"
-      @waiting="onWaiting"
+<div class="audio-box">
+    <audio
+      ref="audio"
       @pause="onPause"
+      @play="onPlay"
       @timeupdate="onTimeupdate"
-      style="display: none;" 
-      @loadedmetadata="onLoadedmetadata">
-    </audio> -->
+      @loadedmetadata="onLoadedmetadata"
+      :src="fallingStar"
+      controls="controls" style="display:none;"></audio>
     <div>
-      <i class="icon iconfont icon-voicecontrol"></i>
-      <!-- <i class="active-btn"></i> -->
-      <div class="progress">
-        <div class="bg"></div>
-        <div class="mask">
-          <div
-            class="circle">
-            <div class="tips"></div>
-          </div>
+      <div class="left-button" @click="startPlayOrPause" :class="{'is-playing': audio.playing, 'is-default': !audio.playing }"></div>
+      <div class="slider" @touchstart="handleTouchStart">
+        <div class="slider-track"></div>
+        <div class="slider-fill" :style="'width:'+sliderTime+'%'"></div>
+        <div class="slider-thumb" :style="'left:'+sliderTime+'%'">
+          <div class="tips" v-show="audio.playing && audio.currentTime >= 1">{{ parseInt(audio.currentTime) }}</div>
         </div>
       </div>
-      <span class="total">11</span>
+      <div class="right-button">{{ audio.maxTime }}s</div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
+import fallingStar from 'UTIL/falling-star.mp3'
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  name: 'vue-audio',
+  name: 'self-audio',
   props: {
-    infos: { // 需要播放音频数据
-      type: Object,
-      default: () => {
-        return {
-          url: ''
-        }
-      }
-    }
-  },
-  watch: {
-    'infos': {
-      handler() {
-        this.init()
-      },
-      immediate: true
+    theUrl: {
+      type: String,
+      required: true,
     }
   }
 })
 export default class ComponentAudio extends Vue {
-  audio = null
-  init() {
-    if (!window.audio) window.audio = new Audio()
-    this.audio = window.audio
-    this.audio.src = this.infos.url
-    // document.querySelector('.zike-audio').appendChild(this.audio)
-    // this.audio.play()
+
+  // fallingStar = fallingStar
+  sliderTime = 0
+  audio = {
+    // 该字段是音频是否处于播放状态的属性
+    playing: false,
+    // 音频当前播放时长
+    currentTime: 0,
+    // 音频最大播放时长
+    maxTime: 0,
+    minTime:0,
+    step:0.1
+  }
+  startPlayOrPause() {
+    return this.audio.playing ? this.pause() : this.play()
+  }
+  play() {
+    this.$refs.audio.play()
+  }
+  pause() {
+    this.$refs.audio.pause()
+  }
+  onPlay() {
+    this.audio.playing = true
+  }
+  onPause() {
+    this.audio.playing = false
+  }
+  onLoadedmetadata(res) {
+    this.audio.maxTime = parseInt(res.target.duration)
+  }
+  onTimeupdate(res) {
+    this.audio.currentTime = res.target.currentTime
+    this.sliderTime = parseInt(this.audio.currentTime / this.audio.maxTime * 100)
+  }
+
+  handleTouchStart(e) {
+    this.setValue(e.touches[0])
+    document.addEventListener('touchmove', this.handleTouchMove)
+    document.addEventListener('touchup', this.handleTouchEnd)
+    document.addEventListener('touchend', this.handleTouchEnd)
+    document.addEventListener('touchcancel', this.handleTouchEnd)
+  }
+  handleTouchMove(e){
+    this.setValue(e.changedTouches[0])
+  }
+  handleTouchEnd(e) {
+    this.setValue(e.changedTouches[0])
+    document.removeEventListener('touchmove', this.handleTouchMove)
+    document.removeEventListener('touchup', this.handleTouchEnd)
+    document.removeEventListener('touchend', this.handleTouchEnd)
+    document.removeEventListener('touchcancel', this.handleTouchEnd)
+  }
+  setValue(e) {
+    const $el = this.$el
+    const {
+      maxTime,
+      minTime,
+      step
+    } = this.audio
+    let value = (e.clientX - $el.getBoundingClientRect().left) / $el.offsetWidth * (maxTime - minTime)
+    value = Math.round(value / step) * step + minTime
+    value = parseFloat(value.toFixed(5))
+
+    if (value > maxTime) {
+      value = maxTime
+    } else if (value < minTime) {
+      value = minTime
+    }
+    this.$refs.audio.currentTime = value
   }
 }
 </script>
 
-<style lang="scss">
-.zike-audio {
-  height:40px;
+<style lang="less">
+.audio-box {
+  width: 240px;
+  height: 40px;
+  line-height: 40px;
+  margin: 100px auto;
+  position: relative;
+  box-sizing: border-box;
   background:rgba(255,249,217,1);
   border-radius:20px;
-  border:1px solid rgba(215,171,112,0.2);
-  position: relative;
-  line-height: 40px;
-  padding: 0 14px;
-  display: inline-block;
+  border:1px solid #D7AB70;
   > div {
-    height: 40px;
-    line-height: 40px;
+    display: flex;
   }
-  .start,
-  .total {
+  .left-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+  .is-playing{
+    background: url('~IMAGES/playing.gif') no-repeat center center;
+    background-size: 50%;
+  }
+  .is-default{
+    background: url('~IMAGES/playing.png') no-repeat center center;
+    background-size: 50%;
+  }
+  .right-button {
+    width: 50px;
+    text-align: center;
     font-size:12px;
     color:rgba(102,102,102,1);
   }
-  .progress {
-    width:158px;
-    height:4px;
-    border-radius:6px;
-    display: inline-block;
-    margin: 0 10px;
-    vertical-align: middle;
-    position: relative;
-    .mask {
-      height:4px;
-      background:rgba(255,226,102,1);
-      border-radius:6px;
-      position: relative;
-    }
-    .bg{
-      background:rgba(0,0,0,0.04);
-      border-radius:6px;
-      display: inline-block;
-      vertical-align: middle;
+  .tips {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background:rgba(250,106,48,1);
+    border-radius:4px;
+    color: white;
+    text-align: center;
+    font-size:14px;
+    color:rgba(255,255,255,1);
+    box-sizing: border-box;
+    min-width: 35px;
+    line-height: 1.4;
+    &:after {
+      width: 0;
+      height: 0;
       position: absolute;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      top:0;
-    }
-    .circle {
-      width:12px;
-      height:12px;
-      background:rgba(255,255,255,1);
-      border:2px solid rgba(255,226,102,1);
-      border-radius: 50%;
-      position: absolute;
-      right: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .a-r{
-      right: -12px;
-    }
-    .b-r {
-      right: 0;
-    }
-    .tips {
-      width:32px;
-      height:28px;
-      background:rgba(250,106,48,1);
-      border-radius:4px;
-      position: absolute;
-      top: -40px;
-      line-height: 28px;
-      text-align: center;
-      font-size: 4px;
-      color: #fff;
       left: 50%;
       transform: translateX(-50%);
-      &:after {
-        width: 0;
-        height: 0;
-        border-color: red;
-        position: absolute;
-        bottom: -11px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 6px;
-        border-style: solid;
-        border-color: rgba(250,106,48,1) transparent transparent transparent ;
-        display: block;
-        content: '';
-      }
+      border-width: 5px;
+      border-style: solid;
+      bottom: -10px;
+      border-color: #fa6a30 transparent transparent transparent;
+      display: block;
+      content: '';
     }
+  }
+  .slider {
+    position: relative;
+    height: 40px;
+    flex-grow: 1;
+  }
+
+  .slider-track {
+    position: absolute;
+    height: 2px;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -1px;
+    background: rgba(0,0,0,.04);
+  }
+
+  .slider-fill {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background-color: #FFE266;
+    left: 0;
+    top: 50%;
+    margin-top: -1px;
+  }
+
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #FFE266;
+    color: #e92e35;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 }
 </style>
