@@ -21,6 +21,9 @@ export const getMemberInfoApi = params => request(`/member/info/${params.id}`, '
 // Excel导入成员信息
 export const importMemberByExcelApi = params => request(`/member/importMemberByExcel/${params.fileId}`, 'post', params)
 
+// 提交获取上传基本信息
+export const downloadMsgApi = params => request(`/attaches/config`, 'post')
+
 
 
 //获取分组列表

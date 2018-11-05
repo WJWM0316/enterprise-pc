@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
-import { getMemberListApi, getGroupListApi, importMemberByExcelApi } from '@/store/api/organization.js'
+import { getMemberListApi, getGroupListApi, importMemberByExcelApi, downloadMsgApi } from '@/store/api/organization.js'
 import { upload_api } from '@/store/api/index.js'
 import { getAccessToken } from '@/store/cacheService'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
@@ -28,26 +28,26 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
   },
 })
 export default class pageOrganization extends Vue {
-  groupList = [
-  ]
-  options = [
-    {
-      value: '1',
-        label: '超级管理员'
-    },
-    {
-      value: '2',
-        label: '后台管理员'
-    },
-    {
-      value: '3',
-        label: '内容管理员'
-    },
-    {
-      value: '4',
-      label: '全部成员'
-    }
-  ]
+    groupList = [
+    ]
+    options = [
+      {
+        value: '1',
+          label: '超级管理员'
+      },
+      {
+        value: '2',
+          label: '后台管理员'
+      },
+      {
+        value: '3',
+          label: '内容管理员'
+      },
+      {
+        value: '4',
+        label: '全部成员'
+      }
+    ]
     rolevalue = ''
     // 表单数据
     courseList = {
@@ -155,6 +155,14 @@ export default class pageOrganization extends Vue {
       }
       this.getMemberList()
       this.getMsgList()
+      //this.downloadMsg()
+    }
+
+    //下载信息
+    downloadMsg(){
+      downloadMsgApi().then(res=>{
+        console.log('11111',res.data.data)
+      })
     }
 
     getMsgList() {
