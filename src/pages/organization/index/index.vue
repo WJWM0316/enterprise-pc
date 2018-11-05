@@ -106,7 +106,7 @@
         <div slot="customize-html" style="margin-top: 20px;">
           <div class="customize-html-content">
               <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" href="http://attach.xplus.ziwork.com/test/doc/2018/1103/14/5bdd3f3576c51.xlsx">下载</a></p>
-              <h4 class="pop_tit">第二步：上传填写好的表哥文件</h4>
+              <h4 class="pop_tit">第二步：上传填写好的表格文件</h4>
               <div class="pop_cont">
                 <!--  -->
                 <el-upload
