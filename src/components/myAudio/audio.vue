@@ -6,7 +6,7 @@
       @play="onPlay"
       @timeupdate="onTimeupdate"
       @loadedmetadata="onLoadedmetadata"
-      :src="fallingStar"
+      :src="theUrl"
       controls="controls" style="display:none;"></audio>
     <div>
       <div class="left-button" @click="startPlayOrPause" :class="{'is-playing': audio.playing, 'is-default': !audio.playing }"></div>
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import fallingStar from 'UTIL/falling-star.mp3'
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
@@ -116,7 +115,6 @@ export default class ComponentAudio extends Vue {
   width: 240px;
   height: 40px;
   line-height: 40px;
-  margin: 100px auto;
   position: relative;
   box-sizing: border-box;
   background:rgba(255,249,217,1);
