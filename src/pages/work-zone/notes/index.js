@@ -3,7 +3,6 @@ import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyPrompt from 'COMPONENTS/prompt/index.vue'
-import MyAudio from 'COMPONENTS/myAudio/index.vue'
 import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
 import ImagesViewer from 'COMPONENTS/imagesViewer/index.vue'
 import FileViewer from 'COMPONENTS/fileViewer/index.vue'
@@ -42,7 +41,6 @@ import VideoViewer from 'COMPONENTS/videoViewer/index.vue'
     TableList,
     SearchBar,
     MyPrompt,
-    MyAudio,
     LinkViewer,
     ImagesViewer,
     FileViewer,

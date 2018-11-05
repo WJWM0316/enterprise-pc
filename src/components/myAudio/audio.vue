@@ -1,279 +1,212 @@
 <template>
-  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd}"  @click.stop="play">
-    <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
-      <img src="~IMAGES/playing.png" v-show="status === 0">
-      <img src="~IMAGES/music_loading.png" class="load" v-show="status === 1">
-      <img src="~IMAGES/playing.gif" v-show="status === 2">
-    </div>
-    <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
-      <div class="realBar" :style="{'width': `${progress}%`}">
-        <div class="slider"
-          @touchmove.stop.prevent="touchmove"
-          @touchstart.stop.prevent="touchstart"
-          @touchend.stop.prevent="touchend"
-          :currentTime="parseInt(currentTime)"
-          :class="{'start': progress === 0, 'end': progress === 100, 'cursor': operation}"
-        ></div>
+<div class="audio-box">
+    <audio
+      ref="audio"
+      @pause="onPause"
+      @play="onPlay"
+      @timeupdate="onTimeupdate"
+      @loadedmetadata="onLoadedmetadata"
+      :src="theUrl"
+      controls="controls" style="display:none;"></audio>
+    <div>
+      <div class="left-button" @click="startPlayOrPause" :class="{'is-playing': audio.playing, 'is-default': !audio.playing }"></div>
+      <div class="slider" @touchstart="handleTouchStart">
+        <div class="slider-track"></div>
+        <div class="slider-fill" :style="'width:'+sliderTime+'%'"></div>
+        <div class="slider-thumb" :style="'left:'+sliderTime+'%'">
+          <div class="tips" v-show="audio.playing && audio.currentTime >= 1">{{ parseInt(audio.currentTime) }}</div>
+        </div>
       </div>
+      <div class="right-button">{{ audio.maxTime }}s</div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration}}</div>
-    <div class="duration" v-else>{{messageData.file.duration}}s</div>
-  </div>
+</div>
 </template>
+
 <script>
-export default {
-  name: 'music-view',
+import Vue from 'vue'
+import Component from 'vue-class-component'
 
-  components: {
-
-  },
-
+@Component({
+  name: 'self-audio',
   props: {
-    type: '',
-  },
-
-  data () {
-    return {
-      cTime: '00:00', // 已播放时间
-      dTime: '00:00', // 总播放时间
-      play: false, // 播放暂停按钮
-      audioHttp: 'http://up.mcyt.net/?down/46426.mp3', // 音频链接
+    theUrl: {
+      type: String,
+      required: true,
     }
-  },
+  }
+})
+export default class ComponentAudio extends Vue {
 
-  mounted () {
-    const music = this.$refs.player  // 音频所在对象
-    const musicBar = this.$refs.runbar  // 颜色进度条所在对象
-    const musicWidth = this.$refs.runfatbar.offsetWidth // 底部进度条总宽
-    const rightCircle = this.$refs.yuanright.style // 圆形滚动进度条右边
-    const leftCircle = this.$refs.yuanleft.style // 圆形滚动进度条左边
+  // fallingStar = fallingStar
+  sliderTime = 0
+  audio = {
+    // 该字段是音频是否处于播放状态的属性
+    playing: false,
+    // 音频当前播放时长
+    currentTime: 0,
+    // 音频最大播放时长
+    maxTime: 0,
+    minTime:0,
+    step:0.1
+  }
+  startPlayOrPause() {
+    return this.audio.playing ? this.pause() : this.play()
+  }
+  play() {
+    this.$refs.audio.play()
+  }
+  pause() {
+    this.$refs.audio.pause()
+  }
+  onPlay() {
+    this.audio.playing = true
+  }
+  onPause() {
+    this.audio.playing = false
+  }
+  onLoadedmetadata(res) {
+    this.audio.maxTime = parseInt(res.target.duration)
+  }
+  onTimeupdate(res) {
+    this.audio.currentTime = res.target.currentTime
+    this.sliderTime = parseInt(this.audio.currentTime / this.audio.maxTime * 100)
+  }
 
-    // 获得音频加载完成可播放时的处理
-    music.addEventListener('canplay', () => {
-      const musicTime = music.duration // 获得音频时长
-      const branch = Math.floor(musicTime / 60) // 计算音频分钟
-      const second = Math.ceil(musicTime % 60) // 计算音频秒
-      if (branch < 10 && second < 10) { // 四种情况判断音频总时间
-        this.dTime = `0${branch}:0${second}`
-      } else if (branch < 10) {
-        this.dTime = `0${branch}:${second}`
-      } else if (second < 10) {
-        this.dTime = `${branch}:0${second}`
-      } else {
-        this.dTime = `${branch}:${second}`
-      }
-    })
+  handleTouchStart(e) {
+    this.setValue(e.touches[0])
+    document.addEventListener('touchmove', this.handleTouchMove)
+    document.addEventListener('touchup', this.handleTouchEnd)
+    document.addEventListener('touchend', this.handleTouchEnd)
+    document.addEventListener('touchcancel', this.handleTouchEnd)
+  }
+  handleTouchMove(e){
+    this.setValue(e.changedTouches[0])
+  }
+  handleTouchEnd(e) {
+    this.setValue(e.changedTouches[0])
+    document.removeEventListener('touchmove', this.handleTouchMove)
+    document.removeEventListener('touchup', this.handleTouchEnd)
+    document.removeEventListener('touchend', this.handleTouchEnd)
+    document.removeEventListener('touchcancel', this.handleTouchEnd)
+  }
+  setValue(e) {
+    const $el = this.$el
+    const {
+      maxTime,
+      minTime,
+      step
+    } = this.audio
+    let value = (e.clientX - $el.getBoundingClientRect().left) / $el.offsetWidth * (maxTime - minTime)
+    value = Math.round(value / step) * step + minTime
+    value = parseFloat(value.toFixed(5))
 
-     // 获得音频正在播放时的处理
-    music.addEventListener('timeupdate', () => {
-      const musicTime = music.duration // 获得音频时长
-      const circleTime = musicTime / 360 // 计算总时长占据360度每一度的比例
-      const stopTime = music.currentTime // 获得已播放的音频时长
-      const rightDeg = -135 + (stopTime / circleTime) // 计算出当前旋转度数
-      if (rightDeg < 45) { // 如果当前度数小于45就证明在右边
-        rightCircle.display = 'block' // 显示右边圆
-        rightCircle.transform = `rotate(${rightDeg}deg)` // 赋值给CSS右边圆旋转度数
-        leftCircle.display = 'none' // 隐藏左边园（预防切歌的时候右边已清除）
-      } else if (rightDeg === 45 || rightDeg > 45) { // 如果当前度数等于或大于45就证明在左边
-        rightCircle.display = 'block' // 显示右边圆（预防直接点击快进的时候右边无显示）
-        leftCircle.display = 'block'  // 显示左边圆
-        rightCircle.transform = 'rotate(45deg)' // 固定右边旋转度数
-        const leftDeg = -135 + ((stopTime - (musicTime / 2)) / circleTime) // 计算出当前左边旋转度数
-        leftCircle.transform = `rotate(${leftDeg}deg)` // 赋值给CSS右边圆旋转度数
-      }
-      musicBar.style.width = `${(stopTime / musicTime) * 100}%` // 计算进度条所在比例宽度
-      const branch = Math.floor(stopTime / 60) // 计算已播放的音频分钟
-      const second = Math.floor(stopTime % 60) // 计算已播放的音频秒
-      if (branch < 10 && second < 10) { // 四种情况判断显示音频以播放时间
-        this.cTime = `0${branch}:0${second}`
-      } else if (branch < 10) {
-        this.cTime = `0${branch}:${second}`
-      } else if (second < 10) {
-        this.cTime = `${branch}:0${second}`
-      } else {
-        this.cTime = `${branch}:${second}`
-      }
-    })
-// 监听颜色进度条是否触摸拖动
-    musicBar.addEventListener('touchmove', (event) => {
-      const events = event.targetTouches[0].pageX // 获得触摸拖动的距离
-      musicBar.style.width = `${(events / musicWidth) * 100}%` // 计算进度条所在比例宽度
-      music.pause() // 触摸拖动时停止播放
-    })
-
-    // 监听颜色进度条是否触摸拖动结束
-    musicBar.addEventListener('touchend', () => {
-      const touwidth = (musicBar.offsetWidth / musicWidth) // 计算进度条所在比例
-      music.currentTime = music.duration * touwidth // 通过所在比例赋值给音频应在的播放时间
-      music.play() // 根据播放时间开始播放
-      this.play = true // 更改播放暂停按钮为播放
-    })
-
-    // 这里顺便写的，适用于PC端。鼠标事件
-    // musicBar.addEventListener('drag', (e) => {
-    //   const events = e.pageX
-    //   musicBar.style.width = `${(events / musicWidth) * 100}%`
-    // })
-    // musicBar.addEventListener('dragend', (e) => {
-    //   const events = e.pageX
-    //   musicBar.style.width = `${(events / musicWidth) * 100}%`
-    //   this.playMusic()
-    // })
-  },
-
-  computed: {
-  },
-
-  methods: {
-    // 点击进度条事件
-    playMusic (e) {
-      const music = this.$refs.player // 音频所在对象
-      const barWidth = e.pageX / this.$refs.runfatbar.offsetWidth // 计算点击位置相对父元素总宽的比例
-      this.$refs.runbar.style.width = `${barWidth * 100}%` // 进度条应所在的比例总宽
-      music.currentTime = music.duration * barWidth // 计算点击时应播放所在的时间
-      music.play() // 播放音频
-      this.play = true // 更改播放暂停按钮为播放
-    },
-
-    // 点击播放暂停按钮时间
-    audioState () {
-      this.play = !this.play // 更改播放暂停按钮状态
-      const music = this.$refs.player // 音频所在对象
-      if (this.play) {
-        music.play() // 播放音乐
-      } else {
-        music.pause() // 暂停音乐
-      }
-    },
-
-    // 切换歌曲按钮
-    switchAudio (value) {
-      if (value === 'top') {
-        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-19/1524135488.mp3'
-      } else if (value === 'bottom') {
-        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-20/1524234022.mp3'
-      }
-      this.play = false // 播放按钮为暂停
-      this.$refs.runbar.style.width = 0 // 清空颜色进度条
-      this.$refs.yuanright.style.display = 'none' // 清空圆形颜色进度条
-      this.$refs.yuanleft.style.display = 'none' // 清空圆形颜色进度条
-    },
-  },
+    if (value > maxTime) {
+      value = maxTime
+    } else if (value < minTime) {
+      value = minTime
+    }
+    this.$refs.audio.currentTime = value
+  }
 }
 </script>
+
 <style lang="less">
-.circleProgress_wrapper{
-    width: px2rem(80);
-    height: px2rem(80);
-    margin: px2rem(50) auto;
-    position: relative;
-    border:1px solid #ddd;
-}
-
-.wrapper{
-    width: px2rem(40);
-    height: px2rem(80);
-    position: absolute;
-    top:0;
-    overflow: hidden;
-}
-
-.right{
-    right:0;
-}
-
-.left{
-    left:0;
-}
-
-.circleProgress{
-    width: px2rem(70);
-    height: px2rem(70);
-    border:px2rem(5) solid transparent;
-    border-radius: 50%;
-    position: absolute;
-    top:0;
-}
-
-.rightcircle{
-    border-top:px2rem(5) solid #1296db;
-    border-right:px2rem(5) solid #1296db;
-    right:0;
-    transform: rotate(-135deg);
-    display: none;
-}
-
-.leftcircle{
-    border-bottom:px2rem(5) solid #1296db;
-    border-left:px2rem(5) solid #1296db;
-    left:0;
-    transform: rotate(-135deg);
-    display: none;
-}
-
-.bar {
-  width: 100%;
-  height: px2rem(30);
-  line-height:  px2rem(30);
-
-  .progressbar {
-    width: 100%;
-    height: px2rem(10);
-    background-color: #999999;
-    margin-top: px2rem(10);
-    border-radius: px2rem(30);
-    position: relative;
-  }
-
-  .greenbar {
-    width: 0%;
-    height: px2rem(10);
-    border-radius: px2rem(30);
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #1296db;
-
-    .yuan {
-      display: inline-block;
-      padding: px2rem(10);
-      background-color: #ffffff;
-      border-radius: 50%;
-      position: absolute;
-      top: px2rem(-5);
-      right: px2rem(-20);
-    }
-  }
-}
-
-.time-text {
-  display: inline-block;
-  width: 50%;
-  padding: 0 px2rem(30);
+.audio-box {
+  width: 240px;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
   box-sizing: border-box;
-}
-
-.right-time {
-  text-align: right;
-}
-
-.audio-btn {
-  width: 100%;
-  text-align: center;
-}
-
-.icon {
-  @include size(80, 80);
-
-  display: inline-block;
-  margin-right: px2rem(20);
-  vertical-align: middle;
-
-  $icon-list: right2 left play stop;
-  @each $icon in $icon-list {
-     &.icon-#{$icon} {
-        @include background-cover("icon-#{$icon}.png");
+  background:rgba(255,249,217,1);
+  border-radius:20px;
+  border:1px solid #D7AB70;
+  > div {
+    display: flex;
+  }
+  .left-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+  .is-playing{
+    background: url('~IMAGES/playing.gif') no-repeat center center;
+    background-size: 50%;
+  }
+  .is-default{
+    background: url('~IMAGES/playing.png') no-repeat center center;
+    background-size: 50%;
+  }
+  .right-button {
+    width: 50px;
+    text-align: center;
+    font-size:12px;
+    color:rgba(102,102,102,1);
+  }
+  .tips {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background:rgba(250,106,48,1);
+    border-radius:4px;
+    color: white;
+    text-align: center;
+    font-size:14px;
+    color:rgba(255,255,255,1);
+    box-sizing: border-box;
+    min-width: 35px;
+    line-height: 1.4;
+    &:after {
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      bottom: -10px;
+      border-color: #fa6a30 transparent transparent transparent;
+      display: block;
+      content: '';
     }
+  }
+  .slider {
+    position: relative;
+    height: 40px;
+    flex-grow: 1;
+  }
+
+  .slider-track {
+    position: absolute;
+    height: 2px;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -1px;
+    background: rgba(0,0,0,.04);
+  }
+
+  .slider-fill {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background-color: #FFE266;
+    left: 0;
+    top: 50%;
+    margin-top: -1px;
+  }
+
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #FFE266;
+    color: #e92e35;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 }
 </style>

@@ -70,12 +70,6 @@ export default BroadcastReview
     text-decoration: line-through;
     color: #DCDCDC;
   }
-  .zike-audio {
-    position: absolute;
-    left: 50px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
   .limit-row-num-3 {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -84,8 +78,13 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding: 40px;
+    .audio-box {
+      position: absolute;
+      left: 50px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
   .img-disable{
     opacity: .5;

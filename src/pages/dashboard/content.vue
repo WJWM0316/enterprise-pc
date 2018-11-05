@@ -1,7 +1,6 @@
 <template>
 	<div class="left-content">
 		<section class="company-infos">
-			<!-- <my-audio :theUrl="theUrl" /> -->
 			<h1>{{desktopInfos.company}}</h1>
 			<div class="menber-zone">
 				<!-- 试用中的状态 -->
@@ -201,7 +200,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import MyAudio from 'COMPONENTS/myAudio/index.vue'
 // import websocket from 'UTIL/websocket'
 // import { WEBSOKET_API } from 'API/index.js'
 @Component({
@@ -217,8 +215,7 @@ import MyAudio from 'COMPONENTS/myAudio/index.vue'
 		])
 	},
 	components: {
-		ModalDialog,
-		MyAudio
+		ModalDialog
 	},
 	computed: {
     ...mapGetters([
@@ -238,7 +235,6 @@ export default class pageDashboard extends Vue {
 	isHaveNew = 0
 	timer = null
 	timestamp = null
-	theUrl = 'http://attach.xplus.ziwork.com/tiger/audio/2018/1010/16/5bbdb3e49f347.mp3'
 	// 确认信息弹窗
   models = {
     show: false,
