@@ -345,10 +345,22 @@ export const routes = [
   //   name: 'statistics',
   //   title: '统计',
   //   component: () => import(/* webpackChunkName: "statistics" */ '@/pages/statistics/index.vue'),
+  //   redirect: {
+  //     name: 'statisticsCourse'
+  //   },
   //   meta: {
-  
   //     useNav: true,
   //     icon: 'icon-statistics',
+  //     module: 'statistics'
+  //   }
+  // },
+  // {
+  //   path: '/statistics-course',
+  //   name: 'statisticsCourse',
+  //   title: '统计-课程',
+  //   component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/course/index.vue'),
+  //   meta: {
+  //     useNav: false,
   //     module: 'statistics'
   //   }
   // },
