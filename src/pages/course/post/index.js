@@ -567,8 +567,7 @@ export default class CoursePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
-        this.form.members.noEdit = Object.assign(this.form.members, data)
-        delete this.form.members.noEdit.noEdit
+        this.form.members.noEdit = data
         break
       case 'hits':
         if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]') {
@@ -625,7 +624,7 @@ export default class CoursePost extends Vue {
       case 'category_id':
         this.updateCategoryListsApi({categoryId: this.form[type].tem[0].categoryId})
         this.form.check_category_id = ''
-        this.form.category_id.noEdit.value = ''
+        this.form.category_id.noEdit.value = []
         this.form.category_id.noEdit.tem = []
         this.form.category_id.noEdit.show = false
         break
@@ -637,14 +636,14 @@ export default class CoursePost extends Vue {
           this.temTutorLists = this.menberLists
         }
         this.form.check_master_uid = ''
-        this.form.master_uid.noEdit.value = ''
+        this.form.master_uid.noEdit.value = []
         this.form.master_uid.noEdit.tem = []
         this.form.master_uid.noEdit.show = false
         break
       default:
         break
     }
-    this.form[type].value = ''
+    this.form[type].value = []
     this.form[type].tem = []
     this.form[type].show = false
   }
@@ -658,7 +657,7 @@ export default class CoursePost extends Vue {
     let tem = this.form[type].value.split(',')
     tem.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = tem.join(',')
+    this.form[type].value = tem.join(',') ? tem.join(',') : []
     this.form[type].show = this.form[type].tem <= 0 ? false : true
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].noEdit.tem = this.form[type].tem
@@ -668,7 +667,7 @@ export default class CoursePost extends Vue {
         if(this.form.group_id.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_group_id = ''
-          this.form.group_id.noEdit.value = ''
+          this.form.group_id.noEdit.value = []
           this.form.group_id.noEdit.tem = []
           this.form.group_id.noEdit.show = false
         } else {
@@ -677,7 +676,7 @@ export default class CoursePost extends Vue {
         break
       case 'members':
         if(this.form.members.tem.length <= 0) {
-          this.form.members.noEdit.value = ''
+          this.form.members.noEdit.value = []
           this.form.members.noEdit.tem = []
           this.form.members.noEdit.show = false
           this.updateMenberListsAllApi({bool: false})
@@ -685,7 +684,7 @@ export default class CoursePost extends Vue {
         break
       case 'hits':
         if(this.form.hits.tem.length <= 0) {
-          this.form.hits.noEdit.value = ''
+          this.form.hits.noEdit.value = []
           this.form.hits.noEdit.tem = []
           this.form.hits.noEdit.show = false
           this.updateMenberListsAllApi({bool: false})

@@ -570,8 +570,7 @@ export default class BroadcastPost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.memberList = Object.assign(this.form.memberList, data)
-        this.form.memberList.noEdit = Object.assign(this.form.memberList, data)
-        delete this.form.memberList.noEdit.noEdit
+        this.form.memberList.noEdit = data
         break
       case 'invisibleList':
         if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]') {
@@ -665,7 +664,7 @@ export default class BroadcastPost extends Vue {
     const temArray = this.form[type].value.split(',')
     temArray.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = temArray.join(',')
+    this.form[type].value = temArray.join(',') ? temArray.join(',') : []
     this.form[type].show = this.form[type].tem <= 0 ? false : true
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].noEdit.tem = this.form[type].tem
@@ -676,14 +675,14 @@ export default class BroadcastPost extends Vue {
         if(this.form.groupList.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_groupList = ''
-          this.form.groupList.noEdit.value = ''
+          this.form.groupList.noEdit.value = []
           this.form.groupList.noEdit.tem = []
           this.form.groupList.noEdit.show = false
         }
         break
       case 'memberList':
         if(this.form.memberList.tem.length <= 0) {
-          this.form.memberList.noEdit.value = ''
+          this.form.memberList.noEdit.value = []
           this.form.memberList.noEdit.tem = []
           this.form.memberList.noEdit.show = false
           this.updateMenberListsAllApi({bool: false})
@@ -691,7 +690,7 @@ export default class BroadcastPost extends Vue {
         break
       case 'invisibleList':
         if(this.form.invisibleList.tem.length <= 0) {
-          this.form.invisibleList.noEdit.value = ''
+          this.form.invisibleList.noEdit.value = []
           this.form.invisibleList.noEdit.tem = []
           this.form.invisibleList.noEdit.show = false
           this.updateMenberListsAllApi({bool: false})
