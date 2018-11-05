@@ -82,6 +82,7 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
+    padding: 40px;
     padding-right: 30px;
   }
 }
