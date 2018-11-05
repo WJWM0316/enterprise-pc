@@ -112,7 +112,7 @@ export default class pageOrganization extends Vue {
       accept: '.xlsx',
       progress: 0,
       tips: '格式支持xlsx',
-      btnTxt: '上传表格成员',
+      btnTxt: '上传成员表格',
       progressText: '上传中',
       params: {
         token: getAccessToken(),
@@ -126,7 +126,7 @@ export default class pageOrganization extends Vue {
     // 确认信息弹窗
     models = {
       show: false,
-      title: '第一步：下载标准表哥模版，按要求填写',
+      title: '第一步：下载标准表格模版，按要求填写',
       showClose: true,
       confirmText: '开始导入',
       type: 'alert',
