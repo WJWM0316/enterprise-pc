@@ -14,9 +14,9 @@ const getcookie = (name) =>{
 let company = getcookie('code')
 let loadingInstance = null
 
-if(!company) {
+/*if(!company) {
   window.location.href = process.env.VUE_APP__LOGIN_URL
-}
+}*/
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY

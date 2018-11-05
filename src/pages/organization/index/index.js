@@ -211,8 +211,7 @@ export default class pageOrganization extends Vue {
             name: 'groupManage'
           })
           break
-
-        case 'add':
+        case 'addMember':
           let params = {}
           if(this.$route.query.groupId){
             params = {
@@ -224,13 +223,11 @@ export default class pageOrganization extends Vue {
             params: params
           })
           break
-
         case 'addGroup':
             this.$router.push({
               name: 'addGroup'
             })
           break
-
         case 'edit':
             this.$router.push({
               name: 'editMember',
@@ -239,12 +236,10 @@ export default class pageOrganization extends Vue {
               }
             })
           break
-
         case 'upload':
             this.models.show = true
             console.log('upload')
           break
-
         default:
           break
       }
@@ -304,8 +299,8 @@ export default class pageOrganization extends Vue {
 
     }
 
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，请先删除当前上传文件（鼠标浮动到文件）`);
+    handleExceed(files, fileList){
+      this.$message.warning('当前限制选择 1 个文件，请先删除当前上传文件（鼠标浮动到文件')
       return false
     }
 
@@ -339,7 +334,7 @@ export default class pageOrganization extends Vue {
         this.nowLoadUid = file.uid
         this.fileUpload.infos = file
         this.fileUpload.show = true
-        this.fileUpload.btnTxt = '重新上传'
+        this.fileUpload.btnTxt = '正在上传..'
       }
 
       console.log(this.fileUpload.params.attach_type)

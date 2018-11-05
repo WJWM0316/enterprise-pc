@@ -30,7 +30,7 @@
         
         <el-button type="primary" class="click-item button_base" @click="todoAction('upload')">批量导入成员</el-button>
 
-        <el-button type="primary" class="click-item button_base" @click="todoAction('add')">添加新成员</el-button>
+        <el-button type="primary" class="click-item button_base" @click="todoAction('addMember')">添加新成员</el-button>
       </el-col>
     </el-row>
   
@@ -75,7 +75,6 @@
                 <div class="limit-row-num-2" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
                 <div class="tutor-name limit-row-num-1" >
                   <span v-if="props.scope.row.group[0]" >{{ props.scope.row.group[0].groupName}} </span>
-                  <!-- <span v-if="props.scope.row.roleName"> <span v-if="props.scope.row.group[0]">-</span>   {{ props.scope.row.roleName}} </span> -->
                 </div>
             </div>
           </div>
@@ -125,7 +124,7 @@
                   :on-exceed="handleExceed"
                   :limit="1">
                   <el-button size="small" type="primary" :class="{'loading': fileUpload.btnTxt==='正在上传..'|| fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
-                  <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div>
+                  <!-- <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div> -->
                 </el-upload>
               </div>
           </div>

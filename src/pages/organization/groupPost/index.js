@@ -115,6 +115,7 @@ export default class MenberList extends Vue {
     if(!this.groupMsg.groupId){
       return
     }
+    //
     getMemberListApi({groupId: this.groupMsg.groupId}).then(res=>{
       console.log('======',res.data.data)
       let memberList = [...res.data.data]
@@ -155,7 +156,17 @@ export default class MenberList extends Vue {
     // 获取成员列表
     getMemberListApi(params)
       .then(res => {
+        res.data.data.map(res=>{
+          res.active = false
+          res.selfGroup = []
+          if(res.group) res.group.map(val => res.selfGroup.push(val.groupId))
+        })
         this.memberList = res.data.data
+
+        return res.data.data
+      })
+      .then(res=>{
+        console.log(res)
       })
   }
 
