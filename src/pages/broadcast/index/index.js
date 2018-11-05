@@ -139,7 +139,7 @@ export default class BroadcastIndex extends Vue {
               value: `categoryId-${field.categoryId}`
             })
           })
-          this.fields[3].filteredValue.unshift({label: '全部', value: 'categoryId-0'})
+          this.fields[3].filteredValue.unshift({label: '全部', value: 'categoryId-all'})
         })
   }
 
@@ -166,6 +166,9 @@ export default class BroadcastIndex extends Vue {
     }
     if(this.form.categoryId) {
       params.categoryId = this.form.categoryId
+      if(this.form.categoryId === 'all') {
+        delete params.categoryId
+      }
     }
     this.getLiveListApi(params)
   }

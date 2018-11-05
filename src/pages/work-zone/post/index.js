@@ -473,8 +473,7 @@ export default class WorkZonePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
-        this.form.members.noEdit = Object.assign(this.form.members, data)
-        delete this.form.members.noEdit.noEdit
+        this.form.members.noEdit = data
         this.form.check_members = this.form.members.value
         break
       case 'hits':
@@ -543,7 +542,7 @@ export default class WorkZonePost extends Vue {
     const temArray = this.form[type].value.split(',')
     temArray.splice(index, 1)
     this.form[type].tem.splice(index, 1)
-    this.form[type].value = temArray.join(',')
+    this.form[type].value = temArray.join(',') ? temArray.join(',') : []
     this.form[type].show = this.form[type].tem <= 0 ? false : true
     this.form[type].noEdit.show = this.form[type].show
     this.form[type].noEdit.tem = this.form[type].tem
@@ -552,7 +551,7 @@ export default class WorkZonePost extends Vue {
       case 'members':
         if(this.form.members.tem <= 0) {
           this.form.check_members = ''
-          this.form.members.noEdit.value = ''
+          this.form.members.noEdit.value = []
           this.form.members.noEdit.tem = []
           this.form.members.noEdit.show = false
         }
@@ -560,7 +559,7 @@ export default class WorkZonePost extends Vue {
       case 'hits':
         if(this.form.hits.tem <= 0) {
           this.form.check_hits = ''
-          this.form.hits.noEdit.value = ''
+          this.form.hits.noEdit.value = []
           this.form.hits.noEdit.tem = []
           this.form.hits.noEdit.show = false
         }
@@ -569,7 +568,7 @@ export default class WorkZonePost extends Vue {
         if(this.form.organizations.tem <= 0) {
           this.noCheckGroupListsApi()
           this.form.check_organizations = ''
-          this.form.organizations.noEdit.value = ''
+          this.form.organizations.noEdit.value = []
           this.form.organizations.noEdit.tem = []
           this.form.organizations.noEdit.show = false
         }
@@ -665,7 +664,7 @@ export default class WorkZonePost extends Vue {
    * @detail   多选
    */
   multipleSelection(type, item, index) {
-    const data = { show: true, tem: [], value: [] }
+    const data = { show: true, tem: [], value: []}
     this.updateMenberListsApi({ index })
     this.menberLists.map(field => {
       if(field.active) {
@@ -675,6 +674,7 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
+    this.form[type].noEdit = data
     this.memberAssociationGroup(item)
     switch(type) {
       case 'members':

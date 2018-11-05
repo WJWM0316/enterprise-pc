@@ -3,11 +3,11 @@
     <page-aside v-if="!shouldFloatingBoxShown()" />
     <main class="offset-left" v-if="!shouldFloatingBoxShown()">
       <page-header v-if="!shouldFloatingBoxShown()" />
-      <transition name="fade">
+      <transition>
         <router-view class="pages" />
       </transition>
     </main>
-    <transition name="fade" v-else>
+    <transition v-else>
       <router-view />
     </transition>
   </section>

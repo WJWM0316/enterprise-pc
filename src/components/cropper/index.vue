@@ -350,13 +350,12 @@ export default class ComponentCropper extends Vue {
   .cropper {
     position: relative;
     width: 310px;
-    height: 414px;
-    padding: 60px 264px 80px 0px;
-    /*background-color: #f8f8f8;*/
+    /*height: 414px;*/
+    padding: 25px 178px 58px 0px;
   }
   .cropper-box {
-    width: 400px;
-    height: 400px;
+    width: 332px;
+    height: 332px;
     border-radius: 4px;
     overflow: hidden;
   }
