@@ -60,7 +60,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'courseCategory',
       'coursePeaple',
       'coursePeapleHits',
-      'hasMemberGroupList'
+      'hasMemberGroupList',
+      'userInfos'
     ])
   }
 })
@@ -957,6 +958,14 @@ export default class CoursePost extends Vue {
           this.$message.error(`${err.msg}~`)
           this.categoryModal.name = ''
         })
+  }
+
+  routeJump() {
+    // 是否有权限跳转
+    const hasAuthJump = this.userInfos.roles.some(field => field > 2)
+    if(!hasAuthJump) {
+      window.open(location.href.replace(/course-post/, 'setSort'))
+    }
   }
 
   /**

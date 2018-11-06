@@ -269,7 +269,7 @@
             </div>
             <div class="tips">
               如果需要对部门组织进行修改，请点击
-              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              <router-link :to="{name: 'setSort'}" target="_blank" @click="routeJump">【分类设置】</router-link>
               进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
