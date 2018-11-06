@@ -1,8 +1,8 @@
 <template>
-  <div id="statistics-course">
+  <div id="statistics-member">
   	<tab-bar></tab-bar>
   	<div class="online-course-situation">
-      <div class="page-header">在线课程数<strong>19</strong></div>
+      <div class="page-header">累计总学习天数<strong>{{userRelativeStatisticsList.totalStudyPeople}}</strong></div>
       <ul class="button-tab-box">
         <li class="item button-li active-button">最近30天</li>
         <li class="item button-li">最近7天</li>
@@ -21,10 +21,10 @@
         <li class="item item-box"><button class="button-export">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button">新增课程数</li>
-        <li>新增报名人次</li>
-        <li>新增打卡完成次数</li>
-        <li>人均完成打卡次数</li>
+        <li class="active-button" @click="tabChnage('joinStudyPeople')">参与学习人次</li>
+        <li @click="tabChnage('avgJoinCourse')">人均参与课程</li>
+        <li @click="tabChnage('avgJoinLive')">人均参与直播</li>
+        <li @click="tabChnage('studyPeople')">累计总学习天数</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -54,6 +54,21 @@ const echarts = require('echarts')
         if(list) {
           this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
         }
+      },
+      immediate: true
+    },
+    '$route': {
+      handler () {
+        this.getUserRelativeStatisticsListApi({last_time: 'last_month'})
+            .then(() => {
+              const key = []
+              const value = []
+              this.userRelativeStatisticsList.list.map(field => {
+                key.push(field.key)
+                value.push(field.joinStudyPeople)
+              })
+              this.init1(key, value)
+            })
       },
       immediate: true
     }
@@ -178,17 +193,15 @@ export default class pageStatisticsCourse extends Vue {
     this.myChart = echarts.init(document.getElementById('echart-pink2'))
     this.myChart.setOption(option, true)
   }
+  tabChnage(attr) {}
 	mounted() {
-    const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
-    const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
-		this.init1(key1, value1)
     this.init2()
     this.init3()
 	}
 }
 </script>
 <style lang="scss">
-#statistics-course{
+#statistics-member{
 	padding: 0;
 	.online-course-situation {
 		padding: 40px 50px 65px 50px;

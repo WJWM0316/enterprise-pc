@@ -377,11 +377,19 @@ export default class pageDashboard extends Vue {
     }
 	}
 
+	clearAllCookie() {
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g)
+    if(keys) {
+      for(var i = keys.length; i--;)
+        document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+    }
+  }
+  
   init() {
   	this.getDesktopInfosApi()
   			.then(() => {
   				if(this.desktopVerInfo.remainDay <= 0) {
-  					this.clearCookie()
+  					this.clearAllCookie()
   					window.location.href = process.env.VUE_APP__LOGIN_URL
   				}
   			})
