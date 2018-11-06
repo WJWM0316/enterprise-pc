@@ -30,7 +30,7 @@
         
         <el-button type="primary" class="click-item button_base" @click="todoAction('upload')">批量导入成员</el-button>
 
-        <el-button type="primary" class="click-item button_base" @click="todoAction('addMember')">添加新成员</el-button>
+        <el-button style="margin-left: 20px" type="primary" class="click-item button_base" @click="todoAction('addMember')">添加新成员</el-button>
       </el-col>
     </el-row>
   
@@ -104,7 +104,7 @@
         </div>
         <div slot="customize-html" style="margin-top: 20px;">
           <div class="customize-html-content">
-              <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" href="http://attach.xplus.ziwork.com/test/doc/2018/1103/14/5bdd3f3576c51.xlsx">下载</a></p>
+              <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" :href="downUrl" >下载</a></p>
               <h4 class="pop_tit">第二步：上传填写好的表格文件</h4>
               <div class="pop_cont">
                 <!--  -->
@@ -123,7 +123,9 @@
                   :on-progress="uploadFileProcess"
                   :on-exceed="handleExceed"
                   :limit="1">
-                  <el-button size="small" type="primary" :class="{'loading': fileUpload.btnTxt==='正在上传..'|| fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
+                  <el-button size="small" type="primary" :class="{
+                    'loading': fileUpload.btnTxt==='正在上传..',
+                    'err': fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
                   <!-- <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div> -->
                 </el-upload>
               </div>
@@ -155,6 +157,12 @@
     .loading {
       background: #cccccc;
       color: #666666;
+      border-color: #cccccc;
+    }
+    .err {
+      background: rgba(255, 52, 52, 0.05);
+      border: 1px solid #ff3434;
+      color: #ff3434 !important;
     }
   }
 }

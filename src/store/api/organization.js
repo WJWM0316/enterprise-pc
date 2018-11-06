@@ -7,7 +7,7 @@ import { request } from './index.js'
 export const getMemberListApi = params => request('/member', 'get', params)
 
 // 添加成员
-export const addMemberApi = params => request(`/member/create`, 'post', params)
+export const addMemberApi = params => request('/member/create', 'post', params)
 
 // 编辑成员资料
 export const editMemberApi = params => request(`/member/${params.id}/edit`, 'post',params)
@@ -22,7 +22,7 @@ export const getMemberInfoApi = params => request(`/member/info/${params.id}`, '
 export const importMemberByExcelApi = params => request(`/member/importMemberByExcel/${params.fileId}`, 'post', params)
 
 // 提交获取上传基本信息
-export const downloadMsgApi = params => request(`/attaches/config`, 'post')
+export const downloadMsgApi = params => request('/member/excelDemo', 'get')
 
 
 
@@ -30,7 +30,7 @@ export const downloadMsgApi = params => request(`/attaches/config`, 'post')
 export const getGroupListApi = params => request('/group', 'get', params)
 
 // 添加分组
-export const addGroupApi = params => request(`/group/create`, 'get', params)
+export const addGroupApi = params => request('/group/create', 'get', params)
 
 // 编辑分组资料
 export const editGroupApi = params => request(`/group/${params.id}/edit`, 'get',params)

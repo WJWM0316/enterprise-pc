@@ -135,6 +135,7 @@ export default class pageOrganization extends Vue {
       isHideBtn: '1',
     }
     av_id = null
+    downUrl = ''
     created(){}
 
     init() {
@@ -155,13 +156,13 @@ export default class pageOrganization extends Vue {
       }
       this.getMemberList()
       this.getMsgList()
-      //this.downloadMsg()
+      this.downloadMsg()
     }
 
     //下载信息
     downloadMsg(){
       downloadMsgApi().then(res=>{
-        console.log('11111',res.data.data)
+        this.downUrl = res.data.data.url
       })
     }
 
@@ -170,7 +171,7 @@ export default class pageOrganization extends Vue {
           this.groupList = [
           {
             groupId: 10, 
-            groupName: "全部成员", 
+            groupName: '全部成员', 
             sort: 10, 
             count: 10,
             active: true
@@ -219,6 +220,7 @@ export default class pageOrganization extends Vue {
             name: 'groupManage'
           })
           break
+        // eslint-disable-next
         case 'addMember':
           let params = {}
           if(this.$route.query.groupId){

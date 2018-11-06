@@ -3,7 +3,7 @@
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'course' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'lessonList' , query:{'course_id': form.course_id}}">课节管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'lessonAdd' ? '新建课节' : '更新课节'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'lessonAdd' ? '新建课节' : '编辑课节'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"

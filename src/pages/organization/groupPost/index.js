@@ -61,7 +61,10 @@ export default class MenberList extends Vue {
     groupNameList:[]
   }
 
+  //basegroupList = []
+  baseMemberList = []
   groupMsg = {}
+  isBeforeSearch = false  //是否刚搜索
 
   validatePass(rule, value, callback){
     if (value === '') {
@@ -77,7 +80,6 @@ export default class MenberList extends Vue {
     this.groupMsg = this.$route.params
     this.checkList = []
 
-    console.log( this.groupMsg )
     getGroupListApi().then(res=>{
       if(res.data.data.length>0){
         let data = [{
@@ -93,53 +95,59 @@ export default class MenberList extends Vue {
       }
     })
 
-    getMemberListApi().then((res) => {
-      res.data.data.map(res=>{
-        res.active = false
-        res.selfGroup = []
-        if(res.group) res.group.map(val => res.selfGroup.push(val.groupId))
-      })
-      this.memberList = res.data.data
+    this.getMemberList().then((res) => {
+      this.memberList = res
+      this.baseMemberList = [...res]
 
       if(this.$route.name === 'editGroup'){
         this.form.name = this.groupMsg.groupName
-        this.getEditMsg()
-      }else {
-
+        if(this.groupMsg.groupId){
+          this.getEditMsg()
+        }
       }
     })
   }
 
+  //获取成员列表
+  getMemberList(params){
+    return getMemberListApi(params)
+      .then(res => {
+        res.data.data.map(res=>{
+          res.active = false
+          res.selfGroup = []
+          if(res.group) res.group.map(val => res.selfGroup.push(val.groupId))
+        })
+        return res.data.data
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
+
   //编辑信息操作
   getEditMsg(){
-    if(!this.groupMsg.groupId){
-      return
-    }
-    //
-    getMemberListApi({groupId: this.groupMsg.groupId}).then(res=>{
-      console.log('======',res.data.data)
-      let memberList = [...res.data.data]
+    //获取该组下的成员
+    this.getMemberList({groupId: this.groupMsg.groupId}).then((res) => {
       let list = []
-      if(res.data.data.length<1){
-        return
+      if(res.length>1){
+        res.map(field => {
+          list.push(field.uid)
+        })
+        this.memberList.map(field => {
+          if(list.includes(field.uid)){
+            this.checkList.push(field.uid)
+            field.active = true
+          }
+        })
+
+        this.editData.groupId = this.groupMsg.groupId
+        this.editData.name = this.groupMsg.groupId
+        this.groupList.map(item=>{
+          if(item.groupName != this.form.name){
+            this.editData.groupNameList.push(item.groupName)
+          }
+        })
       }
-      memberList.map(field => {
-        list.push(field.uid)
-      })
-      this.memberList.map(field => {
-        if(list.includes(field.uid)){
-          this.checkList.push(field.uid)
-          field.active = true
-        }
-      })
-      //this.multipleSelection()
-      this.editData.groupId = this.groupMsg.groupId
-      this.editData.name = this.groupMsg.groupId
-      this.groupList.map(item=>{
-        if(item.groupName != this.form.name){
-          this.editData.groupNameList.push(item.groupName)
-        }
-      })
     })
   }
   
@@ -148,26 +156,28 @@ export default class MenberList extends Vue {
    */
   handleSearch() {
     let params = {}
+    let checkList = this.checkList
     if(this.searchName.length>0){
       params = {
         name: this.searchName
       }
     }
     // 获取成员列表
-    getMemberListApi(params)
-      .then(res => {
-        res.data.data.map(res=>{
-          res.active = false
-          res.selfGroup = []
-          if(res.group) res.group.map(val => res.selfGroup.push(val.groupId))
+    this.getMemberList(params).then(res=>{
+      if(res.length>0){
+        this.groupList.map(item=>{
+          item.active = false
         })
-        this.memberList = res.data.data
 
-        return res.data.data
-      })
-      .then(res=>{
-        console.log(res)
-      })
+        res.map( item => {
+          if(checkList.includes(item.uid)){
+            item.active = true
+          }
+        })
+        this.memberList = res
+        this.isBeforeSearch = true
+      }
+    })
   }
 
   /**
@@ -176,21 +186,26 @@ export default class MenberList extends Vue {
   multipleSelection(item) {
     let index = ''
     let checkList = this.checkList
-    console.log('-----',item)
     item.active = !item.active
     if(item.active){
-      checkList.push(item.uid)
+
+      if(!checkList.includes(item.uid)){
+        checkList.push(item.uid)
+      }
     }else {
       index = checkList.indexOf(item.uid)
       checkList.splice(index,1)
     }
-
   }
 
   /**
    * @detail   成员分类
    */
   memberClassification(groupItem) {
+    if(this.isBeforeSearch){
+      this.isBeforeSearch = false
+      this.memberList = this.baseMemberList
+    }
     let data = [...this.checkList] 
     let memberList = this.memberList
     groupItem.active = !groupItem.active
@@ -308,5 +323,21 @@ export default class MenberList extends Vue {
     })
     return formData
   }
+
+  deepCopy (obj) {
+    // 只拷贝对象
+    if (typeof obj !== 'object') return;
+    // 根据obj的类型判断是新建一个数组还是一个对象
+    var newObj = obj instanceof Array ? [] : {};
+    for (var key in obj) {
+      // 遍历obj,并且判断是obj的属性才拷贝
+      if (obj.hasOwnProperty(key)) {
+        // 判断属性值的类型，如果是对象递归调用深拷贝
+        newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+      }
+    }
+    return newObj;
+  }
+
 
 }
