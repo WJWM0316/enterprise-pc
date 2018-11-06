@@ -114,14 +114,7 @@
         prop="intro"
         label="直播简介"
         >
-          <editor
-            class="editor"
-            :content="ContentEditor.content"
-            v-model="form.intro"
-            :path="ContentEditor.path"
-            :height="ContentEditor.height"
-            @input="handleContentEditorInput"
-            @blur="handleContentEditorBlur" />
+          <editor v-model="form.intro" @change="handleContentEditorInput" />
       </el-form-item>
       
       <!-- 参与直播学员 -->

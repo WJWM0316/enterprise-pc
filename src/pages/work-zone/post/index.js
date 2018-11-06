@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -167,13 +167,6 @@ export default class WorkZonePost extends Vue {
     confirmText: '提交',
     currentModalName: '',
     type: 'confirm'
-  }
-
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
   }
 
   // 默认提交表单按钮可以点击
@@ -436,7 +429,6 @@ export default class WorkZonePost extends Vue {
       this.form.check_organizations = this.form.organizations.value
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      this.ContentEditor.content = jobCircleDetails.content
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')

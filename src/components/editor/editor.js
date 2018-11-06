@@ -43,16 +43,8 @@ export default class Editor extends Vue {
     const self = this
     const editor = new WangEditor(this.$refs.editor)
     editor.config.menus = ['|', 'source', 'bold', 'indent', 'lineheight', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', /* 'table', */ 'img', /* 'video', */ 'insertcode', 'undo', 'redo', 'fullscreen']
-    // editor.config.uploadImgUrl = upload_api
-    // editor.config.uploadParams = {
-    //   token: getAccessToken(),
-    //   attach_type: 'img'
-    // }
-    // editor.config.uploadHeaders = {
-    //   'Authorization': getAccessToken(),
-    //   'Authorization-Sso': getcookie('Authorization-Sso')
-    // }
-    // console.log(editor.config)
+    editor.config.uploadImgUrl = `${upload_api}?token=${getAccessToken()}&attach_type=img`
+    editor.config.withCredentials = false
     // 自定义load事件
     editor.config.uploadImgFns.onload = (resText) => {
       const _editor = this

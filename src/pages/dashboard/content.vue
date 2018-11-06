@@ -367,8 +367,24 @@ export default class pageDashboard extends Vue {
    return null
   }
   
+	clearCookie() {
+    const date = new Date()
+    const keys = document.cookie.match(/[^ =;]+(?=\=)/g)
+    date.setTime(date.getTime()-10000)
+    if(keys) {
+      for (let i =  keys.length; i--;)
+        document.cookie = keys[i]+"=0; expire="+date.toGMTString()+"; path=/"
+    }
+	}
+
   init() {
   	this.getDesktopInfosApi()
+  			.then(() => {
+  				if(this.desktopVerInfo.remainDay <= 0) {
+  					this.clearCookie()
+  					window.location.href = process.env.VUE_APP__LOGIN_URL
+  				}
+  			})
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
 					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000

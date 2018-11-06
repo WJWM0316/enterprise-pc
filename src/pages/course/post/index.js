@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -193,13 +193,6 @@ export default class CoursePost extends Vue {
     currentModalName: '',
     type: 'confirm',
     editType: 'tutor'
-  }
-
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
   }
 
   // 默认提交表单按钮可以点击
@@ -530,7 +523,6 @@ export default class CoursePost extends Vue {
       this.form.check_master_uid = courseDetail.masterUid
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      this.ContentEditor.content = courseDetail.intro
       this.temTutorLists = [...this.tutorLists]
     })
     .catch((err) => {

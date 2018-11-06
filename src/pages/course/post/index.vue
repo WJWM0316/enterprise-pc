@@ -100,13 +100,7 @@
         label="课程简介"
         prop="intro"
         >
-          <editor
-            class="editor"
-            :content="ContentEditor.content"
-            v-model="form.intro"
-            :path="ContentEditor.path"
-            :height="ContentEditor.height"
-            @blur="handleContentEditorBlur" />
+          <editor v-model="form.intro" :isClear="false" @change="handleContentEditorBlur" />
       </el-form-item>
       
       <!-- 选择必修学员 -->
