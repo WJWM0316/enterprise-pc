@@ -65,6 +65,8 @@ export default class pageEditor extends Vue {
     this.editor.customConfig.uploadImgServer = `${upload_api}?token=${getAccessToken()}&attach_type=img`
     this.editor.customConfig.withCredentials = false
     this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024 // 将图片大小限制为 5M
+    this.editor.customConfig.zIndex = 2
+    this.editor.customConfig.showLinkImg = false
     // 配置菜单
     this.editor.customConfig.menus = [
       'head', // 标题
@@ -121,6 +123,10 @@ export default class pageEditor extends Vue {
 </script>
 
 <style lang="css">
+.editor {
+  position: relative;
+  z-index: 1;
+}
 .toolbar {
   border: 1px solid #ccc;
   padding: 0 5px;
