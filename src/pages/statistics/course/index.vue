@@ -9,8 +9,10 @@
         <li class="item button-li">昨天</li>
         <li class="item">
           <el-date-picker
-            v-model="value4"
+            v-model="getDataByDate"
             type="daterange"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
@@ -27,8 +29,12 @@
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
     <div class="course-kind-cate">
-      <div>123</div>
-      <div>222</div>
+      <div>
+        <div id="echart-pink1" style="height: 310px"></div>
+      </div>
+      <div>
+        <div id="echart-pink2" style="height: 310px"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,79 +47,181 @@ const echarts = require('echarts')
 @Component({
 	components: {
     TabBar
+  },
+  watch: {
+    getDataByDate: {
+      handler(list) {
+        if(list) {
+          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    ...mapActions([
+      'getUserRelativeStatisticsListApi'
+    ])
+  },
+  computed: {
+    ...mapGetters([
+      'userRelativeStatisticsList'
+    ])
   }
 })
 export default class pageStatisticsCourse extends Vue {
-  value4 = null
+  getDataByDate = null
 	myChart = null
-	option = {
-    grid: {
-      left: '0%',
-      right: '0%',
-      bottom: '0%',
-      top: '2%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: [
-        '00.00',
-        '01:00',
-        '02:00',
-        '03:00',
-        '04:00',
-        '05:00',
-        '06:00',
-        '07:00',
-        '08:00',
-        '09:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-        '16:00',
-        '17:00',
-        '18:00',
-        '19:00'
-      ]
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [{
-      data: [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      type: 'line'
-    }]
-	}
-	init() {
+	init1() {
+    const option = {
+      grid: {
+        left: '0%',
+        right: '0%',
+        bottom: '0%',
+        top: '2%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: [
+          '00.00',
+          '01:00',
+          '02:00',
+          '03:00',
+          '04:00',
+          '05:00',
+          '06:00',
+          '07:00',
+          '08:00',
+          '09:00',
+          '10:00',
+          '11:00',
+          '12:00',
+          '13:00',
+          '14:00',
+          '15:00',
+          '16:00',
+          '17:00',
+          '18:00',
+          '19:00'
+        ]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        type: 'line'
+      }]
+    }
 		this.myChart = echarts.init(document.getElementById('echart-line'))
-		this.myChart.setOption(this.option, true)
+		this.myChart.setOption(option, true)
 	}
+  init2() {
+    const option = {
+      grid: {
+        width: '5000px'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+      },
+      series : [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data:[
+            {value:335, name:'直接访问'},
+            {value:310, name:'邮件营销'},
+            {value:234, name:'联盟广告'},
+            {value:135, name:'视频广告'},
+            {value:1548, name:'搜索引擎'}
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    }
+    this.myChart = echarts.init(document.getElementById('echart-pink1'))
+    this.myChart.setOption(option, true)
+  }
+  init3() {
+    const option = {
+      grid: {
+        width: '50%'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+      },
+      series : [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data:[
+            {value:335, name:'直接访问'},
+            {value:310, name:'邮件营销'},
+            {value:234, name:'联盟广告'},
+            {value:135, name:'视频广告'},
+            {value:1548, name:'搜索引擎'}
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    }
+    this.myChart = echarts.init(document.getElementById('echart-pink2'))
+    this.myChart.setOption(option, true)
+  }
 	mounted() {
-		this.init()
+		this.init1()
+    this.init2()
+    this.init3()
 	}
 }
 </script>
@@ -124,19 +232,20 @@ export default class pageStatisticsCourse extends Vue {
 		padding: 40px 50px 65px 50px;
 		background: white;
 		margin-top: 16px;
+    border-radius: 4px;
+    .page-header{
+      font-size:16px;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      line-height: 1;
+    }
+    strong{
+      font-size:34px;
+      font-weight:500;
+      color:rgba(215,171,112,1);
+      padding-left: 10px;
+    }
 	}
-  .page-header{
-    font-size:16px;
-    font-weight:400;
-    color:rgba(102,102,102,1);
-    line-height: 1;
-  }
-  strong{
-    font-size:34px;
-    font-weight:500;
-    color:rgba(215,171,112,1);
-    padding-left: 10px;
-  }
   .button-tab-box{
     margin: 35px 0 25px 0;
     overflow: hidden;
@@ -230,13 +339,18 @@ export default class pageStatisticsCourse extends Vue {
     margin-top: 16px;
     display: flex;
     > div {
-      flex-grow: 1;
       background: white;
-      height: 100px;
-      padding: 20px;
       box-sizing: border-box;
       border-radius: 4px;
       overflow: hidden;
+      position: relative;
+      width: calc(50% - 8px);
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 30px;
       &:first-child{
         margin-right: 8px;
       };

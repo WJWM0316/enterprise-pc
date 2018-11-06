@@ -1,41 +1,43 @@
 import {
-  GET_STATISTICS_LIST
+  GET_USER_RELATIVE_STATISTICS_LISTS
 } from '../mutation-types'
 
-// import {
-//   articleGetArticleListApi,
-//   articlePostArticleApi,
-//   articleDeleteArticleApi,
-//   articlePutArticleApi
-// } from 'API/statistics'
+import {
+  getUserRelativeStatisticsListApi
+} from 'API/statistics'
 
 const state = {
-  statisticsLists: {}
+  userRelativeStatisticsList: {}
 }
 
 const mutations = {
-  [GET_STATISTICS_LIST] (status, data) {
-    state.statisticsLists = data
+  [GET_USER_RELATIVE_STATISTICS_LISTS] (state, data) {
+    state.userRelativeStatisticsList = data
   }
 }
 
 const getters = {
-  statisticsLists: state => state.statisticsLists
+  userRelativeStatisticsList: state => state.userRelativeStatisticsList
 }
 
 const actions = {
 
-  // 获取文章列表
-  // articleGetArticleListApi (store, params) {
-  //   articleGetArticleListApi(params)
-  //     .then(res => {
-  //       store.commit(GET_STATISTICS_LIST, res.data.info)
-  //       return res
-  //     })
-  //     .catch(error => {
-  //       return error
-  //     })
-  // }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取用户相关统计
+   * @return   {[type]}          [description]
+   */
+  getUserRelativeStatisticsListApi (store, params) {
+    return getUserRelativeStatisticsListApi(params)
+      .then(res => {
+        // store.commit(GET_USER_RELATIVE_STATISTICS_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {
