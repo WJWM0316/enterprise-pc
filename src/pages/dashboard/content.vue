@@ -38,7 +38,7 @@
 			  </el-popover>
 				<button class="click-item todo-action" @click="openModal">{{desktopVerInfo.tip}}</button>
 				<button class="click-item todo-action" @click="openModal" v-if="desktopVerInfo.isOfficial">续费</button>
-				<button class="click-item todo-action" @click="openModal" v-if="!desktopVerInfo.isOfficial">开通正式版</button>
+				<!-- <button class="click-item todo-action" @click="openModal" v-if="!desktopVerInfo.isOfficial">开通正式版</button> -->
 			</div>
 			<div class="statistics-flex-box">
 				<div>
