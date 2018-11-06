@@ -193,7 +193,16 @@ export default class pageStatisticsCourse extends Vue {
     this.myChart = echarts.init(document.getElementById('echart-pink2'))
     this.myChart.setOption(option, true)
   }
-  tabChnage(attr) {}
+  tabChnage(attr) {
+    const key = []
+    const value = []
+    this.userRelativeStatisticsList.list.map(field => {
+      key.push(field.key)
+      value.push(field[attr])
+    })
+    console.log(value)
+    this.init1(key, value)
+  }
 	mounted() {
     this.init2()
     this.init3()

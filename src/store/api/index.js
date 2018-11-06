@@ -2,16 +2,9 @@
 import axios from 'axios'
 import { Loading } from 'element-ui'
 import { removeAccessToken, getAccessToken } from '@/store/cacheService'
+import Cookies from 'js-cookie'
 
-// 获取cookie
-const getcookie = (name) =>{
- const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
- if(arr !== null)
-  return unescape(arr[1])
- return null
-}
-
-let company = getcookie('code')
+let company = Cookies.get('code')
 let loadingInstance = null
 
 if(!company) {
@@ -20,7 +13,7 @@ if(!company) {
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
-  document.cookie=`Authorization-Sso=${process.env.VUE_APP__TEST_SSO_TOKEN};`
+  Cookies.set('Authorization-Sso', process.env.VUE_APP__TEST_SSO_TOKEN)
 }
 
 export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
@@ -34,7 +27,7 @@ axios.defaults.baseURL = API_ROOT
 axios.interceptors.request.use(
   config => {
     config.headers.common['Authorization'] = getAccessToken()
-    config.headers.common['Authorization-Sso'] = getcookie('Authorization-Sso')
+    config.headers.common['Authorization-Sso'] = Cookies.get('Authorization-Sso')
     return config
   },
   error => {
@@ -51,6 +44,7 @@ axios.interceptors.response.use(
     // 登陆过期或者未登录
     if(err.response.data.httpStatus === 401) {
       removeAccessToken()
+      Cookies.remove('Authorization-Sso', { path: '' })
       window.location.href = process.env.VUE_APP__LOGIN_URL
       return
     }
