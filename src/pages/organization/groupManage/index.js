@@ -8,6 +8,15 @@ import { getGroupListApi, deleteGroupApi, putGroupApi } from '@/store/api/organi
   name: 'group-manage',
   watch: {
   },
+  computed: {
+    pageNum () {
+      let num = Math.floor(this.groupList.total/this.zikeDefaultPageSize)
+      if(this.groupList.total%this.zikeDefaultPageSize!==0){
+        num +=1
+      }
+      return num
+    }
+  },
   components: {
     TableList,
     SearchBar
@@ -107,6 +116,7 @@ export default class groupList extends Vue {
   getGroupList({ page, pageSize } = {}) {
     let data = {
       isHaveMember: 0,
+      globalLoading: true,
       page: page || this.form.page || 1,
       pageCount: this.zikeDefaultPageSize
     }

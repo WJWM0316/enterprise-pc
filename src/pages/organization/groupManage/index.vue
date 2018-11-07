@@ -37,12 +37,10 @@
         </div>
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
-
-          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page === 1 && props.scope.row.index===0"></img>
-          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up', props.scope.row)" v-else />
-
-          <img src="~IMAGES/icon_down_dis.png" class="sort_blo up forbid" v-if="groupList.list.length < zikeDefaultPageSize && props.scope.row.index=== groupList.list.length-1"></img>
-          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down', props.scope.row)" v-else />
+          <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
+          <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
+          <span class="triangle_down disabled" v-if="pageNum == form.page && props.scope.row.index-0+1 === groupList.list.length"></span>
+          <span class="triangle_down" @click="setSort('down', props.scope.row)" v-else ></span>
         </div>
 
         <div v-else style="margin-left: 40px;">{{props.scope.row[props.scope.column.property]}}</div>
@@ -114,18 +112,54 @@ export default CourseList
     color: #929292;
   }
 
-  .sort {
-    .sort_blo {
-      width:14px;
-      height:10px;
-      display: block;
-      &.up {
-        margin-bottom: 8px;
-      }
-      &.forbid {
-        //background:rgba(237,237,237,1);
-      }
+.triangle_up {
+  margin-left: 20px;
+  width:0;
+  height:0;
+  border-width:0 9px 12px;
+  border-style:solid;
+  border-color:transparent transparent rgba(188,188,188,1);
+  margin:40px auto;
+  position:relative;
+  top: -20px;
+  &.disabled{
+    border-color:transparent transparent #DCDCDC;
+    &:hover{
+      border-color:transparent transparent #DCDCDC;
+      cursor: inherit;
     }
   }
+  &:hover{
+    border-color:transparent transparent #FFE266;
+    cursor:pointer;
+  }
+}
+.sort {
+  height: 40px;
+  position: relative;
+}
+.triangle_down{
+  display:block;
+  width:0;
+  height:0;
+  border-width:12px 9px 0;
+  border-style:solid;
+  border-color:rgba(188,188,188,1) transparent transparent;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+
+  &.disabled{
+    border-color:#DCDCDC transparent transparent;
+    &:hover{
+      border-color:#DCDCDC transparent transparent ;
+      cursor: inherit;
+    }
+  }
+  &:hover{
+    border-color: #FFE266 transparent transparent ;
+    cursor:pointer;
+  }
+}
 }
 </style>

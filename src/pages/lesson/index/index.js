@@ -126,6 +126,7 @@ export default class CourseList extends Vue {
     let param = {
       jsonData: UrlString,
       page: page || this.form.page || 1,
+      globalLoading: true,
       pageCount: this.zikeDefaultPageSize
     }
 

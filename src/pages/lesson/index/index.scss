@@ -56,3 +56,52 @@
   }
 }
 
+.triangle_up {
+  margin-left: 20px;
+  width:0;
+  height:0;
+  border-width:0 9px 12px;
+  border-style:solid;
+  border-color:transparent transparent rgba(188,188,188,1);
+  margin:40px auto;
+  position:relative;
+  top: -20px;
+  &.disabled{
+    border-color:transparent transparent #DCDCDC;
+    &:hover{
+      border-color:transparent transparent #DCDCDC;
+      cursor: inherit;
+    }
+  }
+  &:hover{
+    border-color:transparent transparent #FFE266;
+    cursor:pointer;
+  }
+}
+.sort {
+  height: 40px;
+  position: relative;
+}
+.triangle_down{
+  display:block;
+  width:0;
+  height:0;
+  border-width:12px 9px 0;
+  border-style:solid;
+  border-color:rgba(188,188,188,1) transparent transparent;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+
+  &.disabled{
+    border-color:#DCDCDC transparent transparent;
+    &:hover{
+      border-color:#DCDCDC transparent transparent ;
+      cursor: inherit;
+    }
+  }
+  &:hover{
+    border-color: #FFE266 transparent transparent ;
+    cursor:pointer;
+  }
+}

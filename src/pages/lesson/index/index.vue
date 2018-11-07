@@ -41,12 +41,10 @@
         </div>
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
-
-          <img src="~IMAGES/icon_up_dis.png" class="sort_blo up forbid" v-if="form.page == 1 && props.scope.row.index===0"></img>
-          <img src="~IMAGES/icon_up.png" class="sort_blo up" @click="setSort('up',props.scope.row)" v-else />
-
-          <img src="~IMAGES/icon_down_dis.png" class="sort_blo up forbid" v-if="pageNum == form.page && props.scope.row.index===lessonList.list.length-1"></img>
-          <img src="~IMAGES/icon_down.png" class="sort_blo down" @click="setSort('down',props.scope.row)" v-else />
+          <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
+          <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
+          <span class="triangle_down disabled" v-if="pageNum == form.page && props.scope.row.index-0+1 === lessonList.list.length"></span>
+          <span class="triangle_down" @click="setSort('down', props.scope.row)" v-else ></span>
         </div>
         <!-- 重新定义课程名这一列的显示 -->
         <div v-else-if="props.scope.column.property === 'title'" class="flex-box">

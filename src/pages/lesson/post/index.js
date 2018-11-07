@@ -321,7 +321,6 @@ export default class WorkZonePost extends Vue {
     }else {
       this.imageUpload.status = 'loading'
     }
-
     return isLt20M
   }
 
@@ -346,6 +345,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   beforeFileUpload(file) {
+    this.$refs.file.abort()
+
     const isLt200M = file.size / 1024 / 1024 < 200;
     if(!isLt200M){
       this.$message.error('上传文件大小不能超过 200MB!');

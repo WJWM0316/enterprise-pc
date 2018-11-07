@@ -124,14 +124,13 @@ export default class classifyList extends Vue {
    */
   getList({ page } = {}) {
     let data = {
+      globalLoading: true,
       page: page || this.form.page || 1,
       pageCount: this.zikeDefaultPageSize
     }
 
     this.form.page = data.page
     getCategoryListsApi(data).then(res => {
-
-
       if(res.data.data.length === 0 && data.page>1){
         this.$router.push({ query: {page: data.page-1} })
         return
