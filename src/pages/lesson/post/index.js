@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { getAccessToken } from '@/store/cacheService'
 import { upload_api } from '@/store/api/index.js'
 import { postLessonApi, getLessonEditApi, lessonEditApi } from '@/store/api/lesson.js'
@@ -72,13 +72,6 @@ export default class WorkZonePost extends Vue {
     status: 'processing',
     infos: {},
     show: false
-  }
-
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
   }
 
   // 默认提交表单按钮可以点击
@@ -267,7 +260,6 @@ export default class WorkZonePost extends Vue {
       })
       
       this.imageUpload.list = msg.punchCardCImgInfo
-      this.ContentEditor.content = msg.details
       this.form = {
         course_id: msg.courseSectionId, // 课程id
         title: msg.title, // 课节标题

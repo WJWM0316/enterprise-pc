@@ -94,13 +94,7 @@
         label="工作圈介绍"
         prop="content"
         >
-          <editor
-            class="editor"
-            :content="ContentEditor.content"
-            v-model="form.content"
-            :path="ContentEditor.path"
-            :height="ContentEditor.height"
-            @blur="handleContentEditorBlur" />
+          <editor v-model="form.content" @change="handleContentEditorBlur" />
       </el-form-item>
       
       <div class="walk-title">其他设置</div>
@@ -196,7 +190,7 @@
     
       <!-- 确认提交 -->
       <el-form-item>
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -365,7 +359,7 @@ export default WorkZonePost
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(220,223,230,1);
     font-size: 20px;
-    margin: 40px 44px 30px 0px;
+    margin: 56px 44px 30px 0px;
   }
   .customize-html-content {
     flex-grow: 1;

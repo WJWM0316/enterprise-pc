@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -46,7 +46,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateAllGroupListStatus',
       'updateSingleGrouptatus',
       'updateSingleMemberStatus',
-      'updateAllMemberStatus'
+      'updateAllMemberStatus',
+      'removeRepeatMember'
     ])
   },
   computed: {
@@ -60,7 +61,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'courseCategory',
       'coursePeaple',
       'coursePeapleHits',
-      'hasMemberGroupList'
+      'hasMemberGroupList',
+      'userInfos'
     ])
   }
 })
@@ -195,13 +197,6 @@ export default class CoursePost extends Vue {
     editType: 'tutor'
   }
 
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
-  }
-
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -312,7 +307,7 @@ export default class CoursePost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    // this.$refs.form.validateField('content')
+    this.$refs.form.validateField('intro')
   }
 
   /**
@@ -322,7 +317,13 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    this.getMenberListsApi({name: this.ownerUidName})
+    const params = {}
+    if(this.ownerUidName) {
+      params.name = this.ownerUidName
+    } else {
+      params.selectAll = 2
+    }
+    this.getMenberListsApi(params)
         .then(() => {
           this.ownerUidName = ''
         })
@@ -352,6 +353,7 @@ export default class CoursePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    let list = []
     this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
@@ -382,6 +384,14 @@ export default class CoursePost extends Vue {
   			this.models.title = '参与课程学员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+                list.push(this.form.master_uid.value)
+              }
+              if(this.form.hits.tem.length > 0) {
+                list =[...list, ...this.form.hits.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()
@@ -395,6 +405,14 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+                list.push(this.form.master_uid.value)
+              }
+              if(this.form.members.tem.length > 0) {
+                list =[...list, ...this.form.members.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()
@@ -530,7 +548,6 @@ export default class CoursePost extends Vue {
       this.form.check_master_uid = courseDetail.masterUid
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      this.ContentEditor.content = courseDetail.intro
       this.temTutorLists = [...this.tutorLists]
     })
     .catch((err) => {
@@ -965,6 +982,14 @@ export default class CoursePost extends Vue {
           this.$message.error(`${err.msg}~`)
           this.categoryModal.name = ''
         })
+  }
+
+  routeJump() {
+    // 是否有权限跳转
+    const hasAuthJump = this.userInfos.roles.some(field => field > 2)
+    if(!hasAuthJump) {
+      window.open(location.href.replace(/course-post/, 'setSort'))
+    }
   }
 
   /**

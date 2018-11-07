@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -40,7 +40,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateSingleGrouptatus',
       'updateSingleMemberStatus',
       'classifyMemberListsByGroupIdApi',
-      'switchCheckGroupListsApi'
+      'switchCheckGroupListsApi',
+      'removeRepeatMember'
     ])
   },
   computed: {
@@ -169,13 +170,6 @@ export default class WorkZonePost extends Vue {
     type: 'confirm'
   }
 
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
-  }
-
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -261,12 +255,6 @@ export default class WorkZonePost extends Vue {
     this.$refs.form.validateField('content')
   }
 
-  loadAll() {
-    return [
-      { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' }
-    ]
-  }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-17
@@ -278,7 +266,6 @@ export default class WorkZonePost extends Vue {
   }
 
   created() {
-    this.restaurants = this.loadAll()
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -289,6 +276,7 @@ export default class WorkZonePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    let list = []
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
@@ -303,6 +291,14 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择成员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+                list.push(this.form.owner_uid.value)
+              }
+              if(this.form.hits.tem.length > 0) {
+                list =[...list, ...this.form.hits.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.updateAllGroupListStatus({bool: false})
@@ -321,6 +317,14 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择不可见成员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+                list.push(this.form.owner_uid.value)
+              }
+              if(this.form.members.tem.length > 0) {
+                list =[...list, ...this.form.members.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.updateAllGroupListStatus({bool: false})
@@ -436,7 +440,6 @@ export default class WorkZonePost extends Vue {
       this.form.check_organizations = this.form.organizations.value
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      this.ContentEditor.content = jobCircleDetails.content
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~')

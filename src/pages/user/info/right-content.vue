@@ -27,12 +27,13 @@
 							<span class="user-name">{{courseItem.realname}}</span>
 						</div>
 						<div class="u-info" v-if="courseItem.masterInfo.roleId == 5">
-							<span class="user-name">{{courseItem.realname}}</span>
+							<span class="outer-user-name">外部导师+{{courseItem.realname}}</span>
 						</div>
-						<div class="progress" v-if="courseItem.masterInfo.roleId == 4">
-							<div class="learn-rate-text">已学习<span> {{courseItem.selfProcess}}% </span></div>
+						<!-- 根据登陆的用户判断限制进度条 -->
+						<div class="progress" v-if="!personalInfoBase.isExternalTutor">
+							<div class="learn-rate-text">已学习<span> {{courseItem.progress}}% </span></div>
 							<div class="line">
-								<div class="doing" :style="`width: ${courseItem.selfProcess}%`"></div>
+								<div class="doing" :style="`width: ${courseItem.progress}%`"></div>
 							</div>
 						</div>
 					</div>
@@ -49,10 +50,10 @@
 							<span class="group-name">{{liveItem.groupName}}</span>
 							<span class="user-name">{{liveItem.realname}}</span>
 						</div>
-						<div class="u-info" v-if="liveItem.roleId === '5'">
-							<span class="user-name">{{liveItem.realname}}</span>
+						<div class="u-info" v-if="liveItem.roleId === 5">
+							<span class="outer-user-name">外部导师+{{liveItem.realname}}</span>
 						</div>
-						<div v-if="liveItem.roleId === '5'">
+						<div v-if="liveItem.roleId === 5">
 							<time>{{liveItem.expectedStartTime * 1000 | date}}</time>
 							<span class="live-status" :class="{'live-status-doing': liveItem.status === 2, 'live-status-default': liveItem.status === 1 || liveItem.status === 3}">{{ liveItem.status === 1 ? '直播未开始' : liveItem.status === 2 ? '正在直播' : '直播已结束'}}</span>
 						</div>
@@ -195,13 +196,13 @@ export default class ComponentRight extends Vue {
 		}
 		li{
 			width: calc(50% - 10px);
-			display: flex;
 			background: white;
 			margin-top: 14px;
 			border-radius: 4px;
 			overflow: hidden;
 			box-sizing: border-box;
 			padding: 15px;
+			position: relative;
 		}
 		.img-box {
 			width:108px;
@@ -209,13 +210,16 @@ export default class ComponentRight extends Vue {
 			border-radius:4px;
 			margin-right: 16px;
 			overflow: hidden;
+			display: inline-block;
+			float: left;
 			img{
 				width: 100%;
 				height: 100%;
 			}
 		}
 		.text-content {
-			flex-grow: 1;
+			width: calc(100% - 124px);
+			display: inline-block;
 		}
 		h2{
 			font-size:16px;
@@ -224,9 +228,8 @@ export default class ComponentRight extends Vue {
 			margin: 10px 0;
 			overflow: hidden;
       text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      display: block;
+      white-space: nowrap;
       color: #354048;
       font-size: 14px;
       line-height: 1.4;
@@ -246,6 +249,14 @@ export default class ComponentRight extends Vue {
 			font-size: 12px;
 			padding: 4px 5px;
 			color: #D7AB70;
+			line-height: 1;
+			float: left;
+		}
+		.outer-user-name{
+			display: inline-block;
+			font-size: 12px;
+			padding: 4px 0px;
+			color: #666666;
 			line-height: 1;
 			float: left;
 		}

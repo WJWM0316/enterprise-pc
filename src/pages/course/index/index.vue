@@ -10,7 +10,7 @@
           placeholder="请输入课程名或导师..." />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addCourse" class="btn-limit-width">添加课程</el-button>
+        <el-button type="primary" @click="addCourse" class="btn-limit-width">新建课程</el-button>
       </el-col>
     </el-row>
     <table-list

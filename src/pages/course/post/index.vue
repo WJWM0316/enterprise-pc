@@ -100,13 +100,7 @@
         label="课程简介"
         prop="intro"
         >
-          <editor
-            class="editor"
-            :content="ContentEditor.content"
-            v-model="form.intro"
-            :path="ContentEditor.path"
-            :height="ContentEditor.height"
-            @blur="handleContentEditorBlur" />
+          <editor v-model="form.intro" :isClear="false" @change="handleContentEditorBlur" />
       </el-form-item>
       
       <!-- 选择必修学员 -->
@@ -223,7 +217,7 @@
       </el-form-item>
       <!-- 确认提交 -->
       <el-form-item class="footer-button">
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -275,7 +269,7 @@
             </div>
             <div class="tips">
               如果需要对部门组织进行修改，请点击
-              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              <router-link :to="{name: 'setSort'}" target="_blank" @click="routeJump">【分类设置】</router-link>
               进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
@@ -437,7 +431,7 @@ export default CoursePost
     line-height: 1;
     border-bottom: 1px solid #ebeef5;
     font-size: 20px;
-    margin: 40px 44px 30px 0px;
+    margin: 56px 44px 30px 0px;
     color: #354048;
   }
   .customize-html-content {

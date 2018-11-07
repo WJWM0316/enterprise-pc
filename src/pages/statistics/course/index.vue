@@ -72,7 +72,7 @@ const echarts = require('echarts')
 export default class pageStatisticsCourse extends Vue {
   getDataByDate = null
 	myChart = null
-	init1() {
+	init1(key, value) {
     const option = {
       grid: {
         left: '0%',
@@ -83,55 +83,13 @@ export default class pageStatisticsCourse extends Vue {
       },
       xAxis: {
         type: 'category',
-        data: [
-          '00.00',
-          '01:00',
-          '02:00',
-          '03:00',
-          '04:00',
-          '05:00',
-          '06:00',
-          '07:00',
-          '08:00',
-          '09:00',
-          '10:00',
-          '11:00',
-          '12:00',
-          '13:00',
-          '14:00',
-          '15:00',
-          '16:00',
-          '17:00',
-          '18:00',
-          '19:00'
-        ]
+        data: key
       },
       yAxis: {
         type: 'value'
       },
       series: [{
-        data: [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          2,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
+        data: value,
         type: 'line'
       }]
     }
@@ -149,7 +107,8 @@ export default class pageStatisticsCourse extends Vue {
       },
       legend: {
         orient: 'vertical',
-        left: 'left',
+        right: 0,
+        top: '50%',
         data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
       },
       series : [
@@ -189,7 +148,8 @@ export default class pageStatisticsCourse extends Vue {
       },
       legend: {
         orient: 'vertical',
-        left: 'left',
+        right: 0,
+        align: 'auto',
         data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
       },
       series : [
@@ -219,7 +179,9 @@ export default class pageStatisticsCourse extends Vue {
     this.myChart.setOption(option, true)
   }
 	mounted() {
-		this.init1()
+    const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
+    const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+		this.init1(key1, value1)
     this.init2()
     this.init3()
 	}

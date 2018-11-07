@@ -173,33 +173,13 @@
 				<p>还没有成员动态哦，成员参加的<br/> 课程、直播、工作圈相关动态将会在这里记录~</p>
 			</div>
 		</section>
-		<modal-dialog
-      v-model="models.show"
-      :title="models.title"
-      :show-close="models.showClose"
-      :confirm-text="models.confirmText"
-      :type="models.type"
-      :width="models.width"
-      :min-height="models.minHeight"
-      @confirm="confirm"
-      @cancel="cancel"
-      >
-        <div slot="title" style="margin-left: 0px;">
-          <h3 class="dialog-title" v-if="models.title"></h3>
-        </div>
-        <div slot="customize-html">
-          <div class="customize-html-content">
-          	<h2 class="dashboard-open-business">开通、续费请联系客服开通</h2>
-          	<p class="dashboard-open-business-phone">客服电话：{{desktopInfos.customerServicePhone}}</p>
-          </div>
-        </div>
-    </modal-dialog>
 	</div>
 </template>
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
+import Cookies from 'js-cookie'
 // import websocket from 'UTIL/websocket'
 // import { WEBSOKET_API } from 'API/index.js'
 @Component({
@@ -235,34 +215,7 @@ export default class pageDashboard extends Vue {
 	isHaveNew = 0
 	timer = null
 	timestamp = null
-	// 确认信息弹窗
-  models = {
-    show: false,
-    title: '',
-    showClose: true,
-    confirmText: '提交',
-    type: 'confirm',
-    width: '432px',
-    minHeight: '90px'
-  }
 
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-15
-   * @detail   modal中的确认按钮
-   * @return   {[type]}   [description]
-   */
-  confirm() {
-  	this.models.show = !this.models.show
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-09-15
-   * @detail   modal中的取消按钮
-   * @return   {[type]}   [description]
-   */
-  cancel() {}
   /**
    * @Author   小书包
    * @DateTime 2018-09-15
@@ -358,17 +311,16 @@ export default class pageDashboard extends Vue {
 		  		})
 		}, 1000 * 60 * 5)
 	}
-
-	// 获取cookie
-  getcookie(name) {
-   const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
-   if(arr !== null)
-    return unescape(arr[1])
-   return null
-  }
   
   init() {
   	this.getDesktopInfosApi()
+  			.then(() => {
+  				if(this.desktopVerInfo.remainDay <= 0) {
+  					Cookies.remove('code', { path: '' }) // removed!
+  					Cookies.remove('Authorization-Sso', { path: '' }) // removed!
+  					window.location.href = process.env.VUE_APP__LOGIN_URL
+  				}
+  			})
 		this.getMemberDynamicsListApi({count: 20})
 				.then(() => {
 					this.timestamp = this.memberDynamics.length === 0 ? Date.parse(new Date()) / 1000 : Date.parse(new Date(this.memberDynamics[0].createdAt)) / 1000
@@ -379,8 +331,10 @@ export default class pageDashboard extends Vue {
 				  		})
 				})
   }
+
 	created() {
-		this.loginApi({code : this.getcookie('code') ? this.getcookie('code') : process.env.VUE_APP__TEST_COMPANY, 'Authorization-Sso': this.getcookie('Authorization-Sso')})
+		const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
+		this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
 				.then(() => {
 					this.init()
 				})

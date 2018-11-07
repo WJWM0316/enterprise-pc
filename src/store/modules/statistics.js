@@ -31,7 +31,7 @@ const actions = {
   getUserRelativeStatisticsListApi (store, params) {
     return getUserRelativeStatisticsListApi(params)
       .then(res => {
-        // store.commit(GET_USER_RELATIVE_STATISTICS_LISTS, res.data.data)
+        store.commit(GET_USER_RELATIVE_STATISTICS_LISTS, res.data.data)
         return res
       })
       .catch(error => {

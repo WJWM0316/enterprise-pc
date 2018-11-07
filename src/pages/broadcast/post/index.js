@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
+import Editor from 'COMPONENTS/editor2/index.vue'
 import { editorRules } from 'FILTERS/rules'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
@@ -47,7 +47,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateSingleMemberStatus',
       'classifyMemberListsByGroupIdApi',
       'switchCheckGroupListsApi',
-      'updateAllMemberStatus'
+      'updateAllMemberStatus',
+      'removeRepeatMember'
     ])
   },
   computed: {
@@ -191,13 +192,6 @@ export default class BroadcastPost extends Vue {
     editType: 'tutor'
   }
 
-  // 社区介绍富文本编辑器
-  ContentEditor = {
-    content: '',
-    // path: `${config.host}/admin/common/editor/uploadImg`,
-    height: 350
-  }
-
   // 默认提交表单按钮可以点击
   submitBtnClick = true
   // 默认提交按钮的文案
@@ -297,22 +291,13 @@ export default class BroadcastPost extends Vue {
 
   /**
    * @Author   小书包
-   * @DateTime 2018-09-17
-   * @detail   编辑器
-   */
-  handleContentEditorBlur() {
-    this.$refs.form.validateField('intro')
-  }
-
-  /**
-   * @Author   小书包
    * @DateTime 2018-10-25
    * @detail   编辑器文字改变
    * @return   {[type]}   [description]
    */
   handleContentEditorInput(dom) {
     this.form.intro = dom
-    // this.$refs.form.validateField('intro')
+    this.$refs.form.validateField('intro')
   }
   /**
    * @Author   小书包
@@ -354,6 +339,7 @@ export default class BroadcastPost extends Vue {
    */
   openModal(type) {
     const temTutorLists = [...this.temTutorLists]
+    let list = []
   	switch(type) {
   		case 'categoryList':
   			this.models.title = '选择分类'
@@ -383,6 +369,14 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '参与直播学员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
+                list.push(this.form.uid.value)
+              }
+              if(this.form.invisibleList.tem.length > 0) {
+                list =[...list, ...this.form.invisibleList.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.updateAllGroupListStatus({bool: false})
@@ -396,6 +390,14 @@ export default class BroadcastPost extends Vue {
         this.models.title = '对这些人不可见'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
+                list.push(this.form.uid.value)
+              }
+              if(this.form.memberList.tem.length > 0) {
+                list =[...list, ...this.form.memberList.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.setSelfDefinedGroup()
               this.updateMenberListsAllApi({bool: false})
@@ -530,7 +532,6 @@ export default class BroadcastPost extends Vue {
       this.form.check_uid = this.form.uid.value
       this.form.memberList.noEdit.value = this.form.memberList.noEdit.value.join(',')
       this.form.invisibleList.noEdit.value = this.form.invisibleList.noEdit.value.join(',')
-      this.ContentEditor.content = info.intro
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'

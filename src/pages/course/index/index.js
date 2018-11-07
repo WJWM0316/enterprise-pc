@@ -111,7 +111,7 @@ export default class CourseList extends Vue {
               value: `category_id-${field.categoryId}`
             })
           })
-          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'}, {label: '未分类', value: 'category_id-0'})
+          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
         })
   }
   /**

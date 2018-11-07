@@ -3,14 +3,20 @@
  * @DateTime 2018-09-10
  * @detail   权限模块
  */
+import axios from 'axios'
+
+import {
+  saveAccessToken,
+  removeAccessToken,
+  getAccessToken,
+  getUserInfo,
+  saveUserInfo
+} from '@/store/cacheService'
+
 import {
   LOGIN,
   LOGOUT
 } from '../mutation-types'
-
-import axios from 'axios'
-
-import { saveAccessToken, removeAccessToken, getAccessToken, getUserInfo, saveUserInfo } from '@/store/cacheService'
 
 const state = {
   userInfos: getUserInfo() || null,
@@ -60,19 +66,32 @@ const actions = {
    * @return   {[type]}         [description]
    */
   logoutApi(store, params) {
-    return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
+    return axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
                 .then(res => {
-                  axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
-                        .then(() => {
-                          removeAccessToken()
-                          store.commit(LOGOUT)
-                          window.location.href = process.env.VUE_APP__LOGIN_URL
-                          return res
-                        })
+                  removeAccessToken()
+                  store.commit(LOGOUT)
+                  window.location.href = process.env.VUE_APP__LOGIN_URL
+                  return res
                 })
                 .catch(error => {
                   return Promise.reject(error.data || {})
                 })
+    // return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
+    //             .then(res => {
+    //                 removeAccessToken()
+    //                 store.commit(LOGOUT)
+    //                 window.location.href = process.env.VUE_APP__LOGIN_URL
+    //                axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
+    //                     .then(() => {
+    //                       removeAccessToken()
+    //                       store.commit(LOGOUT)
+    //                       window.location.href = process.env.VUE_APP__LOGIN_URL
+    //                       return res
+    //                     })
+    //             })
+    //             .catch(error => {
+    //               return Promise.reject(error.data || {})
+    //             })
   }
 }
 
