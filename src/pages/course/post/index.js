@@ -354,7 +354,7 @@ export default class CoursePost extends Vue {
    */
   openModal(type) {
     let list = []
-    const memberActiveGroupList = {}
+    // const memberActiveGroupList = {}
     this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
