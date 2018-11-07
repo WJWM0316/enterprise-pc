@@ -67,7 +67,7 @@ const actions = {
    */
   logoutApi(store, params) {
     return axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
-                .then(() => {
+                .then(res => {
                   removeAccessToken()
                   store.commit(LOGOUT)
                   window.location.href = process.env.VUE_APP__LOGIN_URL
