@@ -262,7 +262,16 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    this.getMenberListsApi({name: this.ownerUidName})
+    const params = {}
+    if(this.ownerUidName) {
+      params.name = this.ownerUidName
+    } else {
+      params.selectAll = 2
+    }
+    this.getMenberListsApi(params)
+        .then(() => {
+          this.ownerUidName = ''
+        })
   }
 
   created() {

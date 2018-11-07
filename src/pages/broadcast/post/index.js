@@ -306,8 +306,13 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    // 获取成员列表
-    this.getMenberListsApi({name: this.searchField})
+    const params = {}
+    if(this.searchField) {
+      params.name = this.searchField
+    } else {
+      params.selectAll = 2
+    }
+    this.getMenberListsApi(params)
         .then(() => {
           this.searchField = ''
         })

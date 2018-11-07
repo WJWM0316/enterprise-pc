@@ -354,6 +354,7 @@ export default class CoursePost extends Vue {
    */
   openModal(type) {
     let list = []
+    const memberActiveGroupList = {}
     this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
@@ -399,6 +400,7 @@ export default class CoursePost extends Vue {
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
               })
+              this.memberAssociationCurrentGroup()
             })
   			break
       case 'hits':
@@ -958,6 +960,18 @@ export default class CoursePost extends Vue {
     })
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   通过当前激活的成员数量判断是否选中类型的组
+   * @return   {[type]}   [description]
+   */
+  memberAssociationCurrentGroup() {
+    // const group = {}
+    // this.menberLists.map(field => {
+      
+    // })
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-20
