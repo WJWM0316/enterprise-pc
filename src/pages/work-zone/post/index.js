@@ -40,7 +40,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateSingleGrouptatus',
       'updateSingleMemberStatus',
       'classifyMemberListsByGroupIdApi',
-      'switchCheckGroupListsApi'
+      'switchCheckGroupListsApi',
+      'removeRepeatMember'
     ])
   },
   computed: {
@@ -254,12 +255,6 @@ export default class WorkZonePost extends Vue {
     this.$refs.form.validateField('content')
   }
 
-  loadAll() {
-    return [
-      { 'value': '三全鲜食（北新泾店）', 'address': '长宁区新渔路144号' }
-    ]
-  }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-17
@@ -271,7 +266,6 @@ export default class WorkZonePost extends Vue {
   }
 
   created() {
-    this.restaurants = this.loadAll()
     this.initPageByPost()
     this.initPageByUpdate()
   }
@@ -282,6 +276,7 @@ export default class WorkZonePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    let list = []
   	switch(type) {
   		case 'owner_uid':
   			this.models.title = '选择圈主'
@@ -296,6 +291,14 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择成员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+                list.push(this.form.owner_uid.value)
+              }
+              if(this.form.hits.tem.length > 0) {
+                list =[...list, ...this.form.hits.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.updateAllGroupListStatus({bool: false})
@@ -314,6 +317,14 @@ export default class WorkZonePost extends Vue {
   			this.models.title = '选择不可见成员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+                list.push(this.form.owner_uid.value)
+              }
+              if(this.form.members.tem.length > 0) {
+                list =[...list, ...this.form.members.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.updateAllGroupListStatus({bool: false})

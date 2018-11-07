@@ -1,8 +1,18 @@
 <template>
   <div id="statistics-course">
   	<tab-bar></tab-bar>
-  	<div class="online-course-situation">
-      <div class="page-header">在线课程数<strong>19</strong></div>
+    <div class="course-kind-cate">
+      <div>
+        <div class="section-header">导师类型分布</div>
+        <div id="echart-pink1" style="height: 310px"></div>
+      </div>
+      <div>
+        <div class="section-header">各部门导师分布</div>
+        <div id="echart-pink2" style="height: 310px"></div>
+      </div>
+    </div>
+    <div class="online-course-situation">
+      <div class="section-header">内部各部门课程和直播数</div>
       <ul class="button-tab-box">
         <li class="item button-li active-button">最近30天</li>
         <li class="item button-li">最近7天</li>
@@ -21,20 +31,10 @@
         <li class="item item-box"><button class="button-export">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button">新增课程数</li>
-        <li>新增报名人次</li>
-        <li>新增打卡完成次数</li>
-        <li>人均完成打卡次数</li>
+        <li class="active-button">新增数量</li>
+        <li>在线数量</li>
       </ul>
-  		<div id="echart-line" style="height: 310px"></div>
-  	</div>
-    <div class="course-kind-cate">
-      <div>
-        <div id="echart-pink1" style="height: 310px"></div>
-      </div>
-      <div>
-        <div id="echart-pink2" style="height: 310px"></div>
-      </div>
+      <div id="echart-line" style="height: 310px"></div>
     </div>
   </div>
 </template>
@@ -72,30 +72,6 @@ const echarts = require('echarts')
 export default class pageStatisticsCourse extends Vue {
   getDataByDate = null
 	myChart = null
-	init1(key, value) {
-    const option = {
-      grid: {
-        left: '0%',
-        right: '0%',
-        bottom: '0%',
-        top: '2%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        data: key
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [{
-        data: value,
-        type: 'line'
-      }]
-    }
-		this.myChart = echarts.init(document.getElementById('echart-line'))
-		this.myChart.setOption(option, true)
-	}
   init2() {
     const option = {
       grid: {
@@ -117,6 +93,11 @@ export default class pageStatisticsCourse extends Vue {
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
+          label: {
+            normal: {
+              position: 'inner'
+            }
+          },
           data:[
             {value:335, name:'直接访问'},
             {value:310, name:'邮件营销'},
@@ -179,9 +160,6 @@ export default class pageStatisticsCourse extends Vue {
     this.myChart.setOption(option, true)
   }
 	mounted() {
-    const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
-    const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
-		this.init1(key1, value1)
     this.init2()
     this.init3()
 	}
@@ -206,6 +184,27 @@ export default class pageStatisticsCourse extends Vue {
       font-weight:500;
       color:rgba(215,171,112,1);
       padding-left: 10px;
+    }
+    .section-header {
+      font-size:16px;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      position: relative;
+      height: 24px;
+      line-height: 24px;
+      padding: 0;
+      padding-left: 15px;
+      &:before{
+        width:5px;
+        height:18px;
+        background:rgba(255,226,102,1);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      };
     }
 	}
   .button-tab-box{
@@ -300,6 +299,27 @@ export default class pageStatisticsCourse extends Vue {
   .course-kind-cate{
     margin-top: 16px;
     display: flex;
+    .section-header {
+      font-size:16px;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      position: relative;
+      height: 24px;
+      line-height: 24px;
+      padding: 0;
+      padding-left: 15px;
+      &:before{
+        width:5px;
+        height:18px;
+        background:rgba(255,226,102,1);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      };
+    }
     > div {
       background: white;
       box-sizing: border-box;

@@ -233,7 +233,7 @@
       </el-form-item>
       <!-- 确认提交 -->
       <el-form-item>
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -445,7 +445,7 @@ export default BroadcastPost
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(220,223,230,1);
     font-size: 20px;
-    margin: 40px 44px 30px 0px;
+    margin: 56px 44px 30px 0px;
   }
   .customize-html-content {
     flex-grow: 1;

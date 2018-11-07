@@ -13,13 +13,6 @@ import Component from 'vue-class-component'
 import E from 'wangeditor'
 import { upload_api } from '@/store/api/index.js'
 import { getAccessToken } from '@/store/cacheService'
-// 获取cookie
-const getcookie = (name) =>{
- const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
- if(arr !== null)
-  return unescape(arr[1])
- return null
-}
 
 @Component({
   name: 'editor-bar',
@@ -100,7 +93,6 @@ export default class pageEditor extends Vue {
         // 网络超时的回调
       },
       error(xhr, editor) {
-        console.log(1111, 'error')
         // 图片上传错误的回调
       },
       customInsert(insertImg, result, editor) {

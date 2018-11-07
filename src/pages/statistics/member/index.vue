@@ -4,12 +4,30 @@
   	<div class="online-course-situation">
       <div class="page-header">累计总学习天数<strong>{{userRelativeStatisticsList.totalStudyPeople}}</strong></div>
       <ul class="button-tab-box">
-        <li class="item button-li active-button">最近30天</li>
-        <li class="item button-li">最近7天</li>
-        <li class="item button-li">昨天</li>
-        <li class="item">
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_month'}"
+          @click="tabCateLineGetList({last_time: 'last_month'}, 'last_month')">
+            最近30天
+        </li>
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_seven_days'}"
+          @click="tabCateLineGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
+            最近7天
+        </li>
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_day'}"
+          @click="tabCateLineGetList({last_time: 'last_day'}, 'last_day')">
+            昨天
+        </li>
+        <li
+          class="item"
+          :class="{'active-picker-date': tabLineCateIndex === ''}"
+          @click="unsetTabCateLineGetList">
           <el-date-picker
-            v-model="getDataByDate"
+            v-model="getLineDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -21,20 +39,50 @@
         <li class="item item-box"><button class="button-export">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button" @click="tabChnage('joinStudyPeople')">参与学习人次</li>
-        <li @click="tabChnage('avgJoinCourse')">人均参与课程</li>
-        <li @click="tabChnage('avgJoinLive')">人均参与直播</li>
-        <li @click="tabChnage('studyPeople')">累计总学习天数</li>
+        <li :class="{'active-button': tabLineIndex === 'joinStudyPeople'}" @click="tabChnage('joinStudyPeople')">参与学习人次</li>
+        <li :class="{'active-button': tabLineIndex === 'avgJoinCourse'}" @click="tabChnage('avgJoinCourse')">人均参与课程</li>
+        <li :class="{'active-button': tabLineIndex === 'avgJoinLive'}" @click="tabChnage('avgJoinLive')">人均参与直播</li>
+        <li :class="{'active-button': tabLineIndex === 'studyPeople'}" @click="tabChnage('studyPeople')">累计总学习天数</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
     <div class="course-kind-cate">
-      <div>
-        <div id="echart-pink1" style="height: 310px"></div>
-      </div>
-      <div>
-        <div id="echart-pink2" style="height: 310px"></div>
-      </div>
+      <div class="section-header">部门总学习天数</div>
+      <ul class="button-tab-box">
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_month'}"
+          @click="tabCateLineGetList({last_time: 'last_month'}, 'last_month')">
+            最近30天
+        </li>
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_seven_days'}"
+          @click="tabCateLineGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
+            最近7天
+        </li>
+        <li
+          class="item button-li"
+          :class="{'active-button': tabLineCateIndex === 'last_day'}"
+          @click="tabCateLineGetList({last_time: 'last_day'}, 'last_day')">
+            昨天
+        </li>
+        <li
+          class="item"
+          :class="{'active-picker-date': tabLineCateIndex === ''}"
+          @click="unsetTabCateLineGetList">
+          <el-date-picker
+            v-model="getLineDataByDate"
+            type="daterange"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </li>
+      </ul>
+      <div id="echart-pink1" style="width: 950px; height: 310px; margin: 0 auto;" class="echart-pink1"></div>
     </div>
   </div>
 </template>
@@ -49,26 +97,17 @@ const echarts = require('echarts')
     TabBar
   },
   watch: {
-    getDataByDate: {
+    getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+          this.getLineLists({start_date: list[0], end_date: list[1]})
         }
       },
       immediate: true
     },
     '$route': {
       handler () {
-        this.getUserRelativeStatisticsListApi({last_time: 'last_month'})
-            .then(() => {
-              const key = []
-              const value = []
-              this.userRelativeStatisticsList.list.map(field => {
-                key.push(field.key)
-                value.push(field.joinStudyPeople)
-              })
-              this.init1(key, value)
-            })
+        this.getLineLists({last_time: 'last_month'})
       },
       immediate: true
     }
@@ -85,9 +124,10 @@ const echarts = require('echarts')
   }
 })
 export default class pageStatisticsCourse extends Vue {
-  getDataByDate = null
-	myChart = null
-	init1(key, value) {
+  getLineDataByDate = null
+  tabLineIndex = 'joinStudyPeople'
+  tabLineCateIndex = 'last_month'
+	initEchartLine(key, value) {
     const option = {
       grid: {
         left: '0%',
@@ -108,104 +148,108 @@ export default class pageStatisticsCourse extends Vue {
         type: 'line'
       }]
     }
-		this.myChart = echarts.init(document.getElementById('echart-line'))
-		this.myChart.setOption(option, true)
+		const myChart = echarts.init(document.getElementById('echart-line'))
+		myChart.setOption(option, true)
 	}
-  init2() {
+  initEchartCylindrical(key, value) {
     const option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
       grid: {
-        width: '5000px'
+        left: '0%',
+        right: '0%',
+        bottom: '0%',
+        top: '0%',
+        containLabel: true
       },
-      tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      xAxis: {
+        type: 'value',
+        show : false,
+        boundaryGap: [0, 0.01]
       },
-      legend: {
-        orient: 'vertical',
-        right: 0,
-        top: '50%',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+      yAxis: {
+        type: 'category',
+        show : true,
+        axisLine: {
+          show: false
+        },
+        axisTick:{
+          show:false
+        },
+        splitLine:{
+          show:false
+        },
+        data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
       },
-      series : [
+      series: [
         {
-          name: '访问来源',
-          type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
+          type: 'bar',
+          data: [18203, 23489, 29034, 104970, 131744, 630230]
         }
       ]
     }
-    this.myChart = echarts.init(document.getElementById('echart-pink1'))
-    this.myChart.setOption(option, true)
+    const myChart = echarts.init(document.getElementById('echart-pink1'))
+    myChart.setOption(option, true)
   }
-  init3() {
-    const option = {
-      grid: {
-        width: '50%'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: 'vertical',
-        right: 0,
-        align: 'auto',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-      },
-      series : [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    }
-    this.myChart = echarts.init(document.getElementById('echart-pink2'))
-    this.myChart.setOption(option, true)
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   分类去获取数据
+   * @return   {[type]}   [description]
+   */
+  tabCateLineGetList(params, attr) {
+    this.tabLineCateIndex = attr
+    this.getLineLists(params)
   }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   当前tab未日期
+   * @return   {[type]}   [description]
+   */
+  unsetTabCateLineGetList() {
+    this.tabLineCateIndex = ''
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   对列表数据进行分类
+   * @return   {[type]}        [description]
+   */
   tabChnage(attr) {
     const key = []
     const value = []
+    this.tabLineIndex = attr
     this.userRelativeStatisticsList.list.map(field => {
       key.push(field.key)
-      value.push(field[attr])
+      value.push(Number(field[attr]))
     })
-    console.log(value)
-    this.init1(key, value)
+    this.initEchartLine(key, value)
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   分类获取列表数据
+   * @return   {[type]}          [description]
+   */
+  getLineLists(params) {
+    this.getUserRelativeStatisticsListApi(params)
+        .then(() => {
+          const key = []
+          const value = []
+          this.userRelativeStatisticsList.list.map(field => {
+            key.push(field.key)
+            value.push(Number(field[this.tabLineIndex]))
+          })
+          this.initEchartLine(key, value)
+        })
   }
 	mounted() {
-    this.init2()
-    this.init3()
+    this.initEchartCylindrical()
 	}
 }
 </script>
@@ -257,6 +301,11 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+      }
+    }
+    .active-picker-date {
+      .el-date-editor{
+        border-color: #FFE266 !important;
       }
     }
     .item-box{
@@ -321,25 +370,44 @@ export default class pageStatisticsCourse extends Vue {
   }
   .course-kind-cate{
     margin-top: 16px;
-    display: flex;
-    > div {
+    padding: 30px 40px;
+    background: white;
+    .button-tab-box{
+      margin-bottom: 65px;
+    }
+    .echart-pink1 {
       background: white;
       box-sizing: border-box;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
-      width: calc(50% - 8px);
       background: white;
       border-radius: 4px;
       overflow: hidden;
-      -webkit-box-sizing: border-box;
       box-sizing: border-box;
-      padding: 30px;
-      &:first-child{
-        margin-right: 8px;
-      };
-      &:last-child{
-        margin-left: 8px;
+      width: 950px;
+      height: 310px;
+      margin: 0 auto;
+    }
+    .section-header {
+      font-size:16px;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      position: relative;
+      height: 24px;
+      line-height: 24px;
+      padding: 0;
+      padding-left: 15px;
+      &:before{
+        width:5px;
+        height:18px;
+        background:rgba(255,226,102,1);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
       };
     }
   }

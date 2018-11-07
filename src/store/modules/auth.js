@@ -66,19 +66,32 @@ const actions = {
    * @return   {[type]}         [description]
    */
   logoutApi(store, params) {
-    return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
-                .then(res => {
-                   axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
-                        .then(() => {
-                          removeAccessToken()
-                          store.commit(LOGOUT)
-                          window.location.href = process.env.VUE_APP__LOGIN_URL
-                          return res
-                        })
+    return axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
+                .then(() => {
+                  removeAccessToken()
+                  store.commit(LOGOUT)
+                  window.location.href = process.env.VUE_APP__LOGIN_URL
+                  return res
                 })
                 .catch(error => {
                   return Promise.reject(error.data || {})
                 })
+    // return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
+    //             .then(res => {
+    //                 removeAccessToken()
+    //                 store.commit(LOGOUT)
+    //                 window.location.href = process.env.VUE_APP__LOGIN_URL
+    //                axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
+    //                     .then(() => {
+    //                       removeAccessToken()
+    //                       store.commit(LOGOUT)
+    //                       window.location.href = process.env.VUE_APP__LOGIN_URL
+    //                       return res
+    //                     })
+    //             })
+    //             .catch(error => {
+    //               return Promise.reject(error.data || {})
+    //             })
   }
 }
 

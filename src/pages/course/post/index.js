@@ -46,7 +46,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateAllGroupListStatus',
       'updateSingleGrouptatus',
       'updateSingleMemberStatus',
-      'updateAllMemberStatus'
+      'updateAllMemberStatus',
+      'removeRepeatMember'
     ])
   },
   computed: {
@@ -306,7 +307,7 @@ export default class CoursePost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    // this.$refs.form.validateField('content')
+    this.$refs.form.validateField('intro')
   }
 
   /**
@@ -316,7 +317,13 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
-    this.getMenberListsApi({name: this.ownerUidName})
+    const params = {}
+    if(this.ownerUidName) {
+      params.name = this.ownerUidName
+    } else {
+      params.selectAll = 2
+    }
+    this.getMenberListsApi(params)
         .then(() => {
           this.ownerUidName = ''
         })
@@ -346,6 +353,7 @@ export default class CoursePost extends Vue {
    * @detail   打开弹窗model
    */
   openModal(type) {
+    let list = []
     this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
@@ -376,6 +384,14 @@ export default class CoursePost extends Vue {
   			this.models.title = '参与课程学员'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+                list.push(this.form.master_uid.value)
+              }
+              if(this.form.hits.tem.length > 0) {
+                list =[...list, ...this.form.hits.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()
@@ -389,6 +405,14 @@ export default class CoursePost extends Vue {
         this.models.title = '对这些人不可见'
         this.getMenberListsApi()
             .then(() => {
+              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+                list.push(this.form.master_uid.value)
+              }
+              if(this.form.members.tem.length > 0) {
+                list =[...list, ...this.form.members.value.split(',')]
+              }
+              // 从素有成员中去除导师和不可见学员
+              this.removeRepeatMember({list})
               this.models.show = true
               this.updateMenberListsAllApi({bool: false})
               this.setSelfDefinedGroup()

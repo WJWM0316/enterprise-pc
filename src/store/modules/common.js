@@ -27,7 +27,8 @@ import {
   SWITCH_SINGLE_GROUP_LISTS,
   UPDATE_MENBER_SINGLE,
   UPDATE_ALL_MENBER_STATUS,
-  CURRENT_ROUTE_NAME
+  CURRENT_ROUTE_NAME,
+  REMOVE_REPEAT_MEMBER
 } from '../mutation-types'
 
 import {
@@ -149,7 +150,10 @@ const mutations = {
   },
   // 选择所用成员列表
   [SELECT_ALL_MENBER_LISTS] (state, data) {
-    state.menberLists.map(field => field.active = false)
+    state.menberLists.map(field => {
+      field.active = false
+      field.disabled = false
+    })
   },
   // 获取公司信息
   [GET_COMPANY_INFOS] (state, data) {
@@ -223,6 +227,10 @@ const mutations = {
   },
   [CURRENT_ROUTE_NAME](state, options) {
     state.pageName = options.name
+  },
+  [REMOVE_REPEAT_MEMBER](state, params) {
+    const menberLists = state.menberLists.filter(field => !params.list.includes(String(field.uid)))
+    state.menberLists = menberLists
   }
 }
 
@@ -551,6 +559,15 @@ const actions = {
   },
   setPageName(store, options) {
     store.commit(CURRENT_ROUTE_NAME, options)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   移除重复学员
+   * @return   {[type]}          [description]
+   */
+  removeRepeatMember(store, params) {
+    store.commit(REMOVE_REPEAT_MEMBER, params)
   }
 }
 

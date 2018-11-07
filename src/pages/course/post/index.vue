@@ -217,7 +217,7 @@
       </el-form-item>
       <!-- 确认提交 -->
       <el-form-item class="footer-button">
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
+        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -431,7 +431,7 @@ export default CoursePost
     line-height: 1;
     border-bottom: 1px solid #ebeef5;
     font-size: 20px;
-    margin: 40px 44px 30px 0px;
+    margin: 56px 44px 30px 0px;
     color: #354048;
   }
   .customize-html-content {

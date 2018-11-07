@@ -13,7 +13,7 @@
 					<span>{{personalInfoBase.occupation}}</span>
 				</li>
 				<li v-if="personalInfoBase.groupName">
-					<i class="icon iconfont icon-organization"></i>
+					<i class="icon iconfont icon-organization" style="font-size: 13px;"></i>
 					<span>{{personalInfoBase.groupName}}</span>
 				</li>
 				<li v-if="personalInfoBase.mobile">
@@ -34,7 +34,7 @@
 				<router-link :to="{name: 'editMember',query: {user_id: userInfo.uid } }" class="set">编辑</router-link>
 			</div>
 		</div>
-		<div class="his-dynamics">
+		<div class="his-dynamics" v-if="!personalInfoBase.isExternalTutor">
 			<div class="his-dynamics-businiss-flex">
 				<div>
 					<strong>{{personalInfoStudy.studyTimeCount}}</strong>
@@ -107,8 +107,6 @@ export default class ComponentLeft extends Vue {
 	isJurisdiction() {
 		getMemberInfosApi({id: this.userInfos.id }).then(res=>{
 			this.loginInfo = res.data.data
-
-			console.log(res.data.data)
 			if(this.loginInfo.roleName === '超级管理员'){
 				if(this.userInfo.roleName !== '超级管理员'){
 					this.isShowEdit = true
@@ -198,17 +196,20 @@ export default class ComponentLeft extends Vue {
 			color: #666666;
 		}
 		.icon {
-			margin-right: 15px;
-			font-size: 14px;
+			margin-right: 14px;
+			font-size: 16px;
+			color: #bcbcbc;
 		}
 	}
 	.edit-enter{
 		text-align: right;
 		margin-top: -10px;
+		transform: translate(4px,6px);
 		a {
 			font-size:14px;
 			font-weight:400;
 			color:rgba(64,128,173,1);
+			text-decoration: none;
 		}
 	}
 	.his-dynamics{
@@ -257,7 +258,7 @@ export default class ComponentLeft extends Vue {
 			color:rgba(102,102,102,1);
 			margin: 0;
 			line-height: 1;
-			margin-top: 4px;
+			margin-top: 16px;
 		}
 	}
 	.his-learn-tips {

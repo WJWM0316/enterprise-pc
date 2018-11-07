@@ -113,7 +113,7 @@ export default class PageAside extends Vue {
     a {
       color: #fff;
       .iconfont{
-        color: #929292;
+        color: #fff;
       }
     }
     &:before {
