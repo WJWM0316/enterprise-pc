@@ -2,7 +2,7 @@
   <div id="statistics-course">
   	<tab-bar></tab-bar>
   	<div class="online-course-situation">
-      <div class="page-header">在线课程数<strong>19</strong></div>
+      <div class="page-header">在线直播总数<strong>19</strong></div>
       <ul class="button-tab-box">
         <li class="item button-li active-button">最近30天</li>
         <li class="item button-li">最近7天</li>
@@ -21,19 +21,19 @@
         <li class="item item-box"><button class="button-export">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button">新增课程数</li>
-        <li>新增报名人次</li>
-        <li>新增打卡完成次数</li>
-        <li>人均完成打卡次数</li>
+        <li class="active-button">新增在线直播数</li>
+        <li>直播学习人次</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
     <div class="course-kind-cate">
       <div>
-        <div id="echart-pink1" style="height: 310px"></div>
+        <div class="section-header">直播类型分布</div>
+        <div id="echart-pink1" class="echart-pink"></div>
       </div>
       <div>
-        <div id="echart-pink2" style="height: 310px"></div>
+        <div class="section-header">直播来源分布</div>
+        <div id="echart-pink2" class="echart-pink"></div>
       </div>
     </div>
   </div>
@@ -319,6 +319,30 @@ export default class pageStatisticsCourse extends Vue {
       &:last-child{
         margin-left: 8px;
       };
+    }
+    .section-header {
+      font-size:16px;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      position: relative;
+      height: 24px;
+      line-height: 24px;
+      padding: 0;
+      padding-left: 15px;
+      &:before{
+        width:5px;
+        height:18px;
+        background:rgba(255,226,102,1);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      };
+    }
+    .echart-pink {
+      height: 310px;
     }
   }
 }
