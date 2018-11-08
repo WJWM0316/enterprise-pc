@@ -19,3 +19,12 @@ export const getCourseTypeStatisticsListApi = params => request('/sta/course/cou
 
 // 获取课程学习人数
 export const getCourseStudyStatisticsListApi = params => request('/sta/course/coursePeople', 'get', params)
+
+// 获取直播来源分布
+export const getLiveDistributionStatisticsListApi = params => request('/sta/live/liveSource', 'get', params)
+
+// 获取直播来源分布
+export const getLiveCateDistributionStatisticsListApi = params => request('/sta/live/liveDistributed', 'get', params)
+
+// 获取直播来源分布
+export const getLiveStatisticsListApi = params => request('/sta/live/livePeople', 'get', params)

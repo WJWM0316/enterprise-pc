@@ -2,7 +2,7 @@
   <div id="statistics-course">
   	<tab-bar></tab-bar>
   	<div class="online-course-situation">
-      <div class="page-header">在线直播总数<strong>19</strong></div>
+      <div class="page-header">在线直播总数<strong>{{liveStatisticsList.currentOnlineLive}}</strong></div>
       <ul class="button-tab-box">
         <li
           class="item button-li"
@@ -21,7 +21,7 @@
           class="item"
           @click="unsetTabCateLineGetList">
           <el-date-picker
-            v-model="getDataByDate"
+            v-model="getLineDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -33,8 +33,8 @@
         <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li :class="{'active-button': tabType === 1}" @click="changeTabType(1)">新增在线直播数</li>
-        <li :class="{'active-button': tabType === 2}" @click="changeTabType(2)">直播学习人次</li>
+        <li :class="{'active-button': tabType === 'newLiveRegistrations'}" @click="changeTabType('newLiveRegistrations')">新增在线直播数</li>
+        <li :class="{'active-button': tabType === 'newLives'}" @click="changeTabType('newLives')">直播学习人次</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -61,31 +61,44 @@ const echarts = require('echarts')
     TabBar
   },
   watch: {
-    getDataByDate: {
+    getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+          this.getLists({start_date: list[0], end_date: list[1]})
         }
+      },
+      immediate: true
+    },
+    '$route': {
+      handler() {
+        this.getLists({last_time: 'last_month'})
+        this.getLiveDistributionStatisticsList()
+        this.getLiveCateDistributionStatisticsList()
       },
       immediate: true
     }
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi'
+      'getUserRelativeStatisticsListApi',
+      'getLiveStatisticsListApi',
+      'getLiveDistributionStatisticsListApi',
+      'getLiveCateDistributionStatisticsListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList'
+      'userRelativeStatisticsList',
+      'liveStatisticsList',
+      'liveDistributionStatisticsList'
     ])
   }
 })
 export default class pageStatisticsCourse extends Vue {
-  getDataByDate = null
+  getLineDataByDate = null
   tabLineCateIndex = 'last_month'
-  tabType = 1
-	init1(key, value) {
+  tabType = 'newLiveRegistrations'
+	initEchartLine(key, value) {
     const option = {
       grid: {
         left: '0%',
@@ -109,7 +122,7 @@ export default class pageStatisticsCourse extends Vue {
 		const myChart = echarts.init(document.getElementById('echart-line'))
 		myChart.setOption(option, true)
 	}
-  init2() {
+  initEcharPieLiveType() {
     const option = {
       grid: {
         width: '5000px'
@@ -150,7 +163,7 @@ export default class pageStatisticsCourse extends Vue {
     const myChart = echarts.init(document.getElementById('echart-pink1'))
     myChart.setOption(option, true)
   }
-  init3() {
+  initEcharPieLiveSourse(key, value) {
     const option = {
       grid: {
         width: '50%'
@@ -163,7 +176,7 @@ export default class pageStatisticsCourse extends Vue {
         orient: 'vertical',
         right: 0,
         align: 'auto',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: key
       },
       series : [
         {
@@ -171,13 +184,7 @@ export default class pageStatisticsCourse extends Vue {
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data: value,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -194,12 +201,63 @@ export default class pageStatisticsCourse extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-11-08
+   * @detail   通过周期hui'u
+   * @return   {[type]}          [description]
+   */
+  getLists(params) {
+    this.getLiveStatisticsListApi(params)
+        .then(() => {
+          const key = []
+          const value = []
+          this.liveStatisticsList.list.map(field => {
+            key.push(field.date)
+            value.push(field.newLiveRegistrations)
+          })
+          this.initEchartLine(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   获取直播来源分布
+   * @return   {[type]}          [description]
+   */
+  getLiveDistributionStatisticsList() {
+    this.getLiveDistributionStatisticsListApi()
+        .then(() => {
+          const key = ['外部导师', '内部导师']
+          const value = [
+            {
+              value: this.liveDistributionStatisticsList.outerPercent,
+              name: '外部导师'
+            },
+            {
+              value: this.liveDistributionStatisticsList.innerPercent,
+              name: '内部导师'
+            }
+          ]
+          this.initEcharPieLiveSourse(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   获取直播类型分布
+   * @return   {[type]}          [description]
+   */
+  getLiveCateDistributionStatisticsList() {
+    this.getLiveCateDistributionStatisticsListApi()
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
    * @detail   按周期获取数据
    * @param    {[type]}   attr [description]
    * @return   {[type]}        [description]
    */
   tabCateLineGetList(attr) {
     this.tabLineCateIndex = attr
+    this.getLists({last_time: attr})
   }
   /**
    * @Author   小书包
@@ -216,8 +274,15 @@ export default class pageStatisticsCourse extends Vue {
    * @detail   tab切换
    * @return   {[type]}       [description]
    */
-  changeTabType(num) {
-    this.tabType = num
+  changeTabType(attr) {
+    this.tabType = attr
+    const key = []
+    const value = []
+    this.liveStatisticsList.list.map(field => {
+      key.push(field.date)
+      value.push(field[attr])
+    })
+    this.initEchartLine(key, value)
   }
   /**
    * @Author   小书包
@@ -225,13 +290,20 @@ export default class pageStatisticsCourse extends Vue {
    * @detail   导出excel数据
    * @return   {[type]}   [description]
    */
-  exportExcel() {}
+  exportExcel() {
+    const url = `${API_ROOT}/sta/live/livePeople?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const newBlank = window.open(url, '_blank')
+    const params = {type: this.tabType, export: 1}
+    if(this.tabLineCateIndex) {
+      params.last_time = this.tabLineCateIndex
+    } else {
+      params.start_date = this.getLineDataByDate[0]
+      params.end_date = this.getLineDataByDate[1]
+    }
+    this.getLiveStatisticsListApi(params).then(() => {newBlank.close()})
+  }
 	mounted() {
-    const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
-    const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
-		this.init1(key1, value1)
-    this.init2()
-    this.init3()
+    this.initEcharPieLiveType()
 	}
 }
 </script>

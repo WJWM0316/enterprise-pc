@@ -21,7 +21,7 @@
           class="item"
           @click="unsetTabCateLineGetList">
           <el-date-picker
-            v-model="getDataByDate"
+            v-model="getLineDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -35,8 +35,8 @@
       <ul class="echart-tab-box">
         <li :class="{'active-button': tabType === 'newCourses'}" @click="changeTabType('newCourses')">新增课程数</li>
         <li :class="{'active-button': tabType === 'newRegistrations'}" @click="changeTabType('newRegistrations')">新增报名人次</li>
-        <li :class="{'active-button': tabType === 3}" @click="changeTabType(3)">新增打卡完成次数</li>
-        <li :class="{'active-button': tabType === 4}" @click="changeTabType(4)">人均完成打卡次数</li>
+        <li :class="{'active-button': tabType === 'newPunchCompletions'}" @click="changeTabType('newPunchCompletions')">新增打卡完成次数</li>
+        <li :class="{'active-button': tabType === 'prePunchCompletions'}" @click="changeTabType('prePunchCompletions')">人均完成打卡次数</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -57,16 +57,17 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
+import { API_ROOT } from 'STORE/api/index.js'
 
 @Component({
 	components: {
     TabBar
   },
   watch: {
-    getDataByDate: {
+    getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+          this.getLists({start_date: list[0], end_date: list[1]})
         }
       },
       immediate: true
@@ -98,7 +99,7 @@ const echarts = require('echarts')
   }
 })
 export default class pageStatisticsCourse extends Vue {
-  getDataByDate = null
+  getLineDataByDate = null
   tabLineCateIndex = 'last_month'
   tabType = 'newCourses'
   /**
@@ -291,8 +292,15 @@ export default class pageStatisticsCourse extends Vue {
    * @detail   tab切换
    * @return   {[type]}       [description]
    */
-  changeTabType(num) {
-    this.tabType = num
+  changeTabType(attr) {
+    this.tabType = attr
+    const key = []
+    const value = []
+    this.courseTypeStatisticsList.list.map(field => {
+      key.push(field.date)
+      value.push(field[attr])
+    })
+    this.initEchartLine(key, value)
   }
   /**
    * @Author   小书包
@@ -300,7 +308,18 @@ export default class pageStatisticsCourse extends Vue {
    * @detail   导出excel数据
    * @return   {[type]}   [description]
    */
-  exportExcel() {}
+  exportExcel() {
+    const url = `${API_ROOT}/sta/course/coursePeople?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const newBlank = window.open(url, '_blank')
+    const params = {type: this.tabType, export: 1}
+    if(this.tabLineCateIndex) {
+      params.last_time = this.tabLineCateIndex
+    } else {
+      params.start_date = this.getLineDataByDate[0]
+      params.end_date = this.getLineDataByDate[1]
+    }
+    this.getCourseStudyStatisticsListApi(params).then(() => {newBlank.close()})
+  }
 }
 </script>
 <style lang="scss">

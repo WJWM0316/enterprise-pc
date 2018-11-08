@@ -4,7 +4,10 @@ import {
   GET_WORK_ZONE_STATISTICS_LISTS,
   GET_COURSE_SOURSE_STATISTICS_LISTS,
   GET_COURSE_TYPE_STATISTICS_LISTS,
-  GET_COURSE_STUDY_STATISTICS_LISTS
+  GET_COURSE_STUDY_STATISTICS_LISTS,
+  GET_LIVE_DISTRBUTION_STATISTICS_LISTS,
+  GET_LIVE_CATE_DISTRBUTION_STATISTICS_LISTS,
+  GET_LIVE_STATISTICS_LISTS
 } from '../mutation-types'
 
 import {
@@ -13,7 +16,10 @@ import {
   getWorkZoneStatisticsListApi,
   getCourseSourseStatisticsListApi,
   getCourseTypeStatisticsListApi,
-  getCourseStudyStatisticsListApi
+  getCourseStudyStatisticsListApi,
+  getLiveDistributionStatisticsListApi,
+  getLiveCateDistributionStatisticsListApi,
+  getLiveStatisticsListApi
 } from 'API/statistics'
 
 const state = {
@@ -30,7 +36,10 @@ const state = {
   },
   courseSourseStatisticsList: {},
   courseTypeStatisticsList: {},
-  courseStudyStatisticsList: {}
+  courseStudyStatisticsList: {},
+  liveDistributionStatisticsList: {},
+  liveCateDistributionStatisticsList: {},
+  liveStatisticsList: {}
 }
 
 const mutations = {
@@ -52,6 +61,18 @@ const mutations = {
   },
   [GET_COURSE_STUDY_STATISTICS_LISTS] (state, data) {
     state.courseStudyStatisticsList = data
+  },
+  [GET_LIVE_DISTRBUTION_STATISTICS_LISTS] (state, data) {
+    state.liveDistributionStatisticsList = data
+  },
+  [GET_LIVE_CATE_DISTRBUTION_STATISTICS_LISTS] (state, data) {
+    state.liveCateDistributionStatisticsList = data
+  },
+  [GET_LIVE_CATE_DISTRBUTION_STATISTICS_LISTS] (state, data) {
+    state.liveCateDistributionStatisticsList = data
+  },
+  [GET_LIVE_STATISTICS_LISTS] (state, data) {
+    state.liveStatisticsList = data
   }
 }
 
@@ -62,7 +83,10 @@ const getters = {
   workZoneStatisticsTotalNum: state => state.workZoneStatisticsTotalNum,
   courseSourseStatisticsList: state => state.courseSourseStatisticsList,
   courseTypeStatisticsList: state => state.courseTypeStatisticsList,
-  courseStudyStatisticsList: state => state.courseStudyStatisticsList
+  courseStudyStatisticsList: state => state.courseStudyStatisticsList,
+  liveDistributionStatisticsList: state => state.liveDistributionStatisticsList,
+  liveCateDistributionStatisticsList: state => state.liveCateDistributionStatisticsList,
+  liveStatisticsList: state => state.liveStatisticsList
 }
 
 const actions = {
@@ -157,6 +181,54 @@ const actions = {
     return getCourseStudyStatisticsListApi(params)
       .then(res => {
         store.commit(GET_COURSE_TYPE_STATISTICS_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取直播来源分布
+   * @return   {[type]}          [description]
+   */
+  getLiveDistributionStatisticsListApi (store, params) {
+    return getLiveDistributionStatisticsListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_DISTRBUTION_STATISTICS_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取直播来源分布
+   * @return   {[type]}          [description]
+   */
+  getLiveCateDistributionStatisticsListApi (store, params) {
+    return getLiveCateDistributionStatisticsListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_CATE_DISTRBUTION_STATISTICS_LISTS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-21
+   * @detail   获取直播来源分布
+   * @return   {[type]}          [description]
+   */
+  getLiveStatisticsListApi (store, params) {
+    return getLiveStatisticsListApi(params)
+      .then(res => {
+        store.commit(GET_LIVE_STATISTICS_LISTS, res.data.data)
         return res
       })
       .catch(error => {
