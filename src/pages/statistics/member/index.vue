@@ -39,10 +39,10 @@
         <li class="item item-box"><button class="button-export">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li :class="{'active-button': tabLineIndex === 'joinStudyPeople'}" @click="tabChnage('joinStudyPeople')">参与学习人次</li>
-        <li :class="{'active-button': tabLineIndex === 'avgJoinCourse'}" @click="tabChnage('avgJoinCourse')">人均参与课程</li>
-        <li :class="{'active-button': tabLineIndex === 'avgJoinLive'}" @click="tabChnage('avgJoinLive')">人均参与直播</li>
-        <li :class="{'active-button': tabLineIndex === 'studyPeople'}" @click="tabChnage('studyPeople')">累计总学习天数</li>
+        <li :class="{'active-button': tabLineIndex === 'joinStudyPeople'}" @click="tabLineChange('joinStudyPeople')">参与学习人次</li>
+        <li :class="{'active-button': tabLineIndex === 'avgJoinCourse'}" @click="tabLineChange('avgJoinCourse')">人均参与课程</li>
+        <li :class="{'active-button': tabLineIndex === 'avgJoinLive'}" @click="tabLineChange('avgJoinLive')">人均参与直播</li>
+        <li :class="{'active-button': tabLineIndex === 'studyPeople'}" @click="tabLineChange('studyPeople')">累计总学习天数</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -51,28 +51,28 @@
       <ul class="button-tab-box">
         <li
           class="item button-li"
-          :class="{'active-button': tabLineCateIndex === 'last_month'}"
-          @click="tabCateLineGetList({last_time: 'last_month'}, 'last_month')">
+          :class="{'active-button': tabCylindricalCateIndex === 'last_month'}"
+          @click="tabCateCylindricalGetList({last_time: 'last_month'}, 'last_month')">
             最近30天
         </li>
         <li
           class="item button-li"
-          :class="{'active-button': tabLineCateIndex === 'last_seven_days'}"
-          @click="tabCateLineGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
+          :class="{'active-button': tabCylindricalCateIndex === 'last_seven_days'}"
+          @click="tabCateCylindricalGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
             最近7天
         </li>
         <li
           class="item button-li"
-          :class="{'active-button': tabLineCateIndex === 'last_day'}"
-          @click="tabCateLineGetList({last_time: 'last_day'}, 'last_day')">
+          :class="{'active-button': tabCylindricalCateIndex === 'last_day'}"
+          @click="tabCateCylindricalGetList({last_time: 'last_day'}, 'last_day')">
             昨天
         </li>
         <li
           class="item"
-          :class="{'active-picker-date': tabLineCateIndex === ''}"
-          @click="unsetTabCateLineGetList">
+          :class="{'active-picker-date': tabCylindricalCateIndex === ''}"
+          @click="unsettabCateCylindricalGetList">
           <el-date-picker
-            v-model="getLineDataByDate"
+            v-model="getCylindricalDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -82,7 +82,7 @@
           </el-date-picker>
         </li>
       </ul>
-      <div id="echart-pink1" style="width: 950px; height: 310px; margin: 0 auto;" class="echart-pink1"></div>
+      <div id="echart-pink1" class="echart-pink1"></div>
     </div>
   </div>
 </template>
@@ -105,28 +105,41 @@ const echarts = require('echarts')
       },
       immediate: true
     },
+    getCylindricalDataByDate: {
+      handler(list) {
+        if(list) {
+          this.getCateDepartmentLineLists({start_date: list[0], end_date: list[1]})
+        }
+      },
+      immediate: true
+    },
     '$route': {
       handler () {
         this.getLineLists({last_time: 'last_month'})
+        this.getCateDepartmentLineLists({last_time: 'last_month'})
       },
       immediate: true
     }
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi'
+      'getUserRelativeStatisticsListApi',
+      'getDeparmentRelativeStatisticsListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList'
+      'userRelativeStatisticsList',
+      'deparmentRelativeStatisticsList'
     ])
   }
 })
 export default class pageStatisticsCourse extends Vue {
   getLineDataByDate = null
+  getCylindricalDataByDate = null
   tabLineIndex = 'joinStudyPeople'
   tabLineCateIndex = 'last_month'
+  tabCylindricalCateIndex = 'last_month'
 	initEchartLine(key, value) {
     const option = {
       grid: {
@@ -183,12 +196,12 @@ export default class pageStatisticsCourse extends Vue {
         splitLine:{
           show:false
         },
-        data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+        data: key
       },
       series: [
         {
           type: 'bar',
-          data: [18203, 23489, 29034, 104970, 131744, 630230]
+          data: value
         }
       ]
     }
@@ -208,6 +221,16 @@ export default class pageStatisticsCourse extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-11-07
+   * @detail   分类去获取数据
+   * @return   {[type]}   [description]
+   */
+  tabCateCylindricalGetList(params, attr) {
+    this.tabCylindricalCateIndex = attr
+    this.getCateDepartmentLineLists(params)
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
    * @detail   当前tab未日期
    * @return   {[type]}   [description]
    */
@@ -217,10 +240,19 @@ export default class pageStatisticsCourse extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-11-07
+   * @detail   当前部门tab未日期
+   * @return   {[type]}   [description]
+   */
+  unsettabCateCylindricalGetList() {
+    this.tabCylindricalCateIndex = ''
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
    * @detail   对列表数据进行分类
    * @return   {[type]}        [description]
    */
-  tabChnage(attr) {
+  tabLineChange(attr) {
     const key = []
     const value = []
     this.tabLineIndex = attr
@@ -229,6 +261,24 @@ export default class pageStatisticsCourse extends Vue {
       value.push(Number(field[attr]))
     })
     this.initEchartLine(key, value)
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   分类获取部门列表数据
+   * @return   {[type]}          [description]
+   */
+  getCateDepartmentLineLists(params) {
+    this.getDeparmentRelativeStatisticsListApi(params)
+        .then(() => {
+          const key = []
+          const value = []
+          this.deparmentRelativeStatisticsList.map(field => {
+            key.push(field.key)
+            value.push(field.studyPeople)
+          })
+          this.initEchartCylindrical(key, value)
+        })
   }
   /**
    * @Author   小书包
@@ -248,9 +298,6 @@ export default class pageStatisticsCourse extends Vue {
           this.initEchartLine(key, value)
         })
   }
-	mounted() {
-    this.initEchartCylindrical()
-	}
 }
 </script>
 <style lang="scss">

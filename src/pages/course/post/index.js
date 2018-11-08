@@ -969,8 +969,13 @@ export default class CoursePost extends Vue {
   memberAssociationCurrentGroup() {
     // const group = {}
     // this.menberLists.map(field => {
-      
+    //   if(field.group) {
+    //     group[group_all] = 0
+    //   } else {
+    //     group[group]
+    //   }
     // })
+    // console.log(group)
   }
   /**
    * @Author   小书包

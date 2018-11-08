@@ -93,11 +93,6 @@ export default class pageStatisticsCourse extends Vue {
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
-          label: {
-            normal: {
-              position: 'inner'
-            }
-          },
           data:[
             {value:335, name:'直接访问'},
             {value:310, name:'邮件营销'},
