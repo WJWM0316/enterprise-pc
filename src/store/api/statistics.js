@@ -10,3 +10,12 @@ export const getDeparmentRelativeStatisticsListApi = params => request('sta/grou
 
 // 获取工作圈统计
 export const getWorkZoneStatisticsListApi = params => request('job/statistic', 'get', params)
+
+// 获取课程来源分布
+export const getCourseSourseStatisticsListApi = params => request('/sta/course/courseSource', 'get', params)
+
+// 获取课程类型分布
+export const getCourseTypeStatisticsListApi = params => request('/sta/course/courseDistributed', 'get', params)
+
+// 获取课程学习人数
+export const getCourseStudyStatisticsListApi = params => request('/sta/course/coursePeople', 'get', params)
