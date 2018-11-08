@@ -4,10 +4,22 @@
   	<div class="online-course-situation">
       <div class="page-header">在线直播总数<strong>19</strong></div>
       <ul class="button-tab-box">
-        <li class="item button-li active-button">最近30天</li>
-        <li class="item button-li">最近7天</li>
-        <li class="item button-li">昨天</li>
-        <li class="item">
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('last_month')"
+          :class="{'active-button': tabLineCateIndex === 'last_month'}">最近30天</li>
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('last_seven_days')"
+          :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('yesterday')"
+          :class="{'active-button': tabLineCateIndex === 'yesterday'}">昨天</li>
+        <li
+          :class="{'active-picker-date': tabLineCateIndex === ''}"
+          class="item"
+          @click="unsetTabCateLineGetList">
           <el-date-picker
             v-model="getDataByDate"
             type="daterange"
@@ -18,11 +30,11 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </li>
-        <li class="item item-box"><button class="button-export">导出数据</button></li>
+        <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button">新增在线直播数</li>
-        <li>直播学习人次</li>
+        <li :class="{'active-button': tabType === 1}" @click="changeTabType(1)">新增在线直播数</li>
+        <li :class="{'active-button': tabType === 2}" @click="changeTabType(2)">直播学习人次</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -71,7 +83,8 @@ const echarts = require('echarts')
 })
 export default class pageStatisticsCourse extends Vue {
   getDataByDate = null
-	myChart = null
+  tabLineCateIndex = 'last_month'
+  tabType = 1
 	init1(key, value) {
     const option = {
       grid: {
@@ -93,8 +106,8 @@ export default class pageStatisticsCourse extends Vue {
         type: 'line'
       }]
     }
-		this.myChart = echarts.init(document.getElementById('echart-line'))
-		this.myChart.setOption(option, true)
+		const myChart = echarts.init(document.getElementById('echart-line'))
+		myChart.setOption(option, true)
 	}
   init2() {
     const option = {
@@ -103,7 +116,7 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       legend: {
         orient: 'vertical',
@@ -134,8 +147,8 @@ export default class pageStatisticsCourse extends Vue {
         }
       ]
     }
-    this.myChart = echarts.init(document.getElementById('echart-pink1'))
-    this.myChart.setOption(option, true)
+    const myChart = echarts.init(document.getElementById('echart-pink1'))
+    myChart.setOption(option, true)
   }
   init3() {
     const option = {
@@ -144,7 +157,7 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       legend: {
         orient: 'vertical',
@@ -175,9 +188,44 @@ export default class pageStatisticsCourse extends Vue {
         }
       ]
     }
-    this.myChart = echarts.init(document.getElementById('echart-pink2'))
-    this.myChart.setOption(option, true)
+    const myChart = echarts.init(document.getElementById('echart-pink2'))
+    myChart.setOption(option, true)
   }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   按周期获取数据
+   * @param    {[type]}   attr [description]
+   * @return   {[type]}        [description]
+   */
+  tabCateLineGetList(attr) {
+    this.tabLineCateIndex = attr
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   通过时间范围获取数据
+   * @return   {[type]}   [description]
+   */
+  unsetTabCateLineGetList() {
+    this.tabLineCateIndex = ''
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   tab切换
+   * @return   {[type]}       [description]
+   */
+  changeTabType(num) {
+    this.tabType = num
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   导出excel数据
+   * @return   {[type]}   [description]
+   */
+  exportExcel() {}
 	mounted() {
     const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
     const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
@@ -235,6 +283,11 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+      }
+    }
+    .active-picker-date {
+      .el-date-editor{
+        border-color: #FFE266 !important;
       }
     }
     .item-box{
