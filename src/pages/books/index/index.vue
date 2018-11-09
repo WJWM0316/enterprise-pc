@@ -34,8 +34,8 @@
             </el-button>
         </div>
         
-        <div v-else-if="props.scope.column.property === 'introduce'" class="">
-          <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
+        <div style="height: 40px;" v-else-if="props.scope.column.property === 'introduce'" class="content" >
+              <div class="limit-row-num-2"> {{ props.scope.row.introduce}} </div>
         </div>
 
         <div v-else-if="props.scope.column.property === 'tags'" class="">

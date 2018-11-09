@@ -221,19 +221,17 @@ export default class tutorList extends Vue {
 
   //移除老师
   deleteTea() {
-
     this.delateModels.show = false
     let item = this.nowSelectDeleteItem
     if(!item.id){
       return
     }
-
     deletetTutorApi({id: item.id}).then(res=>{
       this.nowSelectDeleteItem = {}
       this.$message(res.data.msg)
       this.getTutorList()
-    },res=>{
-      this.$message(res.data.msg)
+    },err=>{
+      this.$message.error(err.data.msg);
     })
   }
 
@@ -295,8 +293,8 @@ export default class tutorList extends Vue {
 
       this.models.show = false
       this.handleSearch()
-    },res=>{
-      this.$message(res.data.msg)
+    },err=>{
+      this.$message.error(err.data.msg);
     })
   }
 
@@ -305,8 +303,6 @@ export default class tutorList extends Vue {
   }
 
   confirm(){
-    console.log('confirm',this.searchData.list)
-    console.log(Object.keys(this.searchData.list))
     if( Object.keys(this.searchData.list).length>0){
       this.addTea()
     }else {

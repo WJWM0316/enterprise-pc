@@ -335,7 +335,7 @@ export const routes = [
       component: () => import(/* webpackChunkName: "books" */ '@/pages/books/index.vue'),
       meta: {
         icon: 'el-icon-remove',
-        useNav: false,
+        useNav: true,
         module: 'books'
       },
       // 直接跳转列表页
@@ -366,70 +366,70 @@ export const routes = [
   //     module: 'work-book'
   //   }
   // },
-  // 数据统计
-  // {
-  //   path: '/statistics',
-  //   name: 'statistics',
-  //   title: '统计',
-  //   redirect: {
-  //     name: 'statisticsCourse'
-  //   },
-  //   meta: {
-  //     useNav: true,
-  //     icon: 'icon-statistics',
-  //     module: 'statistics'
-  //   }
-  // },
-  // {
-  //   path: '/statistics-live',
-  //   name: 'statisticsLive',
-  //   title: '统计-直播',
-  //   component: () => import(/* webpackChunkName: "statisticsLive" */ '@/pages/statistics/live/index.vue'),
-  //   meta: {
-  //     useNav: false,
-  //     module: 'statistics'
-  //   }
-  // },
-  // {
-  //   path: '/statistics-member',
-  //   name: 'statisticsMember',
-  //   title: '统计-课程',
-  //   component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/member/index.vue'),
-  //   meta: {
-  //     useNav: false,
-  //     module: 'statistics'
-  //   }
-  // },
-  // {
-  //   path: '/statistics-tutor',
-  //   name: 'statisticsTutor',
-  //   title: '统计-课程',
-  //   component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/tutor/index.vue'),
-  //   meta: {
-  //     useNav: false,
-  //     module: 'statistics'
-  //   }
-  // },
-  // {
-  //   path: '/statistics-zone',
-  //   name: 'statisticsZone',
-  //   title: '统计-课程',
-  //   component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/zone/index.vue'),
-  //   meta: {
-  //     useNav: false,
-  //     module: 'statistics'
-  //   }
-  // },
-  // {
-  //   path: '/statistics-course',
-  //   name: 'statisticsCourse',
-  //   title: '统计-课程',
-  //   component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/course/index.vue'),
-  //   meta: {
-  //     useNav: false,
-  //     module: 'statistics'
-  //   }
-  // },
+  //数据统计
+  {
+    path: '/statistics',
+    name: 'statistics',
+    title: '统计',
+    redirect: {
+      name: 'statisticsCourse'
+    },
+    meta: {
+      useNav: true,
+      icon: 'icon-statistics',
+      module: 'statistics'
+    }
+  },
+  {
+    path: '/statistics-live',
+    name: 'statisticsLive',
+    title: '统计-直播',
+    component: () => import(/* webpackChunkName: "statisticsLive" */ '@/pages/statistics/live/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
+  {
+    path: '/statistics-member',
+    name: 'statisticsMember',
+    title: '统计-课程',
+    component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/member/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
+  {
+    path: '/statistics-tutor',
+    name: 'statisticsTutor',
+    title: '统计-课程',
+    component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/tutor/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
+  {
+    path: '/statistics-zone',
+    name: 'statisticsZone',
+    title: '统计-课程',
+    component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/zone/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
+  {
+    path: '/statistics-course',
+    name: 'statisticsCourse',
+    title: '统计-课程',
+    component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/course/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
   // 设置路由
   {
     path: '/setting',

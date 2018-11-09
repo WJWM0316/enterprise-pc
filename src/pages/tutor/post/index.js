@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
-import Editor from 'COMPONENTS/editor'
 import { createTutorApi } from 'STORE/api/tutor.js'
 
 @Component({
   components: {
     ModalDialog,
-    Editor
   },
   methods: {
     ...mapActions([

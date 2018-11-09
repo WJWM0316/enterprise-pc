@@ -68,10 +68,10 @@ export default class booksList extends Vue {
       prop: 'tags',
       label: '分类',
       align: 'left',
-      showTips: 'yes',
-      width: '20%',
+      showTips: 'no',
+      width: '10%',
       filteredValue:[],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      filterPlacement: '类型的提示文案'
     },
     {
       prop: 'status',
@@ -124,7 +124,7 @@ export default class booksList extends Vue {
   form = {
     title: '',
     status: '',
-    tag_id: '',
+    id: '',
   }
 
   // 初始化的搜索表单
@@ -152,24 +152,15 @@ export default class booksList extends Vue {
   }
 
   getTagsLists(){
-    let tags = []
-    //this.fields[4]
+    this.fields[4].filteredValue = []
     getBooksFirstListApi().then(res=>{
-      this.tags = res.data.data
-
       res.data.data.map(item=>{
-        tags.push({
+        this.fields[4].filteredValue.push({
           label: item.tagName,
           value:`id-${item.id}`
         })
       })
-
-      this.fields[4].filteredValue = tags
-
-      console.log(this.fields[4].filteredValue)
     })
-
-    
   }
 
   /**
@@ -180,7 +171,7 @@ export default class booksList extends Vue {
       page: page || this.form.page || 1,
       count: this.zikeDefaultPageSize,
       status: this.form.status,
-      tag_id: this.form.tag_id,
+      tag_id: this.form.id,
       title: this.form.title
     }
 
@@ -207,7 +198,7 @@ export default class booksList extends Vue {
       this.form = {
         title: '',
         status: '',
-        tag_id: '',
+        id: '',
         page: 1,
       }
 
