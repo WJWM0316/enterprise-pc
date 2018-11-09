@@ -257,8 +257,8 @@ ul {
   width: 124px !important;
 }
 
-/*.el-dropdown-menu {
-  max-height: 500px;
+.el-dropdown-menu {
+  max-height: 400px;
   overflow-y: scroll;
 }
 
@@ -272,4 +272,4 @@ ul {
 .el-dropdown-menu::-webkit-scrollbar-thumb {
   background-color:#FFE266;
   border-radius: 5px;
-}*/
+}

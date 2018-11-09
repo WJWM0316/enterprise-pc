@@ -24,8 +24,8 @@
           :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
         <li
           class="item button-li"
-          @click="tabCateLineGetList('yesterday')"
-          :class="{'active-button': tabLineCateIndex === 'yesterday'}">昨天</li>
+          @click="tabCateLineGetList('last_day')"
+          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li>
         <li
           :class="{'active-picker-date': tabLineCateIndex === ''}"
           class="item"
@@ -43,8 +43,8 @@
         <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li :class="{'active-button': tabType === 1}" @click="changeTabType(1)">新增数量</li>
-        <li :class="{'active-button': tabType === 2}" @click="changeTabType(2)">在线数量</li>
+        <li :class="{'active-button': tabType === 'create'}" @click="changeTabType('create')">新增数量</li>
+        <li :class="{'active-button': tabType === 'online'}" @click="changeTabType('online')">在线数量</li>
       </ul>
       <div id="echart-line" style="height: 310px"></div>
     </div>
@@ -64,28 +64,40 @@ const echarts = require('echarts')
     getDataByDate: {
       handler(list) {
         if(list) {
-          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+          this.getLists({start_date: list[0], end_date: list[1]})
         }
+      },
+      immediate: true
+    },
+    '$route': {
+      handler () {
+        this.getLists({last_time: 'last_month'})
+        this.getDepartmentSourseStatisticsList()
+        this.getTutorTypeStatisticsList()
       },
       immediate: true
     }
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi'
+      'getLiveAndCourseStatisticsListApi',
+      'getDepartmentSourseStatisticsListApi',
+      'getTutorTypeStatisticsListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList'
+      'liveAndCourseStatisticsList',
+      'departmentSourseStatisticsList',
+      'tutorTypeStatisticsList'
     ])
   }
 })
 export default class pageStatisticsCourse extends Vue {
   getDataByDate = null
   tabLineCateIndex = 'last_month'
-  tabType = 1
-  init1() {
+  tabType = 'create'
+  initEchartLine(key, value1, value2) {
     const option = {
       tooltip : {
           trigger: 'axis',
@@ -94,7 +106,7 @@ export default class pageStatisticsCourse extends Vue {
           }
       },
       legend: {
-        data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+        data: ['创建课程', '创建直播']
       },
       grid: {
         left: '3%',
@@ -114,11 +126,11 @@ export default class pageStatisticsCourse extends Vue {
         axisLine: {
           show: false
         },
-        data: ['周一','周二','周三','周四','周五','周六','周日']
+        data: key
       },
       series: [
         {
-          name: '直接访问',
+          name: '创建课程',
           type: 'bar',
           stack: '总量',
           label: {
@@ -127,10 +139,10 @@ export default class pageStatisticsCourse extends Vue {
               position: 'insideRight'
             }
           },
-          data: [320, 302, 301, 334, 390, 330, 320]
+          data: value1
         },
         {
-          name: '邮件营销',
+          name: '创建直播',
           type: 'bar',
           stack: '总量',
           label: {
@@ -139,14 +151,20 @@ export default class pageStatisticsCourse extends Vue {
               position: 'insideRight'
             }
           },
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: value2
         }
       ]
     }
     const myChart = echarts.init(document.getElementById('echart-line'))
     myChart.setOption(option, true)
   }
-  init2() {
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-09
+   * @detail   部门分布
+   * @return   {[type]}         [description]
+   */
+  initEcharPieDepartmentSourse(key, value) {
     const option = {
       grid: {
         width: '5000px'
@@ -158,7 +176,45 @@ export default class pageStatisticsCourse extends Vue {
       legend: {
         orient: 'vertical',
         right: 0,
-        top: '50%',
+        itemWidth: 10,
+        itemHeight: 10,
+        data: key
+      },
+      series : [
+        {
+          name: '部门分布',
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data: value,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    }
+    const myChart = echarts.init(document.getElementById('echart-pink2'))
+    myChart.setOption(option, true)
+  }
+  init3() {
+    const option = {
+      grid: {
+        width: '50%'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        right: 0,
+        align: 'auto',
+        itemWidth: 10,
+        itemHeight: 10,
         data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
       },
       series : [
@@ -187,47 +243,6 @@ export default class pageStatisticsCourse extends Vue {
     const myChart = echarts.init(document.getElementById('echart-pink1'))
     myChart.setOption(option, true)
   }
-  init3() {
-    const option = {
-      grid: {
-        width: '50%'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        right: 0,
-        align: 'auto',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-      },
-      series : [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    }
-    const myChart = echarts.init(document.getElementById('echart-pink2'))
-    myChart.setOption(option, true)
-  }
   /**
    * @Author   小书包
    * @DateTime 2018-11-08
@@ -237,6 +252,7 @@ export default class pageStatisticsCourse extends Vue {
    */
   tabCateLineGetList(attr) {
     this.tabLineCateIndex = attr
+    this.getLists({last_time: attr})
   }
   /**
    * @Author   小书包
@@ -253,8 +269,17 @@ export default class pageStatisticsCourse extends Vue {
    * @detail   tab切换
    * @return   {[type]}       [description]
    */
-  changeTabType(num) {
-    this.tabType = num
+  changeTabType(attr) {
+    this.tabType = attr
+    const key = []
+    const value1 = []
+    const value2 = []
+    this.liveAndCourseStatisticsList.map(field => {
+      key.push(field.key)
+      value1.push(field[`${this.tabType}Course`])
+      value2.push(field[`${this.tabType}Live`])
+    })
+    this.initEchartLine(key, value1, value2)
   }
   /**
    * @Author   小书包
@@ -263,9 +288,55 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   通过周期数据
+   * @return   {[type]}          [description]
+   */
+  getLists(params) {
+    this.getLiveAndCourseStatisticsListApi(params)
+        .then(() => {
+          const key = []
+          const value1 = []
+          const value2 = []
+          this.liveAndCourseStatisticsList.map(field => {
+            key.push(field.key)
+            value1.push(field[`${this.tabType}Course`])
+            value2.push(field[`${this.tabType}Live`])
+          })
+          this.initEchartLine(key, value1, value2)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-09
+   * @detail   获取部门导师分布
+   * @return   {[type]}   [description]
+   */
+  getDepartmentSourseStatisticsList() {
+    this.getDepartmentSourseStatisticsListApi()
+        .then(() => {
+          const key = Object.keys(this.departmentSourseStatisticsList)
+          const value = key.map(field => {
+            return {value: this.departmentSourseStatisticsList[field].ratio, name: field}
+          })
+          this.initEcharPieDepartmentSourse(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-09
+   * @detail   获取内外部导师比例
+   * @return   {[type]}   [description]
+   */
+  getTutorTypeStatisticsList() {
+    this.getTutorTypeStatisticsListApi()
+        .then(() => {
+          console.log(this.tutorTypeStatisticsList)
+        })
+  }
 	mounted() {
-    this.init1()
-    this.init2()
     this.init3()
 	}
 }

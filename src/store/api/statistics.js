@@ -28,3 +28,12 @@ export const getLiveCateDistributionStatisticsListApi = params => request('/sta/
 
 // 获取直播来源分布
 export const getLiveStatisticsListApi = params => request('/sta/live/livePeople', 'get', params)
+
+// 获取直播和课程数的统计
+export const getLiveAndCourseStatisticsListApi = params => request('/sta/group/liveAndCourse', 'get', params)
+
+// 获取部门导师分布
+export const getDepartmentSourseStatisticsListApi = params => request('/sta/group/internalTutorRatio', 'get', params)
+
+// 获取内外部导师比例
+export const getTutorTypeStatisticsListApi = params => request('/sta/tutor', 'get', params)

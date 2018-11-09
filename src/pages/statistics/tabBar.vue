@@ -3,7 +3,7 @@
 		<router-link :to="{name: 'statisticsCourse'}" tag="li">课程</router-link>
 		<router-link :to="{name: 'statisticsLive'}" tag="li">直播</router-link>
 		<router-link :to="{name: 'statisticsMember'}" tag="li">成员</router-link>
-		<router-link :to="{name: 'statisticsTutor'}" tag="li">导师</router-link>
+		<!-- <router-link :to="{name: 'statisticsTutor'}" tag="li">导师</router-link> -->
 		<router-link :to="{name: 'statisticsZone'}" tag="li">工作圈</router-link>
 	</ul>
 </template>
