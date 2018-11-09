@@ -2,14 +2,26 @@
   <div id="statistics-course">
   	<tab-bar></tab-bar>
   	<div class="online-course-situation">
-      <div class="page-header">在线课程数<strong>19</strong></div>
+      <div class="page-header">在线课程数<strong>{{courseTypeStatisticsList.currentOnlineLive}}</strong></div>
       <ul class="button-tab-box">
-        <li class="item button-li active-button">最近30天</li>
-        <li class="item button-li">最近7天</li>
-        <li class="item button-li">昨天</li>
-        <li class="item">
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('last_month')"
+          :class="{'active-button': tabLineCateIndex === 'last_month'}">最近30天</li>
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('last_seven_days')"
+          :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
+        <li
+          class="item button-li"
+          @click="tabCateLineGetList('last_day')"
+          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li>
+        <li
+          :class="{'active-picker-date': tabLineCateIndex === ''}"
+          class="item"
+          @click="unsetTabCateLineGetList">
           <el-date-picker
-            v-model="getDataByDate"
+            v-model="getLineDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -18,22 +30,24 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </li>
-        <li class="item item-box"><button class="button-export">导出数据</button></li>
+        <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li class="active-button">新增课程数</li>
-        <li>新增报名人次</li>
-        <li>新增打卡完成次数</li>
-        <li>人均完成打卡次数</li>
+        <li :class="{'active-button': tabType === 'newCourses'}" @click="changeTabType('newCourses')">新增课程数</li>
+        <li :class="{'active-button': tabType === 'newRegistrations'}" @click="changeTabType('newRegistrations')">新增报名人次</li>
+        <li :class="{'active-button': tabType === 'newPunchCompletions'}" @click="changeTabType('newPunchCompletions')">新增打卡完成次数</li>
+        <li :class="{'active-button': tabType === 'prePunchCompletions'}" @click="changeTabType('prePunchCompletions')">人均完成打卡次数</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
     <div class="course-kind-cate">
       <div>
-        <div id="echart-pink1" style="height: 310px"></div>
+        <div class="section-header">课程类型分布</div>
+        <div id="echart-pink1" class="echart-pink"></div>
       </div>
       <div>
-        <div id="echart-pink2" style="height: 310px"></div>
+        <div class="section-header">课程来源分布</div>
+        <div id="echart-pink2" class="echart-pink"></div>
       </div>
     </div>
   </div>
@@ -43,36 +57,58 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
+import { API_ROOT } from 'STORE/api/index.js'
 
 @Component({
 	components: {
     TabBar
   },
   watch: {
-    getDataByDate: {
+    getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getUserRelativeStatisticsListApi({start_date: list[0], end_date: list[1]})
+          this.getLists({start_date: list[0], end_date: list[1]})
         }
+      },
+      immediate: true
+    },
+    '$route': {
+      handler() {
+        this.getCourseSourseStatistics()
+        this.getCourseTypeStatistics()
+        this.getLists({last_time: 'last_month'})
       },
       immediate: true
     }
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi'
+      'getUserRelativeStatisticsListApi',
+      'getCourseSourseStatisticsListApi',
+      'getCourseTypeStatisticsListApi',
+      'getCourseStudyStatisticsListApi'
     ])
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList'
+      'userRelativeStatisticsList',
+      'courseSourseStatisticsList',
+      'courseTypeStatisticsList',
+      'courseStudyStatisticsList'
     ])
   }
 })
 export default class pageStatisticsCourse extends Vue {
-  getDataByDate = null
-	myChart = null
-	init1(key, value) {
+  getLineDataByDate = null
+  tabLineCateIndex = 'last_month'
+  tabType = 'newCourses'
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   折线图
+   * @return   {[type]}         [description]
+   */
+	initEchartLine(key, value) {
     const option = {
       grid: {
         left: '0%',
@@ -93,37 +129,33 @@ export default class pageStatisticsCourse extends Vue {
         type: 'line'
       }]
     }
-		this.myChart = echarts.init(document.getElementById('echart-line'))
-		this.myChart.setOption(option, true)
+		const myChart = echarts.init(document.getElementById('echart-line'))
+		myChart.setOption(option, true)
 	}
-  init2() {
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   课程类型
+   * @return   {[type]}   [description]
+   */
+  initEcharPieCourseType(key, value) {
     const option = {
-      grid: {
-        width: '5000px'
-      },
       tooltip : {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       legend: {
         orient: 'vertical',
         right: 0,
-        top: '50%',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: key
       },
       series : [
         {
-          name: '访问来源',
+          name: '课程分布',
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data: value,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -134,37 +166,34 @@ export default class pageStatisticsCourse extends Vue {
         }
       ]
     }
-    this.myChart = echarts.init(document.getElementById('echart-pink1'))
-    this.myChart.setOption(option, true)
+    const myChart = echarts.init(document.getElementById('echart-pink1'))
+    myChart.setOption(option, true)
   }
-  init3() {
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   课程来源
+   * @return   {[type]}         [description]
+   */
+  initEcharPieCourseSourse(key, value) {
     const option = {
-      grid: {
-        width: '50%'
-      },
       tooltip : {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       legend: {
         orient: 'vertical',
         right: 0,
         align: 'auto',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: key
       },
       series : [
         {
-          name: '访问来源',
+          name: '课程来源',
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data: value,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -175,16 +204,122 @@ export default class pageStatisticsCourse extends Vue {
         }
       ]
     }
-    this.myChart = echarts.init(document.getElementById('echart-pink2'))
-    this.myChart.setOption(option, true)
+    const myChart = echarts.init(document.getElementById('echart-pink2'))
+    myChart.setOption(option, true)
   }
-	mounted() {
-    const key1 = ['00.00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00']
-    const value1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
-		this.init1(key1, value1)
-    this.init2()
-    this.init3()
-	}
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   通过周期hui'u
+   * @return   {[type]}          [description]
+   */
+  getLists(params) {
+    this.getCourseStudyStatisticsListApi(params)
+        .then(() => {
+          const key = []
+          const value = []
+          this.courseTypeStatisticsList.list.map(field => {
+            key.push(field.date)
+            value.push(field.newCourses)
+          })
+          this.initEchartLine(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   获取课程来源分布
+   * @return   {[type]}   [description]
+   */
+  getCourseSourseStatistics() {
+    this.getCourseSourseStatisticsListApi()
+        .then(() => {
+          const key = ['外部导师', '内部导师']
+          const value = [
+            {
+              value: this.courseSourseStatisticsList.outerPercent,
+              name: '外部导师'
+            },
+            {
+              value: this.courseSourseStatisticsList.innerPercent,
+              name: '内部导师'
+            }
+          ]
+          this.initEcharPieCourseSourse(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   获取直播类型分布
+   * @return   {[type]}   [description]
+   */
+  getCourseTypeStatistics() {
+    this.getCourseTypeStatisticsListApi()
+        .then(() => {
+          const key = []
+          const value = []
+          this.courseTypeStatisticsList.list.map(field => {
+            key.push(field.categoryName)
+            value.push({value: field.percent, name: field.categoryName})
+          })
+          this.initEcharPieCourseType(key, value)
+        })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   按周期获取数据
+   * @param    {[type]}   attr [description]
+   * @return   {[type]}        [description]
+   */
+  tabCateLineGetList(attr) {
+    this.tabLineCateIndex = attr
+    this.getLists({last_time: attr})
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   通过时间范围获取数据
+   * @return   {[type]}   [description]
+   */
+  unsetTabCateLineGetList() {
+    this.tabLineCateIndex = ''
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   tab切换
+   * @return   {[type]}       [description]
+   */
+  changeTabType(attr) {
+    this.tabType = attr
+    const key = []
+    const value = []
+    this.courseTypeStatisticsList.list.map(field => {
+      key.push(field.date)
+      value.push(field[attr])
+    })
+    this.initEchartLine(key, value)
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   导出excel数据
+   * @return   {[type]}   [description]
+   */
+  exportExcel() {
+    const url = `${API_ROOT}/sta/course/coursePeople?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const newBlank = window.open(url, '_blank')
+    const params = {type: this.tabType, export: 1}
+    if(this.tabLineCateIndex) {
+      params.last_time = this.tabLineCateIndex
+    } else {
+      params.start_date = this.getLineDataByDate[0]
+      params.end_date = this.getLineDataByDate[1]
+    }
+    this.getCourseStudyStatisticsListApi(params).then(() => {newBlank.close()})
+  }
 }
 </script>
 <style lang="scss">
@@ -235,6 +370,11 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+      }
+    }
+    .active-picker-date {
+      .el-date-editor{
+        border-color: #FFE266 !important;
       }
     }
     .item-box{
@@ -300,6 +440,27 @@ export default class pageStatisticsCourse extends Vue {
   .course-kind-cate{
     margin-top: 16px;
     display: flex;
+    .section-header {
+      font-size:16px;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      position: relative;
+      height: 24px;
+      line-height: 24px;
+      padding: 0;
+      padding-left: 15px;
+      &:before{
+        width:5px;
+        height:18px;
+        background:rgba(255,226,102,1);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+      };
+    }
     > div {
       background: white;
       box-sizing: border-box;
@@ -319,6 +480,9 @@ export default class pageStatisticsCourse extends Vue {
       &:last-child{
         margin-left: 8px;
       };
+    }
+    .echart-pink{
+      height: 310px;
     }
   }
 }

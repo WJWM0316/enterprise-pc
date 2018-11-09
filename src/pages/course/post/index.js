@@ -354,7 +354,6 @@ export default class CoursePost extends Vue {
    */
   openModal(type) {
     let list = []
-    // const memberActiveGroupList = {}
     this.noCheckGroupListsApi()
   	switch(type) {
   		case 'category_id':
@@ -379,7 +378,7 @@ export default class CoursePost extends Vue {
   		case 'group_id':
   			this.models.title = '选择组织'
         this.models.show = true
-        if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value})
+        if(this.form.group_id.value.length) this.updateGroupListsApi({list: this.form.group_id.value.split(',')})
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
@@ -400,7 +399,7 @@ export default class CoursePost extends Vue {
               this.updateMultipleMenberListsApi({
                 list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
               })
-              this.memberAssociationCurrentGroup()
+              // this.membeRelaItsGroupOfActiveStatus()
             })
   			break
       case 'hits':
@@ -966,16 +965,47 @@ export default class CoursePost extends Vue {
    * @detail   通过当前激活的成员数量判断是否选中类型的组
    * @return   {[type]}   [description]
    */
-  memberAssociationCurrentGroup() {
-    // const group = {}
-    // this.menberLists.map(field => {
-    //   if(field.group) {
-    //     group[group_all] = 0
-    //   } else {
-    //     group[group]
-    //   }
-    // })
-    // console.log(group)
+  membeRelaItsGroupOfActiveStatus() {
+    /* eslint-disable */
+    const transferStation = {}
+    this.menberLists.map(menber => {
+      // 有分组
+      if(menber.group.length) {
+        menber.group.map(group => {
+          if(!transferStation[`group_${group.groupId}`]) {
+            transferStation[`group_${group.groupId}`] = {
+              groupId: group.groupId,
+              activeNum: 0,
+              defaultNum: 0
+            }
+          } else {
+            if(menber.active) {
+              transferStation[`group_${group.groupId}`].activeNum +=1
+            } else {
+              transferStation[`group_${group.groupId}`].defaultNum +=1
+            }
+          }
+        })
+      }
+      // 没有分组
+      if(!menber.group.length) {
+        if(!transferStation.group_all) {
+          transferStation.group_all = {
+            groupId: 'all',
+            activeNum: 0,
+            defaultNum: 0
+          }
+        } else {
+          if(menber.active) {
+            transferStation.group_all.activeNum +=1
+          } else {
+            transferStation.group_all.defaultNum +=1
+          }
+        }
+      }
+    })
+    console.log(transferStation)
+    /* eslint-enable */
   }
   /**
    * @Author   小书包
@@ -1005,12 +1035,11 @@ export default class CoursePost extends Vue {
 
   routeJump() {
     // 是否有权限跳转
-    const hasAuthJump = this.userInfos.roles.some(field => field > 2)
+    const hasAuthJump = this.userInfos.roles.some(field => field <= 2)
     if(!hasAuthJump) {
       window.open(location.href.replace(/course-post/, 'setSort'))
     }
   }
-
   /**
    * @Author   小书包
    * @DateTime 2018-09-29
