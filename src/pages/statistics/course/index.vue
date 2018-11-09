@@ -2,7 +2,7 @@
   <div id="statistics-course">
   	<tab-bar></tab-bar>
   	<div class="online-course-situation">
-      <div class="page-header">在线课程数<strong>{{courseTypeStatisticsList.currentOnlineLive}}</strong></div>
+      <div class="page-header">在线课程数<strong>{{courseStudyStatisticsList.currentOnlineCourse}}</strong></div>
       <ul class="button-tab-box">
         <li
           class="item button-li"
@@ -140,6 +140,7 @@ export default class pageStatisticsCourse extends Vue {
    */
   initEcharPieCourseType(key, value) {
     const option = {
+      type: 'plain',
       tooltip : {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -147,7 +148,9 @@ export default class pageStatisticsCourse extends Vue {
       legend: {
         orient: 'vertical',
         right: 0,
-        data: key
+        data: key,
+        itemWidth: 10,
+        itemHeight: 10
       },
       series : [
         {
@@ -163,6 +166,7 @@ export default class pageStatisticsCourse extends Vue {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
           }
+          // color: ['#f00', '#0f0']
         }
       ]
     }
@@ -185,7 +189,9 @@ export default class pageStatisticsCourse extends Vue {
         orient: 'vertical',
         right: 0,
         align: 'auto',
-        data: key
+        data: key,
+        itemWidth: 10,
+        itemHeight: 10
       },
       series : [
         {
@@ -218,7 +224,7 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          this.courseTypeStatisticsList.list.map(field => {
+          this.courseStudyStatisticsList.list.map(field => {
             key.push(field.date)
             value.push(field.newCourses)
           })
@@ -251,12 +257,12 @@ export default class pageStatisticsCourse extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-11-08
-   * @detail   获取直播类型分布
+   * @detail   获取课程类型分布
    * @return   {[type]}   [description]
    */
   getCourseTypeStatistics() {
     this.getCourseTypeStatisticsListApi()
-        .then(() => {
+        .then((res) => {
           const key = []
           const value = []
           this.courseTypeStatisticsList.list.map(field => {
@@ -296,7 +302,7 @@ export default class pageStatisticsCourse extends Vue {
     this.tabType = attr
     const key = []
     const value = []
-    this.courseTypeStatisticsList.list.map(field => {
+    this.courseStudyStatisticsList.list.map(field => {
       key.push(field.date)
       value.push(field[attr])
     })

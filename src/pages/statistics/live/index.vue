@@ -41,7 +41,8 @@
     <div class="course-kind-cate">
       <div>
         <div class="section-header">直播类型分布</div>
-        <div id="echart-pink1" class="echart-pink"></div>
+        <div id="echart-pink1" class="echart-pink" v-if="liveDistributionStatisticsList.length"></div>
+        <div class="no-data" v-else></div>
       </div>
       <div>
         <div class="section-header">直播来源分布</div>
@@ -55,6 +56,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
+import { API_ROOT } from 'STORE/api/index.js'
 
 @Component({
 	components: {
@@ -74,6 +76,7 @@ const echarts = require('echarts')
         this.getLists({last_time: 'last_month'})
         this.getLiveDistributionStatisticsList()
         this.getLiveCateDistributionStatisticsList()
+        // this.initEcharPieLiveType()
       },
       immediate: true
     }
@@ -122,7 +125,7 @@ export default class pageStatisticsCourse extends Vue {
 		const myChart = echarts.init(document.getElementById('echart-line'))
 		myChart.setOption(option, true)
 	}
-  initEcharPieLiveType() {
+  initEcharPieLiveType(key, value) {
     const option = {
       grid: {
         width: '5000px'
@@ -135,6 +138,8 @@ export default class pageStatisticsCourse extends Vue {
         orient: 'vertical',
         right: 0,
         top: '50%',
+        itemWidth: 10,
+        itemHeight: 10,
         data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
       },
       series : [
@@ -176,7 +181,9 @@ export default class pageStatisticsCourse extends Vue {
         orient: 'vertical',
         right: 0,
         align: 'auto',
-        data: key
+        data: key,
+        itemWidth: 10,
+        itemHeight: 10
       },
       series : [
         {
@@ -247,6 +254,9 @@ export default class pageStatisticsCourse extends Vue {
    */
   getLiveCateDistributionStatisticsList() {
     this.getLiveCateDistributionStatisticsListApi()
+        .then(() => {
+          console.log(this.liveDistributionStatisticsList)
+        })
   }
   /**
    * @Author   小书包
@@ -302,9 +312,6 @@ export default class pageStatisticsCourse extends Vue {
     }
     this.getLiveStatisticsListApi(params).then(() => {newBlank.close()})
   }
-	mounted() {
-    this.initEcharPieLiveType()
-	}
 }
 </script>
 <style lang="scss">
