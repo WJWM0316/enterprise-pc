@@ -154,8 +154,8 @@
 </template>
 
 <script>
-import CourseList from './index'
-export default CourseList
+import tutorList from './index'
+export default tutorList
 </script>
 
 <style lang="scss">

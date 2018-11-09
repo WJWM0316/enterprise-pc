@@ -22,7 +22,7 @@
       <template scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
-          <el-button v-if="props.scope.row.status ===0"
+          <el-button v-if="props.scope.row.localStatus ===1"
             type="text"
             @click="todoAction('up', props.scope.row)">
               上线
@@ -48,7 +48,7 @@
         </div>
 
         <div v-else-if="props.scope.column.property === 'status'">
-          {{ props.scope.row.status == 1? '上线':'下线' }}
+          {{ props.scope.row.localStatus === 0? '上线':'下线' }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

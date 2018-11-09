@@ -17,7 +17,7 @@ import { createTutorApi } from 'STORE/api/tutor.js'
   computed: {
   }
 })
-export default class WorkZonePost extends Vue {
+export default class tutorPost extends Vue {
 
   form = {
     // 导师名称
@@ -154,9 +154,7 @@ export default class WorkZonePost extends Vue {
   search(type) {}
 
   created() {
-
     console.log(this.$route)
-
     if(this.$route && this.$route.params.phone){
       this.form.mobile = this.$route.params.phone
     }

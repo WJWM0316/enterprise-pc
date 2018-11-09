@@ -26,7 +26,7 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
     ])
   }
 })
-export default class CourseList extends Vue {
+export default class tutorList extends Vue {
   // 表单数据
   // 表格字段
   innerFields = [
@@ -210,11 +210,12 @@ export default class CourseList extends Vue {
 
   // 添加导师-跳转
   toTea() {
+    console.log(this.searchData.value)
     this.$router.push({ 
       name: 'tutorPost' ,
       params: {
         phone: this.searchData.value
-      } 
+      }
     })
   }
 
@@ -262,7 +263,6 @@ export default class CourseList extends Vue {
       }else {
         this.models.confirmText = '添加新外部导师'
       }
-      console.log(Object.keys(res.data.data))
     },res=>{
       this.searchData.list = {}
       this.searchData.hintTXt = res.data.msg ||''
@@ -275,7 +275,6 @@ export default class CourseList extends Vue {
 
   //添加搜索的外部导师
   select(type){
-
     if(type !== this.tutorType){
       this.$router.push({query: {page:1,tutorType: type}})
       this.init()
@@ -287,7 +286,6 @@ export default class CourseList extends Vue {
     addSearchTutorApi({mobile: this.searchData.value}).then(res=>{
       this.searchData.type = false
       this.$message(res.data.msg)
-
       this.searchData = {
         type : false,
         value : '',
@@ -308,7 +306,7 @@ export default class CourseList extends Vue {
 
   confirm(){
     console.log('confirm',this.searchData.list)
-
+    console.log(Object.keys(this.searchData.list))
     if( Object.keys(this.searchData.list).length>0){
       this.addTea()
     }else {

@@ -1,7 +1,7 @@
 <template>
 <div id="work-zone-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
-    <el-breadcrumb-item :to="{ name: 'tutor' }">导师管理</el-breadcrumb-item>
+    <!-- <el-breadcrumb-item :to="{ name: 'tutor' }">导师管理</el-breadcrumb-item> -->
     <el-breadcrumb-item>添加新外部导师</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form class="form"
@@ -88,8 +88,8 @@
 </div>
 </template>
 <script>
-import WorkZonePost from './index'
-export default WorkZonePost
+import tutorPost from './index'
+export default tutorPost
 </script>
 <style lang="scss">
 @import './index.scss';
