@@ -23,6 +23,7 @@
           <el-date-picker
             v-model="getLineDataByDate"
             type="daterange"
+            :picker-options="pickerOptions"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             range-separator="至"
@@ -102,6 +103,15 @@ export default class pageStatisticsCourse extends Vue {
   getLineDataByDate = null
   tabLineCateIndex = 'last_month'
   tabType = 'newCourses'
+  // 时间限制
+  pickerOptions = {
+    disabledDate(time) {
+      let curDate = (new Date()).getTime()
+      let two = 60 * 24 * 3600 * 1000
+      let twoMonths = curDate - two
+      return time.getTime() > Date.now() || time.getTime() < twoMonths
+    }
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-11-08

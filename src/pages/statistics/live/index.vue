@@ -22,6 +22,7 @@
           @click="unsetTabCateLineGetList">
           <el-date-picker
             v-model="getLineDataByDate"
+            :picker-options="pickerOptions"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -76,7 +77,6 @@ import { API_ROOT } from 'STORE/api/index.js'
         this.getLists({last_time: 'last_month'})
         this.getLiveDistributionStatisticsList()
         this.getLiveCateDistributionStatisticsList()
-        // this.initEcharPieLiveType()
       },
       immediate: true
     }
@@ -101,6 +101,15 @@ export default class pageStatisticsCourse extends Vue {
   getLineDataByDate = null
   tabLineCateIndex = 'last_month'
   tabType = 'newLiveRegistrations'
+  // 时间限制
+  pickerOptions = {
+    disabledDate(time) {
+      let curDate = (new Date()).getTime()
+      let two = 60 * 24 * 3600 * 1000
+      let twoMonths = curDate - two
+      return time.getTime() > Date.now() || time.getTime() < twoMonths
+    }
+  }
 	initEchartLine(key, value) {
     const option = {
       grid: {
@@ -232,17 +241,26 @@ export default class pageStatisticsCourse extends Vue {
   getLiveDistributionStatisticsList() {
     this.getLiveDistributionStatisticsListApi()
         .then(() => {
-          const key = ['外部导师', '内部导师']
-          const value = [
-            {
-              value: this.liveDistributionStatisticsList.outerPercent,
-              name: '外部导师'
-            },
-            {
-              value: this.liveDistributionStatisticsList.innerPercent,
-              name: '内部导师'
-            }
-          ]
+          const key = []
+          const value = []
+          if(this.liveDistributionStatisticsList.outerPercent) {
+            key.push('外部导师')
+            value.push(
+              {
+                value: this.liveDistributionStatisticsList.outerPercent,
+                name: '外部导师'
+              }
+            )
+          }
+          if(this.liveDistributionStatisticsList.innerPercent) {
+            key.push('内部导师')
+            value.push(
+              {
+                value: this.liveDistributionStatisticsList.innerPercent,
+                name: '内部导师'
+              }
+            )
+          }
           this.initEcharPieLiveSourse(key, value)
         })
   }

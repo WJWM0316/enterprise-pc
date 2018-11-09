@@ -59,6 +59,7 @@
           @click="unsetTabCateLineGetList">
           <el-date-picker
             v-model="getLineDataByDate"
+            :picker-options="pickerOptions"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -124,6 +125,15 @@ export default class pageStatisticsCourse extends Vue {
   tabLineCateIndex = 'last_month'
   // 类型（ 1帖子，2文件，3图片，4链接，5视频）
   tabType = 1
+  // 时间限制
+  pickerOptions = {
+    disabledDate(time) {
+      let curDate = (new Date()).getTime()
+      let two = 60 * 24 * 3600 * 1000
+      let twoMonths = curDate - two
+      return time.getTime() > Date.now() || time.getTime() < twoMonths
+    }
+  }
 	initEchartLine(key, value) {
     const option = {
       grid: {
