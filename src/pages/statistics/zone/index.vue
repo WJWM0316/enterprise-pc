@@ -87,6 +87,7 @@ import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
 import { API_ROOT } from 'STORE/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
 	components: {
@@ -194,7 +195,7 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {
-    const url = `${API_ROOT}/job/statistic?export=1&type=${this.tabType}&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const url = `${API_ROOT}/job/statistic?token=${getAccessToken()}export=1&type=${this.tabType}&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
     const newBlank = window.open(url, '_blank')
     const params = {type: this.tabType, export: 1}
     if(this.tabLineCateIndex) {

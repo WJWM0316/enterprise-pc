@@ -57,6 +57,7 @@ import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
 import { API_ROOT } from 'STORE/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
 	components: {
@@ -299,7 +300,7 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {
-    const url = `${API_ROOT}/sta/group/liveAndCourse?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const url = `${API_ROOT}/sta/group/liveAndCourse?token=${getAccessToken()}export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
     const newBlank = window.open(url, '_blank')
     const params = {type: this.tabType, export: 1}
     if(this.tabLineCateIndex) {
@@ -356,16 +357,15 @@ export default class pageStatisticsCourse extends Vue {
     this.getTutorTypeStatisticsListApi()
         .then(() => {
           const key = ['外部导师', '内部导师']
-          const value = [
-            {
-              value: this.tutorTypeStatisticsList.externalRatio,
-              name: '外部导师'
-            },
-            {
-              value: this.tutorTypeStatisticsList.internalRatio,
-              name: '内部导师'
-            }
-          ]
+          const value = []
+          if(this.tutorTypeStatisticsList.externalRatio) {
+            key.push('外部导师')
+            value.push({value: this.tutorTypeStatisticsList.externalRatio, name: '外部导师'})
+          }
+          if(this.tutorTypeStatisticsList.internalRatio) {
+            key.push('内部导师')
+            value.push({value: this.tutorTypeStatisticsList.internalRatio, name: '内部导师'})
+          }
           this.initEchartPieTutorType(key, value)
         })
   }

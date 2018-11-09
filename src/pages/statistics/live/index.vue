@@ -42,8 +42,7 @@
     <div class="course-kind-cate">
       <div>
         <div class="section-header">直播类型分布</div>
-        <div id="echart-pink1" class="echart-pink" v-if="liveDistributionStatisticsList.length"></div>
-        <div class="no-data" v-else></div>
+        <div id="echart-pink1" class="echart-pink"></div>
       </div>
       <div>
         <div class="section-header">直播来源分布</div>
@@ -58,6 +57,7 @@ import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
 import { API_ROOT } from 'STORE/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
 	components: {
@@ -83,7 +83,6 @@ import { API_ROOT } from 'STORE/api/index.js'
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi',
       'getLiveStatisticsListApi',
       'getLiveDistributionStatisticsListApi',
       'getLiveCateDistributionStatisticsListApi'
@@ -91,9 +90,9 @@ import { API_ROOT } from 'STORE/api/index.js'
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList',
       'liveStatisticsList',
-      'liveDistributionStatisticsList'
+      'liveDistributionStatisticsList',
+      'liveCateDistributionStatisticsList'
     ])
   }
 })
@@ -149,21 +148,15 @@ export default class pageStatisticsCourse extends Vue {
         top: '50%',
         itemWidth: 10,
         itemHeight: 10,
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: key
       },
       series : [
         {
-          name: '访问来源',
+          name: '类型分布',
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
+          data: value,
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -196,7 +189,7 @@ export default class pageStatisticsCourse extends Vue {
       },
       series : [
         {
-          name: '访问来源',
+          name: '直播来源',
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
@@ -245,21 +238,11 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           if(this.liveDistributionStatisticsList.outerPercent) {
             key.push('外部导师')
-            value.push(
-              {
-                value: this.liveDistributionStatisticsList.outerPercent,
-                name: '外部导师'
-              }
-            )
+            value.push({value: this.liveDistributionStatisticsList.outerPercent, name: '外部导师'})
           }
           if(this.liveDistributionStatisticsList.innerPercent) {
             key.push('内部导师')
-            value.push(
-              {
-                value: this.liveDistributionStatisticsList.innerPercent,
-                name: '内部导师'
-              }
-            )
+            value.push({value: this.liveDistributionStatisticsList.innerPercent, name: '内部导师'})
           }
           this.initEcharPieLiveSourse(key, value)
         })
@@ -273,7 +256,13 @@ export default class pageStatisticsCourse extends Vue {
   getLiveCateDistributionStatisticsList() {
     this.getLiveCateDistributionStatisticsListApi()
         .then(() => {
-          console.log(this.liveDistributionStatisticsList)
+          const key = []
+          const value = []
+          this.liveCateDistributionStatisticsList.list.map(field => {
+            key.push(field.categoryName)
+            value.push({value: field.percent, name: field.categoryName})
+          })
+          this.initEcharPieLiveType(key, value)
         })
   }
   /**
@@ -319,7 +308,7 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {
-    const url = `${API_ROOT}/sta/live/livePeople?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const url = `${API_ROOT}/sta/live/livePeople?token=${getAccessToken()}export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
     const newBlank = window.open(url, '_blank')
     const params = {type: this.tabType, export: 1}
     if(this.tabLineCateIndex) {
