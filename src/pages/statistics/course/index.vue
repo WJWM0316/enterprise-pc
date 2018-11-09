@@ -151,10 +151,12 @@ export default class pageStatisticsCourse extends Vue {
    */
   initEcharPieCourseType(key, value) {
     const option = {
-      type: 'plain',
+      type: 'pie',
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+        }
       },
       legend: {
         orient: 'vertical',
@@ -170,14 +172,21 @@ export default class pageStatisticsCourse extends Vue {
           radius : '55%',
           center: ['50%', '60%'],
           data: value,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              formatter(params, ticket, callback) {
+                return `${params.data.value}%`
+              },
+              textStyle : {                   
+                align : 'center',
+                baseline : 'middle',
+                fontSize : 12
+              }
             }
           }
-          // color: ['#f00', '#0f0']
         }
       ]
     }
@@ -194,7 +203,9 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/>${(params.data.value).toFixed(0)}%</div>`
+        }
       },
       legend: {
         orient: 'vertical',
@@ -211,11 +222,19 @@ export default class pageStatisticsCourse extends Vue {
           radius : '55%',
           center: ['50%', '60%'],
           data: value,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              formatter(params, ticket, callback) {
+                return `${(params.data.value * 100).toFixed(0)}%`
+              },
+              textStyle : {                   
+                align : 'center',
+                baseline : 'middle',
+                fontSize : 12
+              }
             }
           }
         }
@@ -279,6 +298,7 @@ export default class pageStatisticsCourse extends Vue {
             key.push(field.categoryName)
             value.push({value: field.percent, name: field.categoryName})
           })
+          console.log(key, value)
           this.initEcharPieCourseType(key, value)
         })
   }

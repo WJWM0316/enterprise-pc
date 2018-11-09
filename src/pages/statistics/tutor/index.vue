@@ -178,12 +178,11 @@ export default class pageStatisticsCourse extends Vue {
    */
   initEcharPieDepartmentSourse(key, value) {
     const option = {
-      grid: {
-        width: '5000px'
-      },
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+        }
       },
       legend: {
         orient: 'vertical',
@@ -199,11 +198,19 @@ export default class pageStatisticsCourse extends Vue {
           radius : '55%',
           center: ['50%', '60%'],
           data: value,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              formatter(params, ticket, callback) {
+                return `${(params.data.value * 100).toFixed(0)}%`
+              },
+              textStyle : {                   
+                align : 'center',
+                baseline : 'middle',
+                fontSize : 12
+              }
             }
           }
         }
@@ -225,7 +232,9 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+        }
       },
       legend: {
         orient: 'vertical',
@@ -237,16 +246,24 @@ export default class pageStatisticsCourse extends Vue {
       },
       series : [
         {
-          name: '访问来源',
+          name: '导师分布',
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
           data: value,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              formatter(params, ticket, callback) {
+                return `${(params.data.value * 100).toFixed(0)}%`
+              },
+              textStyle : {                   
+                align : 'center',
+                baseline : 'middle',
+                fontSize : 12
+              }
             }
           }
         }
