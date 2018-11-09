@@ -141,7 +141,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value * 100}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
         }
       },
       legend: {
@@ -165,7 +165,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value * 100).toFixed(0)}%`
+                return `${(params.data.value).toFixed(0)}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -188,7 +188,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value * 100}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
         }
       },
       legend: {
@@ -278,7 +278,8 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          this.liveCateDistributionStatisticsList.list.map(field => {
+          const liveCateDistributionStatisticsList = this.liveCateDistributionStatisticsList.list.filter(field => Number(field.percent) > 0)
+          liveCateDistributionStatisticsList.map(field => {
             key.push(field.categoryName)
             value.push({value: field.percent, name: field.categoryName})
           })

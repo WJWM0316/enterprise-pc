@@ -228,7 +228,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value * 100).toFixed(0)}%`
+                return `${(params.data.value).toFixed(0)}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -298,7 +298,6 @@ export default class pageStatisticsCourse extends Vue {
             key.push(field.categoryName)
             value.push({value: field.percent, name: field.categoryName})
           })
-          console.log(key, value)
           this.initEcharPieCourseType(key, value)
         })
   }

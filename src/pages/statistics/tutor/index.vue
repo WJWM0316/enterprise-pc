@@ -204,7 +204,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value * 100).toFixed(0)}%`
+                return `${(params.data.value).toFixed(0)}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -257,7 +257,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value * 100).toFixed(0)}%`
+                return `${(params.data.value).toFixed(0)}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -357,9 +357,16 @@ export default class pageStatisticsCourse extends Vue {
   getDepartmentSourseStatisticsList() {
     this.getDepartmentSourseStatisticsListApi()
         .then(() => {
-          const key = Object.keys(this.departmentSourseStatisticsList)
-          const value = key.map(field => {
-            return {value: this.departmentSourseStatisticsList[field].ratio, name: field}
+          const departmentSourseStatisticsList = {}
+          Object.keys(this.departmentSourseStatisticsList).map(field => {
+            if(Number(this.departmentSourseStatisticsList[field].ratio) > 0) {
+              departmentSourseStatisticsList[field] = this.departmentSourseStatisticsList[field].ratio
+            }
+          })
+          const key = Object.keys(departmentSourseStatisticsList)
+          const value = []
+          key.map(field => {
+            value.push({value: departmentSourseStatisticsList[field], name: field})
           })
           this.initEcharPieDepartmentSourse(key, value)
         })
