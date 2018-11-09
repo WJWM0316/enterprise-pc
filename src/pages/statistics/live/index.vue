@@ -308,7 +308,7 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {
-    const url = `${API_ROOT}/sta/live/livePeople?token=${getAccessToken()}export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const url = `${API_ROOT}/sta/live/livePeople?token=${getAccessToken()}&export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
     const newBlank = window.open(url, '_blank')
     const params = {type: this.tabType, export: 1}
     if(this.tabLineCateIndex) {
