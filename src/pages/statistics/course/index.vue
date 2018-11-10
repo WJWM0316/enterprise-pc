@@ -155,8 +155,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          console.log(params)
-          return `<div>${params.data.name}<br/>${params.data.count} (${params.data.value}%)</div>`
+          return `<div>${params.data.name}<br/>${params.data.count} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -179,7 +178,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${params.data.value}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',

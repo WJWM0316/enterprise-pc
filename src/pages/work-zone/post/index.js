@@ -52,7 +52,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'jobCircleDetails',
       'jobCircleOrganizationLists',
       'jobCircleHitLists',
-      'hasMemberGroupList'
+      'hasMemberGroupList',
+      'userInfos'
     ])
   }
 })
@@ -796,6 +797,22 @@ export default class WorkZonePost extends Vue {
     }
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-10
+   * @detail   是否有权限进入对应页面
+   * @return   {[type]}             [description]
+   */
+  routeJump(routeName) {
+    const url = location.href.replace(RegExp(`${this.$route.path.slice(1)}`), routeName)
+    // 是否是内容管理员
+    const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
+    if(!isContentManager) {
+      window.open(url.split('?')[0])
+    } else{
+      this.$message.error('当前帐号无权限，请联系管理员修改~')
+    }
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-29

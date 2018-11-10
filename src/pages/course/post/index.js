@@ -1032,12 +1032,20 @@ export default class CoursePost extends Vue {
           this.categoryModal.name = ''
         })
   }
-
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-10
+   * @detail   是否有权限进入对应页面
+   * @return   {[type]}             [description]
+   */
   routeJump(routeName) {
+    const url = location.href.replace(RegExp(`${this.$route.path.slice(1)}`), routeName)
     // 是否是内容管理员
-    const isContentManager = res.roles.some(field => field <= 3) && !res.roles.includes(1) && !res.roles.includes(2)
+    const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
     if(!isContentManager) {
-      window.open(location.href.replace(/course-post/, routeName))
+      window.open(url.split('?')[0])
+    } else{
+      this.$message.error('当前帐号无权限，请联系管理员修改~')
     }
   }
   /**

@@ -286,7 +286,7 @@
             </div>
             <div class="tips">
               如果需要对部门组织进行修改，请点击
-              <router-link :to="{name: 'setSort'}" target="_blank">【分类设置】</router-link>
+              <a @click="routeJump('setSort')">【分类设置】</a>
               进行修改；如无权限，请联系管理员修改。
             </div>
           </div>
@@ -343,7 +343,7 @@
             </button>
             <p class="tips">
               如果需要对部门组织进行修改，请点击左侧的
-              <router-link :to="{name: 'organization'}" class="set" target="_blank">【组织】</router-link>
+              <a class="set" @click="routeJump('organization')">【组织】</a>
               进行修改；如无权限，请联系管理员修改。
             </p>
           </div>

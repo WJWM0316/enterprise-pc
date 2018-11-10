@@ -292,7 +292,7 @@
             </button>
             <p class="tips">
               如果需要对部门组织进行修改，请点击左侧的
-              <router-link target="_blank" :to="{name: 'organization'}" class="set">【组织】</router-link>
+              <a class="set" @click="routeJump('organization')">【组织】</a>
               进行修改；如无权限，请联系管理员修改。
             </p>
           </div>

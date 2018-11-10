@@ -59,7 +59,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'tutorLists',
       'liveDetails',
       'tutorLists',
-      'hasMemberGroupList'
+      'hasMemberGroupList',
+      'userInfos'
     ])
   }
 })
@@ -540,7 +541,6 @@ export default class BroadcastPost extends Vue {
       this.temTutorLists = this.tutorLists
       this.imageUpload.hasUploaded = true
       this.imageUpload.btnTxt = '重新上传'
-      console.log(this.form)
     })
     .catch((err) => {
       this.$message.error('初始化页面失败~');
@@ -973,6 +973,22 @@ export default class BroadcastPost extends Vue {
           this.categoryModal.show = false
           this.$message.error(`${err.msg}~`)
         })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-10
+   * @detail   是否有权限进入对应页面
+   * @return   {[type]}             [description]
+   */
+  routeJump(routeName) {
+    const url = location.href.replace(RegExp(`${this.$route.path.slice(1)}`), routeName)
+    // 是否是内容管理员
+    const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
+    if(!isContentManager) {
+      window.open(url.split('?')[0])
+    } else{
+      this.$message.error('当前帐号无权限，请联系管理员修改~')
+    }
   }
   /**
    * @Author   小书包
