@@ -58,15 +58,15 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.liveName}} </div>
                 <div class="lalel">
-                  <span class="group-name" v-if="props.scope.row.roleId === '5'">{{props.scope.row.roleName}}</span>
-                  <span class="name" v-if="props.scope.row.roleId === '5'">{{props.scope.row.userTitle}}</span>
-                  <span class="group-name" v-if="props.scope.row.roleId === '4'">{{props.scope.row.masterGroup}}</span>
-                  <span class="name" v-if="props.scope.row.roleId === '4'">{{props.scope.row.masterName}}</span>
+                  <span class="group-name" v-if="props.scope.row.roleId === 5">{{props.scope.row.roleName}}</span>
+                  <span class="name" v-if="props.scope.row.roleId === 5">{{props.scope.row.userTitle}}</span>
+                  <span class="group-name" v-if="props.scope.row.roleId === 4">{{props.scope.row.masterGroup}}</span>
+                  <span class="name" v-if="props.scope.row.roleId === 4">{{props.scope.row.masterName}}</span>
                 </div>
             </div>
           </div>
         </div>
-        <div v-else-if="props.scope.column.property === 'statusName'">
+        <div class="font_color" v-else-if="props.scope.column.property === 'statusName'">
           <span v-if="props.scope.row.status === 1" class="live-status-icon-pending">
             {{ props.scope.row.statusName }}
           </span>
@@ -77,11 +77,16 @@
             {{ props.scope.row.statusName }}
           </span>
         </div>
-        <div v-else-if="props.scope.column.property === 'expectedStartTime'" class="expectedStartTime">
+        <div v-else-if="props.scope.column.property === 'expectedStartTime'" class="expectedStartTime font_color">
           {{ props.scope.row.expectedStartTime }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
-        <template v-else>{{props.scope.row[props.scope.column.property]}}</template>
+        <template v-else >
+          <div class="font_color">
+            {{props.scope.row[props.scope.column.property]}}
+          </div>
+        
+      </template>
       </template>
     </table-list>
   </section>
@@ -188,6 +193,10 @@ export default BroadcastIndex
   }
   .expectedStartTime {
     margin-right: 30px;
+  }
+
+  .font_color {
+    color: #929292;
   }
 }
 </style>

@@ -83,7 +83,7 @@
           </el-date-picker>
       </el-form-item>
 
-      <div class="walk-title">直播详细信息</div>
+      <div class="walk-title" style="margin-top: 48px;">直播详细信息</div>
 
       <!-- 直播封面 -->
       <el-form-item
@@ -232,8 +232,8 @@
           <i class="el-icon-question" v-popover:groupList></i>
       </el-form-item>
       <!-- 确认提交 -->
-      <el-form-item>
-        <el-button type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
+      <el-form-item style="margin-top: 60px;">
+        <el-button  type="primary" @click="checkSubmit" :loading="!submitBtnClick" class="form-submit-btn">{{ submitBtnTxt }}</el-button>
       </el-form-item>
   </el-form>
   <modal-dialog
@@ -442,7 +442,7 @@ export default BroadcastPost
   .walk-title {
     font-size: 16px;
     line-height: 1;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
     border-bottom: 1px solid rgba(220,223,230,1);
     font-size: 20px;
     margin: 56px 44px 30px 0px;
@@ -556,21 +556,25 @@ export default BroadcastPost
       }
     }
   }
+
+
   .el-radio {
-    margin: 10px 30px 10px 0px;
+    margin: 10px 40px 10px 0px;
+    &.is-checked {
+      .el-radio__inner {
+        border-color: rgba(215,171,112,1);
+        background:rgba(215,171,112,1);
+      }
+      .el-radio__label {
+        color:rgba(215,171,112,1);
+      }
+    }
+    color:rgba(188,188,188,1);
   }
-  .el-checkbox {
-    margin-top: 10px !important;
-    margin-left: 0px !important;
-    margin-bottom: 10px !important;
-    margin-right: 10px !important;
+  .el-radio+.el-radio {
+      margin-left: 0px;
   }
-  .el-radio__label {
-    box-sizing: border-box;
-    min-width: 70px;
-    padding-left: 5px;
-    display: inline-block; 
-  }
+
   .el-icon-question {
     color: rgba(214,214,214,1);
   }

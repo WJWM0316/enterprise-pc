@@ -213,6 +213,12 @@
       &.margin_0 {
         margin-right: 0;
       }
+
+      &:hover {
+        color: #d7ab7d;
+        background: #ffffff;
+        border: 1px solid #D7AB70;
+      }
     }
     .border {
       width:100%;
