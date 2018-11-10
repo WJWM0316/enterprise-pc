@@ -1033,11 +1033,11 @@ export default class CoursePost extends Vue {
         })
   }
 
-  routeJump() {
-    // 是否有权限跳转
-    const hasAuthJump = this.userInfos.roles.some(field => field <= 2)
-    if(!hasAuthJump) {
-      window.open(location.href.replace(/course-post/, 'setSort'))
+  routeJump(routeName) {
+    // 是否是内容管理员
+    const isContentManager = res.roles.some(field => field <= 3) && !res.roles.includes(1) && !res.roles.includes(2)
+    if(!isContentManager) {
+      window.open(location.href.replace(/course-post/, routeName))
     }
   }
   /**

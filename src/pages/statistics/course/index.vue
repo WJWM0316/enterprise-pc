@@ -155,7 +155,8 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+          console.log(params)
+          return `<div>${params.data.name}<br/>${params.data.count} (${params.data.value}%)</div>`
         }
       },
       legend: {
@@ -204,7 +205,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${(params.data.value).toFixed(0)}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -228,7 +229,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value).toFixed(0)}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -272,13 +273,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.courseSourseStatisticsList.outerPercent) {
+          if(this.courseSourseStatisticsList.outerCount) {
             key.push('外部导师')
-            value.push({value: this.courseSourseStatisticsList.outerPercent, name: '外部导师'})
+            value.push({value: this.courseSourseStatisticsList.outerCount, name: '外部导师'})
           }
-          if(this.courseSourseStatisticsList.innerPercent) {
+          if(this.courseSourseStatisticsList.innerCount) {
             key.push('内部导师')
-            value.push({value: this.courseSourseStatisticsList.innerPercent, name: '内部导师'})
+            value.push({value: this.courseSourseStatisticsList.innerCount, name: '内部导师'})
           }
           this.initEcharPieCourseSourse(key, value)
         })
@@ -296,7 +297,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.courseTypeStatisticsList.list.map(field => {
             key.push(field.categoryName)
-            value.push({value: field.percent, name: field.categoryName})
+            value.push({value: field.percent, name: field.categoryName, count: field.count})
           })
           this.initEcharPieCourseType(key, value)
         })

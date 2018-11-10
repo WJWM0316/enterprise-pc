@@ -331,10 +331,10 @@ export const routes = [
     {
       path: '/books',
       name: 'books',
-      title: '书籍管理',
+      title: '职场书',
       component: () => import(/* webpackChunkName: "books" */ '@/pages/books/index.vue'),
       meta: {
-        icon: 'el-icon-remove',
+        icon: 'icon-book',
         useNav: true,
         module: 'books'
       },

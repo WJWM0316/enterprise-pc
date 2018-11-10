@@ -31,7 +31,8 @@ import { routes } from '@/router/routes'
   },
   computed: {
     ...mapGetters([
-      'userInfos'
+      'userInfos',
+      'desktopVerInfo'
     ])
   }
 })

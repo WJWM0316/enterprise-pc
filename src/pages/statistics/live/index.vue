@@ -135,13 +135,10 @@ export default class pageStatisticsCourse extends Vue {
 	}
   initEcharPieLiveType(key, value) {
     const option = {
-      grid: {
-        width: '5000px'
-      },
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -165,7 +162,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value).toFixed(0)}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -188,7 +185,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+          return `<div>${params.data.name}<br/> ${params.data.value} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -212,7 +209,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value).toFixed(0)}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -256,13 +253,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.liveDistributionStatisticsList.outerPercent) {
+          if(this.liveDistributionStatisticsList.outerCount) {
             key.push('外部导师')
-            value.push({value: this.liveDistributionStatisticsList.outerPercent, name: '外部导师'})
+            value.push({value: this.liveDistributionStatisticsList.outerCount, name: '外部导师'})
           }
-          if(this.liveDistributionStatisticsList.innerPercent) {
+          if(this.liveDistributionStatisticsList.innerCount) {
             key.push('内部导师')
-            value.push({value: this.liveDistributionStatisticsList.innerPercent, name: '内部导师'})
+            value.push({value: this.liveDistributionStatisticsList.innerCount, name: '内部导师'})
           }
           this.initEcharPieLiveSourse(key, value)
         })
@@ -278,10 +275,10 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          const liveCateDistributionStatisticsList = this.liveCateDistributionStatisticsList.list.filter(field => Number(field.percent) > 0)
+          const liveCateDistributionStatisticsList = this.liveCateDistributionStatisticsList.list.filter(field => Number(field.count) > 0)
           liveCateDistributionStatisticsList.map(field => {
             key.push(field.categoryName)
-            value.push({value: field.percent, name: field.categoryName})
+            value.push({value: field.count, name: field.categoryName})
           })
           this.initEcharPieLiveType(key, value)
         })

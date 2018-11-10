@@ -181,7 +181,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -204,7 +204,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value).toFixed(0)}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -233,7 +233,7 @@ export default class pageStatisticsCourse extends Vue {
       tooltip : {
         trigger: 'item',
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value}%</div>`
+          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
         }
       },
       legend: {
@@ -257,7 +257,7 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               position: 'inside',
               formatter(params, ticket, callback) {
-                return `${(params.data.value).toFixed(0)}%`
+                return `${params.percent}%`
               },
               textStyle : {                   
                 align : 'center',
@@ -382,13 +382,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = ['外部导师', '内部导师']
           const value = []
-          if(this.tutorTypeStatisticsList.externalRatio) {
+          if(this.tutorTypeStatisticsList.externalCount) {
             key.push('外部导师')
-            value.push({value: this.tutorTypeStatisticsList.externalRatio, name: '外部导师'})
+            value.push({value: this.tutorTypeStatisticsList.externalCount, name: '外部导师'})
           }
-          if(this.tutorTypeStatisticsList.internalRatio) {
+          if(this.tutorTypeStatisticsList.internalCount) {
             key.push('内部导师')
-            value.push({value: this.tutorTypeStatisticsList.internalRatio, name: '内部导师'})
+            value.push({value: this.tutorTypeStatisticsList.internalCount, name: '内部导师'})
           }
           this.initEchartPieTutorType(key, value)
         })
