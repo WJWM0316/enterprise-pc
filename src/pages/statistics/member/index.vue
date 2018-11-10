@@ -171,7 +171,15 @@ export default class pageStatisticsCourse extends Vue {
       },
       series: [{
         data: value,
-        type: 'line'
+        type: 'line',
+        itemStyle : {
+          normal : {
+            color:'#5D62B4',
+            lineStyle: {  
+              color: '#5D62B4'  
+            }  
+          }  
+        }
       }]
     }
 		const myChart = echarts.init(document.getElementById('echart-line'))

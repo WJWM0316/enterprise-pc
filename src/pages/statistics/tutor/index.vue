@@ -151,7 +151,8 @@ export default class pageStatisticsCourse extends Vue {
               position: 'insideRight'
             }
           },
-          data: value1
+          data: value1,
+          color: ['#FFC533']
         },
         {
           name: '创建直播',
@@ -163,7 +164,8 @@ export default class pageStatisticsCourse extends Vue {
               position: 'insideRight'
             }
           },
-          data: value2
+          data: value2,
+          color: ['#5D62B4']
         }
       ]
     }
@@ -212,7 +214,8 @@ export default class pageStatisticsCourse extends Vue {
                 fontSize : 12
               }
             }
-          }
+          },
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }
@@ -265,7 +268,8 @@ export default class pageStatisticsCourse extends Vue {
                 fontSize : 12
               }
             }
-          }
+          },
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }
