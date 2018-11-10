@@ -162,6 +162,9 @@ export default class pageStatisticsCourse extends Vue {
         top: '2%',
         containLabel: true
       },
+      tooltip: {
+        trigger: 'axis'
+      },
       xAxis: {
         type: 'category',
         data: key
@@ -222,7 +225,8 @@ export default class pageStatisticsCourse extends Vue {
       series: [
         {
           type: 'bar',
-          data: value
+          data: value,
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }

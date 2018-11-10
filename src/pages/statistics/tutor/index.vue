@@ -112,13 +112,15 @@ export default class pageStatisticsCourse extends Vue {
   initEchartLine(key, value1, value2) {
     const option = {
       tooltip : {
-          trigger: 'axis',
-          axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-              type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          }
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
       },
       legend: {
-        data: ['创建课程', '创建直播']
+        data: ['创建课程', '创建直播'],
+        itemWidth: 10,
+        itemHeight: 10
       },
       grid: {
         left: '3%',
@@ -197,16 +199,17 @@ export default class pageStatisticsCourse extends Vue {
         {
           name: '部门分布',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : '80%',
+          center: ['50%', '50%'],
           data: value,
           avoidLabelOverlap: false,
           label: {
             normal: {
               show: true,
-              position: 'inside',
+              // position: 'inside',
               formatter(params, ticket, callback) {
-                return `${params.percent}%`
+                console.log(params)
+                return `${params.data.groupName}`
               },
               textStyle : {                   
                 align : 'center',
@@ -251,24 +254,24 @@ export default class pageStatisticsCourse extends Vue {
         {
           name: '导师分布',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : '80%',
+          center: ['50%', '50%'],
           data: value,
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-              formatter(params, ticket, callback) {
-                return `${params.percent}%`
-              },
-              textStyle : {                   
-                align : 'center',
-                baseline : 'middle',
-                fontSize : 12
-              }
-            }
-          },
+          // avoidLabelOverlap: false,
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside',
+          //     formatter(params, ticket, callback) {
+          //       return `${params.percent}%`
+          //     },
+          //     textStyle : {                   
+          //       align : 'center',
+          //       baseline : 'middle',
+          //       fontSize : 12
+          //     }
+          //   }
+          // },
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
@@ -307,10 +310,10 @@ export default class pageStatisticsCourse extends Vue {
     const key = []
     const value1 = []
     const value2 = []
-    this.liveAndCourseStatisticsList.map(field => {
+    this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
       key.push(field.key)
-      value1.push(field[`${this.tabType}Course`])
-      value2.push(field[`${this.tabType}Live`])
+      value1.unshift(field[`${this.tabType}Course`])
+      value2.unshift(field[`${this.tabType}Live`])
     })
     this.initEchartLine(key, value1, value2)
   }
@@ -344,10 +347,10 @@ export default class pageStatisticsCourse extends Vue {
           const key = []
           const value1 = []
           const value2 = []
-          this.liveAndCourseStatisticsList.map(field => {
+          this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
             key.push(field.key)
-            value1.push(field[`${this.tabType}Course`])
-            value2.push(field[`${this.tabType}Live`])
+            value1.unshift(field[`${this.tabType}Course`])
+            value2.unshift(field[`${this.tabType}Live`])
           })
           this.initEchartLine(key, value1, value2)
         })
@@ -361,16 +364,11 @@ export default class pageStatisticsCourse extends Vue {
   getDepartmentSourseStatisticsList() {
     this.getDepartmentSourseStatisticsListApi()
         .then(() => {
-          const departmentSourseStatisticsList = {}
-          Object.keys(this.departmentSourseStatisticsList).map(field => {
-            if(Number(this.departmentSourseStatisticsList[field].ratio) > 0) {
-              departmentSourseStatisticsList[field] = this.departmentSourseStatisticsList[field].ratio
-            }
-          })
-          const key = Object.keys(departmentSourseStatisticsList)
+          const key = []
           const value = []
-          key.map(field => {
-            value.push({value: departmentSourseStatisticsList[field], name: field})
+          this.departmentSourseStatisticsList.map(field => {
+            key.push(field.groupName)
+            value.push({value: field.tutorCount, groupName: field.groupName, name: field.groupName})
           })
           this.initEcharPieDepartmentSourse(key, value)
         })

@@ -19,4 +19,4 @@ new Vue({
   store,
   router,
   render: h => h(App)
-}).$mount('#zike-backend')
+}).$mount('#x-plus')

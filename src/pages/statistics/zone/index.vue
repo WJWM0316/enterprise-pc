@@ -144,6 +144,9 @@ export default class pageStatisticsCourse extends Vue {
         top: '2%',
         containLabel: true
       },
+      tooltip: {
+        trigger: 'axis'
+      },
       xAxis: {
         type: 'category',
         data: key

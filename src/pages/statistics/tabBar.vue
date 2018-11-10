@@ -23,7 +23,7 @@ export default class ComponentTabBar extends Vue {}
 	box-sizing: border-box;
 	padding: 0 20px;
 	> li {
-		min-width: 80px;
+		min-width: 120px;
 		display: inline-block;
 		font-size:16px;
 		font-weight:300;
@@ -33,15 +33,17 @@ export default class ComponentTabBar extends Vue {}
 		cursor: pointer;
 	  &:before{
       position: absolute;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      background: #D7AB70;
-      content: '';
-      display: block;
-      width: 100%;
-      opacity: 0;
-      visibility: hidden;
+	    left: 0;
+	    bottom: 0;
+	    height: 2px;
+	    background: #D7AB70;
+	    content: '';
+	    display: block;
+	    width: 78%;
+	    opacity: 0;
+	    visibility: hidden;
+	    transform: translateX(-50%);
+	    left: 50%;
     };
 	}
 	.router-link-exact-active {

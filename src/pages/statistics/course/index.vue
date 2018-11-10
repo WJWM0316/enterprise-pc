@@ -128,6 +128,24 @@ export default class pageStatisticsCourse extends Vue {
         top: '2%',
         containLabel: true
       },
+      tooltip: {
+        trigger: 'axis',
+        // backgroundColor:'white',
+        // color:'black',
+        // borderWidth:'1',
+        // borderColor:'#dcdcdc',
+        // textStyle:{
+        //   color:'black',
+        // },
+        // formatter(params, ticket, callback) {
+        //   return `
+        //     <div>
+        //       <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+        //       <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
+        //     </div>
+        //   `
+        // }
+      },
       xAxis: {
         type: 'category',
         data: key
@@ -177,24 +195,24 @@ export default class pageStatisticsCourse extends Vue {
         {
           name: '课程分布',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : '80%',
+          center: ['50%', '50%'],
           data: value,
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-              formatter(params, ticket, callback) {
-                return `${params.percent}%`
-              },
-              textStyle : {                   
-                align : 'center',
-                baseline : 'middle',
-                fontSize : 12
-              }
-            }
-          },
+          // avoidLabelOverlap: false,
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside',
+          //     formatter(params, ticket, callback) {
+          //       return `${params.percent}%`
+          //     },
+          //     textStyle : {                   
+          //       align : 'center',
+          //       baseline : 'middle',
+          //       fontSize : 12
+          //     }
+          //   }
+          // },
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
@@ -228,24 +246,24 @@ export default class pageStatisticsCourse extends Vue {
         {
           name: '课程来源',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : '80%',
+          center: ['50%', '50%'],
           data: value,
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-              formatter(params, ticket, callback) {
-                return `${params.percent}%`
-              },
-              textStyle : {                   
-                align : 'center',
-                baseline : 'middle',
-                fontSize : 12
-              }
-            }
-          },
+          // avoidLabelOverlap: false,
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside',
+          //     formatter(params, ticket, callback) {
+          //       return `${params.percent}%`
+          //     },
+          //     textStyle : {                   
+          //       align : 'center',
+          //       baseline : 'middle',
+          //       fontSize : 12
+          //     }
+          //   }
+          // },
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
