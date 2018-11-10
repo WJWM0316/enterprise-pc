@@ -1,15 +1,10 @@
 <template>
-  <section id="zike-backend">
-    <page-aside v-if="!shouldFloatingBoxShown()" />
-    <main class="offset-left" v-if="!shouldFloatingBoxShown()">
-      <page-header v-if="!shouldFloatingBoxShown()" />
-      <transition>
-        <router-view class="pages" />
-      </transition>
+  <section id="x-plus">
+    <page-aside />
+    <main class="offset-left">
+      <page-header />
+      <router-view class="pages" />
     </main>
-    <transition v-else>
-      <router-view />
-    </transition>
   </section>
 </template>
 <script>

@@ -29,7 +29,10 @@ import {
 } from 'API/statistics'
 
 const state = {
-  userRelativeStatisticsList: {},
+  userRelativeStatisticsList: {
+    totalStudyPeople: 0,
+    list: []
+  },
   deparmentRelativeStatisticsList: {},
   workZoneStatisticsList: {},
   workZoneStatisticsTotalNum: {
@@ -59,7 +62,12 @@ const state = {
 
 const mutations = {
   [GET_USER_RELATIVE_STATISTICS_LISTS] (state, data) {
-    state.userRelativeStatisticsList = data
+    if(data.totalStudyPeople > 0) {
+      state.userRelativeStatisticsList.totalStudyPeople = data.totalStudyPeople
+    }
+    if(data.list.length) {
+      state.userRelativeStatisticsList.list = data.list
+    }
   },
   [GET_DEPARMENT_RELATIVE_STATISTICS_LISTS] (state, data) {
     state.deparmentRelativeStatisticsList = data

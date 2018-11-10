@@ -22,6 +22,7 @@
           @click="unsetTabCateLineGetList">
           <el-date-picker
             v-model="getLineDataByDate"
+            :picker-options="pickerOptions"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -41,8 +42,7 @@
     <div class="course-kind-cate">
       <div>
         <div class="section-header">直播类型分布</div>
-        <div id="echart-pink1" class="echart-pink" v-if="liveDistributionStatisticsList.length"></div>
-        <div class="no-data" v-else></div>
+        <div id="echart-pink1" class="echart-pink"></div>
       </div>
       <div>
         <div class="section-header">直播来源分布</div>
@@ -57,6 +57,7 @@ import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
 import { API_ROOT } from 'STORE/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
 	components: {
@@ -76,14 +77,12 @@ import { API_ROOT } from 'STORE/api/index.js'
         this.getLists({last_time: 'last_month'})
         this.getLiveDistributionStatisticsList()
         this.getLiveCateDistributionStatisticsList()
-        // this.initEcharPieLiveType()
       },
       immediate: true
     }
   },
   methods: {
     ...mapActions([
-      'getUserRelativeStatisticsListApi',
       'getLiveStatisticsListApi',
       'getLiveDistributionStatisticsListApi',
       'getLiveCateDistributionStatisticsListApi'
@@ -91,9 +90,9 @@ import { API_ROOT } from 'STORE/api/index.js'
   },
   computed: {
     ...mapGetters([
-      'userRelativeStatisticsList',
       'liveStatisticsList',
-      'liveDistributionStatisticsList'
+      'liveDistributionStatisticsList',
+      'liveCateDistributionStatisticsList'
     ])
   }
 })
@@ -101,6 +100,15 @@ export default class pageStatisticsCourse extends Vue {
   getLineDataByDate = null
   tabLineCateIndex = 'last_month'
   tabType = 'newLiveRegistrations'
+  // 时间限制
+  pickerOptions = {
+    disabledDate(time) {
+      let curDate = (new Date()).getTime()
+      let two = 60 * 24 * 3600 * 1000
+      let twoMonths = curDate - two
+      return time.getTime() > Date.now() || time.getTime() < twoMonths
+    }
+  }
 	initEchartLine(key, value) {
     const option = {
       grid: {
@@ -109,6 +117,9 @@ export default class pageStatisticsCourse extends Vue {
         bottom: '0%',
         top: '2%',
         containLabel: true
+      },
+      tooltip: {
+        trigger: 'axis'
       },
       xAxis: {
         type: 'category',
@@ -119,7 +130,15 @@ export default class pageStatisticsCourse extends Vue {
       },
       series: [{
         data: value,
-        type: 'line'
+        type: 'line',
+        itemStyle : {
+          normal : {
+            color:'#5D62B4',
+            lineStyle: {  
+              color: '#5D62B4'  
+            }  
+          }  
+        }
       }]
     }
 		const myChart = echarts.init(document.getElementById('echart-line'))
@@ -127,41 +146,42 @@ export default class pageStatisticsCourse extends Vue {
 	}
   initEcharPieLiveType(key, value) {
     const option = {
-      grid: {
-        width: '5000px'
-      },
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        }
       },
       legend: {
         orient: 'vertical',
         right: 0,
-        top: '50%',
         itemWidth: 10,
         itemHeight: 10,
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        data: key
       },
       series : [
         {
-          name: '访问来源',
+          name: '类型分布',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
+          radius : '80%',
+          center: ['50%', '50%'],
+          data: value,
+          // avoidLabelOverlap: false,
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside',
+          //     formatter(params, ticket, callback) {
+          //       return `${params.percent}%`
+          //     },
+          //     textStyle : {                   
+          //       align : 'center',
+          //       baseline : 'middle',
+          //       fontSize : 12
+          //     }
+          //   }
+          // },
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }
@@ -175,7 +195,9 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
+        formatter(params, ticket, callback) {
+          return `<div>${params.data.name}<br/> ${params.data.value} (${params.percent}%)</div>`
+        }
       },
       legend: {
         orient: 'vertical',
@@ -187,18 +209,27 @@ export default class pageStatisticsCourse extends Vue {
       },
       series : [
         {
-          name: '访问来源',
+          name: '直播来源',
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : '80%',
+          center: ['50%', '50%'],
           data: value,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
+          // avoidLabelOverlap: false,
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside',
+          //     formatter(params, ticket, callback) {
+          //       return `${params.percent}%`
+          //     },
+          //     textStyle : {                   
+          //       align : 'center',
+          //       baseline : 'middle',
+          //       fontSize : 12
+          //     }
+          //   }
+          // },
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }
@@ -232,17 +263,16 @@ export default class pageStatisticsCourse extends Vue {
   getLiveDistributionStatisticsList() {
     this.getLiveDistributionStatisticsListApi()
         .then(() => {
-          const key = ['外部导师', '内部导师']
-          const value = [
-            {
-              value: this.liveDistributionStatisticsList.outerPercent,
-              name: '外部导师'
-            },
-            {
-              value: this.liveDistributionStatisticsList.innerPercent,
-              name: '内部导师'
-            }
-          ]
+          const key = []
+          const value = []
+          if(this.liveDistributionStatisticsList.outerCount) {
+            key.push('外部导师')
+            value.push({value: this.liveDistributionStatisticsList.outerCount, name: '外部导师'})
+          }
+          if(this.liveDistributionStatisticsList.innerCount) {
+            key.push('内部导师')
+            value.push({value: this.liveDistributionStatisticsList.innerCount, name: '内部导师'})
+          }
           this.initEcharPieLiveSourse(key, value)
         })
   }
@@ -255,7 +285,14 @@ export default class pageStatisticsCourse extends Vue {
   getLiveCateDistributionStatisticsList() {
     this.getLiveCateDistributionStatisticsListApi()
         .then(() => {
-          console.log(this.liveDistributionStatisticsList)
+          const key = []
+          const value = []
+          const liveCateDistributionStatisticsList = this.liveCateDistributionStatisticsList.list.filter(field => Number(field.count) > 0)
+          liveCateDistributionStatisticsList.map(field => {
+            key.push(field.categoryName)
+            value.push({value: field.count, name: field.categoryName})
+          })
+          this.initEcharPieLiveType(key, value)
         })
   }
   /**
@@ -301,7 +338,7 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   exportExcel() {
-    const url = `${API_ROOT}/sta/live/livePeople?export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const url = `${API_ROOT}/sta/live/livePeople?token=${getAccessToken()}&export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
     const newBlank = window.open(url, '_blank')
     const params = {type: this.tabType, export: 1}
     if(this.tabLineCateIndex) {

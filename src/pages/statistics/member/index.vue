@@ -29,6 +29,7 @@
           <el-date-picker
             v-model="getLineDataByDate"
             type="daterange"
+            :picker-options="pickerOptions"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             range-separator="至"
@@ -36,7 +37,7 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </li>
-        <li class="item item-box"><button class="button-export">导出数据</button></li>
+        <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
         <li :class="{'active-button': tabLineIndex === 'joinStudyPeople'}" @click="tabLineChange('joinStudyPeople')">参与学习人次</li>
@@ -74,6 +75,7 @@
           <el-date-picker
             v-model="getCylindricalDataByDate"
             type="daterange"
+            :picker-options="pickerOptions"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             range-separator="至"
@@ -91,6 +93,8 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TabBar from '../tabBar.vue'
 const echarts = require('echarts')
+import { API_ROOT } from 'STORE/api/index.js'
+import { getAccessToken } from '@/store/cacheService'
 
 @Component({
 	components: {
@@ -140,6 +144,15 @@ export default class pageStatisticsCourse extends Vue {
   tabLineIndex = 'joinStudyPeople'
   tabLineCateIndex = 'last_month'
   tabCylindricalCateIndex = 'last_month'
+  // 时间限制
+  pickerOptions = {
+    disabledDate(time) {
+      let curDate = (new Date()).getTime()
+      let two = 60 * 24 * 3600 * 1000
+      let twoMonths = curDate - two
+      return time.getTime() > Date.now() || time.getTime() < twoMonths
+    }
+  }
 	initEchartLine(key, value) {
     const option = {
       grid: {
@@ -148,6 +161,9 @@ export default class pageStatisticsCourse extends Vue {
         bottom: '0%',
         top: '2%',
         containLabel: true
+      },
+      tooltip: {
+        trigger: 'axis'
       },
       xAxis: {
         type: 'category',
@@ -158,7 +174,15 @@ export default class pageStatisticsCourse extends Vue {
       },
       series: [{
         data: value,
-        type: 'line'
+        type: 'line',
+        itemStyle : {
+          normal : {
+            color:'#5D62B4',
+            lineStyle: {  
+              color: '#5D62B4'  
+            }  
+          }  
+        }
       }]
     }
 		const myChart = echarts.init(document.getElementById('echart-line'))
@@ -201,7 +225,8 @@ export default class pageStatisticsCourse extends Vue {
       series: [
         {
           type: 'bar',
-          data: value
+          data: value,
+          color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
     }
@@ -297,6 +322,24 @@ export default class pageStatisticsCourse extends Vue {
           })
           this.initEchartLine(key, value)
         })
+  }
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-08
+   * @detail   导出excel数据
+   * @return   {[type]}   [description]
+   */
+  exportExcel() {
+    const url = `${API_ROOT}/sta/user?token=${getAccessToken()}&export=1&${this.tabLineCateIndex ? `last_time=${this.tabLineCateIndex}` : `start_date=${this.getLineDataByDate[0]}&end_date=${this.getLineDataByDate[1]}`}`
+    const newBlank = window.open(url, '_blank')
+    const params = {type: this.tabType, export: 1}
+    if(this.tabLineCateIndex) {
+      params.last_time = this.tabLineCateIndex
+    } else {
+      params.start_date = this.getLineDataByDate[0]
+      params.end_date = this.getLineDataByDate[1]
+    }
+    this.getUserRelativeStatisticsListApi(params).then(() => {newBlank.close()})
   }
 }
 </script>

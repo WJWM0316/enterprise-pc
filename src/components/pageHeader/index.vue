@@ -13,8 +13,8 @@
 					    <i class="el-icon-caret-bottom el-icon--right"></i>
 					  </div>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="out">退出登录</el-dropdown-item>
 					    <el-dropdown-item command="modify">修改密码</el-dropdown-item>
+					    <el-dropdown-item command="out">退出登录</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</li>
