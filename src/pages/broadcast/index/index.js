@@ -41,7 +41,7 @@ export default class BroadcastIndex extends Vue {
       label: '直 播',
       align: 'left',
       showTips: 'no',
-      width: '34%'
+      width: '28%'
     },
     {
       prop: 'statusName',
@@ -107,7 +107,7 @@ export default class BroadcastIndex extends Vue {
       label: '开始时间',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '16%'
     },
     {
       prop: 'actions',

@@ -9,7 +9,7 @@
           width="500px"
           @search="handleSearch"
           v-model="form.title"
-          placeholder="请输入关键词" />
+          placeholder="请填写书籍名称或关键词" />
       </el-col>
     </el-row>
     <!-- :total="jobCircleLists.total" -->
@@ -34,20 +34,27 @@
             </el-button>
         </div>
         
-        <div style="height: 40px;" v-else-if="props.scope.column.property === 'introduce'" class="content" >
-              <div class="limit-row-num-2"> {{ props.scope.row.introduce}} </div>
+        <div  v-else-if="props.scope.column.property === 'introduce'" class="content cont_txt" >
+              <div class="limit-row-num-2" v-html="props.scope.row.introduce"></div>
+        </div>
+
+        <div  v-else-if="props.scope.column.property === 'title'" class="content cont_txt" >
+              <div class="limit-row-num-2" v-html="props.scope.row.title"></div>
         </div>
 
         <div v-else-if="props.scope.column.property === 'tags'" class="">
           {{ props.scope.row.tags.name}}
         </div>
 
+        <div v-else-if="props.scope.column.property === 'readCount'" style="padding-left:10px;" class="">
+          {{ props.scope.row.readCount ?props.scope.row.readCount : 0}}
+        </div>
 
         <div v-else-if="props.scope.column.property === 'middleUrl'" class="flex-box">
             <img class="avatar" :src="props.scope.row.middleUrl" />
         </div>
 
-        <div v-else-if="props.scope.column.property === 'status'">
+        <div style="margin-right: 30px;" v-else-if="props.scope.column.property === 'status'">
           {{ props.scope.row.localStatus === 0? '上线':'下线' }}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
@@ -56,8 +63,8 @@
 
      
     </table-list>
-
-     <modal-dialog
+    <modal-dialog
+        headType = '3'
         bottomType = '2'
         v-model="model.show"
         :title="model.title"
@@ -81,8 +88,6 @@
           </div>
       </modal-dialog>
   </section>
-
-  
 </template>
 
 <script>
@@ -91,5 +96,42 @@ export default CourseList
 </script>
 
 <style lang="scss">
-@import "./index.scss"
+@import "~COLORS/variables";
+.page-course-list {
+  background: white;
+  .input-with-select {
+    width: 400px;
+  }
+  .action-zone {
+    text-align: right;
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .header {
+    margin: 30px 0;
+  }
+  .click-item {
+    color: #354048;
+  }
+  .content {
+    height: 36px;
+    .limit-row-num-2 {
+      height: 36px;
+      p {
+        margin: 0 0;
+        text-align: left;
+      }
+    }
+  }
+  .avatar {
+    width: 40px;
+    height: 100px;
+    
+  }
+
+  .cont_txt {
+    height: 36px; margin-right: 20px;
+  }
+}
 </style>

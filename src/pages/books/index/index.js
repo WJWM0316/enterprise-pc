@@ -41,35 +41,35 @@ export default class booksList extends Vue {
       label: '封面',
       align: 'left',
       showTips: 'no',
-      width: '15%'
+      width: '13%'
     },
     {
       prop: 'title',
       label: '书名',
       align: 'left',
       showTips: 'no',
-      width: '15%'
+      width: '10%'
     },
     {
       prop: 'introduce',
       label: '摘要',
       align: 'left',
       showTips: 'no',
-      width: '20%'
+      width: '25%'
     },
     {
-      prop: 'number',
+      prop: 'readCount',
       label: '阅读人数',
       align: 'left',
       showTips: 'no',
-      width: '10%'
+      width: '8%'
     },
     {
       prop: 'tags',
       label: '分类',
       align: 'left',
       showTips: 'no',
-      width: '10%',
+      width: '12%',
       filteredValue:[],
       filterPlacement: '类型的提示文案'
     },
@@ -101,7 +101,7 @@ export default class booksList extends Vue {
       label: '操 作',
       align: 'left',
       showTips: 'yes',
-      width: '15%',
+      width: '10%',
       filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
     }
   ]

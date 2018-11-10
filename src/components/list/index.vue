@@ -171,7 +171,7 @@ export default ComponentTableList
   .zike-dropdown {
     display: inline;
     padding: 0;
-    padding-right: 10px;
+    padding-right: 8px;
     .el-dropdown-link,
     .el-icon-question {
       color: #909399;
