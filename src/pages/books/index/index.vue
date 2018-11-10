@@ -1,5 +1,5 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-book-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item>书籍管理</el-breadcrumb-item>
     </el-breadcrumb>
@@ -97,7 +97,7 @@ export default CourseList
 
 <style lang="scss">
 @import "~COLORS/variables";
-.page-course-list {
+.page-book-list {
   background: white;
   .input-with-select {
     width: 400px;

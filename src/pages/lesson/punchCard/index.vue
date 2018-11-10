@@ -1,5 +1,5 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-punchCard-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'lessonList' , query:{'course_id': course_id}}">课节管理</el-breadcrumb-item>
