@@ -119,7 +119,22 @@ export default class pageStatisticsCourse extends Vue {
         containLabel: true
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+              <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
+            </div>
+          `
+        }
       },
       xAxis: {
         type: 'category',
@@ -148,8 +163,20 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -195,9 +222,24 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/> ${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
+            </div>
+          `
         }
+        // formatter(params, ticket, callback) {
+        //   return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        // }
       },
       legend: {
         orient: 'vertical',

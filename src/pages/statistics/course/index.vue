@@ -130,21 +130,21 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip: {
         trigger: 'axis',
-        // backgroundColor:'white',
-        // color:'black',
-        // borderWidth:'1',
-        // borderColor:'#dcdcdc',
-        // textStyle:{
-        //   color:'black',
-        // },
-        // formatter(params, ticket, callback) {
-        //   return `
-        //     <div>
-        //       <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
-        //       <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
-        //     </div>
-        //   `
-        // }
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+              <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
+            </div>
+          `
+        }
       },
       xAxis: {
         type: 'category',
@@ -180,8 +180,20 @@ export default class pageStatisticsCourse extends Vue {
       type: 'pie',
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.count} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -198,21 +210,6 @@ export default class pageStatisticsCourse extends Vue {
           radius : '80%',
           center: ['50%', '50%'],
           data: value,
-          // avoidLabelOverlap: false,
-          // label: {
-          //   normal: {
-          //     show: true,
-          //     position: 'inside',
-          //     formatter(params, ticket, callback) {
-          //       return `${params.percent}%`
-          //     },
-          //     textStyle : {                   
-          //       align : 'center',
-          //       baseline : 'middle',
-          //       fontSize : 12
-          //     }
-          //   }
-          // },
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
@@ -230,9 +227,24 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
+            </div>
+          `
         }
+        // formatter(params, ticket, callback) {
+        //   return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        // }
       },
       legend: {
         orient: 'vertical',
