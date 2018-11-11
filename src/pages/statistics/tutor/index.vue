@@ -113,8 +113,24 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        axisPointer: {
+          type: 'shadow'
+        },
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">${params[0].seriesName}： ${params[0].data}</p>
+              <p style="line-height: 1.5;margin: 0;">${params[1].seriesName}： ${params[1].data}</p>
+              <p style="line-height: 1.5;margin: 0;">分组类型： ${params[0].axisValueLabel}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -220,7 +236,6 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               // position: 'inside',
               formatter(params, ticket, callback) {
-                console.log(params)
                 return `${params.data.groupName}`
               },
               textStyle : {                   

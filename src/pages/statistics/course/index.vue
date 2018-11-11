@@ -122,8 +122,8 @@ export default class pageStatisticsCourse extends Vue {
 	initEchartLine(key, value) {
     const option = {
       grid: {
-        left: '0%',
-        right: '0%',
+        left: '1.2%',
+        right: '1.2%',
         bottom: '0%',
         top: '2%',
         containLabel: true
@@ -132,7 +132,7 @@ export default class pageStatisticsCourse extends Vue {
         trigger: 'axis',
         backgroundColor:'white',
         color:'black',
-        borderWidth:'1',
+        borderWidth:1,
         borderColor:'#dcdcdc',
         textStyle:{
           color:'black',
@@ -144,14 +144,43 @@ export default class pageStatisticsCourse extends Vue {
               <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
             </div>
           `
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#dcdcdc'
+          }
         }
       },
       xAxis: {
         type: 'category',
-        data: key
+        data: key,
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       series: [{
         data: value,
@@ -182,7 +211,7 @@ export default class pageStatisticsCourse extends Vue {
         trigger: 'item',
         backgroundColor:'white',
         color:'black',
-        borderWidth:'1',
+        borderWidth:1,
         borderColor:'#dcdcdc',
         textStyle:{
           color:'black',
@@ -229,7 +258,7 @@ export default class pageStatisticsCourse extends Vue {
         trigger: 'item',
         backgroundColor:'white',
         color:'black',
-        borderWidth:'1',
+        borderWidth:1,
         borderColor:'#dcdcdc',
         textStyle:{
           color:'black',

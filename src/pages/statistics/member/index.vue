@@ -178,14 +178,44 @@ export default class pageStatisticsCourse extends Vue {
               <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
             </div>
           `
+        },
+        // 跟随x轴的线
+        axisPointer: {
+          lineStyle: {
+            color: '#dcdcdc'
+          }
         }
       },
       xAxis: {
         type: 'category',
-        data: key
+        data: key,
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       series: [{
         data: value,
@@ -209,6 +239,21 @@ export default class pageStatisticsCourse extends Vue {
         trigger: 'axis',
         axisPointer: {
           type: 'shadow'
+        },
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+              <p style="line-height: 1.5;margin: 0;">分组类型： ${params[0].name}</p>
+            </div>
+          `
         }
       },
       grid: {
