@@ -34,8 +34,8 @@
             </el-button>
         </div>
         
-        <div  v-else-if="props.scope.column.property === 'introduce'" class="content cont_txt" >
-              <div class="limit-row-num-2" v-html="props.scope.row.introduce"></div>
+        <div  v-else-if="props.scope.column.property === 'wordIntro'" class="content cont_txt" >
+              <div class="limit-row-num-2" v-html="props.scope.row.wordIntro"></div>
         </div>
 
         <div  v-else-if="props.scope.column.property === 'title'" class="content cont_txt" >

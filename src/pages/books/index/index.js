@@ -51,7 +51,7 @@ export default class booksList extends Vue {
       width: '10%'
     },
     {
-      prop: 'introduce',
+      prop: 'wordIntro',
       label: '摘要',
       align: 'left',
       showTips: 'no',
