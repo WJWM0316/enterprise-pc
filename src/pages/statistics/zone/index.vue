@@ -241,7 +241,11 @@ export default class pageStatisticsCourse extends Vue {
    */
   changeTabType(params, num) {
     this.tabType = num
-    this.getLineLists(params)
+    if(this.tabLineCateIndex) {
+      this.getLineLists(params)
+    } else {
+      this.getLineLists({start_date: this.getLineDataByDate[0], end_date: this.getLineDataByDate[1], type: this.tabType})
+    }
   }
   /**
    * @Author   小书包
