@@ -134,7 +134,7 @@ export default class pageStatisticsCourse extends Vue {
         }
       },
       legend: {
-        data: ['创建课程', '创建直播'],
+        data: ['课程', '直播'],
         itemWidth: 10,
         itemHeight: 10
       },
@@ -160,7 +160,7 @@ export default class pageStatisticsCourse extends Vue {
       },
       series: [
         {
-          name: '创建课程',
+          name: '课程',
           type: 'bar',
           stack: '总量',
           label: {
@@ -174,7 +174,7 @@ export default class pageStatisticsCourse extends Vue {
           color: ['#FFC533']
         },
         {
-          name: '创建直播',
+          name: '直播',
           type: 'bar',
           stack: '总量',
           label: {
