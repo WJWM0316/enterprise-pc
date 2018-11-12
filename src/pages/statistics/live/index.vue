@@ -321,7 +321,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.liveStatisticsList.list.map(field => {
             key.push(field.date)
-            value.push(field.newLiveRegistrations)
+            value.push(field[this.tabType])
           })
           this.initEchartLine(key, value)
         })
