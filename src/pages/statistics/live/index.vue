@@ -203,7 +203,7 @@ export default class pageStatisticsCourse extends Vue {
         formatter(params, ticket, callback) {
           return `
             <div>
-              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value} （${params.percent}%））</p>
               <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
             </div>
           `
@@ -262,7 +262,7 @@ export default class pageStatisticsCourse extends Vue {
         formatter(params, ticket, callback) {
           return `
             <div>
-              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}</p>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value} （${params.percent}%））</p>
               <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
             </div>
           `
@@ -457,6 +457,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -471,6 +472,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {

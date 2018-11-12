@@ -286,6 +286,7 @@ export default class pageStatisticsCourse extends Vue {
         {
           type: 'bar',
           data: value,
+          barWidth: 40,
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
@@ -359,8 +360,8 @@ export default class pageStatisticsCourse extends Vue {
           const key = []
           const value = []
           this.deparmentRelativeStatisticsList.map(field => {
-            key.push(field.key)
-            value.push(field.studyPeople)
+            key.unshift(field.key)
+            value.unshift(field.studyPeople)
           })
           this.initEchartCylindrical(key, value)
         })
@@ -437,6 +438,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -451,6 +453,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {

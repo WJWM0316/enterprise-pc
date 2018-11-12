@@ -330,6 +330,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -344,6 +345,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {
