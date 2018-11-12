@@ -125,12 +125,17 @@ export default ComponentImagesViewer
       margin-right: 24px;
       position: relative;
       display: inline-block;
+      box-sizing: border-box;
+      border-radius: 4px;
+      overflow: hidden;
       img{
         width: 100%;
         height: 100%;
       }
     }
-    .swiper-slide-thumb-active {}
+    .swiper-slide-thumb-active {
+      border: 2px solid #FFE266;
+    }
   }
 }
 

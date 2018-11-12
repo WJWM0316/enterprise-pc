@@ -122,36 +122,65 @@ export default class pageStatisticsCourse extends Vue {
 	initEchartLine(key, value) {
     const option = {
       grid: {
-        left: '0%',
-        right: '0%',
+        left: '1.2%',
+        right: '1.2%',
         bottom: '0%',
         top: '2%',
         containLabel: true
       },
       tooltip: {
         trigger: 'axis',
-        // backgroundColor:'white',
-        // color:'black',
-        // borderWidth:'1',
-        // borderColor:'#dcdcdc',
-        // textStyle:{
-        //   color:'black',
-        // },
-        // formatter(params, ticket, callback) {
-        //   return `
-        //     <div>
-        //       <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
-        //       <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
-        //     </div>
-        //   `
-        // }
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:1,
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+              <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
+            </div>
+          `
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#dcdcdc'
+          }
+        }
       },
       xAxis: {
         type: 'category',
-        data: key
+        data: key,
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       series: [{
         data: value,
@@ -180,8 +209,20 @@ export default class pageStatisticsCourse extends Vue {
       type: 'pie',
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:1,
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.count} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value} （${params.percent}%））</p>
+              <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -198,21 +239,6 @@ export default class pageStatisticsCourse extends Vue {
           radius : '80%',
           center: ['50%', '50%'],
           data: value,
-          // avoidLabelOverlap: false,
-          // label: {
-          //   normal: {
-          //     show: true,
-          //     position: 'inside',
-          //     formatter(params, ticket, callback) {
-          //       return `${params.percent}%`
-          //     },
-          //     textStyle : {                   
-          //       align : 'center',
-          //       baseline : 'middle',
-          //       fontSize : 12
-          //     }
-          //   }
-          // },
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]
@@ -230,9 +256,25 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:1,
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          // console.log(params)
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}（${params.percent}%）</p>
+              <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
+            </div>
+          `
         }
+        // formatter(params, ticket, callback) {
+        //   return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        // }
       },
       legend: {
         orient: 'vertical',
@@ -284,7 +326,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.courseStudyStatisticsList.list.map(field => {
             key.push(field.date)
-            value.push(field.newCourses)
+            value.push(field[this.tabType])
           })
           this.initEchartLine(key, value)
         })
@@ -300,13 +342,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.courseSourseStatisticsList.outerCount) {
+          if(this.courseSourseStatisticsList.outerPercent) {
             key.push('外部导师')
-            value.push({value: this.courseSourseStatisticsList.outerCount, name: '外部导师'})
+            value.push({value: this.courseSourseStatisticsList.outerPercent, name: '外部导师'})
           }
-          if(this.courseSourseStatisticsList.innerCount) {
+          if(this.courseSourseStatisticsList.innerPercent) {
             key.push('内部导师')
-            value.push({value: this.courseSourseStatisticsList.innerCount, name: '内部导师'})
+            value.push({value: this.courseSourseStatisticsList.innerPercent, name: '内部导师'})
           }
           this.initEcharPieCourseSourse(key, value)
         })
@@ -324,7 +366,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.courseTypeStatisticsList.list.map(field => {
             key.push(field.categoryName)
-            value.push({value: field.percent, name: field.categoryName, count: field.count})
+            value.push({value: field.count, name: field.categoryName, count: field.count})
           })
           this.initEcharPieCourseType(key, value)
         })
@@ -419,6 +461,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -433,6 +476,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {

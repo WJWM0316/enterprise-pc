@@ -47,7 +47,7 @@
         <li :class="{'active-button': tabType === 'create'}" @click="changeTabType('create')">新增数量</li>
         <li :class="{'active-button': tabType === 'online'}" @click="changeTabType('online')">在线数量</li>
       </ul>
-      <div id="echart-line" style="height: 310px"></div>
+      <div id="echart-line" style="height: 350px"></div>
     </div>
   </div>
 </template>
@@ -113,8 +113,24 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        axisPointer: {
+          type: 'shadow'
+        },
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">${params[0].seriesName}： ${params[0].data}</p>
+              <p style="line-height: 1.5;margin: 0;">${params[1].seriesName}： ${params[1].data}</p>
+              <p style="line-height: 1.5;margin: 0;">分组类型： ${params[0].axisValueLabel}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -154,6 +170,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           },
           data: value1,
+          // barWidth: 40,
           color: ['#FFC533']
         },
         {
@@ -167,6 +184,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           },
           data: value2,
+          // barWidth: 40,
           color: ['#5D62B4']
         }
       ]
@@ -184,8 +202,20 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}（${params.percent}%）</p>
+              <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -208,7 +238,6 @@ export default class pageStatisticsCourse extends Vue {
               show: true,
               // position: 'inside',
               formatter(params, ticket, callback) {
-                console.log(params)
                 return `${params.data.groupName}`
               },
               textStyle : {                   
@@ -238,9 +267,24 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}（${params.percent}%）</p>
+              <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
+            </div>
+          `
         }
+        // formatter(params, ticket, callback) {
+        //   return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        // }
       },
       legend: {
         orient: 'vertical',
@@ -452,6 +496,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -466,6 +511,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {

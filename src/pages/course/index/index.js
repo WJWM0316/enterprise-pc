@@ -112,7 +112,7 @@ export default class CourseList extends Vue {
     this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
         .then(() => {
           this.getDesktopInfosApi()
-          this.getCategoryListsApi()
+          this.getCategoryListsApi({default: 1})
               .then(() => {
                 this.categoryList.map(field => {
                   this.fields[2].filteredValue.push({

@@ -119,14 +119,59 @@ export default class pageStatisticsCourse extends Vue {
         containLabel: true
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
+        formatter(params, ticket, callback) {
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params[0].value}</p>
+              <p style="line-height: 1.5;margin: 0;">时间： ${params[0].name}</p>
+            </div>
+          `
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#dcdcdc'
+          }
+        }
       },
       xAxis: {
         type: 'category',
-        data: key
+        data: key,
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            type: 'solid',
+            color: 'black',
+            width: 1
+          }
+        },
+        // x轴的文字颜色
+        axisLabel: {
+          textStyle: {
+            color: 'black',//坐标值得具体的颜色
+          }
+        }
       },
       series: [{
         data: value,
@@ -148,8 +193,20 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value} （${params.percent}%））</p>
+              <p style="line-height: 1.5;margin: 0;">分类： ${params.data.name}</p>
+            </div>
+          `
         }
       },
       legend: {
@@ -195,9 +252,24 @@ export default class pageStatisticsCourse extends Vue {
       },
       tooltip : {
         trigger: 'item',
+        backgroundColor:'white',
+        color:'black',
+        borderWidth:'1',
+        borderColor:'#dcdcdc',
+        textStyle:{
+          color:'black',
+        },
         formatter(params, ticket, callback) {
-          return `<div>${params.data.name}<br/> ${params.data.value} (${params.percent}%)</div>`
+          return `
+            <div>
+              <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value} （${params.percent}%））</p>
+              <p style="line-height: 1.5;margin: 0;">导师类型： ${params.data.name}</p>
+            </div>
+          `
         }
+        // formatter(params, ticket, callback) {
+        //   return `<div>${params.data.name}<br/>${params.data.value} (${params.percent}%)</div>`
+        // }
       },
       legend: {
         orient: 'vertical',
@@ -249,7 +321,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.liveStatisticsList.list.map(field => {
             key.push(field.date)
-            value.push(field.newLiveRegistrations)
+            value.push(field[this.tabType])
           })
           this.initEchartLine(key, value)
         })
@@ -265,13 +337,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.liveDistributionStatisticsList.outerCount) {
+          if(this.liveDistributionStatisticsList.outerPercent) {
             key.push('外部导师')
-            value.push({value: this.liveDistributionStatisticsList.outerCount, name: '外部导师'})
+            value.push({value: this.liveDistributionStatisticsList.outerPercent, name: '外部导师'})
           }
-          if(this.liveDistributionStatisticsList.innerCount) {
+          if(this.liveDistributionStatisticsList.innerPercent) {
             key.push('内部导师')
-            value.push({value: this.liveDistributionStatisticsList.innerCount, name: '内部导师'})
+            value.push({value: this.liveDistributionStatisticsList.innerPercent, name: '内部导师'})
           }
           this.initEcharPieLiveSourse(key, value)
         })
@@ -385,6 +457,7 @@ export default class pageStatisticsCourse extends Vue {
       padding: 10px;
       margin-right: 8px;
       cursor: pointer;
+      color: #666666;
     }
     .active-button{
       background:rgba(255,226,102,0.26);
@@ -399,6 +472,13 @@ export default class pageStatisticsCourse extends Vue {
         vertical-align: middle;
         margin-top: -1px;
         width: 240px !important;
+        margin-left: 12px;
+      }
+      .el-range__icon{
+        margin-top: -5px;
+      }
+      .el-range-separator {
+        line-height: 28px;
       }
     }
     .active-picker-date {

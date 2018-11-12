@@ -1,5 +1,5 @@
 <template>
-  <section class="page-course-list">
+  <section class="page-lesson-secondComment-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'lessonList' , query:{'course_id': pageData.course_id}}">课节管理</el-breadcrumb-item>

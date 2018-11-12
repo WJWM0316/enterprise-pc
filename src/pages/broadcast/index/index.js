@@ -131,7 +131,7 @@ export default class BroadcastIndex extends Vue {
 
   created() {
     this.getDesktopInfosApi()
-    this.getCategoryListsApi()
+    this.getCategoryListsApi({default: 1})
         .then(() => {
           this.categoryList.map(field => {
             this.fields[3].filteredValue.push({
