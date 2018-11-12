@@ -93,15 +93,15 @@
           </h3>
         </div>
         <div slot="customize-html" style="margin-left: 16px;margin-top: 20px;">
-          <div class="customize-html-content">
+          <div class="customize-html-content" :class="{'error':hintTxt.length>0}">
             <search-bar
               class="mode_input"
               width="464px"
               @search="searchTea"
               v-model="searchData.value"
               placeholder="请输入要添加的外部导师手机号" />
-            <div class="fetch-result" v-if="searchData.type">
-            <p class="model_hint">{{hintTXt}}</p>
+            <div class="fetch-result" v-show="searchData.type">
+            <p class="model_hint" v-show="hintTxt">{{hintTxt}}</p>
 
             <el-collapse-transition v-if="models.isHideBtn==='2'">
               <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
@@ -315,6 +315,14 @@ export default tutorList
   }
   .cell {
     overflow: inherit;
+  }
+
+  .customize-html-content {
+    &.error {
+      .zike-common-search-bar {
+        border: 1px solid #ff3434;
+      }
+    }
   }
 }
 

@@ -30,7 +30,6 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 export default class tutorList extends Vue {
   // 表单数据
   // 表格字段
-  hintTxt = ''
 
   innerFields = [
     {
@@ -141,6 +140,7 @@ export default class tutorList extends Vue {
     value : '',
     list : {}
   }
+  hintTxt = ''
 
 
   created() {
@@ -173,7 +173,6 @@ export default class tutorList extends Vue {
     }
 
 
-    this.models.show = true
     this.form = Object.assign(this.form, query)
     this.getTutorList()
   }
@@ -258,7 +257,7 @@ export default class tutorList extends Vue {
     this.searchData.type = true
     searchTutorApi({mobile: this.searchData.value}).then(res=>{
       this.models.isHideBtn = '2'
-      this.hintTXt = ''
+      this.hintTxt = ''
       this.searchData.list = {}
       if(Object.keys(res.data.data).length>0){
         this.models.confirmText = '添加该导师'
@@ -266,12 +265,12 @@ export default class tutorList extends Vue {
       }else {
         this.models.confirmText = '添加新外部导师'
       }
-      console.log('searchData.hintTXt=====>',this.hintTXt)
+      console.log('searchData.hintTxt=====>',this.hintTxt)
     },res=>{
       console.log(this)
       this.searchData.list = {}
-      this.hintTXt = res.data.msg ||''
-      console.log('searchData.hintTXt=====>',this.hintTXt)
+      this.hintTxt = res.data.msg ||''
+      console.log('searchData.hintTxt=====>',this.hintTxt)
     })
   }
 
@@ -293,7 +292,7 @@ export default class tutorList extends Vue {
         value : '',
         list : {}
       }
-      this.hintTXt = ''
+      this.hintTxt = ''
       this.models.show = false
       this.handleSearch()
     },err=>{

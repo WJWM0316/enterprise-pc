@@ -23,11 +23,14 @@
 					<div class="text-content">
 						<h2>{{courseItem.title}}</h2>
 						<div class="u-info" v-if="courseItem.masterInfo.roleId == 4">
-							<span class="group-name">{{courseItem.groupName}}</span>
+							<span class="group-name" v-if="courseItem.groupName.length>0">{{courseItem.groupName}}</span>
 							<span class="user-name">{{courseItem.realname}}</span>
 						</div>
 						<div class="u-info" v-if="courseItem.masterInfo.roleId == 5">
-							<span class="outer-user-name">外部导师+{{courseItem.realname}}</span>
+							<span class="group-name">外部导师</span>
+							<span class="user-name">{{courseItem.realname}}</span>
+
+							<!-- <span class="outer-user-name">外部导师+{{courseItem.realname}}</span> -->
 						</div>
 						<!-- 根据登陆的用户判断限制进度条 -->
 						<div class="progress" v-if="!personalInfoBase.isExternalTutor">
@@ -47,11 +50,15 @@
 					<div class="text-content">
 						<h2>{{liveItem.name}}</h2>
 						<div class="u-info" v-if="liveItem.roleId === '4'">
-							<span class="group-name">{{liveItem.groupName}}</span>
+							<span class="group-name" v-if="liveItem.groupName.length>0">{{liveItem.groupName}}</span>
 							<span class="user-name">{{liveItem.realname}}</span>
 						</div>
 						<div class="u-info" v-if="liveItem.roleId === 5">
-							<span class="outer-user-name">外部导师+{{liveItem.realname}}</span>
+
+							<span class="group-name">外部导师</span>
+							<span class="user-name">{{liveItem.realname}}</span>
+
+							<!-- <span class="outer-user-name">外部导师+{{liveItem.realname}}</span> -->
 						</div>
 						<div v-if="liveItem.roleId === 5">
 							<time>{{liveItem.expectedStartTime * 1000 | date}}</time>
@@ -68,7 +75,7 @@
 					<div class="text-content">
 						<h2>{{circleItem.name}}</h2>
 						<div class="u-info">
-							<span class="group-name">{{circleItem.groupName}}</span>
+							<span class="group-name" v-if="circleItem.groupName.length>0">{{circleItem.groupName}}</span>
 							<span class="user-name">{{circleItem.realname}}</span>
 						</div>
 					</div>
