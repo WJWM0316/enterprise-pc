@@ -170,7 +170,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           },
           data: value1,
-          barWidth: 40,
+          // barWidth: 40,
           color: ['#FFC533']
         },
         {
@@ -184,7 +184,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           },
           data: value2,
-          barWidth: 40,
+          // barWidth: 40,
           color: ['#5D62B4']
         }
       ]

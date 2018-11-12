@@ -337,13 +337,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.liveDistributionStatisticsList.outerCount) {
+          if(this.liveDistributionStatisticsList.outerPercent) {
             key.push('外部导师')
-            value.push({value: this.liveDistributionStatisticsList.outerCount, name: '外部导师'})
+            value.push({value: this.liveDistributionStatisticsList.outerPercent, name: '外部导师'})
           }
-          if(this.liveDistributionStatisticsList.innerCount) {
+          if(this.liveDistributionStatisticsList.innerPercent) {
             key.push('内部导师')
-            value.push({value: this.liveDistributionStatisticsList.innerCount, name: '内部导师'})
+            value.push({value: this.liveDistributionStatisticsList.innerPercent, name: '内部导师'})
           }
           this.initEcharPieLiveSourse(key, value)
         })

@@ -286,7 +286,7 @@ export default class pageStatisticsCourse extends Vue {
         {
           type: 'bar',
           data: value,
-          barWidth: 40,
+          // barWidth: 40,
           color: ['#5D62B4', '#2AC3BE', '#F2726F', '#FFC533', '#8EED7E', '#434348', '#04476C', '#04476C', '#4D998D', '#77BD99', '#A7DCA6', '#CEF199']
         }
       ]

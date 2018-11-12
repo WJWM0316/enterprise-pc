@@ -264,7 +264,7 @@ export default class pageStatisticsCourse extends Vue {
           color:'black',
         },
         formatter(params, ticket, callback) {
-          console.log(params)
+          // console.log(params)
           return `
             <div>
               <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}（${params.percent}%）</p>
@@ -342,13 +342,13 @@ export default class pageStatisticsCourse extends Vue {
         .then(() => {
           const key = []
           const value = []
-          if(this.courseSourseStatisticsList.outerCount) {
+          if(this.courseSourseStatisticsList.outerPercent) {
             key.push('外部导师')
-            value.push({value: this.courseSourseStatisticsList.outerCount, name: '外部导师'})
+            value.push({value: this.courseSourseStatisticsList.outerPercent, name: '外部导师'})
           }
-          if(this.courseSourseStatisticsList.innerCount) {
+          if(this.courseSourseStatisticsList.innerPercent) {
             key.push('内部导师')
-            value.push({value: this.courseSourseStatisticsList.innerCount, name: '内部导师'})
+            value.push({value: this.courseSourseStatisticsList.innerPercent, name: '内部导师'})
           }
           this.initEcharPieCourseSourse(key, value)
         })
@@ -366,7 +366,7 @@ export default class pageStatisticsCourse extends Vue {
           const value = []
           this.courseTypeStatisticsList.list.map(field => {
             key.push(field.categoryName)
-            value.push({value: field.percent, name: field.categoryName, count: field.count})
+            value.push({value: field.count, name: field.categoryName, count: field.count})
           })
           this.initEcharPieCourseType(key, value)
         })
