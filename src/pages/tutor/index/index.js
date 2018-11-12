@@ -14,6 +14,7 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
       },
       immediate: true
     }
+
   },
    components: {
     TableList,
@@ -29,6 +30,8 @@ import ModalDialog from 'COMPONENTS/dialog/index.vue'
 export default class tutorList extends Vue {
   // 表单数据
   // 表格字段
+  hintTxt = ''
+
   innerFields = [
     {
       prop: 'realname',
@@ -136,9 +139,9 @@ export default class tutorList extends Vue {
   searchData = {
     type : false,
     value : '',
-    hintTxt: '',
     list : {}
   }
+
 
   created() {
   }
@@ -147,17 +150,21 @@ export default class tutorList extends Vue {
    */
   init() {
     let query = this.$route.query
+
+    this.hintTxt = ''
     this.pagination = {
       count: this.zikeDefaultPageSize,
       type: 1,
       name: ''
     }
+
     this.searchData = {
       type : false,
       value : '',
-      hintTxt: '',
       list : {}
     }
+  
+
     if(query.tutorType){
       this.tutorType = query.tutorType
       this.pagination.type = query.tutorType === 'inner'?1:2
@@ -165,6 +172,8 @@ export default class tutorList extends Vue {
       this.tutorType = 'inner'
     }
 
+
+    this.models.show = true
     this.form = Object.assign(this.form, query)
     this.getTutorList()
   }
@@ -191,7 +200,6 @@ export default class tutorList extends Vue {
    */
   async getTutorList({ page } = {}) {
     let params = this.pagination
-
     params.page = page || this.form.page || 1
     getTutorListApi(params).then(res=>{
       this.form = {
@@ -210,7 +218,6 @@ export default class tutorList extends Vue {
 
   // 添加导师-跳转
   toTea() {
-    console.log(this.searchData.value)
     this.$router.push({ 
       name: 'tutorPost' ,
       params: {
@@ -248,12 +255,10 @@ export default class tutorList extends Vue {
       return
     }
     this.models.isHideBtn = '1'
-
     this.searchData.type = true
     searchTutorApi({mobile: this.searchData.value}).then(res=>{
-      console.log('=====>',res.data.data)
       this.models.isHideBtn = '2'
-      this.searchData.hintTXt = ''
+      this.hintTXt = ''
       this.searchData.list = {}
       if(Object.keys(res.data.data).length>0){
         this.models.confirmText = '添加该导师'
@@ -261,13 +266,12 @@ export default class tutorList extends Vue {
       }else {
         this.models.confirmText = '添加新外部导师'
       }
+      console.log('searchData.hintTXt=====>',this.hintTXt)
     },res=>{
+      console.log(this)
       this.searchData.list = {}
-      this.searchData.hintTXt = res.data.msg ||''
-      //this.searchData.type = true
-
-      console.log(this.searchData.hintTXt)
-      //that.$message(res.data.msg);
+      this.hintTXt = res.data.msg ||''
+      console.log('searchData.hintTXt=====>',this.hintTXt)
     })
   }
 
@@ -287,10 +291,9 @@ export default class tutorList extends Vue {
       this.searchData = {
         type : false,
         value : '',
-        hintTxt: '',
         list : {}
       }
-
+      this.hintTXt = ''
       this.models.show = false
       this.handleSearch()
     },err=>{

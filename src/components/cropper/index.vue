@@ -16,7 +16,8 @@
 	          <div :class="{'radiu': picShape === 'radiu'}" class="cropper-res" id="cropperRes">
 	            <img style="width:100px;height:100px;"  />
 	          </div>
-            <p class="label-tips">{{tips}}</p>
+            <!-- <p class="label-tips">{{tips}}</p> -->
+            <p class="label-tips">图片预览</p>
 	        </div>
 	      </div>
 	      <div class="cropper-btns-wrap">
@@ -49,7 +50,7 @@ import Cropper from 'cropperjs'
     // 裁剪标题
     tips: {
       type: String,
-      default: '裁剪控件'
+      default: '裁剪图片'
     },
 
     // 按钮文字
@@ -331,12 +332,12 @@ export default class ComponentCropper extends Vue {
     transition: all .3s ease;
     visibility: hidden;
     transform: scale(2);
-    padding: 30px 48px;
+    padding: 30px 30px;
     position: fixed;
     z-index: 90;
     top: 50px;
     left: 50%;
-    margin-left: -400px;
+    margin-left: -265px;
     background-color: white;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -349,9 +350,10 @@ export default class ComponentCropper extends Vue {
   }
   .cropper {
     position: relative;
-    width: 310px;
+    width: 332px;
+    height: 332px;
     /*height: 414px;*/
-    padding: 25px 178px 58px 0px;
+    padding: 25px 138px 58px 0px;
   }
   .cropper-box {
     width: 332px;
@@ -361,11 +363,10 @@ export default class ComponentCropper extends Vue {
   }
   .cropper-res-wrap {
     position: absolute;
-    top: 46px;
+    top: 26px;
     right: 0;
     width: 96px;
     height: 96px;
-    padding: 16px;
     /*background-color: #f8f8f8;*/
     box-sizing: content-box;
     text-align: center;
@@ -405,7 +406,7 @@ export default class ComponentCropper extends Vue {
   .label-tips{
     font-size:14px;
     font-weight:400;
-    color:rgba(102,102,102,1);
+    color: #666666;
     line-height: 1;
   }
   .el-icon-close {

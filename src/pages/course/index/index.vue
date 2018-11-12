@@ -128,5 +128,8 @@ export default CourseList
   .flex-box{
     margin-right: 40px;
   }
+
 }
+
+
 </style>

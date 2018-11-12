@@ -82,8 +82,8 @@
           </div>
           <div slot="customize-html" style="margin-left: 40px;">
             <div class="customize-html-content">
-              <p class="dialog_p" v-if="model.status===0">上线后该内容前台可见</p>
-              <p class="dialog_p" v-else>下线后该内容前台不可见</p>
+              <p class="dialog_p" v-if="model.status===0">本书籍上线后将在（员工端）职场好书展示。</p>
+              <p class="dialog_p" v-else>本书籍下线后（员工端）将不可见，您确定下线吗？</p>
             </div>
           </div>
       </modal-dialog>

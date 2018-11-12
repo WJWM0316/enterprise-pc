@@ -89,6 +89,13 @@ export default class WorkZonePost extends Vue {
       tem: [],
       show: false
     },
+
+    organization_management: {
+      value: '',
+      tem: [],
+      show: false
+    },
+
     contentAdminGroup: '',
 
     icon: {
@@ -184,6 +191,8 @@ export default class WorkZonePost extends Vue {
   user_id = ''
   userInfo = {}
   isMe = false
+  selectType = '' //选中的弹框
+
   init() {
     this.pageStatus = this.$route.name === 'addMember'? 'add':'edit'
     if(this.pageStatus === 'add'){
@@ -222,10 +231,11 @@ export default class WorkZonePost extends Vue {
   //编辑时初始化
   editInitMsg(){
     getMemberInfoApi({id: this.user_id}).then(res=>{
+
+      console.log(res.data.data)
       let data = res.data.data
       this.form.name = data.realname
       this.form.avatarId = data.avatarId
-      this.form.groupId =data.group.length>0?data.group[0].groupId:null
       this.form.occupation = data.occupation
       this.form.email = data.email
       this.form.wechat = data.wechat
@@ -245,30 +255,60 @@ export default class WorkZonePost extends Vue {
         }
       }
 
+      this.form.groupId = ''
+      if(data.group.length>0){
+        console.log('data.group',data.group)
+        let ary = []
+        data.group.map(item=>{
+          ary.push(item.groupId)
+        })
+        this.form.group_management.tem = data.group
+        this.form.group_management.value = ary.join(',')
+        this.form.group_management.show = true
+      }
+
+
       if(data.contentAdminGroup){
         let ary = []
         data.contentAdminGroup.map(item=>{
           ary.push(item.groupId)
         })
-        this.form.group_management.tem = data.contentAdminGroup
-        this.form.group_management.value = ary.join(',')
-        this.form.group_management.show = true
+        this.form.organization_management.tem = data.contentAdminGroup
+        this.form.organization_management.value = ary.join(',')
+        this.form.organization_management.show = true
       }
 
       this.rules.password.required = false
     })
-
-    
   }
 
   /**
    * @detail   打开弹窗model
    */
   openModal(type) {
+
+    let groupList = []
+    let name = `${type}_management`
+    let valueList = this.form[name].value.split(',')
+
     this.models.show = true
     this.models.width = '860px'
     this.models.minHeight = '284px'
-    this.groupList = [...this.temMenberLists]
+
+    this.groupList.map(item=>{
+      let id = item.groupId.toString()
+      if(valueList.includes(id)){
+        item.active = true
+      }else {
+        item.active = false
+      }
+    })
+
+    if(type ==='organization'){
+      this.selectType = 'organization'
+    }else if(type === 'group'){
+      this.selectType = 'group'
+    }
   }
 
   openModel2(){
@@ -285,6 +325,7 @@ export default class WorkZonePost extends Vue {
       res.data.data.map((item)=>{
         item.active = false
       })
+
       this.temMenberLists = res.data.data
       this.groupList = res.data.data
     })
@@ -293,6 +334,7 @@ export default class WorkZonePost extends Vue {
   // 检测是否可以提交
   checkSubmit() {
     this.$refs['form'].validate((valid) => {
+      console.log(this.form)
       if (valid) {
         // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
@@ -301,7 +343,7 @@ export default class WorkZonePost extends Vue {
 
         //权限管理是内容的话
         if(this.form.roleId === 3){
-          this.form.contentAdminGroup = this.form.group_management.value
+          this.form.contentAdminGroup = this.form.organization_management.value
         }
         const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
@@ -331,7 +373,6 @@ export default class WorkZonePost extends Vue {
   // 提交表单数据
   submit(params) {
     let that = this
-
     if(this.pageStatus === 'add'){
       addMemberApi(params)
         .then(res => {
@@ -365,7 +406,10 @@ export default class WorkZonePost extends Vue {
    * @detail   弹窗确定按钮
    */
   confirm() {
-    this.form['group_management'].show = this.form['group_management'].value ? true : false
+    let name = `${this.selectType}_management`
+    console.log('confirm----->>>',name)
+
+    this.form[name].show = this.form[name].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
   }
@@ -430,11 +474,13 @@ export default class WorkZonePost extends Vue {
     this.imageUpload.status = 'loading'*/
   }
 
-  removeGroupCheck(index) {
-    const value = this.form.group_management.value.split(',').splice(index, 1)
-    this.form.group_management.tem.splice(index, 1)
-    this.form.group_management.value = value.join(',')
-    this.form.group_management.show = this.form.group_management.tem <= 0 ? false : true
+  removeGroupCheck(type,index) {
+    let name = `${type}_management`
+
+    const value = this.form[name].value.split(',').splice(index, 1)
+    this.form[name].tem.splice(index, 1)
+    this.form[name].value = value.join(',')
+    this.form[name].show = this.form[name].tem <= 0 ? false : true
   }
 
   /**
@@ -444,6 +490,8 @@ export default class WorkZonePost extends Vue {
    * @return   {[type]}   [description]
    */
   seleteGroup(index, key) {
+    let name = `${this.selectType}_management`
+
     this.groupList[index].active = !this.groupList[index].active
     const data = { show: false, tem: [], value: [] }
     this.groupList.map((field) => {
@@ -453,7 +501,10 @@ export default class WorkZonePost extends Vue {
       }
     })
     data.value = data.value.join(',')
-    this.form.group_management = data
+    if(this.selectType ==='group'){
+      this.form.groupId = data.value
+    }
+    this.form[name] = data
   }
 
 

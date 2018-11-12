@@ -48,7 +48,7 @@
           prop="groupId"
           class="limit-width"
           >
-          <el-select style="width: 224px;" v-model="form.groupId" placeholder="请选择所属部门">
+          <!-- <el-select style="width: 224px;" v-model="form.groupId" placeholder="请选择所属部门">
             <el-option
               v-for="item in groupList"
               :key="item.groupId"
@@ -56,7 +56,23 @@
               :value="item.groupId"
               >
             </el-option>
-          </el-select>
+          </el-select> -->
+          <div class="selected-item" v-show="form.group_management.show"
+            >
+              <span 
+                v-for="(groupItem, groupIndex) in form.group_management.tem" 
+                :key="groupIndex"
+                @click="removeGroupCheck('group',groupIndex)">
+                {{ groupItem.groupName }}<i class="el-icon-close"></i>
+              </span>
+            </div>
+          <el-button
+            class="click-item"
+            type="primary"
+            @click="openModal('group')"
+            :class="{'zike-btn-selected': form.group_management.show}">
+              {{form.group_management.show ? '重新选择' : '点击选择'}}
+          </el-button>
         </el-form-item>
         
         <!-- 职位 -->
@@ -150,21 +166,21 @@
           prop="roleId"
           class="limit-width"
           v-if="form.roleId === 3">
-            <div class="selected-item" v-show="form.group_management.show"
+            <div class="selected-item" v-show="form.organization_management.show"
             >
               <span 
-                v-for="(groupItem, groupIndex) in form.group_management.tem" 
+                v-for="(groupItem, groupIndex) in form.organization_management.tem" 
                 :key="groupIndex"
-                @click="removeGroupCheck(groupIndex)">
+                @click="removeGroupCheck('organization',groupIndex)">
                 {{ groupItem.groupName }}<i class="el-icon-close"></i>
               </span>
             </div>
           <el-button
             class="click-item"
             type="primary"
-            @click="openModal()"
-            :class="{'zike-btn-selected': form.group_management.show}">
-              {{form.group_management.show ? '重新选择' : '点击选择'}}
+            @click="openModal('organization')"
+            :class="{'zike-btn-selected': form.organization_management.show}">
+              {{form.organization_management.show ? '重新选择' : '点击选择'}}
           </el-button>
         </el-form-item>
         

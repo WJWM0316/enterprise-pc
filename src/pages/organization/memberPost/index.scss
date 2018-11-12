@@ -44,6 +44,8 @@
       color: #4080AD;
       font-size: 14px;
     }
+
+
   }
   .organizations-type-list {
     margin: 20px 0px 18px 16px;
@@ -182,23 +184,7 @@
     flex-grow: 1;
     overflow: hidden;
   }
-.groupList-type-list {
-  margin: 20px 0px 18px 16px;
-  .tips {
-    color: #666;
-    font-size: 12px;
-    margin: 30px 0 0 0;
-  }
-  .set{
-    cursor: pointer;
-    color: #4080AD;
-  }
-  .el-button {
-    //width: 128px;
-    padding: 10px 38px;
-    margin: 0px 16px 16px 0px;
-  }
-}
+
 
 .avatar_blo {
   position: relative;
@@ -296,6 +282,35 @@
   transform: scale(1);
   width:96px;
   height:96px;
+}
+
+
+.groupList-type-list {
+  margin: 20px 0px 18px 16px;
+  .tips {
+    color: #666;
+    font-size: 12px;
+    margin: 30px 0 0 0;
+  }
+  .set{
+    cursor: pointer;
+    color: #4080AD;
+  }
+
+  .el-button{
+    padding: 10px 38px;
+    margin: 0px 16px 16px 0px;
+    &.margin_0 {
+      margin-right: 0;
+    }
+
+    &:hover {
+      color: #d7ab7d;
+      background: #ffffff;
+      border: 1px solid #D7AB70;
+    }
+  }
+  
 }
 
 

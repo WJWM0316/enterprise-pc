@@ -101,8 +101,8 @@
               v-model="searchData.value"
               placeholder="请输入要添加的外部导师手机号" />
             <div class="fetch-result" v-if="searchData.type">
+            <p class="model_hint">{{hintTXt}}</p>
 
-            <p class="model_hint" v-show="searchData.hintTXt">{{searchData.hintTXt}}</p>
             <el-collapse-transition v-if="models.isHideBtn==='2'">
               <div class="transition-flex-box" v-if="searchData.list&&searchData.list.realname">
                 <div class="img-box">
