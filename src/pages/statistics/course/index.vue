@@ -12,10 +12,10 @@
           class="item button-li"
           @click="tabCateLineGetList('last_seven_days')"
           :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
-        <li
+<!--         <li
           class="item button-li"
           @click="tabCateLineGetList('last_day')"
-          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li>
+          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li> -->
         <li
           :class="{'active-picker-date': tabLineCateIndex === ''}"
           class="item"
