@@ -355,7 +355,8 @@ export default class pageStatisticsCourse extends Vue {
     const value1 = []
     const value2 = []
     this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-      key.push(field.key)
+      console.log(field)
+      key.unshift(field.key)
       value1.unshift(field[`${this.tabType}Course`])
       value2.unshift(field[`${this.tabType}Live`])
     })
@@ -392,7 +393,7 @@ export default class pageStatisticsCourse extends Vue {
           const value1 = []
           const value2 = []
           this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-            key.push(field.key)
+            key.unshift(field.key)
             value1.unshift(field[`${this.tabType}Course`])
             value2.unshift(field[`${this.tabType}Live`])
           })
@@ -411,8 +412,10 @@ export default class pageStatisticsCourse extends Vue {
           const key = []
           const value = []
           this.departmentSourseStatisticsList.map(field => {
-            key.push(field.groupName)
-            value.push({value: field.tutorCount, groupName: field.groupName, name: field.groupName})
+            if(field.tutorCount) {
+              key.push(field.groupName)
+              value.push({value: field.tutorCount, groupName: field.groupName, name: field.groupName})
+            }
           })
           this.initEcharPieDepartmentSourse(key, value)
         })
