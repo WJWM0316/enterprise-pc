@@ -297,7 +297,28 @@ ul {
   border-bottom: 1px solid #F5F7FA !important;
 }
 
+//时间选择器。需要设置class
+.el_time_main {
+  .el-date-table td.current:not(.disabled) span {
+    background: #D7AB70;
+  }
 
+  .el-date-table td.today span {
+    color: #D7AB70;
+  }
+
+  .el-button--text {
+    color: #D7AB70;
+  }
+
+  .el-date-picker__editor-wrap {
+    .confirm {
+      background: #FFE266;
+      color: #333333;
+      padding: 0 15px;
+    }
+  }
+}
 
 
 
