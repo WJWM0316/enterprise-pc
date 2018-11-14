@@ -262,6 +262,7 @@ export default class WorkZonePost extends Vue {
         data.group.map(item=>{
           ary.push(item.groupId)
         })
+        this.form.groupId = ary.join(',')
         this.form.group_management.tem = data.group
         this.form.group_management.value = ary.join(',')
         this.form.group_management.show = true
