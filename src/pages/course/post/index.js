@@ -151,6 +151,12 @@ export default class CoursePost extends Vue {
     // 权重
     sort: ''
   }
+  //搜索状态
+  searchResult = {
+    tutor: false,
+    student_1: false,
+    student_2: false,
+  }
 
   imageUpload = {
     hasUploaded: false,
@@ -316,8 +322,9 @@ export default class CoursePost extends Vue {
    * @detail   搜索成员
    * @return   {[type]}   [description]
    */
-  handleSearch() {
+  handleSearch(studentType) {
     const params = {}
+    const reaultName = `student_${studentType}` //搜索结果
     if(this.ownerUidName) {
       params.name = this.ownerUidName
     } else {
@@ -326,6 +333,12 @@ export default class CoursePost extends Vue {
     this.getMenberListsApi(params)
         .then(() => {
           this.ownerUidName = ''
+          console.log(this.menberLists,reaultName)
+          if(this.menberLists.length>0){
+              this.searchResult[reaultName] = false
+          }else {
+              this.searchResult[reaultName] = true
+          }
         })
   }
 
@@ -340,6 +353,11 @@ export default class CoursePost extends Vue {
         .then(() => {
           this.ownerUidName = ''
           this.temTutorLists = this.menberLists
+          if(this.menberLists.length>0){
+              this.searchResult.tutor = false
+          }else {
+              this.searchResult.tutor = true
+          }
         })
   }
   created() {
@@ -429,6 +447,16 @@ export default class CoursePost extends Vue {
     this.models.currentModalName = type
     this.models.width = '860px'
     this.models.minHeight = '284px'
+  }
+
+  removeImg(){
+    this.form.icon.tem = null 
+    this.imageUpload.showError = false
+    this.imageUpload.hasUploaded = false
+    this.imageUpload.btnTxt = `上传封面`
+
+    this.form.icon.value = []
+    this.form.check_icon = ''
   }
   /**
    * @Author   小书包
@@ -620,6 +648,12 @@ export default class CoursePost extends Vue {
     this.form[type].value = this.form[type].noEdit.value
     this.form[type].tem = this.form[type].noEdit.tem
     this.form[type].show = this.form[type].noEdit.show
+
+    this.searchResult = {
+      tutor: false,
+      student_1: false,
+      student_2: false,
+    }
     // this.removeSelfDefinedGroup()
     switch(type) {
       case 'master_uid':

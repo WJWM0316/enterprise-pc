@@ -83,23 +83,13 @@
       <!-- 上传图片 start-->
       <el-form-item>
         <ul class="img-list">
-
-          <!-- <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
-            <div class="tips">
-              <p><i class="el-icon-error"></i></p>
-              <p>上传失败</p>
-            </div>
-          </div> -->
-
           <div style="float: left" class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
             <img src="~IMAGES/loading.png" class="loading" v-if="imageUpload.status==='loading'"/>
             <div class="error" v-if="imageUpload.status==='error'">
               <i class="icon iconfont icon-shibai"></i>
               <p >上传失败</p>
             </div>
-            
           </div>
-
           <li v-for="(imgItem, imgIndex) in imageUpload.list" :key="imgIndex"
           >
             <img class="" :src="imgItem.url" alt="" >

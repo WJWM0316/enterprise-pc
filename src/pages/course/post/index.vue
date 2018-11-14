@@ -64,7 +64,7 @@
             type="primary"
             @click="openModal('master_uid')"
             v-if="!form.id"
-            :class="{'zike-btn-selected': form.master_uid.show}">
+            :class="{'zike-btn-select      ed': form.master_uid.show}">
               {{form.master_uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
@@ -79,6 +79,7 @@
         >
         <div class="img-box" v-if="form.icon.tem && !imageUpload.showError">
           <img :src="form.icon.tem" class="upload-cover">
+          <img src="~IMAGES/up_clo_2.png" class="deleteImg" @click="removeImg">
         </div>
         <my-cropper
           :hasUploaded="imageUpload.hasUploaded"
@@ -191,7 +192,7 @@
         prop="check_group_id"
         class="limit-width"
         >
-          <div class="selected-item" v-show="form.group_id.show">
+          <div class="selected-item group"  v-show="form.group_id.show">
             <span
               @click="removeMultipleCheck('group_id', groupIndex, groupItem)"
               :key="groupIndex"
@@ -283,6 +284,9 @@
                 @search="handleSearchTutor"
                 v-model="ownerUidName"
                 placeholder="请输入导师名称" />
+                <div class="transition-flex-box tutor-nodata" v-if="searchResult.tutor">
+                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+              </div>
             </div>
             <div class="selected-item" v-show="form.master_uid.show">
               已选择：
@@ -337,9 +341,12 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearch"
+                @search="handleSearch(1)"
                 v-model="ownerUidName"
                 placeholder="请输入学员名称" />
+                <div class="transition-flex-box tutor-nodata" v-if="searchResult.student_1">
+                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+              </div>
             </div>
             <div class="group-list">
               <button
@@ -371,9 +378,12 @@
             <div style="margin: 30px 0;">
               <search-bar
                 width="464px"
-                @search="handleSearch"
+                @search="handleSearch(2)"
                 v-model="ownerUidName"
                 placeholder="请输入学员名称" />
+                <div class="transition-flex-box tutor-nodata" v-if="searchResult.student_2">
+                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
+              </div>
             </div>
             <div class="group-list">
               <button
@@ -581,7 +591,7 @@ export default CoursePost
     font-weight: 400;
     color: rgba(146,146,146,1);
     line-height: 40px;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
     overflow: hidden;
     span {
       background:rgba(248,248,248,1);
@@ -678,13 +688,22 @@ export default CoursePost
     }
   }
   .img-box {
-    overflow: hidden;
+    //overflow: hidden;
+    position: relative;
     margin-bottom: 15px;
     .upload-cover {
       width:96px;
       height:96px;
       border-radius:4px;
       display: block;
+    }
+    .deleteImg {
+      width:18px;
+      height:18px;
+      position: absolute;
+      left: 88px;
+      top: -9px;
+      cursor: pointer;
     }
   }
   .upload-error-tips {
@@ -763,4 +782,96 @@ export default CoursePost
     width: 120px;
   }
 }
+
+.transition-flex-box {
+  margin-top: 20px;
+  height: 48px;
+  border-radius: 4px;
+  display: flex;
+  line-height: 48px;
+  width: 464px;
+  font-size:14px;
+  font-weight:400;
+  color:rgba(90,94,102,1);
+  margin-bottom: 50px;
+  .img-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.1);
+    margin-right: 16px;
+    overflow: hidden;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .text-inner-content{
+    flex-grow: 1;
+  }
+  .phone-box {
+    font-size:14px;
+    color:rgba(53,64,72,1);
+  }
+  p {
+    margin: 0;
+    line-height: 1;
+  }
+  .user-name {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    margin-top: 8px;
+  }
+  .user-degree {
+    font-size:12px;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    margin-top: 5px;
+  }
+}
+
+.tutor-nodata {
+  background: #fff;
+  min-width: 150px;
+  border-radius: 4px;
+  border: 1px solid #ebeef5;
+  padding: 12px;
+  z-index: 2000;
+  color: #606266;
+  text-align: justify;
+  font-size: 14px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  height: 24px;
+  line-height: 24px;
+  position: relative;
+  &:before{
+    width: 0;
+    height: 0;
+    border-color: red;
+    position: absolute;
+    top: -16px;
+    left: 40px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #ebeef5 transparent;
+    display: block;
+    content: '';
+  };
+  &:after{
+    width: 0;
+    height: 0;
+    border-color: red;
+    position: absolute;
+    top: -15px;
+    left: 40px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    display: block;
+    content: '';
+  };
+}
+
 </style>
