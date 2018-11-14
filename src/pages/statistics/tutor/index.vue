@@ -22,10 +22,10 @@
           class="item button-li"
           @click="tabCateLineGetList('last_seven_days')"
           :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
-        <li
+<!--         <li
           class="item button-li"
           @click="tabCateLineGetList('last_day')"
-          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li>
+          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li> -->
         <li
           :class="{'active-picker-date': tabLineCateIndex === ''}"
           class="item"
@@ -134,7 +134,7 @@ export default class pageStatisticsCourse extends Vue {
         }
       },
       legend: {
-        data: ['创建课程', '创建直播'],
+        data: ['课程', '直播'],
         itemWidth: 10,
         itemHeight: 10
       },
@@ -160,7 +160,7 @@ export default class pageStatisticsCourse extends Vue {
       },
       series: [
         {
-          name: '创建课程',
+          name: '课程',
           type: 'bar',
           stack: '总量',
           label: {
@@ -174,7 +174,7 @@ export default class pageStatisticsCourse extends Vue {
           color: ['#FFC533']
         },
         {
-          name: '创建直播',
+          name: '直播',
           type: 'bar',
           stack: '总量',
           label: {
@@ -355,7 +355,8 @@ export default class pageStatisticsCourse extends Vue {
     const value1 = []
     const value2 = []
     this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-      key.push(field.key)
+      console.log(field)
+      key.unshift(field.key)
       value1.unshift(field[`${this.tabType}Course`])
       value2.unshift(field[`${this.tabType}Live`])
     })
@@ -392,7 +393,7 @@ export default class pageStatisticsCourse extends Vue {
           const value1 = []
           const value2 = []
           this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-            key.push(field.key)
+            key.unshift(field.key)
             value1.unshift(field[`${this.tabType}Course`])
             value2.unshift(field[`${this.tabType}Live`])
           })
@@ -411,8 +412,10 @@ export default class pageStatisticsCourse extends Vue {
           const key = []
           const value = []
           this.departmentSourseStatisticsList.map(field => {
-            key.push(field.groupName)
-            value.push({value: field.tutorCount, groupName: field.groupName, name: field.groupName})
+            if(field.tutorCount) {
+              key.push(field.groupName)
+              value.push({value: field.tutorCount, groupName: field.groupName, name: field.groupName})
+            }
           })
           this.initEcharPieDepartmentSourse(key, value)
         })

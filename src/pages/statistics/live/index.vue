@@ -12,10 +12,10 @@
           class="item button-li"
           @click="tabCateLineGetList('last_seven_days')"
           :class="{'active-button': tabLineCateIndex === 'last_seven_days'}">最近7天</li>
-        <li
+  <!--       <li
           class="item button-li"
           @click="tabCateLineGetList('last_day')"
-          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li>
+          :class="{'active-button': tabLineCateIndex === 'last_day'}">昨天</li> -->
         <li
           :class="{'active-picker-date': tabLineCateIndex === ''}"
           class="item"
@@ -34,8 +34,8 @@
         <li class="item item-box"><button class="button-export" @click="exportExcel">导出数据</button></li>
       </ul>
       <ul class="echart-tab-box">
-        <li :class="{'active-button': tabType === 'newLiveRegistrations'}" @click="changeTabType('newLiveRegistrations')">新增在线直播数</li>
-        <li :class="{'active-button': tabType === 'newLives'}" @click="changeTabType('newLives')">直播学习人次</li>
+        <li :class="{'active-button': tabType === 'newLives'}" @click="changeTabType('newLives')">新增在线直播数</li>
+        <li :class="{'active-button': tabType === 'newLiveRegistrations'}" @click="changeTabType('newLiveRegistrations')">直播学习人次</li>
       </ul>
   		<div id="echart-line" style="height: 310px"></div>
   	</div>
@@ -99,7 +99,7 @@ import { getAccessToken } from '@/store/cacheService'
 export default class pageStatisticsCourse extends Vue {
   getLineDataByDate = null
   tabLineCateIndex = 'last_month'
-  tabType = 'newLiveRegistrations'
+  tabType = 'newLives'
   // 时间限制
   pickerOptions = {
     disabledDate(time) {

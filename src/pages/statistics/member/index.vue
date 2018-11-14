@@ -16,12 +16,12 @@
           @click="tabCateLineGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
             最近7天
         </li>
-        <li
+<!--         <li
           class="item button-li"
           :class="{'active-button': tabLineCateIndex === 'last_day'}"
           @click="tabCateLineGetList({last_time: 'last_day'}, 'last_day')">
             昨天
-        </li>
+        </li> -->
         <li
           class="item"
           :class="{'active-picker-date': tabLineCateIndex === ''}"
@@ -62,12 +62,12 @@
           @click="tabCateCylindricalGetList({last_time: 'last_seven_days'}, 'last_seven_days')">
             最近7天
         </li>
-        <li
+<!--         <li
           class="item button-li"
           :class="{'active-button': tabCylindricalCateIndex === 'last_day'}"
           @click="tabCateCylindricalGetList({last_time: 'last_day'}, 'last_day')">
             昨天
-        </li>
+        </li> -->
         <li
           class="item"
           :class="{'active-picker-date': tabCylindricalCateIndex === ''}"
