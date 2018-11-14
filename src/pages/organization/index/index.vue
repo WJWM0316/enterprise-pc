@@ -214,11 +214,7 @@
         margin-right: 0;
       }
 
-      &:hover {
-        color: #d7ab7d;
-        background: #ffffff;
-        border: 1px solid #D7AB70;
-      }
+      
     }
     .border {
       width:100%;
@@ -229,6 +225,11 @@
     .group_btn {
       width: auto;
       padding: 10px 36px;
+      &:hover {
+        color: #d7ab7d;
+        background: #ffffff;
+        border: 1px solid #D7AB70;
+      }
     }
   }
   .dropdown-select {
@@ -254,8 +255,6 @@
     background:rgba(255,226,102,1);
   }
 }
-.el-scrollbar {
-  }
 .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
     background: rgba(255,226,102,0.12);
     font-size:14px;

@@ -76,6 +76,7 @@
         class="limit-width"
         >
           <el-date-picker
+            popper-class="el_time_main"
             v-model="form.startTime"
             type="datetime"
             style="width: 380px;"
@@ -754,4 +755,5 @@ export default BroadcastPost
     min-width: 70px;
   }
 }
+
 </style>

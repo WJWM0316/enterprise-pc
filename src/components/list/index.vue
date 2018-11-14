@@ -160,6 +160,8 @@ export default ComponentTableList
       background-color: transparent !important;
       border-radius:4px;
       border:1px solid rgba(219,219,219,1);
+      height: 30px;
+      line-height: 30px;
     }
     .total {
       font-size:12px;
@@ -212,4 +214,6 @@ export default ComponentTableList
     }
   }
 }
+
+
 </style>
