@@ -318,14 +318,11 @@ export default class pageOrganization extends Vue {
      * @detail   文件上传成功
      */
     handleFileSuccess(res) {
-
-       console.log(res)
         this.av_id = res.data[0].id
         this.fileUpload.status = 'success'
         this.fileUpload.progress = 100
         this.fileUpload.progressText = '上传成功'
         this.fileUpload.btnTxt = '重新上传'
-
         this.models.isHideBtn = '2'
     }
 

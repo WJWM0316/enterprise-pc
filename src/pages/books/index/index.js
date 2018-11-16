@@ -83,15 +83,15 @@ export default class booksList extends Vue {
       [ 
         {
           label: '全部',
-          value: 'status-2'
+          value: 'status-all'
         },
         {
           label: '上线',
-          value: 'status-1'
+          value: 'status-0'
         },
         {
           label: '下线',
-          value: 'status-0'
+          value: 'status-1'
         }
       ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
@@ -102,7 +102,7 @@ export default class booksList extends Vue {
       align: 'left',
       showTips: 'yes',
       width: '10%',
-      filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
+      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     }
   ]
 
@@ -145,6 +145,12 @@ export default class booksList extends Vue {
   }
 
   init() {
+
+    this.form = {
+      title: '',
+      status: '',
+      id: '',
+    }
     this.form = Object.assign(this.form, this.$route.query || {})
     this.course_id = this.$route.query.course_id
     this.getLists()
@@ -160,6 +166,12 @@ export default class booksList extends Vue {
           value:`id-${item.id}`
         })
       })
+
+      this.fields[4].filteredValue.push({
+        label: '全部',
+        value: 'id-all'
+      })
+
     })
   }
 
@@ -174,11 +186,17 @@ export default class booksList extends Vue {
       tag_id: this.form.id,
       title: this.form.title
     }
+    if(param.tag_id=='all'){
+      param.tag_id = ''
+    }
+
+    if(param.status=='all'){
+      param.status = ''
+    }
 
     //排序判断用
     this.form.page = param.page
     getBooksListApi(param).then(res=>{
-
       this.bookList = {
         list: res.data.data,
         total: res.data.meta.total

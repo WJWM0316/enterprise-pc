@@ -92,6 +92,10 @@ export default class WorkzoneList extends Vue {
    * 初始化表单、分页页面数据
    */
   init() {
+
+    this.form = {
+      name: ''
+    }
     this.form = Object.assign(this.form, this.$route.query)
     this.getWorkZoneLists()
   }

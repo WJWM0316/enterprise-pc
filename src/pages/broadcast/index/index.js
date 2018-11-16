@@ -125,6 +125,9 @@ export default class BroadcastIndex extends Vue {
   }
 
   init() {
+    this.form = {
+      liveName: ''
+    }
     this.form = Object.assign(this.form, this.$route.query)
     this.getLiveLists()
   }

@@ -132,9 +132,13 @@ const mutations = {
   },
   // 批量更新成员列表
   [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
+
     state.menberLists.map(field => {
       if(params.list.includes(String(field.uid)) || params.list.includes(field.uid)) field.active = true
     })
+
+    console.log(state, params)
+    
   },
   // 更新单个成员
   [UPDATE_MENBER_SINGLE] (state, params) {

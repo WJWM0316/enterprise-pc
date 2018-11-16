@@ -181,7 +181,6 @@ export default WorkZonePost
         }
       }
     }
-    
   }
 }
 .uploader-control {
