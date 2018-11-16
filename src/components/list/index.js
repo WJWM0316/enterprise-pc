@@ -42,6 +42,8 @@ import Component from 'vue-class-component'
 })
 export default class ComponentTableList extends Vue {
 
+  created(){
+  }
   // 点击分页按钮
   handleCurrentPageChange(page) {
     this.setPathQuery({page: page})
@@ -59,6 +61,10 @@ export default class ComponentTableList extends Vue {
       })
     }
     data[keyValue[0]] = keyValue[1]
+
+    if(data['page']){
+      data['page'] = 1
+    }
     this.$router.push({
       query: data
     })
