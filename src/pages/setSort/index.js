@@ -205,6 +205,8 @@ export default class classifyList extends Vue {
         type: 'success'
       });
       this.getList()
+    },res=>{
+      this.form.hintTXt = res.data.msg
     })
   }
 
