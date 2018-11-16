@@ -151,6 +151,7 @@ export default class booksList extends Vue {
       status: '',
       id: '',
     }
+    console.log(this.form, this.$route.query)
     this.form = Object.assign(this.form, this.$route.query || {})
     this.course_id = this.$route.query.course_id
     this.getLists()
@@ -158,7 +159,10 @@ export default class booksList extends Vue {
   }
 
   getTagsLists(){
-    this.fields[4].filteredValue = []
+    this.fields[4].filteredValue = [{
+      label: '全部',
+      value: 'id-all'
+    }]
     getBooksFirstListApi().then(res=>{
       res.data.data.map(item=>{
         this.fields[4].filteredValue.push({
@@ -166,12 +170,6 @@ export default class booksList extends Vue {
           value:`id-${item.id}`
         })
       })
-
-      this.fields[4].filteredValue.push({
-        label: '全部',
-        value: 'id-all'
-      })
-
     })
   }
 
@@ -186,6 +184,8 @@ export default class booksList extends Vue {
       tag_id: this.form.id,
       title: this.form.title
     }
+
+    console.log(param.page)
     if(param.tag_id=='all'){
       param.tag_id = ''
     }
