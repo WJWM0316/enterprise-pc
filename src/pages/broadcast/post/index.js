@@ -48,7 +48,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'classifyMemberListsByGroupIdApi',
       'switchCheckGroupListsApi',
       'updateAllMemberStatus',
-      'removeRepeatMember'
+      'removeRepeatMember',
+      'addSelfTutorAndGroupList',
+      'activeSelfTutorAndGroupSomeItem'
     ])
   },
   computed: {
@@ -60,7 +62,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'liveDetails',
       'tutorLists',
       'hasMemberGroupList',
-      'userInfos'
+      'userInfos',
+      'selfTutorLists'
     ])
   }
 })
@@ -358,6 +361,7 @@ export default class BroadcastPost extends Vue {
   			this.models.title = '选择导师'
         this.models.show = true
         this.setSelfDefinedGroup()
+        this.addSelfTutorAndGroupList()
         if(this.models.editType === 'tutor') {
           temTutorLists.map(field => field.active = this.form.uid.value === field.id || this.form.uid.value === field.uid || Number(this.form.uid.value) === field.uid || Number(this.form.uid.value) === field.id ? true : false)
           this.temTutorLists = temTutorLists
@@ -373,45 +377,39 @@ export default class BroadcastPost extends Vue {
         break
   		case 'memberList':
   			this.models.title = '参与直播学员'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
-                list.push(this.form.uid.value)
-              }
-              if(this.form.invisibleList.tem.length > 0) {
-                list =[...list, ...this.form.invisibleList.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.updateMenberListsAllApi({bool: false})
-              this.updateAllGroupListStatus({bool: false})
-              this.setSelfDefinedGroup()
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
-              })
-            })
+        if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
+          list.push(this.form.uid.value)
+        }
+        if(this.form.invisibleList.tem.length > 0) {
+          list =[...list, ...this.form.invisibleList.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({ list })
+        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.updateAllGroupListStatus({bool: false})
+        this.setSelfDefinedGroup()
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.memberList.value) === '[object Array]' ? this.form.memberList.value : this.form.memberList.value.split(',')
+        })
   			break
       case 'invisibleList':
         this.models.title = '对这些人不可见'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
-                list.push(this.form.uid.value)
-              }
-              if(this.form.memberList.tem.length > 0) {
-                list =[...list, ...this.form.memberList.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.setSelfDefinedGroup()
-              this.updateMenberListsAllApi({bool: false})
-              this.updateAllGroupListStatus({bool: false})
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
-              })
-            })
+        if(Object.prototype.toString.call(this.form.uid.value) !== '[object Array]') {
+          list.push(this.form.uid.value)
+        }
+        if(this.form.memberList.tem.length > 0) {
+          list =[...list, ...this.form.memberList.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({ list })
+        this.models.show = true
+        this.setSelfDefinedGroup()
+        this.updateMenberListsAllApi({bool: false})
+        this.updateAllGroupListStatus({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.invisibleList.value) === '[object Array]' ? this.form.invisibleList.value : this.form.invisibleList.value.split(',')
+        })
         break
   		default:
   			break
@@ -768,7 +766,8 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
+    this.activeSelfTutorAndGroupSomeItem({groupId: item.groupId})
+    if(item.groupId === 'outer') {
       this.models.editType = 'tutor'
       this.getTutorListApi({type: 2})
           .then(() => {
@@ -777,23 +776,22 @@ export default class BroadcastPost extends Vue {
             })
             this.temTutorLists = this.tutorLists
           })
+    } else if(item.groupId === 'all') {
+      this.models.editType = 'member'
+      this.getMenberListsApi({selectAll: 1})
+        .then(() => {
+          this.updateAllMemberStatus({bool: false})
+          this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
+          this.temTutorLists = this.menberLists
+        })
     } else {
       this.models.editType = 'member'
-      if(item.groupId === 'all') {
-        this.getMenberListsApi({selectAll: 1})
+      this.getMenberListsApi({groupId: item.groupId})
           .then(() => {
             this.updateAllMemberStatus({bool: false})
             this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
             this.temTutorLists = this.menberLists
           })
-      } else {
-        this.getMenberListsApi({groupId: item.groupId})
-            .then(() => {
-              this.updateAllMemberStatus({bool: false})
-              this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
-              this.temTutorLists = this.menberLists
-            })
-      }
     }
   }
 
