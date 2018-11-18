@@ -101,7 +101,7 @@
         label="课程简介"
         prop="intro"
         >
-          <editor v-model="form.intro" :isClear="false" @change="handleContentEditorBlur" />
+          <editor v-model="form.intro" :isClear="false" @input="handleContentEditorBlur" />
       </el-form-item>
       
       <!-- 选择必修学员 -->
@@ -295,16 +295,16 @@
               </span>
             </div>
             <div class="group-list">
-              <button class="common-btn" @click="tutorClassification('uid', 'outer')">外部导师</button>
+              <!-- <button class="common-btn" @click="tutorClassification('uid', 'outer')">外部导师</button> -->
               <button class="common-btn"
-                v-for="(groupItem, groupIndex) in hasMemberGroupList"
+                v-for="(groupItem, groupIndex) in selfTutorLists"
                 :key="groupIndex"
                 :class="{'common-btn-active': groupItem.active}"
                 @click="tutorClassification('uid', groupItem)">
                 {{groupItem.groupName}}
               </button>
             </div>
-            <div class="menber-list">
+            <div class="menber-list limit-menber-height">
               <div
                 class="common-checkbox"
                 :class="{'common-checkbox-active': tutorItem.active}"

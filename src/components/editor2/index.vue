@@ -43,7 +43,6 @@ import { getAccessToken } from '@/store/cacheService'
       handler(val) {
         if(val) {
           this.editor.txt.clear()
-          this.info_ = null
         }
       },
       immediate: true
@@ -52,7 +51,6 @@ import { getAccessToken } from '@/store/cacheService'
 })
 export default class pageEditor extends Vue {
   editor = null
-  info_ = null
   init() {
     this.editor = new E(this.$refs.toolbar, this.$refs.editor)
     this.editor.customConfig.uploadImgServer = `${upload_api}?token=${getAccessToken()}&attach_type=img`
@@ -60,6 +58,8 @@ export default class pageEditor extends Vue {
     this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024 // 将图片大小限制为 5M
     this.editor.customConfig.zIndex = 2
     this.editor.customConfig.showLinkImg = false
+    // 自定义 onchange 触发的延迟时间，默认为 200 ms
+    this.editor.customConfig.onchangeTimeout = 1000 // 单位 ms
     // 配置菜单
     this.editor.customConfig.menus = [
       'head', // 标题
@@ -99,10 +99,8 @@ export default class pageEditor extends Vue {
         insertImg(result.data[0].url)
       }
     }
-    this.editor.customConfig.onchange = (html) => {
-      
-      this.info_ = html // 绑定当前逐渐地值
-      this.$emit('change', this.info_) // 将内容同步到父组件中
+    this.editor.customConfig.onblur = (html) => {
+      this.$emit('change', html) // 将内容同步到父组件中
     }
     this.editor.customConfig.customAlert = (info) => {
       this.$message.error('上传图片大小不能超过5M~')

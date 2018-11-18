@@ -158,7 +158,7 @@
 					</div>
 					<div class="content">
 						<div class="ceil">
-							<span class="username">{{memberItem.realname}}</span>
+							<span class="username" @click="viewMenberInfo(memberItem.uid)">{{memberItem.realname}}</span>
 							<span class="degree">{{memberItem.groupName}} | {{memberItem.occupation}}</span>
 							<time>{{memberItem.createdAt}}</time>
 						</div>
@@ -496,10 +496,8 @@ export default class pageDashboard extends Vue {
 		}
 	}
 	.notice-flex-box{
-		display: flex;
 		margin-top: 22px;
 		overflow: hidden;
-		box-shadow:0px 2px 8px 0px rgba(29,45,53,0.06);
 		border-radius:2px;
 		> div {
 			flex-grow: 1;
@@ -508,11 +506,14 @@ export default class pageDashboard extends Vue {
 			box-shadow:0px 2px 8px 0px rgba(29,45,53,0.06);
 			border-radius:2px;
 			padding: 0 20px;
+			width: calc(50% - 10px);
+			box-sizing: border-box;
+			float: left;
 			&:first-child{
 				margin-right:10px;
 			};
 			&:last-child{
-				margin-left:11px;
+				margin-left:10px;
 			};
 		}
 		.card-header {
@@ -576,7 +577,7 @@ export default class pageDashboard extends Vue {
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #354048;
-      font-size: 14px;
+      /*font-size: 14px;*/
       width: 100%;
 		}
 		p {
@@ -663,17 +664,21 @@ export default class pageDashboard extends Vue {
 		.floor{
 			font-size: 14px;
 			color:rgba(53,64,72,1);
+			font-weight: 400;
 		}
 		.username {
 			color: #4080AD;
 			margin-right: 20px;
 			font-size: 14px;
 			line-height: 1;
+			font-weight: 500;
+			cursor: pointer;
 		}
 		.degree {
 			color: #666666;
 			font-size: 14px;
 			line-height: 1;
+			font-weight: 400;
 		}
 		time {
 			font-size:12px;
@@ -717,6 +722,13 @@ export default class pageDashboard extends Vue {
 			text-align: center;
 			line-height: 1.5;
 		}
+	}
+	.el-button--mini{
+		width: 92px;
+		height: 32px;
+		color: #354048;
+		border-radius: 2px;
+		font-size: 14px;
 	}
 }
 .my-popover123456 {

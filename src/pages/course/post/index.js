@@ -47,7 +47,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateSingleGrouptatus',
       'updateSingleMemberStatus',
       'updateAllMemberStatus',
-      'removeRepeatMember'
+      'removeRepeatMember',
+      'addSelfTutorAndGroupList',
+      'activeSelfTutorAndGroupSomeItem'
     ])
   },
   computed: {
@@ -62,7 +64,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'coursePeaple',
       'coursePeapleHits',
       'hasMemberGroupList',
-      'userInfos'
+      'userInfos',
+      'selfTutorLists'
     ])
   }
 })
@@ -333,7 +336,6 @@ export default class CoursePost extends Vue {
     this.getMenberListsApi(params)
         .then(() => {
           this.ownerUidName = ''
-          console.log(this.menberLists,reaultName)
           if(this.menberLists.length>0){
               this.searchResult[reaultName] = false
           }else {
@@ -385,6 +387,7 @@ export default class CoursePost extends Vue {
   			this.models.title = '选择导师'
         this.models.show = true
         this.setSelfDefinedGroup()
+        this.addSelfTutorAndGroupList()
         if(this.models.editType === 'tutor') {
           this.temTutorLists.map(field => field.active = this.form.master_uid.value === field.id || this.form.master_uid.value === field.uid || Number(this.form.master_uid.value) === field.uid || Number(this.form.master_uid.value) === field.id ? true : false)
         } else {
@@ -400,46 +403,39 @@ export default class CoursePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '参与课程学员'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
-                list.push(this.form.master_uid.value)
-              }
-              if(this.form.hits.tem.length > 0) {
-                list =[...list, ...this.form.hits.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.updateMenberListsAllApi({bool: false})
-              this.setSelfDefinedGroup()
-              this.updateAllGroupListStatus({bool: false})
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
-              })
-              // this.membeRelaItsGroupOfActiveStatus()
-            })
+        if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+          list.push(this.form.master_uid.value)
+        }
+        if(this.form.hits.tem.length > 0) {
+          list =[...list, ...this.form.hits.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({ list })
+        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.setSelfDefinedGroup()
+        this.updateAllGroupListStatus({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+        })
   			break
       case 'hits':
         this.models.title = '对这些人不可见'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
-                list.push(this.form.master_uid.value)
-              }
-              if(this.form.members.tem.length > 0) {
-                list =[...list, ...this.form.members.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.updateMenberListsAllApi({bool: false})
-              this.setSelfDefinedGroup()
-              this.updateAllGroupListStatus({bool: false})
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
-              })
-            })
+        if(Object.prototype.toString.call(this.form.master_uid.value) !== '[object Array]') {
+          list.push(this.form.master_uid.value)
+        }
+        if(this.form.members.tem.length > 0) {
+          list =[...list, ...this.form.members.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({ list })
+        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.setSelfDefinedGroup()
+        this.updateAllGroupListStatus({bool: false})
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+        })
         break
   		default:
   			break
@@ -453,8 +449,7 @@ export default class CoursePost extends Vue {
     this.form.icon.tem = null 
     this.imageUpload.showError = false
     this.imageUpload.hasUploaded = false
-    this.imageUpload.btnTxt = `上传封面`
-
+    this.imageUpload.btnTxt = '上传封面'
     this.form.icon.value = []
     this.form.check_icon = ''
   }
@@ -771,7 +766,8 @@ export default class CoursePost extends Vue {
    * @return   {[type]}   [description]
    */
   tutorClassification(type, item) {
-    if(Object.prototype.toString.call(item) === '[object String]' && item === 'outer') {
+    this.activeSelfTutorAndGroupSomeItem({groupId: item.groupId})
+    if(item.groupId === 'outer') {
       this.models.editType = 'tutor'
       this.getTutorListApi({type: 2})
           .then(() => {
@@ -780,27 +776,26 @@ export default class CoursePost extends Vue {
             })
             this.temTutorLists = this.tutorLists
           })
+    } else if(item.groupId === 'all') {
+      this.models.editType = 'member'
+      this.getMenberListsApi({selectAll: 1})
+          .then(() => {
+            this.updateMenberListsAllApi({bool: false})
+            this.updateMultipleMenberListsApi({
+              list: [this.form.master_uid.value]
+            })
+            this.temTutorLists = this.menberLists
+          })
     } else {
       this.models.editType = 'member'
-      if(item.groupId === 'all') {
-        this.getMenberListsApi({selectAll: 1})
-            .then(() => {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({
-                list: [this.form.master_uid.value]
-              })
-              this.temTutorLists = this.menberLists
+      this.getMenberListsApi({groupId: item.groupId})
+          .then(() => {
+            this.updateMenberListsAllApi({bool: false})
+            this.updateMultipleMenberListsApi({
+              list: [this.form.master_uid.value]
             })
-      } else {
-        this.getMenberListsApi({groupId: item.groupId})
-            .then(() => {
-              this.updateMenberListsAllApi({bool: false})
-              this.updateMultipleMenberListsApi({
-                list: [this.form.master_uid.value]
-              })
-              this.temTutorLists = this.menberLists
-            })
-      }
+            this.temTutorLists = this.menberLists
+          })
     }
   }
 
@@ -991,55 +986,6 @@ export default class CoursePost extends Vue {
         }
       }
     })
-  }
-
-  /**
-   * @Author   小书包
-   * @DateTime 2018-11-07
-   * @detail   通过当前激活的成员数量判断是否选中类型的组
-   * @return   {[type]}   [description]
-   */
-  membeRelaItsGroupOfActiveStatus() {
-    /* eslint-disable */
-    const transferStation = {}
-    this.menberLists.map(menber => {
-      // 有分组
-      if(menber.group.length) {
-        menber.group.map(group => {
-          if(!transferStation[`group_${group.groupId}`]) {
-            transferStation[`group_${group.groupId}`] = {
-              groupId: group.groupId,
-              activeNum: 0,
-              defaultNum: 0
-            }
-          } else {
-            if(menber.active) {
-              transferStation[`group_${group.groupId}`].activeNum +=1
-            } else {
-              transferStation[`group_${group.groupId}`].defaultNum +=1
-            }
-          }
-        })
-      }
-      // 没有分组
-      if(!menber.group.length) {
-        if(!transferStation.group_all) {
-          transferStation.group_all = {
-            groupId: 'all',
-            activeNum: 0,
-            defaultNum: 0
-          }
-        } else {
-          if(menber.active) {
-            transferStation.group_all.activeNum +=1
-          } else {
-            transferStation.group_all.defaultNum +=1
-          }
-        }
-      }
-    })
-    console.log(transferStation)
-    /* eslint-enable */
   }
   /**
    * @Author   小书包

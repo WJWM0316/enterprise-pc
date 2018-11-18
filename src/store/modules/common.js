@@ -28,7 +28,9 @@ import {
   UPDATE_MENBER_SINGLE,
   UPDATE_ALL_MENBER_STATUS,
   CURRENT_ROUTE_NAME,
-  REMOVE_REPEAT_MEMBER
+  REMOVE_REPEAT_MEMBER,
+  ADD_SELF_TUTOR_AND_GROUP_LIST,
+  ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM
 } from '../mutation-types'
 
 import {
@@ -60,7 +62,8 @@ const state = {
   openModal: false, // 是否处于打开modal层状态
   companyInfo: {},
   memberDynamics: {},
-  pageName: ''
+  pageName: '',
+  selfTutorLists: []
 }
 
 const mutations = {
@@ -132,13 +135,9 @@ const mutations = {
   },
   // 批量更新成员列表
   [UPDATE_MENBER_LISTS_MULTIPLE] (state, params) {
-
     state.menberLists.map(field => {
       if(params.list.includes(String(field.uid)) || params.list.includes(field.uid)) field.active = true
-    })
-
-    console.log(state, params)
-    
+    })    
   },
   // 更新单个成员
   [UPDATE_MENBER_SINGLE] (state, params) {
@@ -235,6 +234,14 @@ const mutations = {
   [REMOVE_REPEAT_MEMBER](state, params) {
     const menberLists = state.menberLists.filter(field => !params.list.includes(String(field.uid)))
     state.menberLists = menberLists
+  },
+  [ADD_SELF_TUTOR_AND_GROUP_LIST](state) {
+    const bool = state.selfTutorLists.every(field => field.groupId !== 'outer')
+    if(!bool) return
+    state.selfTutorLists.unshift({groupName: '外部导师', active: true, groupId: 'outer'}, ...state.hasMemberGroupList)
+  },
+  [ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM](state, options) {
+    state.selfTutorLists.map(field => field.active = field.groupId === options.groupId ? true : false)
   }
 }
 
@@ -250,7 +257,8 @@ const getters = {
   companyInfo: state => state.companyInfo,
   memberDynamics: state => state.memberDynamics,
   hasMemberGroupList: state => state.hasMemberGroupList,
-  pageName: state => state.pageName
+  pageName: state => state.pageName,
+  selfTutorLists: state => state.selfTutorLists
 }
 
 const actions = {
@@ -572,6 +580,18 @@ const actions = {
    */
   removeRepeatMember(store, params) {
     store.commit(REMOVE_REPEAT_MEMBER, params)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-07
+   * @detail   移除重复学员
+   * @return   {[type]}          [description]
+   */
+  addSelfTutorAndGroupList(store, params) {
+    store.commit(ADD_SELF_TUTOR_AND_GROUP_LIST)
+  },
+  activeSelfTutorAndGroupSomeItem(store, options) {
+    store.commit(ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM, options)
   }
 }
 

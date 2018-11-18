@@ -45,6 +45,8 @@ export default class Editor extends Vue {
     editor.config.menus = ['|', 'source', 'bold', 'indent', 'lineheight', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', /* 'table', */ 'img', /* 'video', */ 'insertcode', 'undo', 'redo', 'fullscreen']
     editor.config.uploadImgUrl = `${upload_api}?token=${getAccessToken()}&attach_type=img`
     editor.config.withCredentials = false
+    // 自定义 onchange 触发的延迟时间，默认为 200 ms
+    editor.customConfig.onchangeTimeout = 1000 // 单位 ms
     // 自定义load事件
     editor.config.uploadImgFns.onload = (resText) => {
       const _editor = this

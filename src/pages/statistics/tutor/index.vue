@@ -113,9 +113,9 @@ export default class pageStatisticsCourse extends Vue {
     const option = {
       tooltip : {
         trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        },
+        // axisPointer: {
+        //   type: 'shadow'
+        // },
         backgroundColor:'white',
         color:'black',
         borderWidth:'1',
@@ -166,7 +166,10 @@ export default class pageStatisticsCourse extends Vue {
           label: {
             normal: {
               show: true,
-              position: 'insideRight'
+              position: 'insideRight',
+              formatter(params, ticket, callback) {
+                return params.value ? params.value : ''
+              }
             }
           },
           data: value1,
@@ -180,11 +183,14 @@ export default class pageStatisticsCourse extends Vue {
           label: {
             normal: {
               show: true,
-              position: 'insideRight'
+              position: 'insideRight',
+              formatter(params, ticket, callback) {
+                return params.value ? params.value : ''
+              }
             }
           },
           data: value2,
-          // barWidth: 40,
+          barWidth: 40,
           color: ['#5D62B4']
         }
       ]
@@ -355,7 +361,6 @@ export default class pageStatisticsCourse extends Vue {
     const value1 = []
     const value2 = []
     this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-      console.log(field)
       key.unshift(field.key)
       value1.unshift(field[`${this.tabType}Course`])
       value2.unshift(field[`${this.tabType}Live`])
@@ -393,10 +398,13 @@ export default class pageStatisticsCourse extends Vue {
           const value1 = []
           const value2 = []
           this.liveAndCourseStatisticsList[`${this.tabType}List`].map(field => {
-            key.unshift(field.key)
-            value1.unshift(field[`${this.tabType}Course`])
-            value2.unshift(field[`${this.tabType}Live`])
+            if(field[`${this.tabType}Course`] || field[`${this.tabType}Live`]) {
+              key.unshift(field.key)
+              value1.unshift(field[`${this.tabType}Course`])
+              value2.unshift(field[`${this.tabType}Live`])
+            }
           })
+          // console.log(key, value1, value2)
           this.initEchartLine(key, value1, value2)
         })
   }

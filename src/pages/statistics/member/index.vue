@@ -360,8 +360,10 @@ export default class pageStatisticsCourse extends Vue {
           const key = []
           const value = []
           this.deparmentRelativeStatisticsList.map(field => {
-            key.unshift(field.key)
-            value.unshift(field.studyPeople)
+            if(field.studyPeople) {
+              key.unshift(field.key)
+              value.unshift(field.studyPeople)
+            }
           })
           this.initEchartCylindrical(key, value)
         })
