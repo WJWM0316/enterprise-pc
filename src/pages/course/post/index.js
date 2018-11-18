@@ -623,7 +623,7 @@ export default class CoursePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
-        this.form.hits.noEdit = Object.assign(this.form.hits, data)
+        this.form.hits.noEdit = data
         delete this.form.hits.noEdit.noEdit
         break
       default:

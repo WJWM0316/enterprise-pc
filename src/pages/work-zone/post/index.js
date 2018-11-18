@@ -299,24 +299,21 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'members':
   			this.models.title = '选择成员'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
-                list.push(this.form.owner_uid.value)
-              }
-              if(this.form.hits.tem.length > 0) {
-                list =[...list, ...this.form.hits.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.updateMenberListsAllApi({bool: false})
-              this.updateAllGroupListStatus({bool: false})
-              this.setSelfDefinedGroup()
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
-              })
-            })
+        if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+          list.push(this.form.owner_uid.value)
+        }
+        if(this.form.hits.tem.length > 0) {
+          list =[...list, ...this.form.hits.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({list})
+        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.updateAllGroupListStatus({bool: false})
+        this.setSelfDefinedGroup()
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.members.value) === '[object Array]' ? this.form.members.value : this.form.members.value.split(',')
+        })
   			break
   		case 'organizations':
   			this.models.title = '选择组织'
@@ -325,24 +322,21 @@ export default class WorkZonePost extends Vue {
   			break
   		case 'hits':
   			this.models.title = '选择不可见成员'
-        this.getMenberListsApi()
-            .then(() => {
-              if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
-                list.push(this.form.owner_uid.value)
-              }
-              if(this.form.members.tem.length > 0) {
-                list =[...list, ...this.form.members.value.split(',')]
-              }
-              // 从素有成员中去除导师和不可见学员
-              this.removeRepeatMember({list})
-              this.models.show = true
-              this.updateMenberListsAllApi({bool: false})
-              this.updateAllGroupListStatus({bool: false})
-              this.setSelfDefinedGroup()
-              this.updateMultipleMenberListsApi({
-                list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
-              })
-            })
+        if(Object.prototype.toString.call(this.form.owner_uid.value) !== '[object Array]') {
+          list.push(this.form.owner_uid.value)
+        }
+        if(this.form.members.tem.length > 0) {
+          list =[...list, ...this.form.members.value.split(',')]
+        }
+        // 从素有成员中去除导师和不可见学员
+        this.removeRepeatMember({list})
+        this.models.show = true
+        this.updateMenberListsAllApi({bool: false})
+        this.updateAllGroupListStatus({bool: false})
+        this.setSelfDefinedGroup()
+        this.updateMultipleMenberListsApi({
+          list: Object.prototype.toString.call(this.form.hits.value) === '[object Array]' ? this.form.hits.value : this.form.hits.value.split(',')
+        })
   			break
   		default:
   			break
@@ -487,6 +481,7 @@ export default class WorkZonePost extends Vue {
         data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
         this.form.members.noEdit = data
+        delete this.form.members.noEdit.noEdit
         this.form.check_members = this.form.members.value
         break
       case 'hits':
@@ -501,7 +496,7 @@ export default class WorkZonePost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
-        this.form.hits.noEdit = Object.assign(this.form.hits, data)
+        this.form.hits.noEdit = data
         delete this.form.hits.noEdit.noEdit
         break
       default:

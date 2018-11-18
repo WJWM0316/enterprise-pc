@@ -575,6 +575,7 @@ export default class BroadcastPost extends Vue {
         data.show = list.length > 0 ? true : false
         this.form.memberList = Object.assign(this.form.memberList, data)
         this.form.memberList.noEdit = data
+        delete this.form.memberList.noEdit.noEdit
         break
       case 'invisibleList':
         if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]') {
@@ -588,7 +589,7 @@ export default class BroadcastPost extends Vue {
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.invisibleList = Object.assign(this.form.invisibleList, data)
-        this.form.invisibleList.noEdit = Object.assign(this.form.invisibleList, data)
+        this.form.invisibleList.noEdit = data
         delete this.form.invisibleList.noEdit.noEdit
         break
       default:

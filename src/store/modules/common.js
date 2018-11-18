@@ -52,6 +52,7 @@ const state = {
   categoryList: {},
   uploadConfig: {},
   menberLists: [],
+  memberLists: [],
   message: {
     content: '',
     type: 'error',
@@ -114,6 +115,7 @@ const mutations = {
       if(field.group) field.group.map(val => field.selfGroup.push(val.groupId))
     })
     state.menberLists = data
+    state.memberLists = data
   },
   // 更新成员列表
   [UPDATE_MENBER_LISTS] (state, params) {
@@ -232,7 +234,8 @@ const mutations = {
     state.pageName = options.name
   },
   [REMOVE_REPEAT_MEMBER](state, params) {
-    const menberLists = state.menberLists.filter(field => !params.list.includes(String(field.uid)))
+    const memberLists = state.memberLists
+    const menberLists = memberLists.filter(field => !params.list.includes(String(field.uid)))
     state.menberLists = menberLists
   },
   [ADD_SELF_TUTOR_AND_GROUP_LIST](state) {
