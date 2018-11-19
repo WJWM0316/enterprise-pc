@@ -599,7 +599,7 @@ export default class pageDashboard extends Vue {
 		}
 		.btn-box {
 			text-align: right;
-			margin-top: 30px;
+			margin-top: 22px;
 		}
 	}
 	.member-dynamics {
