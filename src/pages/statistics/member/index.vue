@@ -87,7 +87,7 @@
       <div id="echart-pink1" class="echart-pink1"></div>
     </div>
     <div style="margin-top: 50px;background: white;">
-      <div id="echart-test" style="height: 500px;"></div>
+      <div id="echart-test" style="height: 400px;"></div>
     </div>
   </div>
 </template>
@@ -309,7 +309,7 @@ export default class pageStatisticsCourse extends Vue {
         left: '0%',
         right: '0%',
         bottom: '0%',
-        top: '2%',
+        top: '0%',
         containLabel: true
       },
       xAxis: {
