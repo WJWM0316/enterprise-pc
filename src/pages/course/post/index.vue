@@ -64,7 +64,7 @@
             type="primary"
             @click="openModal('master_uid')"
             v-if="!form.id"
-            :class="{'zike-btn-select      ed': form.master_uid.show}">
+            :class="{'zike-btn-selected': form.master_uid.show}">
               {{form.master_uid.show ? '重新选择' : '点击选择'}}
           </el-button>
       </el-form-item>
