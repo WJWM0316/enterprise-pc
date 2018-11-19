@@ -52,7 +52,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'addSelfTutorAndGroupList',
       'activeSelfTutorAndGroupSomeItem',
       'searchSomeMember',
-      'changeMemberLists'
+      'changeMemberLists',
+      'getOtherSomeMember'
     ])
   },
   computed: {
@@ -817,16 +818,18 @@ export default class BroadcastPost extends Vue {
           })
     } else if(item.groupId === 'all') {
       this.models.editType = 'member'
-      this.getMenberListsApi({selectAll: 1})
+      this.getOtherSomeMember({selectAll: 1})
         .then(() => {
+          this.changeMemberLists({list: 'otherMemberList'})
           this.updateAllMemberStatus({bool: false})
           this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
           this.temTutorLists = this.menberLists
         })
     } else {
       this.models.editType = 'member'
-      this.getMenberListsApi({groupId: item.groupId})
+      this.getOtherSomeMember({groupId: item.groupId})
           .then(() => {
+            this.changeMemberLists({list: 'otherMemberList'})
             this.updateAllMemberStatus({bool: false})
             this.updateSingleMemberStatus({uid: this.form.uid.value, bool: true})
             this.temTutorLists = this.menberLists

@@ -32,7 +32,8 @@ import {
   ADD_SELF_TUTOR_AND_GROUP_LIST,
   ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM,
   SEARCH_SOME_MENBER,
-  CHANE_MEMBER_LIST
+  CHANE_MEMBER_LIST,
+  GET_OTHER_MEMBER_LIST
 } from '../mutation-types'
 
 import {
@@ -67,7 +68,9 @@ const state = {
   memberDynamics: {},
   pageName: '',
   selfTutorLists: [],
-  searchSomeMemberLists: []
+  searchSomeMemberLists: [],
+  // 导师和圈主的数据数据
+  otherMemberList: []
 }
 
 const mutations = {
@@ -260,7 +263,16 @@ const mutations = {
   },
   [CHANE_MEMBER_LIST](state, options) {
     state.menberLists = state[options.list]
-  }
+  },
+  // 获取成员列表
+  [GET_OTHER_MEMBER_LIST] (state, data) {
+    data.map(field => {
+      field.active = false
+      field.selfGroup = []
+      if(field.group) field.group.map(val => field.selfGroup.push(val.groupId))
+    })
+    state.otherMemberList = data
+  },
 }
 
 const getters = {
@@ -277,7 +289,8 @@ const getters = {
   hasMemberGroupList: state => state.hasMemberGroupList,
   pageName: state => state.pageName,
   selfTutorLists: state => state.selfTutorLists,
-  searchSomeMemberLists: state => state.searchSomeMemberLists
+  searchSomeMemberLists: state => state.searchSomeMemberLists,
+  otherMemberList: state => state.otherMemberList
 }
 
 const actions = {
@@ -635,7 +648,23 @@ const actions = {
    */
   changeMemberLists(store, options) {
     store.commit(CHANE_MEMBER_LIST, options)
-  }
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   获取导师或者圈主的列表
+   * @return   {[type]}   [description]
+   */
+  getOtherSomeMember(store, params) {
+    return getMenberListsApi(params)
+      .then(res => {
+        store.commit(GET_OTHER_MEMBER_LIST, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
 }
 
 export default {

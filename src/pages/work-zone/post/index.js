@@ -43,7 +43,8 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'switchCheckGroupListsApi',
       'removeRepeatMember',
       'searchSomeMember',
-      'changeMemberLists'
+      'changeMemberLists',
+      'getOtherSomeMember'
     ])
   },
   computed: {
@@ -631,16 +632,18 @@ export default class WorkZonePost extends Vue {
    */
   filterOwnerUid(type, item) {
     if(Object.prototype.toString.call(item.groupId) === '[object String]') {
-      this.getMenberListsApi({selectAll: 1})
+      this.getOtherSomeMember({selectAll: 1})
           .then(() => {
+            this.changeMemberLists({list: 'otherMemberList'})
             if(Object.prototype.toString.call(this.form[type].value) !== '[object Array]') {
               this.updateMenberListsAllApi({bool: false})
               this.updateMultipleMenberListsApi({ list: this.form[type].value.split(',') })
             }
           })
     } else {
-      this.getMenberListsApi({groupId: item.groupId})
+      this.getOtherSomeMember({groupId: item.groupId})
           .then(() => {
+            this.changeMemberLists({list: 'otherMemberList'})
             if(Object.prototype.toString.call(this.form[type].value) !== '[object Array]') {
               this.updateMenberListsAllApi({bool: false})
               this.updateMultipleMenberListsApi({ list: this.form[type].value.split(',') })
