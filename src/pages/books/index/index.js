@@ -77,8 +77,23 @@ export default class booksList extends Vue {
       prop: 'status',
       label: '是否上线',
       align: 'left',
-      showTips: 'yes',
+      showTips: 'no',
       width: '10%',
+      filteredValue:
+      [ 
+        {
+          label: '全部',
+          value: 'status-all'
+        },
+        {
+          label: '上线',
+          value: 'status-0'
+        },
+        {
+          label: '下线',
+          value: 'status-1'
+        }
+      ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
@@ -165,6 +180,9 @@ export default class booksList extends Vue {
     if(this.form.title) {
       param.title = this.form.title
       param.page = this.form.page ? this.form.page : 1
+    }
+    if(this.form.status) {
+      param.status = Number(this.form.status) === 0 ? 0 : Number(this.form.status) === 1 ? 1 : ''
     }
     //排序判断用
     this.form.page = param.page

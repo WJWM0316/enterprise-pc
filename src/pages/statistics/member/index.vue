@@ -24,10 +24,10 @@
         </li> -->
         <li
           class="item"
-          :class="{'active-picker-date': tabLineCateIndex === ''}"
-          @click="unsetTabCateLineGetList">
+          :class="{'active-picker-date': tabLineCateIndex === ''}">
           <el-date-picker
             v-model="getLineDataByDate"
+            @change="changeLineDataByDate"
             type="daterange"
             :picker-options="pickerOptions"
             format="yyyy-MM-dd"
@@ -70,10 +70,10 @@
         </li> -->
         <li
           class="item"
-          :class="{'active-picker-date': tabCylindricalCateIndex === ''}"
-          @click="unsettabCateCylindricalGetList">
+          :class="{'active-picker-date': tabCylindricalCateIndex === ''}">
           <el-date-picker
             v-model="getCylindricalDataByDate"
+            @change="changeCylindricalDataByDate"
             type="daterange"
             :picker-options="pickerOptions"
             format="yyyy-MM-dd"
@@ -107,7 +107,8 @@ import { getAccessToken } from '@/store/cacheService'
     getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getLineLists({start_date: list[0], end_date: list[1]})
+          // this.tabLineCateIndex = ''
+          // this.getLineLists({start_date: list[0], end_date: list[1]})
         }
       },
       immediate: true
@@ -115,7 +116,8 @@ import { getAccessToken } from '@/store/cacheService'
     getCylindricalDataByDate: {
       handler(list) {
         if(list) {
-          this.getCateDepartmentLineLists({start_date: list[0], end_date: list[1]})
+          // this.tabCylindricalCateIndex = ''
+          // this.getCateDepartmentLineLists({start_date: list[0], end_date: list[1]})
         }
       },
       immediate: true
@@ -153,7 +155,7 @@ export default class pageStatisticsCourse extends Vue {
       let curDate = (new Date()).getTime()
       let two = 60 * 24 * 3600 * 1000
       let twoMonths = curDate - two
-      return time.getTime() > Date.now() || time.getTime() < twoMonths
+      return time.getTime() > Date.now() - 8.64e7 || time.getTime() < twoMonths
     }
   }
 	initEchartLine(key, value) {
@@ -297,39 +299,6 @@ export default class pageStatisticsCourse extends Vue {
     const myChart = echarts.init(document.getElementById('echart-pink1'))
     myChart.setOption(option, true)
   }
-  test123(key, value) {
-    const option = {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        }
-      },
-      grid: {
-        left: '0%',
-        right: '0%',
-        bottom: '0%',
-        top: '0%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
-      },
-      yAxis: {
-        type: 'category',
-        data: key
-      },
-      series: [
-        {
-          type: 'bar',
-          data: value
-        }
-      ]
-    }
-    const myChart = echarts.init(document.getElementById('echart-test'))
-    myChart.setOption(option, true)
-  }
   /**
    * @Author   小书包
    * @DateTime 2018-11-07
@@ -349,24 +318,6 @@ export default class pageStatisticsCourse extends Vue {
   tabCateCylindricalGetList(params, attr) {
     this.tabCylindricalCateIndex = attr
     this.getCateDepartmentLineLists(params)
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-11-07
-   * @detail   当前tab未日期
-   * @return   {[type]}   [description]
-   */
-  unsetTabCateLineGetList() {
-    this.tabLineCateIndex = ''
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-11-07
-   * @detail   当前部门tab未日期
-   * @return   {[type]}   [description]
-   */
-  unsettabCateCylindricalGetList() {
-    this.tabCylindricalCateIndex = ''
   }
   /**
    * @Author   小书包
@@ -440,6 +391,38 @@ export default class pageStatisticsCourse extends Vue {
       params.end_date = this.getLineDataByDate[1]
     }
     this.getUserRelativeStatisticsListApi(params).then(() => {newBlank.close()})
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   日期筛选
+   * @return   {[type]}   [description]
+   */
+  changeLineDataByDate() {
+    if(this.getLineDataByDate[0] === this.getLineDataByDate[1]) {
+      this.getLineDataByDate = null
+      this.$message.error('结束日期必须大于开始日期~')
+    } else {
+      this.tabLineCateIndex = ''
+      this.getLineLists({start_date: this.tabLineCateIndex[0], end_date: this.tabLineCateIndex[1]})
+    }
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   日期筛选
+   * @return   {[type]}   [description]
+   */
+  changeCylindricalDataByDate() {
+    if(this.getLineDataByDate[0] === this.getLineDataByDate[1]) {
+      this.getLineDataByDate = null
+      this.$message.error('结束日期必须大于开始日期~')
+    } else {
+      this.tabCylindricalCateIndex = ''
+      this.getCateDepartmentLineLists({start_date: this.getCylindricalDataByDate[0], end_date: this.getCylindricalDataByDate[1]})
+    }
   }
 }
 </script>

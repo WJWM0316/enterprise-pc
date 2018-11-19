@@ -55,11 +55,11 @@
           @click="tabCateLineGetList('yesterday')">昨天</li> -->
         <li
           class="item"
-          :class="{'active-picker-date': tabLineCateIndex === ''}"
-          @click="unsetTabCateLineGetList">
+          :class="{'active-picker-date': tabLineCateIndex === ''}">
           <el-date-picker
             v-model="getLineDataByDate"
             :picker-options="pickerOptions"
+            @change="changeLineDataByDate"
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
@@ -97,7 +97,8 @@ import { getAccessToken } from '@/store/cacheService'
     getLineDataByDate: {
       handler(list) {
         if(list) {
-          this.getLineLists({start_date: list[0], end_date: list[1], type: this.tabType})
+          // this.tabLineCateIndex = ''
+          // this.getLineLists({start_date: list[0], end_date: list[1], type: this.tabType})
         }
       },
       immediate: true
@@ -132,7 +133,7 @@ export default class pageStatisticsCourse extends Vue {
       let curDate = (new Date()).getTime()
       let two = 60 * 24 * 3600 * 1000
       let twoMonths = curDate - two
-      return time.getTime() > Date.now() || time.getTime() < twoMonths
+      return time.getTime() > Date.now() - 8.64e7 || time.getTime() < twoMonths
     }
   }
 	initEchartLine(key, value) {
@@ -227,15 +228,6 @@ export default class pageStatisticsCourse extends Vue {
   /**
    * @Author   小书包
    * @DateTime 2018-11-07
-   * @detail   当前tab未日期
-   * @return   {[type]}   [description]
-   */
-  unsetTabCateLineGetList() {
-    this.tabLineCateIndex = ''
-  }
-  /**
-   * @Author   小书包
-   * @DateTime 2018-11-07
    * @detail   对列表数据进行分类
    * @return   {[type]}        [description]
    */
@@ -282,6 +274,22 @@ export default class pageStatisticsCourse extends Vue {
           })
           this.initEchartLine(key, value)
         })
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   日期筛选
+   * @return   {[type]}   [description]
+   */
+  changeLineDataByDate() {
+    if(this.getLineDataByDate[0] === this.getLineDataByDate[1]) {
+      this.getLineDataByDate = null
+      this.$message.error('结束日期必须大于开始日期~')
+    } else {
+      this.tabLineCateIndex = ''
+      this.getLineLists({start_date: this.getLineDataByDate[0], end_date: this.getLineDataByDate[1]})
+    }
   }
 }
 </script>
