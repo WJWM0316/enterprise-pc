@@ -87,7 +87,7 @@
       <div id="echart-pink1" class="echart-pink1"></div>
     </div>
     <div style="margin-top: 50px;background: white;">
-      <div id="echart-test" style="height: 800px;"></div>
+      <div id="echart-test" style="height: 500px;"></div>
     </div>
   </div>
 </template>
@@ -297,46 +297,34 @@ export default class pageStatisticsCourse extends Vue {
     const myChart = echarts.init(document.getElementById('echart-pink1'))
     myChart.setOption(option, true)
   }
-  test123() {
+  test123(key, value) {
     const option = {
-      title: {
-          text: '世界人口总量',
-          subtext: '数据来自网络'
-      },
       tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-              type: 'shadow'
-          }
-      },
-      legend: {
-          data: ['2011年', '2012年']
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
       },
       grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+        left: '0%',
+        right: '0%',
+        bottom: '0%',
+        top: '2%',
+        containLabel: true
       },
       xAxis: {
-          type: 'value',
-          boundaryGap: [0, 0.01]
+        type: 'value',
+        boundaryGap: [0, 0.01]
       },
       yAxis: {
-          type: 'category',
-          data: ['巴西','印尼','美国','印度','中国','世界人口(万)']
+        type: 'category',
+        data: key
       },
       series: [
-          {
-              name: '2011年',
-              type: 'bar',
-              data: [18203, 23489, 29034, 104970, 131744, 630230]
-          },
-          {
-              name: '2012年',
-              type: 'bar',
-              data: [19325, 23438, 31000, 121594, 134141, 681807]
-          }
+        {
+          type: 'bar',
+          data: value
+        }
       ]
     }
     const myChart = echarts.init(document.getElementById('echart-test'))
@@ -414,6 +402,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           })
           this.initEchartCylindrical(key, value)
+          this.test123(key, value)
         })
   }
   /**
@@ -451,10 +440,6 @@ export default class pageStatisticsCourse extends Vue {
       params.end_date = this.getLineDataByDate[1]
     }
     this.getUserRelativeStatisticsListApi(params).then(() => {newBlank.close()})
-  }
-
-  mounted() {
-    this.test123()
   }
 }
 </script>
