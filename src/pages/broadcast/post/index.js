@@ -50,7 +50,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateAllMemberStatus',
       'removeRepeatMember',
       'addSelfTutorAndGroupList',
-      'activeSelfTutorAndGroupSomeItem'
+      'activeSelfTutorAndGroupSomeItem',
+      'searchSomeMember',
+      'changeMemberLists'
     ])
   },
   computed: {
@@ -316,8 +318,9 @@ export default class BroadcastPost extends Vue {
     } else {
       params.selectAll = 2
     }
-    this.getMenberListsApi(params)
+    this.searchSomeMember(params)
         .then(() => {
+          this.changeMemberLists({list: 'searchSomeMemberLists'})
           this.searchField = ''
         })
   }
@@ -385,6 +388,7 @@ export default class BroadcastPost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({ list })
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateAllGroupListStatus({bool: false})
@@ -403,6 +407,7 @@ export default class BroadcastPost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({ list })
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.setSelfDefinedGroup()
         this.updateMenberListsAllApi({bool: false})

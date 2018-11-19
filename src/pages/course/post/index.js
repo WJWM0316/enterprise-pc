@@ -49,7 +49,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateAllMemberStatus',
       'removeRepeatMember',
       'addSelfTutorAndGroupList',
-      'activeSelfTutorAndGroupSomeItem'
+      'activeSelfTutorAndGroupSomeItem',
+      'searchSomeMember',
+      'changeMemberLists'
     ])
   },
   computed: {
@@ -203,7 +205,8 @@ export default class CoursePost extends Vue {
     confirmText: '提交',
     currentModalName: '',
     type: 'confirm',
-    editType: 'tutor'
+    editType: 'tutor',
+    isSearch: false
   }
 
   // 默认提交表单按钮可以点击
@@ -333,13 +336,15 @@ export default class CoursePost extends Vue {
     } else {
       params.selectAll = 2
     }
-    this.getMenberListsApi(params)
+    this.models.isSearch = true
+    this.searchSomeMember(params)
         .then(() => {
+          this.changeMemberLists({list: 'searchSomeMemberLists'})
           this.ownerUidName = ''
-          if(this.menberLists.length>0){
-              this.searchResult[reaultName] = false
-          }else {
-              this.searchResult[reaultName] = true
+          if(this.menberLists.length > 0){
+            this.searchResult[reaultName] = false
+          } else {
+            this.searchResult[reaultName] = true
           }
         })
   }
@@ -411,6 +416,7 @@ export default class CoursePost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({ list })
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.setSelfDefinedGroup()
@@ -429,6 +435,7 @@ export default class CoursePost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({ list })
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.setSelfDefinedGroup()

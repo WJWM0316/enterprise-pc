@@ -49,11 +49,12 @@ export const CURRENT_ROUTE_NAME = 'commom/CURRENT_ROUTE_NAME'
 export const REMOVE_REPEAT_MEMBER = 'commom/REMOVE_REPEAT_MEMBER'
 export const ADD_SELF_TUTOR_AND_GROUP_LIST = 'commom/ADD_SELF_TUTOR_AND_GROUP_LIST'
 export const ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM = 'commom/ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM'
+export const SEARCH_SOME_MENBER = 'commom/SEARCH_SOME_MENBER'
+export const CHANE_MEMBER_LIST = 'commom/CHANE_MEMBER_LIST'
 
 // 导师模块
 export const GET_TUTOR_LIST = 'tutor/GET_TUTOR_LIST'
 export const GET_TUTOR_OUTER_LIST = 'tutor/GET_TUTOR_OUTER_LIST'
-
 
 // 直播模块
 export const GET_CATEGORY_LIST = 'broadcast/GET_CATEGORY_LIST'
@@ -65,7 +66,6 @@ export const GET_LIVE_MENBER_LIST = 'broadcast/GET_LIVE_MENBER_LIST'
 export const GET_LIVE_INVISIBLE_LIST = 'broadcast/GET_LIVE_INVISIBLE_LIST'
 export const GET_LIVE_LIST = 'broadcast/GET_LIVE_LIST'
 export const GET_LIVE_PROBLEM_LIST = 'broadcast/GET_LIVE_PROBLEM_LIST'
-
 
 // 课程模块
 export const GET_COURSE_LISTS = 'course/GET_COURSE_LISTS'
@@ -79,7 +79,6 @@ export const GET_COURSE_CATAGORY = 'course/GET_COURSE_CATAGORY'
 export const GET_COMPANY_INFOS = 'common/GET_COMPANY_INFOS'
 export const GET_USERS_LISTS = 'dashboard/GET_USERS_LISTS'
 export const GET_DESKINFOS = 'dashboard/GET_DESKINFOS'
-
 
 // 用户模块
 export const GET_PERSONAL_INFO_LESSONS = 'user/GET_PERSONAL_INFO_LESSONS'

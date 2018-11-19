@@ -30,7 +30,9 @@ import {
   CURRENT_ROUTE_NAME,
   REMOVE_REPEAT_MEMBER,
   ADD_SELF_TUTOR_AND_GROUP_LIST,
-  ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM
+  ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM,
+  SEARCH_SOME_MENBER,
+  CHANE_MEMBER_LIST
 } from '../mutation-types'
 
 import {
@@ -64,7 +66,8 @@ const state = {
   companyInfo: {},
   memberDynamics: {},
   pageName: '',
-  selfTutorLists: []
+  selfTutorLists: [],
+  searchSomeMemberLists: []
 }
 
 const mutations = {
@@ -245,6 +248,18 @@ const mutations = {
   },
   [ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM](state, options) {
     state.selfTutorLists.map(field => field.active = field.groupId === options.groupId ? true : false)
+  },
+  // 获取成员列表
+  [SEARCH_SOME_MENBER] (state, data) {
+    data.map(field => {
+      field.active = false
+      field.selfGroup = []
+      if(field.group) field.group.map(val => field.selfGroup.push(val.groupId))
+    })
+    state.searchSomeMemberLists = data
+  },
+  [CHANE_MEMBER_LIST](state, options) {
+    state.menberLists = state[options.list]
   }
 }
 
@@ -261,7 +276,8 @@ const getters = {
   memberDynamics: state => state.memberDynamics,
   hasMemberGroupList: state => state.hasMemberGroupList,
   pageName: state => state.pageName,
-  selfTutorLists: state => state.selfTutorLists
+  selfTutorLists: state => state.selfTutorLists,
+  searchSomeMemberLists: state => state.searchSomeMemberLists
 }
 
 const actions = {
@@ -511,7 +527,6 @@ const actions = {
   getMemberCheckNewDynamicsApi(store, params) {
     return getMemberCheckNewDynamicsApi(params)
       .then(res => {
-        // store.commit(GET_MENBER_DYNAMICS_LIST, res.data.data)
         return res
       })
       .catch(error => {
@@ -595,6 +610,31 @@ const actions = {
   },
   activeSelfTutorAndGroupSomeItem(store, options) {
     store.commit(ACTIVE_SELF_TUTOR_AND_GROUP_SOME_ITEM, options)
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   成员搜索
+   * @return   {[type]}   [description]
+   */
+  searchSomeMember(store, params) {
+    return getMenberListsApi(params)
+      .then(res => {
+        store.commit(SEARCH_SOME_MENBER, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   修改成员列表
+   * @return   {[type]}         [description]
+   */
+  changeMemberLists(store, options) {
+    store.commit(CHANE_MEMBER_LIST, options)
   }
 }
 

@@ -41,7 +41,9 @@ import MyCropper from 'COMPONENTS/cropper/index.vue'
       'updateSingleMemberStatus',
       'classifyMemberListsByGroupIdApi',
       'switchCheckGroupListsApi',
-      'removeRepeatMember'
+      'removeRepeatMember',
+      'searchSomeMember',
+      'changeMemberLists'
     ])
   },
   computed: {
@@ -307,6 +309,7 @@ export default class WorkZonePost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({list})
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateAllGroupListStatus({bool: false})
@@ -330,6 +333,7 @@ export default class WorkZonePost extends Vue {
         }
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({list})
+        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateAllGroupListStatus({bool: false})
