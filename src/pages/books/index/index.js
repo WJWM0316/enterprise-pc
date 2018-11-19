@@ -79,21 +79,6 @@ export default class booksList extends Vue {
       align: 'left',
       showTips: 'yes',
       width: '10%',
-      filteredValue:
-      [ 
-        {
-          label: '全部',
-          value: 'status-all'
-        },
-        {
-          label: '上线',
-          value: 'status-0'
-        },
-        {
-          label: '下线',
-          value: 'status-1'
-        }
-      ],
       filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
@@ -136,37 +121,30 @@ export default class booksList extends Vue {
     list: [],
     total: 0
   }
-  course_id = ''
   /**
    * 初始化表单、分页页面数据
    */
 
-  create(){
-  }
-
-  init() {
-
-    this.form = {
-      title: '',
-      status: '',
-      id: '',
-    }
-    this.form = Object.assign(this.form, this.$route.query || {})
-    this.course_id = this.$route.query.course_id
-    this.getLists()
+  created() {
     this.getTagsLists()
   }
 
-  getTagsLists(){
+  init() {
+    this.form = {}
+    this.form = Object.assign(this.form, this.$route.query)
+    this.getLists()
+  }
+
+  getTagsLists() {
     this.fields[4].filteredValue = [{
       label: '全部',
-      value: 'id-all'
+      value: 'tag_id-all'
     }]
     getBooksFirstListApi().then(res=>{
       res.data.data.map(item=>{
         this.fields[4].filteredValue.push({
           label: item.tagName,
-          value:`id-${item.id}`
+          value:`tag_id-${item.id}`
         })
       })
     })
@@ -178,26 +156,23 @@ export default class booksList extends Vue {
   getLists({ page, pageSize } = {}) {
     let param = {
       page: page || this.form.page || 1,
-      count: this.zikeDefaultPageSize,
-      status: this.form.status,
-      tag_id: this.form.id,
-      title: this.form.title
+      count: this.zikeDefaultPageSize
     }
-
-    if(param.tag_id === 'all'){
-      param.tag_id = ''
+    if(this.form.tag_id) {
+      param.tag_id = this.form.tag_id
+      param.page = this.form.page ? this.form.page : 1
     }
-
-    if(param.status=='all'){
-      param.status = ''
+    if(this.form.title) {
+      param.title = this.form.title
+      param.page = this.form.page ? this.form.page : 1
     }
-
     //排序判断用
     this.form.page = param.page
     getBooksListApi(param).then(res=>{
       this.bookList = {
         list: res.data.data,
-        total: res.data.meta.total
+        total: res.data.meta.total,
+        page: res.data.meta.currentPage
       }
     })
   }
@@ -209,37 +184,30 @@ export default class booksList extends Vue {
   }
 
   //书籍更新状态 0上线 1下线
-  setBookStatus(status,id){
-    setBooksStatusApi({status,id}).then(res=>{
-      this.form = {
-        title: '',
-        status: '',
-        id: '',
-        page: 1,
-      }
-
-      this.model.show = false
-      this.init()
-      this.$message({
-        message: res.data.msg?res.data.msg:'成功',
-        type: 'success'
+  setBookStatus(status,id) {
+    setBooksStatusApi({status, id})
+      .then(res=>{
+        this.model.show = false
+        this.getLists(this.form)
+        this.$message({
+          message: res.data.msg ? res.data.msg : '成功',
+          type: 'success'
+        })
       })
-    }).catch(error => {
-      this.$message.error(err.data.msg);
-      return Promise.reject(error.data || {})
-    })
+      .catch(error => {
+        this.$message.error(err.data.msg)
+        return Promise.reject(error.data || {})
+      })
 
   }
 
   confirm(){
-    this.setBookStatus(this.model.status,this.model.id)
+    this.setBookStatus(this.model.status, this.model.id)
   }
 
   todoAction(type, item) {
-    console.log(type,item)
     this.model.show = true
     this.model.id = item.id
-
     switch(type) {
       case 'up':
         this.model.status = 0

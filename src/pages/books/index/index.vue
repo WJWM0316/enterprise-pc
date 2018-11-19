@@ -17,6 +17,7 @@
     :list="bookList.list"
     :fields="fields"
     :total="bookList.total"
+    :page="bookList.page"
 
     >
       <template scope="props" slot="columns">
