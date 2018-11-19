@@ -86,9 +86,9 @@
       </ul>
       <div id="echart-pink1" class="echart-pink1"></div>
     </div>
-    <div style="margin-top: 50px;background: white;">
+    <!-- <div style="margin-top: 50px;background: white;">
       <div id="echart-test" style="height: 400px;"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -402,7 +402,7 @@ export default class pageStatisticsCourse extends Vue {
             }
           })
           this.initEchartCylindrical(key, value)
-          this.test123(key, value)
+          // this.test123(key, value)
         })
   }
   /**
