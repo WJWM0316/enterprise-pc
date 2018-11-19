@@ -271,8 +271,9 @@ export default class WorkZonePost extends Vue {
     } else {
       params.selectAll = 2
     }
-    this.getMenberListsApi(params)
+    this.searchSomeMember(params)
         .then(() => {
+          this.changeMemberLists({list: 'searchSomeMemberLists'})
           this.ownerUidName = ''
         })
   }
@@ -307,9 +308,9 @@ export default class WorkZonePost extends Vue {
         if(this.form.hits.tem.length > 0) {
           list =[...list, ...this.form.hits.value.split(',')]
         }
+        this.changeMemberLists({list: 'memberLists'})
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({list})
-        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateAllGroupListStatus({bool: false})
@@ -331,9 +332,9 @@ export default class WorkZonePost extends Vue {
         if(this.form.members.tem.length > 0) {
           list =[...list, ...this.form.members.value.split(',')]
         }
+        this.changeMemberLists({list: 'memberLists'})
         // 从素有成员中去除导师和不可见学员
         this.removeRepeatMember({list})
-        this.changeMemberLists({list: 'memberLists'})
         this.models.show = true
         this.updateMenberListsAllApi({bool: false})
         this.updateAllGroupListStatus({bool: false})
@@ -466,21 +467,33 @@ export default class WorkZonePost extends Vue {
     this.ownerUidName = ''
     let list = []
     list = this.menberLists.filter(field => field.active)
-    this.form[`check_${type}`] = this.form[type].value
-    this.form[type].noEdit.value = this.form[type].value
-    this.form[type].noEdit.tem = this.form[type].tem
-    this.form[type].noEdit.show = this.form[type].show
-    this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
     switch(type) {
       case 'members':
+        // 去除和不可见成员重复的人员
         if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]') {
           list = list.filter(field => !this.form.hits.value.split(',').includes(String(field.uid)))
         }
+        // 去除与圈主重复的成员
         list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
+
+        if(this.form.members.noEdit.value.length) {
+          this.form.members.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
         })
+
+        // 重新清空选择
+        if(!list.length) {
+          data.show = false
+          data.tem = []
+          data.value = []
+        }
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.members = Object.assign(this.form.members, data)
@@ -489,14 +502,29 @@ export default class WorkZonePost extends Vue {
         this.form.check_members = this.form.members.value
         break
       case 'hits':
+        // 去除和必修成员重复的人员
         if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]') {
           list = list.filter(field => !this.form.members.value.split(',').includes(String(field.uid)))
         }
+        // 必修成员不能和导师重复
         list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
+
+        if(this.form.hits.noEdit.value.length) {
+          this.form.hits.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
         })
+        // 重新清空选择
+        if(!list.length) {
+          data.show = false
+          data.tem = []
+          data.value = []
+        }
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.hits = Object.assign(this.form.hits, data)
@@ -504,6 +532,11 @@ export default class WorkZonePost extends Vue {
         delete this.form.hits.noEdit.noEdit
         break
       default:
+        this.form[`check_${type}`] = this.form[type].value
+        this.form[type].noEdit.value = this.form[type].value
+        this.form[type].noEdit.tem = this.form[type].tem
+        this.form[type].noEdit.show = this.form[type].show
+        this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
         break   
     }
     if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
@@ -678,6 +711,59 @@ export default class WorkZonePost extends Vue {
   multipleSelection(type, item, index) {
     const data = { show: true, tem: [], value: []}
     this.updateMenberListsApi({ index })
+    this.memberAssociationGroup(item)
+    switch(type) {
+      case 'members':
+        if(this.form.members.noEdit.value.length) {
+          this.form.members.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+        // if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
+        //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        // if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(this.form.owner_uid.value)) {
+        //   this.$alert('必修学员和圈主重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        break
+      case 'hits':
+        if(this.form.hits.noEdit.value.length) {
+          this.form.hits.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+        // if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
+        //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        // if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(this.form.owner_uid.value)) {
+        //   this.$alert('不可见学员和圈主重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        break
+      default:
+        break
+    }
     this.menberLists.map(field => {
       if(field.active) {
         data.value.push(field.uid)
@@ -686,48 +772,7 @@ export default class WorkZonePost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
-    this.form[type].noEdit = data
-    this.memberAssociationGroup(item)
-    switch(type) {
-      case 'members':
-        if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
-          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(this.form.owner_uid.value)) {
-          this.$alert('必修学员和圈主重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        break
-      case 'hits':
-        if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
-          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        if(this.form.owner_uid.value && Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(this.form.owner_uid.value)) {
-          this.$alert('不可见学员和圈主重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        break
-      default:
-        break
-    }
+    // this.form[type].noEdit = data
   }
 
   /**

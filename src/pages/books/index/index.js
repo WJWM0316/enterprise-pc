@@ -6,7 +6,7 @@ import { getBooksListApi, setBooksStatusApi, getBooksFirstListApi } from 'API/wo
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
 @Component({
-  name: 'lighthouse-list',
+  name: 'books-list',
   methods: {
   },
   computed: {
@@ -151,7 +151,6 @@ export default class booksList extends Vue {
       status: '',
       id: '',
     }
-    console.log(this.form, this.$route.query)
     this.form = Object.assign(this.form, this.$route.query || {})
     this.course_id = this.$route.query.course_id
     this.getLists()
@@ -185,8 +184,7 @@ export default class booksList extends Vue {
       title: this.form.title
     }
 
-    console.log(param.page)
-    if(param.tag_id=='all'){
+    if(param.tag_id === 'all'){
       param.tag_id = ''
     }
 

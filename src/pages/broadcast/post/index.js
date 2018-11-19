@@ -561,21 +561,33 @@ export default class BroadcastPost extends Vue {
     this.models.show = false
     let list = []
     list = this.menberLists.filter(field => field.active)
-    this.form[`check_${type}`] = this.form[type].value
-    this.form[type].noEdit.value = this.form[type].value
-    this.form[type].noEdit.tem = this.form[type].tem
-    this.form[type].noEdit.show = this.form[type].show
-    this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
     switch(type) {
       case 'memberList':
+         // 去除和不可见成员重复的人员
         if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]') {
           list = list.filter(field => !this.form.invisibleList.value.split(',').includes(String(field.uid)))
         }
+        // 去除与导师重复的成员
         list = list.filter(field => field.uid !== Number(this.form.uid.value))
+
+        if(this.form.memberList.noEdit.value.length) {
+          this.form.memberList.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
         })
+
+        // 重新清空选择
+        if(!list.length) {
+          data.show = false
+          data.tem = []
+          data.value = []
+        }
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.memberList = Object.assign(this.form.memberList, data)
@@ -583,14 +595,30 @@ export default class BroadcastPost extends Vue {
         delete this.form.memberList.noEdit.noEdit
         break
       case 'invisibleList':
+        // 去除和必修成员重复的人员
         if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]') {
           list = list.filter(field => !this.form.memberList.value.split(',').includes(String(field.uid)))
         }
+        // 必修成员不能和导师重复
         list = list.filter(field => field.uid !== Number(this.form.uid.value))
+
+        if(this.form.invisibleList.noEdit.value.length) {
+          this.form.invisibleList.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
         })
+        // 重新清空选择
+        if(!list.length) {
+          data.show = false
+          data.tem = []
+          data.value = []
+        }
         data.value = data.value.join(',')
         data.show = list.length > 0 ? true : false
         this.form.invisibleList = Object.assign(this.form.invisibleList, data)
@@ -598,6 +626,11 @@ export default class BroadcastPost extends Vue {
         delete this.form.invisibleList.noEdit.noEdit
         break
       default:
+        this.form[`check_${type}`] = this.form[type].value
+        this.form[type].noEdit.value = this.form[type].value
+        this.form[type].noEdit.tem = this.form[type].tem
+        this.form[type].noEdit.show = this.form[type].show
+        this.form[type].show = Object.prototype.toString.call(this.form[type].value) !== '[object Array]' && this.form[type].value ? true : false
         break   
     }
     if(this.rules[`check_${type}`]) this.$refs.form.validateField(`check_${type}`)
@@ -904,6 +937,59 @@ export default class BroadcastPost extends Vue {
   multipleSelection(type, item, index) {
     const data = { show: true, tem: [], value: [] }
     this.updateMenberListsApi({ index })
+    this.memberAssociationGroup(item)
+    switch(type) {
+      case 'memberList':
+        if(this.form.memberList.noEdit.value.length) {
+          this.form.memberList.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+        // if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {
+        //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        // if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(this.form.uid.value)) {
+        //   this.$alert('必修学员和导师重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        break
+      case 'invisibleList':
+        if(this.form.invisibleList.noEdit.value.length) {
+          this.form.invisibleList.noEdit.tem.map(field => {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          })
+        }
+        // if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
+        //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        // if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(this.form.uid.value)) {
+        //   this.$alert('必修学员和导师重复选择', '错误提醒', {
+        //     confirmButtonText: '我知道了',
+        //     callback: action => {
+        //       this.updateMenberListsByIdApi({uid: item.uid})
+        //     }
+        //   })
+        // }
+        break
+      default:
+        break
+    }
     this.menberLists.map(field => {
       if(field.active) {
         data.value.push(field.uid)
@@ -912,47 +998,6 @@ export default class BroadcastPost extends Vue {
     })
     data.value = data.value.join(',')
     this.form[type] = Object.assign(this.form[type], data)
-    this.memberAssociationGroup(item)
-    switch(type) {
-      case 'memberList':
-        if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(String(item.uid))) {
-          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(this.form.uid.value)) {
-          this.$alert('必修学员和导师重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        break
-      case 'invisibleList':
-        if(Object.prototype.toString.call(this.form.memberList.value) !== '[object Array]' && this.form.memberList.value.split(',').includes(String(item.uid))) {
-          this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        if(Object.prototype.toString.call(this.form.invisibleList.value) !== '[object Array]' && this.form.invisibleList.value.split(',').includes(this.form.uid.value)) {
-          this.$alert('必修学员和导师重复选择', '错误提醒', {
-            confirmButtonText: '我知道了',
-            callback: action => {
-              this.updateMenberListsByIdApi({uid: item.uid})
-            }
-          })
-        }
-        break
-      default:
-        break
-    }
   }
 
   /**
