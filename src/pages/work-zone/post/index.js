@@ -477,16 +477,16 @@ export default class WorkZonePost extends Vue {
         // 去除与圈主重复的成员
         list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
 
-        if(this.form.members.noEdit.value.length) {
-          this.form.members.noEdit.tem.map(field => {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          })
-        }
-
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
+        })
+
+        this.form.members.noEdit.tem.map(field => {
+          if(!this.form.members.value.includes(field.uid)) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
         })
 
         // 重新清空选择
@@ -510,15 +510,16 @@ export default class WorkZonePost extends Vue {
         // 必修成员不能和导师重复
         list = list.filter(field => field.uid !== Number(this.form.owner_uid.value))
 
-        if(this.form.hits.noEdit.value.length) {
-          this.form.hits.noEdit.tem.map(field => {
-            data.value.push(field.uid)
-            data.tem.push(field)
-          })
-        }
         list.map(field => {
           data.value.push(field.uid)
           data.tem.push(field)
+        })
+
+        this.form.hits.noEdit.tem.map(field => {
+          if(!this.form.hits.value.includes(field.uid)) {
+            data.value.push(field.uid)
+            data.tem.push(field)
+          }
         })
         // 重新清空选择
         if(!list.length) {
@@ -717,12 +718,12 @@ export default class WorkZonePost extends Vue {
     this.memberAssociationGroup(item)
     switch(type) {
       case 'members':
-        if(this.form.members.noEdit.value.length) {
-          this.form.members.noEdit.tem.map(field => {
+        this.form.members.noEdit.tem.map(field => {
+          if(!this.form.members.value.includes(field.uid)) {
             data.value.push(field.uid)
             data.tem.push(field)
-          })
-        }
+          }
+        })
         // if(Object.prototype.toString.call(this.form.hits.value) !== '[object Array]' && this.form.hits.value.split(',').includes(String(item.uid))) {
         //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
         //     confirmButtonText: '我知道了',
@@ -741,12 +742,12 @@ export default class WorkZonePost extends Vue {
         // }
         break
       case 'hits':
-        if(this.form.hits.noEdit.value.length) {
-          this.form.hits.noEdit.tem.map(field => {
+        this.form.hits.noEdit.tem.map(field => {
+          if(!this.form.hits.value.includes(field.uid)) {
             data.value.push(field.uid)
             data.tem.push(field)
-          })
-        }
+          }
+        })
         // if(Object.prototype.toString.call(this.form.members.value) !== '[object Array]' && this.form.members.value.split(',').includes(String(item.uid))) {
         //   this.$alert('必修学员和不可见学员重复选择', '错误提醒', {
         //     confirmButtonText: '我知道了',
