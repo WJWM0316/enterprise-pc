@@ -174,7 +174,7 @@ export default class booksList extends Vue {
       count: this.zikeDefaultPageSize
     }
     if(this.form.tag_id) {
-      param.tag_id = this.form.tag_id
+      param.tag_id = this.form.tag_id === 'all' ? '' : this.form.tag_id
       param.page = this.form.page ? this.form.page : 1
     }
     if(this.form.title) {
