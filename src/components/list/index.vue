@@ -162,6 +162,7 @@ export default ComponentTableList
       border:1px solid rgba(219,219,219,1);
       height: 30px;
       line-height: 30px;
+      padding: 0 10px;
     }
     .total {
       font-size:12px;

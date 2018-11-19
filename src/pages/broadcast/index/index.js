@@ -125,9 +125,7 @@ export default class BroadcastIndex extends Vue {
   }
 
   init() {
-    this.form = {
-      liveName: ''
-    }
+    this.form = {}
     this.form = Object.assign(this.form, this.$route.query)
     this.getLiveLists()
   }
@@ -183,6 +181,7 @@ export default class BroadcastIndex extends Vue {
    * @return   {[type]}   [description]
    */
   handleSearch() {
+    this.form.page = 1
     this.setPathQuery(this.form)
   }
 
