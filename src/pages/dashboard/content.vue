@@ -108,7 +108,7 @@
 					</div>
 					<div class="text-content">
 						<h2>{{desktopNewestCourseInfo.title}}</h2>
-						<p>学习人数：{{desktopNewestCourseInfo.peopleCount}}</p>
+						<p class="number">学习人数：{{desktopNewestCourseInfo.peopleCount}}</p>
 						<p>完成打卡：{{desktopNewestCourseInfo.sessionCardCount}}</p>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 					</div>
 					<div class="text-content">
 						<h2>{{desktopNewestLiveInfo.name}}</h2>
-						<p>学习人数：{{desktopNewestLiveInfo.peopleCount}}</p>
+						<p class="number">学习人数：{{desktopNewestLiveInfo.peopleCount}}</p>
 						<p class="punch" v-if="desktopNewestLiveInfo.status === 1">开始时间：{{desktopNewestLiveInfo.expectedStartTime * 1000 | date}}</p>
 						<p class="doing" v-if="desktopNewestLiveInfo.status === 2">正在直播</p>
 						<p class="end" v-if="desktopNewestLiveInfo.status === 3">直播已结束</p>
@@ -501,11 +501,11 @@ export default class pageDashboard extends Vue {
 		border-radius:2px;
 		> div {
 			flex-grow: 1;
-			height:150px;
 			background:rgba(255,255,255,1);
 			box-shadow:0px 2px 8px 0px rgba(29,45,53,0.06);
 			border-radius:2px;
-			padding: 0 20px;
+			padding: 25px 20px;
+			height: 150px;
 			width: calc(50% - 10px);
 			box-sizing: border-box;
 			float: left;
@@ -522,7 +522,7 @@ export default class pageDashboard extends Vue {
 			color:rgba(102,102,102,1);
 			position: relative;
 			text-indent: 19px;
-			margin: 20px 0;
+			margin-bottom: 20px;
 			line-height: 1;
 			cursor: pointer;
 			&:before {
@@ -540,7 +540,6 @@ export default class pageDashboard extends Vue {
 		}
 		.card-content{
 			overflow: hidden;
-			display: flex;
 			.end {
 				color: #666;
 			}
@@ -557,14 +556,15 @@ export default class pageDashboard extends Vue {
 			margin-right: 16px;
 			position: relative;
 			cursor: pointer;
+			float: left;
 			img{
 				width: 100%;
 				height: 100%;
 			}
 		}
 		.text-content {
-			flex-grow: 1;
 			position: relative;
+			margin-left: 80px;
 		}
 		h2 {
 			font-size:16px;
@@ -588,10 +588,14 @@ export default class pageDashboard extends Vue {
 			color:rgba(102,102,102,1);
 			margin-top: 10px;
 		}
+		.number {
+			margin-top: 15px;
+		}
 		.no-data {
 			font-size:16px;
 			font-weight:400;
 			color:rgba(53,64,72,1);
+			margin-left: -80px;
 		}
 		.btn-box {
 			text-align: right;
@@ -600,7 +604,7 @@ export default class pageDashboard extends Vue {
 	}
 	.member-dynamics {
 		background: #fff;
-		padding: 20px;
+		padding: 25px 20px;
 		margin-top: 22px;
 		border-radius: 2px;
 		overflow: hidden;
