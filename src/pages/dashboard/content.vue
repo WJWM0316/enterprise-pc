@@ -428,20 +428,20 @@ export default class pageDashboard extends Vue {
 	}
 	.actions-flex-box{
 		display: flex;
-		margin-top: 22px;
+		margin-top: 16px;
 		overflow: hidden;
 		background:rgba(255,255,255,1);
 		box-shadow:0px 2px 8px 0px rgba(29,45,53,0.06);
 		border-radius:2px;
-		padding: 12px;
+		padding: 12px 0px 12px 12px;
 		> div {
 			flex-grow: 1;
 			position: relative;
 			box-sizing: border-box;
-			padding: 0 30px;
+			padding: 0 0px;
 			line-height: 56px;
 			cursor: pointer;
-			text-align: center;
+			text-align: left;
 			&:after{
 				content: '';
 				display: block;
@@ -452,6 +452,11 @@ export default class pageDashboard extends Vue {
 				right: 0;
 				width: 1px;
 				background: rgba(220,220,220,1);
+			};
+			&:first-child{
+				i {
+					margin-left: 15px;
+				}
 			};
 			&:last-child{
 				&:after{
@@ -477,6 +482,7 @@ export default class pageDashboard extends Vue {
 			display: inline-block;
 			vertical-align: middle;
 			margin-right: 10px;
+			margin-left: 30px;
 		}
 		.icon-add-menber {
 			background: url('~IMAGES/pc_home_btn_add@3x.png') no-repeat center center;
@@ -496,7 +502,7 @@ export default class pageDashboard extends Vue {
 		}
 	}
 	.notice-flex-box{
-		margin-top: 22px;
+		margin-top: 16px;
 		overflow: hidden;
 		border-radius:2px;
 		> div {
@@ -506,14 +512,14 @@ export default class pageDashboard extends Vue {
 			border-radius:2px;
 			padding: 25px 20px;
 			height: 150px;
-			width: calc(50% - 10px);
+			width: calc(50% - 7px);
 			box-sizing: border-box;
 			float: left;
 			&:first-child{
-				margin-right:10px;
+				margin-right:7px;
 			};
 			&:last-child{
-				margin-left:10px;
+				margin-left:7px;
 			};
 		}
 		.card-header {
@@ -605,7 +611,7 @@ export default class pageDashboard extends Vue {
 	.member-dynamics {
 		background: #fff;
 		padding: 25px 20px;
-		margin-top: 22px;
+		margin-top: 16px;
 		border-radius: 2px;
 		overflow: hidden;
 		.member-dynamics-header {

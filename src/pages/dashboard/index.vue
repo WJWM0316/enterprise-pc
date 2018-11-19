@@ -25,7 +25,7 @@ export default class pageDashboard extends Vue {}
 	display: flex;
 	.left-content {
 		flex-grow: 1;
-		margin-right: 22px;
+		margin-right: 20px;
 	}
 }
 </style>
