@@ -402,7 +402,7 @@ export default class pageStatisticsCourse extends Vue {
   changeLineDataByDate() {
     if(this.getLineDataByDate[0] === this.getLineDataByDate[1]) {
       this.getLineDataByDate = null
-      this.$message.error('结束日期必须大于开始日期~')
+      this.$message.error('开始日期不能与结束日期为同一日~')
     } else {
       this.tabLineCateIndex = ''
       this.getLineLists({start_date: this.tabLineCateIndex[0], end_date: this.tabLineCateIndex[1]})
@@ -416,9 +416,9 @@ export default class pageStatisticsCourse extends Vue {
    * @return   {[type]}   [description]
    */
   changeCylindricalDataByDate() {
-    if(this.getLineDataByDate[0] === this.getLineDataByDate[1]) {
-      this.getLineDataByDate = null
-      this.$message.error('结束日期必须大于开始日期~')
+    if(this.getCylindricalDataByDate[0] === this.getCylindricalDataByDate[1]) {
+      this.getCylindricalDataByDate = null
+      this.$message.error('开始日期不能与结束日期为同一日~')
     } else {
       this.tabCylindricalCateIndex = ''
       this.getCateDepartmentLineLists({start_date: this.getCylindricalDataByDate[0], end_date: this.getCylindricalDataByDate[1]})
