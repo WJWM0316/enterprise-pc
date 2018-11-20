@@ -344,7 +344,7 @@ export default class WorkZonePost extends Vue {
         }
         const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
-        this.submit(params)
+        // this.submit(params)
       }
     })
   }
@@ -364,6 +364,8 @@ export default class WorkZonePost extends Vue {
         }
       }
     })
+    formData['groupId'] = this.form.group_management.value
+    console.log(formData)
     return formData
   }
 
