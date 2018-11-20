@@ -231,8 +231,6 @@ export default class WorkZonePost extends Vue {
   //编辑时初始化
   editInitMsg(){
     getMemberInfoApi({id: this.user_id}).then(res=>{
-
-      console.log(res.data.data)
       let data = res.data.data
       this.form.name = data.realname
       this.form.avatarId = data.avatarId
@@ -257,7 +255,6 @@ export default class WorkZonePost extends Vue {
 
       this.form.groupId = ''
       if(data.group.length>0){
-        console.log('data.group',data.group)
         let ary = []
         data.group.map(item=>{
           ary.push(item.groupId)
@@ -335,7 +332,6 @@ export default class WorkZonePost extends Vue {
   // 检测是否可以提交
   checkSubmit() {
     this.$refs['form'].validate((valid) => {
-      console.log(this.form)
       if (valid) {
         // 给提交按钮加个loading
         this.submitBtnClick = !this.submitBtnClick
@@ -408,8 +404,6 @@ export default class WorkZonePost extends Vue {
    */
   confirm() {
     let name = `${this.selectType}_management`
-    console.log('confirm----->>>',name)
-
     this.form[name].show = this.form[name].value ? true : false
     this.models.show = false
     this.ownerUidName = ''
@@ -477,8 +471,9 @@ export default class WorkZonePost extends Vue {
 
   removeGroupCheck(type,index) {
     let name = `${type}_management`
-
-    const value = this.form[name].value.split(',').splice(index, 1)
+    const tem = this.form[name].value.split(',')
+    tem.splice(index, 1)
+    const value = tem
     this.form[name].tem.splice(index, 1)
     this.form[name].value = value.join(',')
     this.form[name].show = this.form[name].tem <= 0 ? false : true
@@ -492,7 +487,6 @@ export default class WorkZonePost extends Vue {
    */
   seleteGroup(index, key) {
     let name = `${this.selectType}_management`
-
     this.groupList[index].active = !this.groupList[index].active
     const data = { show: false, tem: [], value: [] }
     this.groupList.map((field) => {
