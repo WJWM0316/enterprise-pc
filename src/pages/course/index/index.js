@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
-import Cookies from 'js-cookie'
 
 @Component({
   name: 'course-list',
@@ -22,8 +21,7 @@ import Cookies from 'js-cookie'
     ...mapActions([
       'getCourseListsApi',
       'getCategoryListsApi',
-      'getDesktopInfosApi',
-      'loginApi'
+      'getDesktopInfosApi'
     ])
   },
   computed: {
@@ -100,28 +98,20 @@ export default class CourseList extends Vue {
   }
   init() {
     this.form = Object.assign(this.form, this.$route.query)
-    const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
-    this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
-        .then(() => {
-          this.getCourseList()
-        })
+    this.getCourseList()
   }
 
   created() {
-    const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
-    this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
+    this.getDesktopInfosApi()
+    this.getCategoryListsApi({default: 1})
         .then(() => {
-          this.getDesktopInfosApi()
-          this.getCategoryListsApi({default: 1})
-              .then(() => {
-                this.categoryList.map(field => {
-                  this.fields[2].filteredValue.push({
-                    label: field.categoryName,
-                    value: `category_id-${field.categoryId}`
-                  })
-                })
-                this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
-              })
+          this.categoryList.map(field => {
+            this.fields[2].filteredValue.push({
+              label: field.categoryName,
+              value: `category_id-${field.categoryId}`
+            })
+          })
+          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
         })
   }
   /**

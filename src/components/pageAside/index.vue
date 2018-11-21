@@ -9,8 +9,6 @@
           <li
             v-for="(item, index) in routes"
             :key="`item.name`+index"
-            v-if="item.meta.useNav"
-            :name="item.name"
             :class="{'active' : $route.meta.module === item.meta.module}">
               <router-link :to="{ name: item.name}"> <i :class="`zike-icon icon iconfont ${item.meta.icon}`"></i>  {{ item.title }}</router-link>
           </li>
@@ -26,32 +24,30 @@ import { routes } from '@/router/routes'
 
 @Component({
   name: 'page-asise',
-  methods: {
-    ...mapActions(['showMsg'])
-  },
   computed: {
     ...mapGetters([
       'userInfos'
     ])
+  },
+  watch: {
+    'userInfos.roles': {
+      handler(roles) {
+        const isContentManager = roles.some(field => field <= 3) && !roles.includes(1) && !roles.includes(2)
+        const contentManagerRoutes = routes.filter(route => route.meta.useNav && ['course', 'broadcast', 'work-zone'].includes(route.name))
+        // 付费路由
+        const officialRoute = routes.filter(route => route.meta.useNav)
+        // 试用路由
+        // const notOfficialRoute = routes.filter(route => route.meta.useNav && route.name !== 'books')
+        this.routes = contentManagerRoutes
+        // console.log(notOfficialRoute)
+        if(!isContentManager) this.routes = officialRoute
+      },
+      immediate: true
+    }
   }
 })
 export default class PageAside extends Vue {
-
-  // 侧边栏路由
   routes = null
-
-  init() {
-    const allowRoutes = ['course', 'broadcast', 'work-zone']
-    const filterRoute = routes.filter(route => route.meta.useNav && allowRoutes.includes(route.name))
-    const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
-    this.routes = filterRoute
-    if(!isContentManager) {
-      this.routes = routes
-    }
-  }
-  created() {
-    this.init()
-  }
 }
 </script>
 <style lang="scss" scoped>
