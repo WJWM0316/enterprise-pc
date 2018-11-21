@@ -545,7 +545,7 @@ export default class BroadcastPost extends Vue {
       this.form.isOnline = info.isOnline
       this.form.liveName = info.liveName
       this.form.intro = info.intro
-      this.form.editContent = info.editContent
+      this.form.editContent = info.intro
       this.form.groupList.value = this.form.groupList.value.join(',')
       this.form.groupList.noEdit.value = this.form.groupList.noEdit.value.join(',')
       this.form.check_groupList = this.form.groupList.value

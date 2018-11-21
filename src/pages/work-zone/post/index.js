@@ -446,7 +446,7 @@ export default class WorkZonePost extends Vue {
       })
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
-      this.form.editContent = jobCircleDetails.editContent
+      this.form.editContent = jobCircleDetails.content
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = String(jobCircleDetails.ownerUid)

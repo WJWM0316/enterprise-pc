@@ -572,7 +572,7 @@ export default class CoursePost extends Vue {
       this.form.id = courseDetail.id
       this.form.title = courseDetail.title
       this.form.intro = courseDetail.intro
-      this.form.editContent = courseDetail.editContent
+      this.form.editContent = courseDetail.intro
       this.form.sort = courseDetail.sort
       this.form.status = courseDetail.status === '上线' ? 1 : 0
       this.form.icon.value = courseDetail.icon

@@ -167,11 +167,11 @@ export default class WorkZonePost extends Vue {
         // 需要提交的参数的key值
         const required = ['course_id','title','status','punch_card_title','punch_card_img']
         let av_id = this.form.av_id
-        if(av_id>0){
+        if(av_id > 0){
           required.push('av_id')
         }
 
-        if(this.form.details !== '<p><br></p>' && this.form.details.length>0){
+        if(this.form.editContent !== '<p><br></p>' && this.form.editContent.length > 0){
             required.push('details')
         }
 
