@@ -43,10 +43,10 @@ export default class PageAside extends Vue {
   init() {
     const allowRoutes = ['course', 'broadcast', 'work-zone']
     const filterRoute = routes.filter(route => route.meta.useNav && allowRoutes.includes(route.name))
-    if(this.userInfos.roles[0] < 3) {
+    const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
+    this.routes = filterRoute
+    if(!isContentManager) {
       this.routes = routes
-    } else {
-      this.routes = filterRoute
     }
   }
   created() {
