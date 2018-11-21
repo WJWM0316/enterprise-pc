@@ -56,6 +56,15 @@ export default class PageAside extends Vue {
 </script>
 <style lang="scss" scoped>
 #page-aside {
+  width: 200px;
+  height: 100vh;
+  background: #354048;
+  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
   > section {
     height: 100%;
     overflow: hidden;

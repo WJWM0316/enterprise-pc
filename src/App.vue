@@ -1,10 +1,12 @@
 <template>
   <section id="x-plus">
-    <page-aside />
-    <main class="offset-left">
-      <page-header />
-      <router-view class="pages" />
-    </main>
+    <template v-if="token">
+      <page-aside />
+      <main class="offset-left">
+        <page-header />
+        <router-view class="pages" />
+      </main>
+    </template>
   </section>
 </template>
 <script>
@@ -13,9 +15,16 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
+import { Loading } from 'element-ui'
+import Cookies from 'js-cookie'
 
 @Component({
   name: 'App',
+  methods: {
+    ...mapActions([
+      'loginApi'
+    ])
+  },
   components: {
     PageAside,
     PageHeader
@@ -30,12 +39,21 @@ import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 
 export default class App extends Vue {
 
-  // 白名单模式，下面路由不显示管理页面的侧边栏,和顶部的导航栏
+  loadingInstance = null
   shouldFloatingBoxShown() {
     return [
       'login',
       'help'
     ].includes(this.pageName)
+  }
+
+  created() {
+    this.loadingInstance = Loading.service({})
+    const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
+    this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
+        .then(() => {
+          this.loadingInstance.close()
+        })
   }
 }
 </script>

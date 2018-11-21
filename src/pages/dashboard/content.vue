@@ -185,7 +185,6 @@ import Cookies from 'js-cookie'
 @Component({
 	methods: {
 		...mapActions([
-			'showMsg',
 			'getUserListsApi',
 			'getCompanyInfoApi',
 			'getMemberCheckNewDynamicsApi',
@@ -333,11 +332,7 @@ export default class pageDashboard extends Vue {
   }
 
 	created() {
-		const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
-		this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
-				.then(() => {
-					this.init()
-				})
+		this.init()
 		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
 		// websocket.create(`${WEBSOKET_API}`)
 	}

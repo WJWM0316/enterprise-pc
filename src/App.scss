@@ -1,22 +1,9 @@
 @import "~COLORS/variables";
 #x-plus {
-  > aside {
-    width: 200px;
-    height: 100vh;
-    background: #354048;
-    position: relative;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 2;
-  }
-  > main {
-    position: relative;
-  }
   .offset-left {
     margin-left: 198px;
     min-width: 1240px;
+    position: relative;
   }
 }
 
