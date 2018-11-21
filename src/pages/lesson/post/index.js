@@ -144,6 +144,7 @@ export default class WorkZonePost extends Vue {
       }
     })
     formData.details = this.form.editContent ? this.form.editContent : formData.details
+    formData.details = formData.details === '<p><br></p>' ? '' : formData.details
     return formData
   }
 
@@ -171,12 +172,13 @@ export default class WorkZonePost extends Vue {
           required.push('av_id')
         }
 
-        if(this.form.editContent !== '<p><br></p>'){
-            required.push('details')
-        }
-
         // 过滤不需要提交的参数
         const params = this.transformData(this.form, required)
+
+        if(params.details !== '<p><br></p>'){
+          required.push('details')
+        }
+        // console.log(this.form)
         this.submit(params)
       }
     })
@@ -270,6 +272,7 @@ export default class WorkZonePost extends Vue {
         course_id: msg.courseSectionId, // 课程id
         title: msg.title, // 课节标题
         details:  msg.details, // 内容详情
+        editContent: msg.details, // 内容详情
         punch_card_title:  msg.punchCardTitle, // 打卡题目
         punch_card_img:  msg.punch_card_img, // 打卡图片
         status:  msg.status // 状态：0下线，1上线
