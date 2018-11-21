@@ -128,6 +128,7 @@ export default class CoursePost extends Vue {
     },
     // 课程介绍
     intro: '',
+    editContent: '',
     // 必修学员
     check_members: '',
     members: {
@@ -280,6 +281,7 @@ export default class CoursePost extends Vue {
         formData[field] = data[field].value
       }
     })
+    formData.intro = this.form.editContent ? this.form.editContent : formData.intro
     return formData
   }
   /**
@@ -321,6 +323,15 @@ export default class CoursePost extends Vue {
    */
   handleContentEditorBlur() {
     this.$refs.form.validateField('intro')
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   编辑器
+   */
+  handleContentEditorInput(html) {
+    this.form.editContent = html
   }
 
   /**

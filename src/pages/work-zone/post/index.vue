@@ -94,7 +94,7 @@
         label="工作圈介绍"
         prop="content"
         >
-          <editor v-model="form.content" @change="handleContentEditorBlur" />
+          <editor v-model="form.content" @blur="handleContentEditorBlur" @input="handleContentEditorInput" />
       </el-form-item>
       
       <div class="walk-title">其他设置</div>

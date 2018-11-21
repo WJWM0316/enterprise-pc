@@ -224,6 +224,7 @@ export default class WorkZonePost extends Vue {
         formData[field] = data[field].value
       }
     })
+    formData.content = this.form.editContent ? this.form.editContent : formData.content
     return formData
   }
   /**
@@ -259,6 +260,14 @@ export default class WorkZonePost extends Vue {
     this.$refs.form.validateField('content')
   }
 
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-17
+   * @detail   编辑器
+   */
+  handleContentEditorInput(html) {
+    this.form.editContent = html
+  }
   /**
    * @Author   小书包
    * @DateTime 2018-09-17

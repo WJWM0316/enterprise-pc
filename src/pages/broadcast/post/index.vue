@@ -115,7 +115,7 @@
         prop="intro"
         label="直播简介"
         >
-          <editor v-model="form.intro" @change="handleContentEditorInput" />
+          <editor v-model="form.intro" @blur="handleContentEditorBlur" @input="handleContentEditorInput" />
       </el-form-item>
       
       <!-- 参与直播学员 -->

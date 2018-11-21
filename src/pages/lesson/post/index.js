@@ -27,6 +27,7 @@ export default class WorkZonePost extends Vue {
     title: '', // 课节标题
     av_id: '', // 音视频id
     details: '', // 内容详情
+    editContent: '',
     punch_card_title: '', // 打卡题目
     punch_card_img: '', // 打卡图片
     status: 1 // 状态：0下线，1上线
@@ -142,6 +143,7 @@ export default class WorkZonePost extends Vue {
         formData[field] = data[field].value
       }
     })
+    formData.details = this.form.editContent ? this.form.editContent : formData.details
     return formData
   }
 
@@ -233,7 +235,11 @@ export default class WorkZonePost extends Vue {
   }
 
   handleContentEditorBlur() {
-    this.$refs.form.validateField('content')
+    // this.form.content = html
+  }
+
+  handleContentEditorInput(html) {
+    this.form.editContent = html
   }
 
   /**

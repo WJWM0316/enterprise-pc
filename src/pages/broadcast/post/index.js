@@ -125,6 +125,7 @@ export default class BroadcastPost extends Vue {
     },
     // 请填写直播介绍
     intro: '',
+    editContent: '',
     // 不可见直播成员
     check_memberList: '',
     memberList: {
@@ -270,6 +271,7 @@ export default class BroadcastPost extends Vue {
       }
     })
     formData.startTime = Date.parse(new Date(this.form.startTime)) / 1000
+    formData.intro = this.form.editContent ? this.form.editContent : formData.intro
     return formData
   }
   /**
@@ -302,9 +304,18 @@ export default class BroadcastPost extends Vue {
    * @detail   编辑器文字改变
    * @return   {[type]}   [description]
    */
-  handleContentEditorInput(dom) {
-    this.form.intro = dom
+  handleContentEditorBlur() {
     this.$refs.form.validateField('intro')
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-10-25
+   * @detail   编辑器文字改变
+   * @return   {[type]}   [description]
+   */
+  handleContentEditorInput(html) {
+    this.form.editContent = html
   }
   /**
    * @Author   小书包

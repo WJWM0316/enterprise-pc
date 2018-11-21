@@ -101,7 +101,7 @@
         label="课程简介"
         prop="intro"
         >
-          <editor v-model="form.intro" :isClear="false" @input="handleContentEditorBlur" />
+          <editor v-model="form.intro" @blur="handleContentEditorBlur" @input="handleContentEditorInput"/>
       </el-form-item>
       
       <!-- 选择必修学员 -->

@@ -69,7 +69,7 @@
       <el-form-item
         label="图文编辑"
         >
-          <editor v-model="form.details" />
+          <editor v-model="form.details" @blur="handleContentEditorBlur" @input="handleContentEditorInput" />
             <p class="editor_p" >* 音频/视频 和 图文 两者必须填一项。</p>
       </el-form-item>
       <!-- 图文编辑 end-->
