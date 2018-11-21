@@ -26,28 +26,32 @@ import { routes } from '@/router/routes'
 
 @Component({
   name: 'page-asise',
+  methods: {
+    ...mapActions(['showMsg'])
+  },
   computed: {
     ...mapGetters([
       'userInfos'
     ])
-  },
-  watch: {
-    'userInfos.roles': {
-      handler(roles) {
-        const allowRoutes = ['course', 'broadcast', 'work-zone']
-        const filterRoute = routes.filter(route => route.meta.useNav && allowRoutes.includes(route.name))
-        const isContentManager = roles.some(field => field <= 3) && !roles.includes(1) && !roles.includes(2)
-        this.routes = filterRoute
-        if(!isContentManager) {
-          this.routes = routes
-        }
-      },
-      immediate: true
-    }
   }
 })
 export default class PageAside extends Vue {
+
+  // 侧边栏路由
   routes = null
+
+  init() {
+    const allowRoutes = ['course', 'broadcast', 'work-zone']
+    const filterRoute = routes.filter(route => route.meta.useNav && allowRoutes.includes(route.name))
+    if(this.userInfos.roles[0] < 3) {
+      this.routes = routes
+    } else {
+      this.routes = filterRoute
+    }
+  }
+  created() {
+    this.init()
+  }
 }
 </script>
 <style lang="scss" scoped>
