@@ -171,7 +171,7 @@ export default class WorkZonePost extends Vue {
           required.push('av_id')
         }
 
-        if(this.form.editContent !== '<p><br></p>' && this.form.editContent.length > 0){
+        if(this.form.editContent !== '<p><br></p>'){
             required.push('details')
         }
 
