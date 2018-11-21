@@ -92,7 +92,7 @@
       
       <el-form-item
         label="工作圈介绍"
-        prop="content"
+        prop="editContent"
         >
           <editor v-model="form.content" @blur="handleContentEditorBlur" @input="handleContentEditorInput" />
       </el-form-item>

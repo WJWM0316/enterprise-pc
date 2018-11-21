@@ -99,7 +99,7 @@
       <!-- 课程简介 -->
       <el-form-item
         label="课程简介"
-        prop="intro"
+        prop="editContent"
         >
           <editor v-model="form.intro" @blur="handleContentEditorBlur" @input="handleContentEditorInput"/>
       </el-form-item>

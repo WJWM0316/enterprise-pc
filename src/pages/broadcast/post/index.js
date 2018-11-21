@@ -185,7 +185,10 @@ export default class BroadcastPost extends Vue {
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ],
     intro: [
-      {required: true, message: '请填写工作圈介绍', trigger: 'change', validator: editorRules.validator}
+      {required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator}
+    ],
+    editContent: [
+      {required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator}
     ]
   }
 
@@ -305,7 +308,7 @@ export default class BroadcastPost extends Vue {
    * @return   {[type]}   [description]
    */
   handleContentEditorBlur() {
-    this.$refs.form.validateField('intro')
+    // this.$refs.form.validateField('intro')
   }
 
   /**
@@ -316,6 +319,7 @@ export default class BroadcastPost extends Vue {
    */
   handleContentEditorInput(html) {
     this.form.editContent = html
+    this.$refs.form.validateField('editContent')
   }
   /**
    * @Author   小书包
@@ -541,6 +545,7 @@ export default class BroadcastPost extends Vue {
       this.form.isOnline = info.isOnline
       this.form.liveName = info.liveName
       this.form.intro = info.intro
+      this.form.editContent = info.editContent
       this.form.groupList.value = this.form.groupList.value.join(',')
       this.form.groupList.noEdit.value = this.form.groupList.noEdit.value.join(',')
       this.form.check_groupList = this.form.groupList.value

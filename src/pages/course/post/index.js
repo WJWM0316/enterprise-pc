@@ -197,6 +197,9 @@ export default class CoursePost extends Vue {
     intro: [
       {required: true, message: '请填写课程介绍', trigger: 'blur', validator: editorRules.validator }
     ],
+    editContent: [
+      {required: true, message: '请填写课程介绍', trigger: 'blur', validator: editorRules.validator }
+    ]
   }
 
   // 确认信息弹窗
@@ -322,7 +325,8 @@ export default class CoursePost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    this.$refs.form.validateField('intro')
+    // alert()
+    // this.$refs.form.validateField('intro')
   }
 
   /**
@@ -332,6 +336,7 @@ export default class CoursePost extends Vue {
    */
   handleContentEditorInput(html) {
     this.form.editContent = html
+    this.$refs.form.validateField('editContent')
   }
 
   /**
@@ -567,6 +572,7 @@ export default class CoursePost extends Vue {
       this.form.id = courseDetail.id
       this.form.title = courseDetail.title
       this.form.intro = courseDetail.intro
+      this.form.editContent = courseDetail.editContent
       this.form.sort = courseDetail.sort
       this.form.status = courseDetail.status === '上线' ? 1 : 0
       this.form.icon.value = courseDetail.icon

@@ -160,7 +160,10 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请选择工作圈成员ID', trigger: 'blur' }
     ],
     content: [
-      { required: true, message: '请填写社区介绍', trigger: 'click', validator: editorRules.validator }
+      { required: true, message: '请填写社区介绍', trigger: 'blur', validator: editorRules.validator }
+    ],
+    editContent: [
+      { required: true, message: '请填写社区介绍', trigger: 'blur', validator: editorRules.validator }
     ]
   }
 
@@ -257,7 +260,7 @@ export default class WorkZonePost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    this.$refs.form.validateField('content')
+    // this.$refs.form.validateField('content')
   }
 
   /**
@@ -267,6 +270,7 @@ export default class WorkZonePost extends Vue {
    */
   handleContentEditorInput(html) {
     this.form.editContent = html
+    this.$refs.form.validateField('content')
   }
   /**
    * @Author   小书包
@@ -442,6 +446,7 @@ export default class WorkZonePost extends Vue {
       })
       this.form.name = jobCircleDetails.name
       this.form.content = jobCircleDetails.content
+      this.form.editContent = jobCircleDetails.editContent
       this.form.sort = jobCircleDetails.sort
       this.form.status = jobCircleDetails.status === '上线' ? 1 : 0
       this.form.owner_uid.value = String(jobCircleDetails.ownerUid)
