@@ -170,10 +170,8 @@ export default class pageOrganization extends Vue {
       getGroupListApi().then( res => {
           this.groupList = [
           {
-            groupId: 10, 
+            groupId: 0, 
             groupName: '全部成员', 
-            sort: 10, 
-            count: 10,
             active: true
           }]
 
@@ -262,7 +260,7 @@ export default class pageOrganization extends Vue {
         roleId: '4'
       }
 
-      if(item.groupId===10){
+      if(item.groupId===0){
           query = {}
       }else {
           query.groupId = item.groupId
