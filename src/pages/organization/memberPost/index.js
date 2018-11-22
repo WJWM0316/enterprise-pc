@@ -337,11 +337,11 @@ export default class WorkZonePost extends Vue {
         this.submitBtnClick = !this.submitBtnClick
         // 修改提交时按钮的文案
         this.submitBtnTxt = '正在提交'
-
         //权限管理是内容的话
         if(this.form.roleId === 3){
           this.form.contentAdminGroup = this.form.organization_management.value
         }
+        this.form.groupId = this.form.group_management.value
         const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
         this.submit(params)
@@ -364,8 +364,6 @@ export default class WorkZonePost extends Vue {
         }
       }
     })
-    formData['groupId'] = this.form.group_management.value
-    formData['contentAdminGroup'] = this.form.contentAdminGroup.value
     console.log(this.form)
     return formData
   }
