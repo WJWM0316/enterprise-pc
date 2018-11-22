@@ -139,8 +139,6 @@ export default class pageOrganization extends Vue {
     created(){}
 
     init() {
-      console.log('init')
-      console.log(this.$route)
       let query =  this.$route.query
       this.memberData = {
         selectAll: 1,
@@ -212,6 +210,7 @@ export default class pageOrganization extends Vue {
     }
 
     todoAction(type) {
+      let params = {}
       switch(type) {
         case 'set':
           this.$router.push({
@@ -220,7 +219,6 @@ export default class pageOrganization extends Vue {
           break
         // eslint-disable-next
         case 'addMember':
-          let params = {}
           if(this.$route.query.groupId){
             params = {
               groupId : this.$route.query.groupId
@@ -246,7 +244,6 @@ export default class pageOrganization extends Vue {
           break
         case 'upload':
             this.models.show = true
-            console.log('upload')
           break
         default:
           break
@@ -254,7 +251,6 @@ export default class pageOrganization extends Vue {
     }
 
     selectGroup(item){
-      console.log(item)
       let query = {
         page: 1,
         roleId: '4'
@@ -294,7 +290,6 @@ export default class pageOrganization extends Vue {
     }
 
     handleRemove(e){
-      console.log(e)
       this.fileUpload.show = false
       this.fileUpload.btnTxt = '选择文件'
       this.fileUpload.progress = 0
@@ -341,9 +336,6 @@ export default class pageOrganization extends Vue {
         this.fileUpload.show = true
         this.fileUpload.btnTxt = '正在上传..'
       }
-
-      console.log(this.fileUpload.params.attach_type)
-
       return isLt200M
     }
 
@@ -358,7 +350,6 @@ export default class pageOrganization extends Vue {
      * @detail   文件上传失败
      */
     handleFileError(err, file, fileList) {
-      console.log(err.msg)
       this.fileUpload.status = 'error'
       this.fileUpload.progress = 0
       this.fileUpload.progressText = '上传失败'

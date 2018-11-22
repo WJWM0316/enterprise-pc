@@ -396,7 +396,6 @@ export default class pageStatisticsCourse extends Vue {
               value2.unshift(field[`${this.tabType}Live`])
             }
           })
-          // console.log(key, value1, value2)
           this.initEchartLine(key, value1, value2)
         })
   }

@@ -178,7 +178,6 @@ export default class WorkZonePost extends Vue {
         if(params.details !== '<p><br></p>'){
           required.push('details')
         }
-        // console.log(this.form)
         this.submit(params)
       }
     })

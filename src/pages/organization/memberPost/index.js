@@ -3,9 +3,9 @@ import Component from 'vue-class-component'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 import MyCropper from 'COMPONENTS/cropper/index.vue'
 
-import { getAccessToken } from '@/store/cacheService'
-import { upload_api } from '@/store/api/index.js'
-import { editorRules } from 'FILTERS/rules'
+// import { getAccessToken } from '@/store/cacheService'
+// import { upload_api } from '@/store/api/index.js'
+// import { editorRules } from 'FILTERS/rules'
 import { getGroupListApi, addMemberApi, editMemberApi, deleteMemberApi ,getMemberInfoApi } from 'STORE/api/organization.js'
 
 @Component({
@@ -285,7 +285,7 @@ export default class WorkZonePost extends Vue {
    */
   openModal(type) {
 
-    let groupList = []
+    // let groupList = []
     let name = `${type}_management`
     let valueList = this.form[name].value.split(',')
 
@@ -357,20 +357,20 @@ export default class WorkZonePost extends Vue {
     let type = ''
     params.map(field => {
       type = typeof data[field]
-      if(type != 'object' && type != 'undefined') {
-        if(type == 'string' && data[field].length<1){
-        }else {
+      if(type !== 'object' && type !== 'undefined') {
+        if(type === 'string' && data[field].length < 1) {
+          // console.log(11)
+        } else {
           formData[field] = data[field]
         }
       }
     })
-    console.log(this.form)
     return formData
   }
 
   // 提交表单数据
   submit(params) {
-    let that = this
+    // let that = this
     if(this.pageStatus === 'add'){
       addMemberApi(params)
         .then(res => {
@@ -465,10 +465,7 @@ export default class WorkZonePost extends Vue {
   /**
    * @detail   图片上传之前的处理
    */
-  beforeImageUpload(file) {
-    /*console.log('beforeImageUpload')
-    this.imageUpload.status = 'loading'*/
-  }
+  beforeImageUpload(file) {}
 
   removeGroupCheck(type,index) {
     let name = `${type}_management`
@@ -506,66 +503,65 @@ export default class WorkZonePost extends Vue {
 
   //职位
   validatorOccupation(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-
-    if (val.length === 0) {
-      callback(new Error('职位必须填写，最多40个字符'));
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
+    if(val.length === 0) {
+      callback(new Error('职位必须填写，最多40个字符'))
     } else if(val.length>40) {
-      callback(new Error('职位必须填写，最多40个字符'));
-    }else {
-      callback();
+      callback(new Error('职位必须填写，最多40个字符'))
+    } else {
+      callback()
     }
   }
 
   //名字
   validatorName(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
 
-    if (val.length === 0) {
-      callback(new Error('名字必须填写，最多10个字符'));
+    if(val.length === 0) {
+      callback(new Error('名字必须填写，最多10个字符'))
     } else if(val.length>10) {
-      callback(new Error('名字必须填写，最多10个字符'));
-    }else {
-      callback();
+      callback(new Error('名字必须填写，最多10个字符'))
+    } else {
+      callback()
     }
   }
 
   //密码
   validatorPassword(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    if (val.length === 0) {
-      callback(new Error('密码必须填写，6-20个字符'));
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
+    if(val.length === 0) {
+      callback(new Error('密码必须填写，6-20个字符'))
     } else if(val.length<6 || val.length>20) {
-      callback(new Error('密码必须填写，6-20个字符'));
-    }else {
-      callback();
+      callback(new Error('密码必须填写，6-20个字符'))
+    } else {
+      callback()
     }
   }
 
   //邮箱
   validatorEmail(rule, value, callback) {
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/);
-    if (val.length === 0) {
-      callback(new Error('邮箱必须填写，可作为成员登陆邮箱'));
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
+    let re = new RegExp(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/)
+    if(val.length === 0) {
+      callback(new Error('邮箱必须填写，可作为成员登陆邮箱'))
     } else if(!re.test(val)) {
-      callback(new Error('邮箱格式不正确'));
-    }else {
-      callback();
+      callback(new Error('邮箱格式不正确'))
+    } else {
+      callback()
     }
   }
 
   //手机
   validatorMobile(rule, value, callback){
-    let val = value.replace(/(^\s*)|(\s*$)/g, "")
-    let re = new RegExp(/^[1][3,4,5,7,8,9][0-9]{9}$/);
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
+    let re = new RegExp(/^[1][3,4,5,7,8,9][0-9]{9}$/)
     if (val.length === 0) {
-      callback();
-    } else if(val.length>0) {
+      callback()
+    } else if(val.length > 0) {
       if(!re.test(val)){
-        callback(new Error('手机格式不正确'));
-      }else {
-        callback();
+        callback(new Error('手机格式不正确'))
+      } else {
+        callback()
       }
 
     }

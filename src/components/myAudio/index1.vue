@@ -131,12 +131,9 @@ export default class ComponentAudio extends Vue {
     this.audio.waiting = true
   }
   // 当音频开始等待
-  onWaiting (res) {
-    // console.log(res)
-  }
+  onWaiting (res) {}
   // 当音频开始播放
   onPlay (res) {
-    // console.log(res)
     this.audio.playing = true
     this.audio.loading = false
     if(!this.controlList.onlyOnePlaying){
@@ -152,8 +149,6 @@ export default class ComponentAudio extends Vue {
   }
   // 当timeupdate事件大概每秒一次，用来更新音频流的当前播放时间
   onTimeupdate(res) {
-    // console.log('timeupdate')
-    // console.log(res)
     this.audio.currentTime = res.target.currentTime
     this.sliderTime = parseInt(this.audio.currentTime / this.audio.maxTime * 100)
   }

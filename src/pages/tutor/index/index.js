@@ -249,7 +249,6 @@ export default class tutorList extends Vue {
 
   //搜索老师
   searchTea(mobile) {
-    let that = this
     if(this.searchData.value.length===0){
       return
     }
@@ -265,12 +264,9 @@ export default class tutorList extends Vue {
       }else {
         this.models.confirmText = '添加新外部导师'
       }
-      console.log('searchData.hintTxt=====>',this.hintTxt)
     },res=>{
-      console.log(this)
       this.searchData.list = {}
       this.hintTxt = res.data.msg ||''
-      console.log('searchData.hintTxt=====>',this.hintTxt)
     })
   }
 

@@ -152,7 +152,6 @@ export default class tutorPost extends Vue {
   search(type) {}
 
   created() {
-    console.log(this.$route)
     if(this.$route && this.$route.params.phone){
       this.form.mobile = this.$route.params.phone
     }

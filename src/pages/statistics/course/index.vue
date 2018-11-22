@@ -265,7 +265,6 @@ export default class pageStatisticsCourse extends Vue {
           color:'black',
         },
         formatter(params, ticket, callback) {
-          // console.log(params)
           return `
             <div>
               <p style="line-height: 1.5;margin: 0;">数值： ${params.data.value}（${params.percent}%）</p>

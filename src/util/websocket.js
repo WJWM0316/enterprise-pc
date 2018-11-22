@@ -47,10 +47,8 @@ class WS {
         // 自定义一个接收监听事件，暴露出去接收信息
         this.event = new CustomEvent('wsOnMessage', {detail: data})
         window.dispatchEvent(this.event)
-        console.log(11111111)
         switch (data.cmd) {
           case 'login.token': // 登录处理
-            console.log('======WebSocket======' + data.msg)
             if (data.code === 200) {
               this.isLogin = true
               // store.dispatch('updata_wsStatus', 1)
@@ -62,10 +60,8 @@ class WS {
             }
             break
           case 'live.add':
-            console.log('======直播间加入成功======')
             break
           case 'live.leave':
-            console.log('======直播间退出成功======')
             break
           case 'msg.push': // 不是心跳返回的数据和登录的返回的数据, 存储起来
             let time = new Date().getTime()
@@ -79,14 +75,11 @@ class WS {
       }
       // 关闭监听
       ws.onclose = (e) => {
-        console.log('======WebSocket连接已关闭======')
         // store.dispatch('updata_wsLogin', false)
         this.reConnect()
       }
       // 错误监听
-      ws.onerror = (e) => {
-        console.log('======WebSocket连接失败======')
-      }
+      ws.onerror = (e) => {}
     } else {
       alert('您的浏览器不支持 WebSocket，请更换浏览器')
     }
@@ -109,7 +102,6 @@ class WS {
   // 接收数据
   resolve = (data) => {
     this.ws.onmessage = (evt) => {
-      console.log(evt.data)
       data = evt.data
     }
     return data
@@ -178,7 +170,6 @@ class WS {
       this.reconnectMark = true
     }
     if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
-      console.log('======websocket重连不上，自动关闭')
       // store.dispatch('updata_wsStatus', 2)
       this.close()
     } else {

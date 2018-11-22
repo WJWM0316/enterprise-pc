@@ -100,7 +100,6 @@ export default class pageEditor extends Vue {
       }
     }
     this.editor.customConfig.onchange = (html) => {
-      console.log(html)
       this.$emit('input', html) // 将内容同步到父组件中
     }
     this.editor.customConfig.onblur = (html) => {
