@@ -77,7 +77,8 @@ const getters = {
   desktopStudyInfo: state => state.desktopStudyInfo,
   desktopNewestCourseInfo: state => state.desktopNewestCourseInfo,
   desktopNewestLiveInfo: state => state.desktopNewestLiveInfo,
-  desktopVerInfo: state => state.desktopVerInfo
+  desktopVerInfo: state => state.desktopVerInfo,
+  versionInfo: state => state.versionInfo
 }
 
 const actions = {
