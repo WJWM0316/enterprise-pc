@@ -65,6 +65,7 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import Cookies from 'js-cookie'
 
 @Component({
 	methods: {
@@ -77,17 +78,10 @@ import Component from 'vue-class-component'
   }
 })
 export default class ComponentHeader extends Vue {
-	// 获取cookie
-  getcookie(name) {
-   const arr = document.cookie.match(new RegExp('[sS]*'+ name +'=([^;]*)'))
-   if(arr !== null)
-    return unescape(arr[1])
-   return null
-  }
 	todoAction(command) {
 		switch(command) {
 			case 'out':
-				this.logoutApi({code : this.getcookie('code')})
+				this.logoutApi({code : Cookies.get('code')})
 				break
 			case 'modify':
 				this.$router.push({name: 'editMember',query: {user_id: this.userInfos.id } })

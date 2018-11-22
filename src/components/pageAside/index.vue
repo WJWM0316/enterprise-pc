@@ -38,8 +38,17 @@ import { routes } from '@/router/routes'
         const officialRoute = routes.filter(route => route.meta.useNav)
         // 试用路由
         const notOfficialRoute = routes.filter(route => route.meta.useNav && route.name !== 'books')
-        this.routes = contentManagerRoutes
-        this.routes = !isContentManager && !this.userInfos.company.isTrial ? officialRoute : notOfficialRoute
+        // console.log(contentManagerRoutes, 'contentManagerRoutes')
+        // console.log(officialRoute, 'officialRoute')
+        // console.log(notOfficialRoute, 'notOfficialRoute')
+        // console.log(isContentManager)
+        if(!isContentManager && !this.userInfos.company.isTrial) {
+          this.routes = officialRoute
+        } else if(!isContentManager && this.userInfos.company.isTrial) {
+          this.routes = notOfficialRoute
+        } else {
+          this.routes = contentManagerRoutes
+        }
       },
       immediate: true
     }
