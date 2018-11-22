@@ -1,16 +1,19 @@
 import {
   GET_USERS_LISTS,
-  GET_DESKINFOS
+  GET_DESKINFOS,
+  GET_VERSION_INFOS
 } from '../mutation-types'
 
 import {
   getUserListsApi,
-  getDesktopInfosApi
+  getDesktopInfosApi,
+  getVersionInfoApi
 } from 'API/dashboard'
 
 const state = {
   dashboardUserLists: {},
   desktopInfos: {},
+  versionInfo: {},
   desktopStudyInfo: {
     onlineCourseCount: 0,
     onlineJobCircleCount: 0,
@@ -47,6 +50,9 @@ const state = {
 const mutations = {
   [GET_USERS_LISTS] (state, data) {
     state.dashboardUserLists = data
+  },
+  [GET_VERSION_INFOS] (state, data) {
+    state.versionInfo = data
   },
   [GET_DESKINFOS] (state, data) {
     state.desktopInfos = data
@@ -102,6 +108,22 @@ const actions = {
     return getDesktopInfosApi(params)
       .then(res => {
         store.commit(GET_DESKINFOS, res.data.data)
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-15
+   * @detail   获取获取工作台信息
+   * @return   {[type]}          [description]
+   */
+  getVersionInfoApi (store, params) {
+    return getVersionInfoApi(params)
+      .then(res => {
+        store.commit(GET_VERSION_INFOS, res.data.data)
         return res
       })
       .catch(error => {

@@ -8,14 +8,13 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
   methods: {
     ...mapActions([
       'getJobCircleListsApi',
-      'showMsg',
-      'getDesktopInfosApi'
+      'getVersionInfoApi'
     ])
   },
   computed: {
     ...mapGetters([
       'jobCircleLists',
-      'desktopVerInfo'
+      'versionInfo'
     ])
   },
   watch: {
@@ -98,7 +97,7 @@ export default class WorkzoneList extends Vue {
   }
 
   created() {
-    this.getDesktopInfosApi()
+    this.getVersionInfoApi()
   }
   /**
    * @Author   小书包
@@ -137,8 +136,8 @@ export default class WorkzoneList extends Vue {
    * @detail   添加课程
    */
   addWorkZone() {
-    const desktopVerInfo = this.desktopVerInfo
-    if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+    const versionInfo = this.versionInfo
+    if(versionInfo.created.courseCount >= versionInfo.enable.courseCount) {
       this.$alert('工作圈创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建工作圈上限已满提醒', {
         confirmButtonText: '我知道了',
         callback: action => {}

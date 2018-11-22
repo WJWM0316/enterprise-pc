@@ -21,14 +21,14 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     ...mapActions([
       'getCourseListsApi',
       'getCategoryListsApi',
-      'getDesktopInfosApi'
+      'getVersionInfoApi'
     ])
   },
   computed: {
     ...mapGetters([
       'courseList',
       'categoryList',
-      'desktopVerInfo'
+      'versionInfo'
     ])
   }
 })
@@ -102,7 +102,7 @@ export default class CourseList extends Vue {
   }
 
   created() {
-    this.getDesktopInfosApi()
+    this.getVersionInfoApi()
     this.getCategoryListsApi({default: 1})
         .then(() => {
           this.categoryList.map(field => {
@@ -152,8 +152,8 @@ export default class CourseList extends Vue {
    * @return   {[type]}          [description]
    */
   addCourse() {
-    const desktopVerInfo = this.desktopVerInfo
-    if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+    const versionInfo = this.versionInfo
+    if(versionInfo.created.courseCount >= versionInfo.enable.courseCount) {
       this.$alert('课程创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建课程上限已满提醒', {
         confirmButtonText: '我知道了',
         callback: action => {}

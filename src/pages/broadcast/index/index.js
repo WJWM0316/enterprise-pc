@@ -9,14 +9,14 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     ...mapActions([
       'getLiveListApi',
       'getCategoryListsApi',
-      'getDesktopInfosApi'
+      'getVersionInfoApi'
     ])
   },
   computed: {
     ...mapGetters([
       'liveLists',
       'categoryList',
-      'desktopVerInfo'
+      'versionInfo'
     ])
   },
   watch: {
@@ -131,7 +131,7 @@ export default class BroadcastIndex extends Vue {
   }
 
   created() {
-    this.getDesktopInfosApi()
+    this.getVersionInfoApi()
     this.getCategoryListsApi({default: 1})
         .then(() => {
           this.categoryList.map(field => {
@@ -191,8 +191,8 @@ export default class BroadcastIndex extends Vue {
    * @detail   添加课程
    */
   addBroadcast() {
-    const desktopVerInfo = this.desktopVerInfo
-    if(desktopVerInfo.created.courseCount >= desktopVerInfo.enable.courseCount) {
+    const versionInfo = this.versionInfo
+    if(versionInfo.created.courseCount >= versionInfo.enable.courseCount) {
       this.$alert('直播创建上限已满啦~ 如果你要升级你的XPLUS套装、请咨询你的专属客户经理。', '创建直播上限已满提醒', {
         confirmButtonText: '我知道了',
         callback: action => {}
