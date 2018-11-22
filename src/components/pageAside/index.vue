@@ -37,10 +37,9 @@ import { routes } from '@/router/routes'
         // 付费路由
         const officialRoute = routes.filter(route => route.meta.useNav)
         // 试用路由
-        // const notOfficialRoute = routes.filter(route => route.meta.useNav && route.name !== 'books')
+        const notOfficialRoute = routes.filter(route => route.meta.useNav && route.name !== 'books')
         this.routes = contentManagerRoutes
-        // console.log(notOfficialRoute)
-        if(!isContentManager) this.routes = officialRoute
+        this.routes = !isContentManager && !this.userInfos.company.isTrial ? officialRoute : notOfficialRoute
       },
       immediate: true
     }
