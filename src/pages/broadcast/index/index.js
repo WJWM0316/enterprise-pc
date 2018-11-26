@@ -38,7 +38,7 @@ export default class BroadcastIndex extends Vue {
   fields = [
     {
       prop: 'liveName',
-      label: '直 播',
+      label: '直播',
       align: 'left',
       showTips: 'no',
       width: '28%'

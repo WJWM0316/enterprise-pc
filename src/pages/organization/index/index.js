@@ -136,6 +136,7 @@ export default class pageOrganization extends Vue {
     }
     av_id = null
     downUrl = ''
+    selectGroupName = '全部成员'
     created(){}
 
     init() {
@@ -175,8 +176,11 @@ export default class pageOrganization extends Vue {
 
           res.data.data.map(item=>{
             if(this.$route.query.groupId && this.$route.query.groupId == item.groupId){
+              
               item.active = true
               this.groupList[0].active = false
+
+              this.selectGroupName = item.groupName
             }else {
               item.active = false
             }
@@ -255,11 +259,16 @@ export default class pageOrganization extends Vue {
         page: 1,
         roleId: '4'
       }
-
       if(item.groupId===0){
           query = {}
+          this.selectGroupName = '全部成员'
       }else {
-          query.groupId = item.groupId
+        query.groupId = item.groupId
+        this.groupList.map(data=>{
+          if(data.groupId == item.groupId){
+            this.selectGroupName = data.groupName
+          }
+        })
       }
 
       this.$router.push({

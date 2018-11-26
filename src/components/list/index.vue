@@ -155,7 +155,7 @@ export default ComponentTableList
     }
     .btn-prev,.btn-next{
       padding: 0 10px;
-      border-radius:4px;
+      border-radius:2px !important;
       color: #D7AB70 !important;
       background-color: transparent !important;
       border-radius:4px;

@@ -10,7 +10,8 @@
             v-for="(item, index) in routes"
             :key="`item.name`+index"
             :class="{'active' : $route.meta.module === item.meta.module}">
-              <router-link :to="{ name: item.name}"> <i :class="`zike-icon icon iconfont ${item.meta.icon}`"></i>  {{ item.title }}</router-link>
+              <router-link :to="{ name: item.name}"> 
+                <i :class="`zike-icon icon iconfont ${item.meta.icon}`"></i>  {{ item.title }}</router-link>
           </li>
         </ul>
       </div>

@@ -4,6 +4,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
+          class="search"
           width="400px"
           @search="handleSearch"
           v-model="form.liveName"
@@ -114,6 +115,9 @@ export default BroadcastIndex
     margin: 30px 0;
   }
   .content {
+    //>div {
+    //  width: 200px;
+    // }
     .lalel{
       font-size: 12px;
       line-height: 1;
@@ -197,6 +201,13 @@ export default BroadcastIndex
 
   .font_color {
     color: #929292;
+  }
+  .search {
+    box-sizing: border-box;
+  }
+  .zike-table-list .el-button--text {
+    margin-right: 16px;
+    margin-left: 0;
   }
 }
 </style>

@@ -440,13 +440,13 @@ export default class pageDashboard extends Vue {
 			&:after{
 				content: '';
 				display: block;
-				height: 100%;
+				height: 44px;
 				position: absolute;
-				top: 0;
+				top: 9.5px;
 				bottom: 0;
 				right: 0;
 				width: 1px;
-				background: rgba(220,220,220,1);
+				background: #ebeef5;
 			};
 			&:first-child{
 				i {
@@ -631,7 +631,7 @@ export default class pageDashboard extends Vue {
 		  };
 		}
 		li{
-			border-bottom: 1px solid rgba(237,237,237,1);
+			border-bottom: 1px solid #ebeef5;
 			overflow: hidden;
 			padding: 20px 0;
 			display: flex;
@@ -640,7 +640,7 @@ export default class pageDashboard extends Vue {
 			&:last-child{
 				border-bottom: unset;
 			};
-/*			&:hover{
+			/*&:hover{
 				background: #f5f7fa;
 			};*/
 		}

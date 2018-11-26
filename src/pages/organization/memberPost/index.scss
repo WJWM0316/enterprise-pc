@@ -197,22 +197,22 @@
 }
 
 .zike-btn-active-selected {
-    background:rgba(255,226,102,0.2);
-    border-radius:4px;
-    font-size:14px;
-    font-weight:400;
-    color:#D7AB70;
-    border-color: #EDEDED;
-  }
+  background:rgba(255,226,102,0.2);
+  border-radius:4px;
+  font-size:14px;
+  font-weight:400;
+  color:#D7AB70;
+  border-color: #EDEDED;
+}
 
-  .zike-btn-selected {
-    background:rgba(237,237,237,1);
-    border-radius:4px;
-    font-size:14px;
-    font-weight:400;
-    color:rgba(146,146,146,1);
-    border-color: rgba(237,237,237,1);
-  }
+.zike-btn-selected {
+  background:rgba(237,237,237,1);
+  border-radius:4px;
+  font-size:14px;
+  font-weight:400;
+  color:rgba(146,146,146,1);
+  border-color: rgba(237,237,237,1);
+}
 
 
 .deleteBtn {
@@ -311,6 +311,20 @@
     }
   }
   
+}
+
+.btn_base {
+  width: 96px;
+  height: 40px;
+  box-sizing: border-box;
+  //padding: 12px 16px;
+}
+
+#zike-cropper .upload-image {
+  width: 96px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 12px 0;
 }
 
 

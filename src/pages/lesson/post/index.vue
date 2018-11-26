@@ -19,7 +19,7 @@
         class="limit-width"
         style="margin: 56px 0 32px 0;"
         >
-          <el-input v-model="form.title" style="width: 380px;" />
+          <el-input placeholder="最多25个字" v-model="form.title" style="width: 380px;" />
       </el-form-item>
       <!-- 请填写课节名 end-->
       
@@ -82,7 +82,7 @@
 
       <!-- 上传图片 start-->
       <el-form-item>
-        <ul class="img-list">
+        <ul class="img-list" v-if="imageUpload.list.length>0">
           <div style="float: left" class="imgLoadSatus" v-show="imageUpload.status==='loading'||imageUpload.status==='error'">
             <img src="~IMAGES/loading.png" class="loading" v-if="imageUpload.status==='loading'"/>
             <div class="error" v-if="imageUpload.status==='error'">
@@ -97,6 +97,7 @@
           </li>
         </ul>
         <el-upload
+          class="upload_img"
           ref="image"
           name="image"
           :accept="imageUpload.accept"
@@ -110,9 +111,9 @@
           :limit="imageUpload.limit" v-if="imageUpload.list.length<9">
 
             
-          <el-button slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
+          <el-button class="upload_img_btn" slot="trigger" size="small" type="primary">{{imageUpload.btnTxt}}</el-button>
 
-          <div slot="tip" style="margin: 8px 0 8px 0;line-height: initial; color: #bcbcbc;" class="el-upload__tip">{{imageUpload.tips}}</div>
+          <div slot="tip" style="" class="upload_img_tips">{{imageUpload.tips}}</div>
         </el-upload>
 
         <p class="upload_p" >{{imageUpload.hintTxt}}</p>
@@ -183,6 +184,21 @@ export default WorkZonePost
     }
   }
 }
+.upload_img {
+  font-family:PingFangSC;
+  font-weight:400;
+  .upload_img_btn {
+    padding: 13px 20px;
+  }
+  .upload_img_tips {
+    margin: 8px 0 8px 0;
+    line-height: 22px; 
+    font-family:PingFangSC;
+    color: #bcbcbc;
+    font-size: 14px;
+  }
+}
+
 .uploader-control {
   .progress {
     width:380px;
@@ -265,6 +281,8 @@ export default WorkZonePost
     font-size:12px;
     font-weight:400;
     color:rgba(188,188,188,1);
+    line-height: 22px;
+    margin-top: 8px;
   }
   .processing {
     color: #929292;
@@ -302,10 +320,12 @@ export default WorkZonePost
 
 .editor_p {
   font-size:14px;
-  font-family:PingFangSC-Regular;
+  font-family:PingFangSC;
   font-weight:400;
   color:rgba(188,188,188,1);
   margin: 0;
+  line-height: 22px;
+  margin-top: 8px;
 }
 
 @-webkit-keyframes rotation{
@@ -370,6 +390,7 @@ export default WorkZonePost
       background:rgba(215,171,112,1);
     }
     .el-radio__label {
+      padding-left: 8px;
       color:rgba(215,171,112,1);
     }
   }

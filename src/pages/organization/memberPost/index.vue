@@ -15,7 +15,7 @@
           prop="name"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.name" :maxlength="30" placeholder="请填写姓名"/>
+            <el-input style="width: 224px;" v-model="form.name" :maxlength="30" placeholder="请填写姓名"/>
         </el-form-item>
         <el-form-item
           label="头像"
@@ -32,6 +32,7 @@
             picShape="radiu"
             @success="imageUploadSuccess"
             @fail="handleImageError"
+            class=""
             ></my-cropper>
 
           <div class="upload-error-tips" :class="{'upload-error-tips-show': imageUpload.showError}">
@@ -67,7 +68,7 @@
               </span>
             </div>
           <el-button
-            class="click-item"
+            class="click-item btn_base"
             type="primary"
             @click="openModal('group')"
             :class="{'zike-btn-selected': form.group_management.show}">
@@ -119,7 +120,7 @@
           v-else>
             <el-input style="width: 300px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
 
-            <el-button v-else size="small" type="primary" class="" @click="openModel2">点击修改</el-button>
+            <el-button v-else  type="primary" class="btn_base" @click="openModel2">点击修改</el-button>
         </el-form-item>
 
         <!-- 手机号码 -->
@@ -149,7 +150,7 @@
 
           v-if="!isMe"
           >
-            <el-select v-model="form.roleId" placeholder="请选择权限">
+            <el-select style="width: 224px;" v-model="form.roleId" placeholder="请选择权限">
               <el-option
                 v-for="item in roleList"
                 :key="item.value"

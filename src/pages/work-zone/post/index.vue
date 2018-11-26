@@ -216,7 +216,7 @@
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'owner_uid'">
             <div style="margin: 30px 0;">
               <search-bar
-                width="464px"
+                width="400px"
                 @search="handleSearch"
                 v-model="ownerUidName"
                 placeholder="请输入圈主名称" />
@@ -250,7 +250,7 @@
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'members'">
             <div style="margin: 30px 0;">
               <search-bar
-                width="464px"
+                width="400px"
                 @search="handleSearch"
                 v-model="ownerUidName"
                 placeholder="请输入成员名称" />
@@ -301,7 +301,7 @@
           <div class="menber-compulsory-type-list" v-if="models.currentModalName === 'hits'">
             <div style="margin: 30px 0;">
               <search-bar
-                width="464px"
+                width="400px"
                 @search="handleSearch"
                 v-model="ownerUidName"
                 placeholder="请输入成员名称" />

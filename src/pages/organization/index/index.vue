@@ -23,7 +23,7 @@
     <el-row class="organization-base">
       <el-col :span="12" class="left-content">
         <h2 class="">
-          全部成员<span class="number">({{courseList.total}}人)</span>
+          {{selectGroupName}}<span class="number">({{courseList.total}}人)</span>
         </h2>
       </el-col>
       <el-col :span="12" class="right-content">
@@ -78,6 +78,11 @@
                 </div>
             </div>
           </div>
+        </div>
+
+        
+        <div class="btn-container flex-box" v-if="props.scope.column.property === 'roleName'" style="color: #354048">
+          {{ props.scope.row.roleName}}
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{typeof props.scope.row[props.scope.column.property] === 'string'? (props.scope.row[props.scope.column.property].length>0?props.scope.row[props.scope.column.property]:'-' ): props.scope.row[props.scope.column.property]}}
@@ -210,6 +215,7 @@
       //width: 128px;
       padding: 10px 20px;
       margin: 0px 16px 16px 0px;
+      color: #666666;
       &.margin_0 {
         margin-right: 0;
       }

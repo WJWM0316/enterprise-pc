@@ -60,7 +60,7 @@
   margin-left: 20px;
   width:0;
   height:0;
-  border-width:0 9px 12px;
+  border-width:0 7px 10px;
   border-style:solid;
   border-color:transparent transparent rgba(188,188,188,1);
   margin:40px auto;
@@ -79,14 +79,14 @@
   }
 }
 .sort {
-  height: 40px;
+  height: 30px;
   position: relative;
 }
 .triangle_down{
   display:block;
   width:0;
   height:0;
-  border-width:12px 9px 0;
+  border-width:10px 7px 0;
   border-style:solid;
   border-color:rgba(188,188,188,1) transparent transparent;
   position:absolute;

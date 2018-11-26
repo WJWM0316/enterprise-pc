@@ -44,7 +44,7 @@ ul {
     float: left;
   };
   .el-breadcrumb__inner {
-    color: #000000 !important;
+    color: #354048 !important;
   }
   .el-breadcrumb__inner.is-link {
     color: #BCBCBC !important;
@@ -290,6 +290,14 @@ ul {
     background: #D7AB70;
   }
 
+  .el-date-table td {
+    &:hover{
+      span {
+        color: #929292
+      }
+    }
+  }
+
   .el-date-table td.today span {
     color: #D7AB70;
   }
@@ -305,6 +313,20 @@ ul {
       padding: 0 15px;
     }
   }
+}
+
+.el-table th>.cell {
+  color: #666;
+  font-weight: 400;
+}
+
+.zike-table-list .zike-dropdown .el-dropdown-link, .zike-table-list .zike-dropdown .el-icon-question{
+  color: #666 !important;
+  font-weight: 400;
+}
+
+.zike-table-list table td{
+  color: #666666
 }
 
 

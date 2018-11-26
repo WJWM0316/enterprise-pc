@@ -7,7 +7,7 @@
     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="searchName"
           placeholder="输入搜索名称" />
@@ -75,6 +75,19 @@ export default MenberList
     margin: 40px 0;
     button {
       width: 120px;
+    }
+  }
+  .common-btn {
+    color: #666666;
+    font-weight: 400;
+  }
+  
+  .common-checkbox {
+    span {
+      color: #666;
+    }
+    .icon-radio_default {
+      color: #d9d9d9
     }
   }
 }

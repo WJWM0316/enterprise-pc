@@ -34,7 +34,7 @@
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="routeJump(props.scope.row.id, 'lessonList')"
             >
-              课节
+              课节管理
           </el-button>
           <!-- <el-button
             type="text"
@@ -63,11 +63,11 @@
             <div>
                 <div class="limit-row-num-2"> {{ props.scope.row.title}} </div>
                 <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 4">
-                  <span class="inner-tutor-groupname">{{props.scope.row.groupName}}</span>
+                  <span class="inner-tutor-groupname" v-if="props.scope.row.groupName">{{props.scope.row.groupName}}</span>
                   <span class="inner-tutor-realname">{{props.scope.row.realname}}</span>
                 </div>
                 <div class="tutor-name" v-if="props.scope.row.masterInfo.roleId == 5">
-                  <span class="inner-tutor-groupname">{{props.scope.row.masterInfo.roleName}}</span>
+                  <span class="inner-tutor-groupname" v-if="props.scope.row.groupName">{{props.scope.row.masterInfo.roleName}}</span>
                   <span class="inner-tutor-realname">{{props.scope.row.masterInfo.realname}}</span>
                 </div>
             </div>
@@ -96,7 +96,7 @@ export default CourseList
     text-align: right;
   }
   .header {
-    margin: 20px 0;
+    margin: 36px 0 24px 0;
   }
   .search-zone {
     display: flex;
@@ -119,7 +119,7 @@ export default CourseList
   .inner-tutor-realname {
     background:#FFF9D9;
     font-size:12px;
-    font-weight:400;
+    font-weight:300;
     color:#D7AB70;
     padding: 4px;
     display: inline-block;

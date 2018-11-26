@@ -335,9 +335,10 @@ export default class ComponentCropper extends Vue {
     padding: 30px 30px;
     position: fixed;
     z-index: 90;
-    top: 50px;
+    top: 50%;
     left: 50%;
     margin-left: -265px;
+    margin-top: -265px;
     background-color: white;
     -webkit-border-radius: 5px;
     border-radius: 5px;

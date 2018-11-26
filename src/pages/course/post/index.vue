@@ -284,9 +284,12 @@
                 @search="handleSearchTutor"
                 v-model="ownerUidName"
                 placeholder="请输入导师名称" />
-                <div class="transition-flex-box tutor-nodata" v-if="searchResult.tutor">
-                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
-              </div>
+                <div class="transition-flex-box" v-if="searchResult.tutor">
+                  <span class=" tutor-nodata" >
+                Ops，暂时没有找到这个导师
+                </span>
+                </div>
+                
             </div>
             <div class="selected-item" v-show="form.master_uid.show">
               已选择：
@@ -344,9 +347,12 @@
                 @search="handleSearch(1)"
                 v-model="ownerUidName"
                 placeholder="请输入学员名称" />
-                <div class="transition-flex-box tutor-nodata" v-if="searchResult.student_1">
-                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
-              </div>
+                <div class="transition-flex-box" v-if="searchResult.student_1">
+                  <span class=" tutor-nodata" >
+                    Ops，暂时没有找到这个导师
+                  </span>
+                </div>
+                
             </div>
             <div class="group-list">
               <button
@@ -381,9 +387,11 @@
                 @search="handleSearch(2)"
                 v-model="ownerUidName"
                 placeholder="请输入学员名称" />
-                <div class="transition-flex-box tutor-nodata" v-if="searchResult.student_2">
-                Ops，暂时没有找到这个导师，点击右下方按钮，添加新的外部导师吧
-              </div>
+                <div class="transition-flex-box" v-if="searchResult.student_2">
+                  <span class=" tutor-nodata" >
+                    Ops，暂时没有找到这个学员
+                  </span>
+                </div>
             </div>
             <div class="group-list">
               <button
@@ -837,7 +845,7 @@ export default CoursePost
   min-width: 150px;
   border-radius: 4px;
   border: 1px solid #ebeef5;
-  padding: 12px;
+  padding: 12px 16px;
   z-index: 2000;
   color: #606266;
   text-align: justify;
