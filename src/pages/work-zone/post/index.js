@@ -164,7 +164,7 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator }
     ],
     editContent: [
-      { required: true, message: '请填写工作圈介绍123', trigger: 'blur', validator: editorRules.validator }
+      { required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator }
     ]
   }
 
