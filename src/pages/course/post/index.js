@@ -325,7 +325,6 @@ export default class CoursePost extends Vue {
    * @detail   编辑器
    */
   handleContentEditorBlur() {
-    // alert()
     // this.$refs.form.validateField('intro')
   }
 
