@@ -81,8 +81,6 @@ import Cookies from 'js-cookie'
 export default class ComponentHeader extends Vue {
 	todoAction(command) {
 		const company = process.env.NODE_ENV === 'development' ? process.env.VUE_APP__TEST_COMPANY : Cookies.get('code')
-		const isContentManager = this.userInfos.roles.some(field => field <= 3) && !this.userInfos.roles.includes(1) && !this.userInfos.roles.includes(2)
-	  const routeName = isContentManager ? 'course' : 'dashboard'
 		switch(command) {
 			case 'out':
 				this.logoutApi({code : Cookies.get('code')})
@@ -91,7 +89,7 @@ export default class ComponentHeader extends Vue {
 				this.$router.push({name: 'editMember',query: {user_id: this.userInfos.id } })
 				break
 			case 'switch':
-				window.location.replace(`${process.env.VUE_APP_STAFF_URL}/${company}/${routeName}`)
+				window.location.replace(`${process.env.VUE_APP_STAFF_URL}/${company}/index`)
 				break
 			default:
 				break
