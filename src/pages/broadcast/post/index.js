@@ -185,10 +185,10 @@ export default class BroadcastPost extends Vue {
       { type: 'date', required: true, message: '请选择时间', trigger: 'blur' }
     ],
     intro: [
-      {required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator}
+      {required: true, message: '请填写直播介绍', trigger: 'blur', validator: editorRules.validator}
     ],
     editContent: [
-      {required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator}
+      {required: true, message: '请填写直播介绍', trigger: 'blur', validator: editorRules.validator}
     ]
   }
 

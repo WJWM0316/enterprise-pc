@@ -115,6 +115,7 @@ export default class WorkZonePost extends Vue {
     },
     // 请填写工作圈介绍
     content: '',
+    editContent: '',
     // 不可见工作圈成员
     check_hits: '',
     hits: {
@@ -148,7 +149,7 @@ export default class WorkZonePost extends Vue {
       { min: 1, max: 25, message: '工作圈名称最多25个字', trigger: 'blur' }
     ],
     check_owner_uid: [
-      { required: true, message: '请选择工作圈主用户ID', trigger: 'blur' }
+      { required: true, message: '请选择工作圈主用户', trigger: 'blur' }
     ],
     check_organizations: [
       { required: true, message: '请选择组织', trigger: 'blur' }
@@ -157,13 +158,13 @@ export default class WorkZonePost extends Vue {
       { required: true, message: '请上传工作圈封面图片', trigger: 'blur' }
     ],
     check_members: [
-      { required: true, message: '请选择工作圈成员ID', trigger: 'blur' }
+      { required: true, message: '请选择工作圈成员', trigger: 'blur' }
     ],
     content: [
-      { required: true, message: '请填写社区介绍', trigger: 'blur', validator: editorRules.validator }
+      { required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator }
     ],
     editContent: [
-      { required: true, message: '请填写社区介绍', trigger: 'blur', validator: editorRules.validator }
+      { required: true, message: '请填写工作圈介绍', trigger: 'blur', validator: editorRules.validator }
     ]
   }
 
@@ -270,7 +271,8 @@ export default class WorkZonePost extends Vue {
    */
   handleContentEditorInput(html) {
     this.form.editContent = html
-    this.$refs.form.validateField('content')
+    console.log(this.form.editContent)
+    this.$refs.form.validateField('editContent')
   }
   /**
    * @Author   小书包

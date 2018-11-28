@@ -210,7 +210,7 @@ export default class WorkZonePost extends Vue {
       },
     }
     params.title = params.title.replace(/(^\s*)|(\s*$)/g, '')
-
+    if(!params.details) delete params.details
     if(this.action === 'add'){
       postLessonApi(params)
       .then(res => {
@@ -249,8 +249,7 @@ export default class WorkZonePost extends Vue {
    * @detail   初始化新增页面数据
    * @return   {[type]}   [description]
    */
-  initPageByPost() {
-  }
+  initPageByPost() {}
   /**
    * @Author   小书包
    * @DateTime 2018-09-12
