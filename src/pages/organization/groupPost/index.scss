@@ -1,7 +1,7 @@
 @import "~cropperjs/dist/cropper.min.css";
 @import "~COLORS/variables";
 
-#course-post {
+#group-post {
   background: white;
 	.el-form {
 		margin-bottom: 50px;
@@ -24,6 +24,7 @@
 		border-bottom: 1px solid rgba(220,223,230,1);
 		font-size: 20px;
     margin: 56px 44px 24px 0px;
+    color: #354048;
     &.select {
       margin: 48px 44px 24px 0px;
     }
@@ -105,6 +106,8 @@
   &.el-button {
     margin-left : 0;
     margin-right: 10px;
+    color: #666;
+    font-weight: 400;
   }
 }
 .el-checkbox {
@@ -148,5 +151,18 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.common-checkbox {
+  .icon-radio_default {
+    color: #d9d9d9;
+  }
+  span {
+    color: #666;
+  }
+}
+
+.el-input__inner {
+  border-color: #dcdcdc !important;
 }
 

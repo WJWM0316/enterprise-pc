@@ -84,7 +84,7 @@ export default class CourseList extends Vue {
     },
     {
       prop: 'actions',
-      label: '操 作',
+      label: '操作',
       showTips: 'yes',
       align: 'left',
       width: '15%',

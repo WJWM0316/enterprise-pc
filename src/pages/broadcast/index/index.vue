@@ -81,6 +81,14 @@
         <div v-else-if="props.scope.column.property === 'expectedStartTime'" class="expectedStartTime font_color">
           {{ props.scope.row.expectedStartTime }}
         </div>
+        <div v-else-if="props.scope.column.property === 'categoryName'" class="classify">
+          <div class="content">
+            <div>
+                <div class="limit-row-num-2">{{ props.scope.row.categoryName }}</div>
+            </div>
+          </div>
+          
+        </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else >
           <div class="font_color">
@@ -157,8 +165,13 @@ export default BroadcastIndex
     }
   }
   .live-status-icon-doing{
+    padding-left: 14px;
     line-height: 1;
+    position: relative;
     &:before{
+      position: absolute;
+      left: 0;
+      top: 7px;
       content: '';
       display: inline-block;
       width:6px;
@@ -169,8 +182,13 @@ export default BroadcastIndex
     }
   }
   .live-status-icon-completed{
+    padding-left: 14px;
     line-height: 1;
+    position: relative;
     &:before{
+      position: absolute;
+      left: 0;
+      top: 7px;
       content: '';
       display: inline-block;
       width:6px;
@@ -181,8 +199,13 @@ export default BroadcastIndex
     }
   }
   .live-status-icon-pending{
+    padding-left: 14px;
     line-height: 1;
+    position: relative;
     &:before{
+      position: absolute;
+      left: 0;
+      top: 7px;
       content: '';
       display: inline-block;
       width:6px;
@@ -201,6 +224,14 @@ export default BroadcastIndex
 
   .font_color {
     color: #929292;
+  }
+  .classify {
+    width: 80px;
+    display: flex;
+    height: 40px;
+    .limit-row-num-2 {
+      color: #929292;
+    }
   }
   .search {
     box-sizing: border-box;

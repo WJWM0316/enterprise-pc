@@ -77,7 +77,7 @@ export default class CourseList extends Vue {
     {
       prop: 'actions',
       align: 'left',
-      label: '操 作',
+      label: '操作',
       showTips: 'yes',
       width: '15%',
       filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'

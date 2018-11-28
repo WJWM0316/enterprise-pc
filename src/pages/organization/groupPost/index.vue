@@ -1,5 +1,5 @@
 <template>
-  <div id="course-post">
+  <div id="group-post">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'memberList' }">组织管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'groupManage' }">分组管理</el-breadcrumb-item>
@@ -78,8 +78,8 @@
   </div>
 </template>
 <script>
-import coursePost from './index'
-export default coursePost
+import groupPost from './index'
+export default groupPost
 </script>
 <style lang="scss">
 @import './index.scss'

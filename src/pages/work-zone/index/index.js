@@ -66,7 +66,7 @@ export default class WorkzoneList extends Vue {
     },
     {
       prop: 'sort',
-      label: '权 重',
+      label: '权重',
       align: 'left',
       showTips: 'yes',
       width: '15%',
@@ -74,7 +74,7 @@ export default class WorkzoneList extends Vue {
     },
     {
       prop: 'actions',
-      label: '操 作',
+      label: '操作',
       align: 'left',
       showTips: 'yes',
       width: '20%',

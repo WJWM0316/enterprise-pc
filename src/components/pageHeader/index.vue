@@ -2,7 +2,7 @@
 	<header id="page-header">
 		<section>
 			<ul class="navigation">
-<!-- 				<li>
+				<!--	<li>
 					<i class="el-icon-bell"></i>
 				</li> -->
 				<li>
@@ -58,6 +58,11 @@
 			display: inline-block;
 			vertical-align: middle;
 			cursor: pointer;
+		}
+	}
+	.el-dropdown-link {
+		i {
+			font-size: 12px;
 		}
 	}
 }

@@ -85,7 +85,7 @@ export default class tutorList extends Vue {
     {
       prop: 'actions',
       width: '10%',
-      label: '操 作',
+      label: '操作',
       showTips: 'yes',
       filterPlacement: '移除导师：把对应外部导师移除出企业'
     }

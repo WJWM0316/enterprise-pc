@@ -215,7 +215,9 @@ export default class ComponentAudio extends Vue {
   }
 }
 
-.audio-box.audio-is-deleted {
-  opacity: .5;
+.audio-box {
+
+}.audio-is-deleted {
+  opacity: .4;
 }
 </style>

@@ -389,6 +389,7 @@ export default class pageDashboard extends Vue {
 		padding: 0 14px;
 	}
 	.todo-action{
+		margin-top: 2px;
 		color: #4080AD;
 	}
 	.statistics-flex-box{
@@ -401,7 +402,7 @@ export default class pageDashboard extends Vue {
 		strong {
 			font-size:52px;
 			color:rgba(53,64,72,1);
-			line-height: 1;
+			line-height: 60px;
 			margin: 0;
 			padding: 0;
 			display: block;
@@ -411,10 +412,10 @@ export default class pageDashboard extends Vue {
 			font-size:14px;
 			font-weight:300;
 			color:rgba(102,102,102,1);
-			line-height: 1;
+			line-height: 20px;
 			display: inline-block;
 			margin: 0;
-			margin-right: 10px;
+			margin-right: 8px;
 		}
 		i {
 			vertical-align: middle;
@@ -476,7 +477,7 @@ export default class pageDashboard extends Vue {
 			border-radius: 50%;
 			display: inline-block;
 			vertical-align: middle;
-			margin-right: 10px;
+			margin-right: 8px;
 			margin-left: 30px;
 		}
 		.icon-add-menber {
@@ -522,7 +523,7 @@ export default class pageDashboard extends Vue {
 			font-weight:500;
 			color:rgba(102,102,102,1);
 			position: relative;
-			text-indent: 19px;
+			text-indent: 15px;
 			margin-bottom: 20px;
 			line-height: 1;
 			cursor: pointer;
@@ -566,6 +567,15 @@ export default class pageDashboard extends Vue {
 		.text-content {
 			position: relative;
 			margin-left: 80px;
+			h2 {
+				margin-bottom: 6px;
+			}
+			p {
+				margin-top: 9px;
+			}
+			.number {
+				margin-top: 6px;
+			}
 		}
 		h2 {
 			font-size:16px;
@@ -589,9 +599,7 @@ export default class pageDashboard extends Vue {
 			color:rgba(102,102,102,1);
 			margin-top: 10px;
 		}
-		.number {
-			margin-top: 15px;
-		}
+		
 		.no-data {
 			font-size:16px;
 			font-weight:400;
@@ -735,6 +743,9 @@ export default class pageDashboard extends Vue {
 		border-radius: 2px;
 		font-size: 14px;
 	}
+}
+.menber-zone {
+	display: flex;
 }
 .my-popover123456 {
 	h2{

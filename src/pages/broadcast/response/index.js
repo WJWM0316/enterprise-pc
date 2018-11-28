@@ -89,7 +89,7 @@ export default class BroadcastReponse extends Vue {
     },
     {
       prop: 'actions',
-      label: '操 作',
+      label: '操作',
       align: 'left',
       showTips: 'yes',
       width: '8%',

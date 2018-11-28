@@ -45,7 +45,7 @@ export default class pageDashboard extends Vue {}
 		text-indent: 22px;
 		height: 60px;
 		line-height: 58px;
-		border-bottom:1px solid rgba(237,237,237,1);
+		border-bottom:1px solid #ebeef5;
 		&:before {
 	    content: '';
 	    height: 100%;
@@ -65,9 +65,10 @@ export default class pageDashboard extends Vue {}
 		color:#354048;
 		height: 80px;
 		line-height: 80px;
-		text-align: center;
-		i{
-			margin-right: 16px;
+		text-align: left;
+		i{	
+			margin-left: 36px;
+			margin-right: 14px;
 			font-size: 24px;
 			color: #BCBCBC;
 		}

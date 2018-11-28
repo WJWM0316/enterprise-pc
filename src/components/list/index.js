@@ -104,7 +104,7 @@ export default class ComponentTableList extends Vue {
           </el-dropdown>
         )
       } else {
-        return (<span style="color: #909399;margin-right: 15px">{ column.label }</span>)
+        return (<span style="color: #909399;margin-right: 8px">{ column.label }</span>)
       }
     }
 

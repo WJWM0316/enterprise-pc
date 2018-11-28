@@ -36,6 +36,7 @@
           </template>
           <template v-else>
             <img
+              class="cont_img"
               :src="props.scope.row.file.url"
               alt=""
               style="display: inline-block;"
@@ -78,7 +79,7 @@ export default BroadcastReview
     -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 1.4;
-    padding: 40px;
+    padding-left: 40px;
     .audio-box {
       position: absolute;
       left: 50px;
@@ -88,6 +89,23 @@ export default BroadcastReview
   }
   .img-disable{
     opacity: .5;
+  }
+  .cont_img {
+    height: 102px;
+    width: auto;
+  }
+  .td_base {
+    height: 130px;
+    box-sizing: border-box;
+  }
+  tbody {
+    tr {
+      height: 130px;
+      box-sizing: border-box;
+    }
+  }
+  .zike-table-list .el-table td {
+    padding: 0;
   }
 }
 </style>
