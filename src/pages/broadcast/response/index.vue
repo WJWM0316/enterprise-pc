@@ -84,6 +84,7 @@ export default BroadcastReview
     line-height: 1.4;
     padding: 40px;
     padding-right: 30px;
+    padding-left: 0;
   }
 }
 </style>

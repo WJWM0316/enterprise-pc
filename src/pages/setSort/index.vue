@@ -10,7 +10,7 @@
         <p style="color:rgba(188,188,188,1);font-size:12px;">* 这里的排序会影响员工端的分类排序。</p>
       </el-col>
       <el-col :span="12" class="right-content">
-        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right">新建分类</el-button>
+        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right;padding:12px 33px ">新建分类</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -93,54 +93,54 @@ export default CourseList
   background: white;
 
   .triangle_up {
-    margin-left: 20px;
-    width:0;
-    height:0;
-    border-width:0 9px 12px;
-    border-style:solid;
-    border-color:transparent transparent rgba(188,188,188,1);
-    margin:40px auto;
-    position:relative;
-    top: -20px;
-    &.disabled{
+  margin-left: 20px;
+  width:0;
+  height:0;
+  border-width:0 7px 10px;
+  border-style:solid;
+  border-color:transparent transparent rgba(188,188,188,1);
+  margin:40px auto;
+  position:relative;
+  top: -20px;
+  &.disabled{
+    border-color:transparent transparent #DCDCDC;
+    &:hover{
       border-color:transparent transparent #DCDCDC;
-      &:hover{
-        border-color:transparent transparent #DCDCDC;
-        cursor: inherit;
-      }
-    }
-    &:hover{
-      border-color:transparent transparent #FFE266;
-      cursor:pointer;
+      cursor: inherit;
     }
   }
-  .sort {
-    height: 40px;
-    position: relative;
+  &:hover{
+    border-color:transparent transparent #FFE266;
+    cursor:pointer;
   }
-  .triangle_down{
-    display:block;
-    width:0;
-    height:0;
-    border-width:12px 9px 0;
-    border-style:solid;
-    border-color:rgba(188,188,188,1) transparent transparent;
-    position:absolute;
-    bottom:0px;
-    left:0px;
+}
+.sort {
+  height: 30px;
+  position: relative;
+}
+.triangle_down{
+  display:block;
+  width:0;
+  height:0;
+  border-width:10px 7px 0;
+  border-style:solid;
+  border-color:rgba(188,188,188,1) transparent transparent;
+  position:absolute;
+  bottom:0px;
+  left:0px;
 
-    &.disabled{
-      border-color:#DCDCDC transparent transparent;
-      &:hover{
-        border-color:#DCDCDC transparent transparent ;
-        cursor: inherit;
-      }
-    }
+  &.disabled{
+    border-color:#DCDCDC transparent transparent;
     &:hover{
-      border-color: #FFE266 transparent transparent ;
-      cursor:pointer;
+      border-color:#DCDCDC transparent transparent ;
+      cursor: inherit;
     }
   }
+  &:hover{
+    border-color: #FFE266 transparent transparent ;
+    cursor:pointer;
+  }
+}
   .action-zone {
     text-align: right;
   }

@@ -57,10 +57,15 @@ export default ComponentLinkViewer
       line-height: 1.4;
       color: #666;
       font-size: 16px;
+
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
   }
   .text-box {
-    flex-grow: 1;
+    width: calc(100% - 88px);
+    // flex-grow: 1;
     padding: 0 0 0 16px; 
   }
   .img-box {

@@ -36,6 +36,11 @@
           </el-button>
         </div>
         <!-- 排序 -->
+        <div v-else-if="props.scope.column.property === 'groupName'" class="sort">
+          <span style="padding-left: 40px;">{{props.scope.row.groupName}} ({{props.scope.row.count}})</span>
+          
+        </div>
+        <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
           <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
           <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
@@ -116,7 +121,7 @@ export default CourseList
   margin-left: 20px;
   width:0;
   height:0;
-  border-width:0 9px 12px;
+  border-width:0 7px 10px;
   border-style:solid;
   border-color:transparent transparent rgba(188,188,188,1);
   margin:40px auto;
@@ -135,14 +140,14 @@ export default CourseList
   }
 }
 .sort {
-  height: 40px;
+  height: 30px;
   position: relative;
 }
 .triangle_down{
   display:block;
   width:0;
   height:0;
-  border-width:12px 9px 0;
+  border-width:10px 7px 0;
   border-style:solid;
   border-color:rgba(188,188,188,1) transparent transparent;
   position:absolute;
