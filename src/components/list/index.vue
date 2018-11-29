@@ -40,7 +40,7 @@
       :current-page="page"
       v-if="total > 20"
       @current-change="handleCurrentPageChange">
-      <span class="total">{{page}}共{{ Math.ceil(total/20) }}页, {{total}}条记录</span>
+      <span class="total">共{{ Math.ceil(total/20) }}页, {{total}}条记录</span>
     </el-pagination>
   </section>
 </template>
