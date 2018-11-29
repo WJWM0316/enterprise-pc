@@ -59,5 +59,5 @@ export default class App extends Vue {
 </script>
 <style lang="scss">
 @import "./App.scss";
-@import '~ICONFONT/iconfont.css';
+@import url('http://at.alicdn.com/t/font_843064_doxaxxhocw5.css');
 </style>
