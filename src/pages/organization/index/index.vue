@@ -81,7 +81,7 @@
         </div>
 
         
-        <div class="btn-container flex-box" v-if="props.scope.column.property === 'roleName'" style="color: #354048">
+        <div class="btn-container" v-if="props.scope.column.property === 'roleName'" style="color: #354048">
           {{ props.scope.row.roleName}}
         </div>
         <!-- 其他列按后端给回的字段显示 -->

@@ -188,7 +188,8 @@ export default WorkZonePost
   font-family:PingFangSC;
   font-weight:400;
   .upload_img_btn {
-    padding: 13px 20px;
+    padding: 13px 23px;
+    font-size: 14px;
   }
   .upload_img_tips {
     margin: 8px 0 8px 0;

@@ -97,7 +97,8 @@ ul {
   line-height: 1;
   cursor: pointer;
   border: 1px solid #DCDCDC;
-  color: #606266;
+  color: #666666;
+  //color: #354048;
   -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
@@ -107,27 +108,25 @@ ul {
   padding: 10px 20px;
   font-size: 14px;
   border-radius: 4px;
-  color: #354048;
   background-color: transparent;
-  color: #354048;
   margin-right: 8px;
   min-width: 128px;
   outline: unset;
   margin: 0px 16px 16px 0px;
   border-radius: 4px;
   &:hover{
-    /*background: rgba(255, 226, 102, 0.2);*/
-    /*font-size: 14px;*/
-    /*font-weight: 400;*/
-    /*color: #D7AB70;*/
-    /*border-color: #EDEDED;*/
+    background: rgba(255, 226, 102, 0.2);
+    font-size: 14px;
+    font-weight: 400;
+    color: #D7AB70;
+    border-color: #EDEDED;
   };
 }
 .common-btn-active {
   background: rgba(255, 226, 102, 0.2);
   font-size: 14px;
   font-weight: 400;
-  color: #D7AB70;
+  color: #D7AB70 !important;
   border-color: #D7AB70;
 }
 

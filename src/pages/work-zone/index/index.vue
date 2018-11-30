@@ -10,7 +10,7 @@
           placeholder="请输入工作圈名称" />
       </el-col>
       <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="addWorkZone" class="btn-limit-width">新建工作圈</el-button>
+        <el-button type="primary" @click="addWorkZone" class="btn-limit-width btn_add">新建工作圈</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -75,6 +75,11 @@ export default WorkzoneList
 @import "~COLORS/variables";
 .page-work-zone-list {
   background: white;
+  .btn_add {
+    box-sizing: border-box;
+    width: 124px;
+    text-align: center;
+  }
   .input-with-select {
     width: 400px;
   }

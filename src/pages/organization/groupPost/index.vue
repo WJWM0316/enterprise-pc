@@ -31,11 +31,7 @@
               <el-input v-model="form.name" :maxlength="20" style="width: 400px;" placeholder="请输入分组名，限制20个字以内..."/>
           </el-form-item>
         </div>
-
-
         <div class="walk-title select ">选择分组成员</div>
-
-
         <el-row class="header">
           <el-col :span="12" class="search-zone">
             <search-bar
@@ -46,16 +42,17 @@
           </el-col>
         </el-row>
         <div class="groupList">
-          <el-button
-            size="large"
+          <div
+            class="common-btn"
             v-for="(groupItem, groupIndex) in groupList"
             :key="groupIndex"
-            class="list-item"
-            :class="{'btn-active-selected': groupItem.active}"
+            :class="{'common-btn-active': groupItem.active}"
             @click="memberClassification(groupItem)">
               {{groupItem.groupName}}
-          </el-button>
+          </div>
         </div>
+
+          
 
         <div class="menber-list">
           <div

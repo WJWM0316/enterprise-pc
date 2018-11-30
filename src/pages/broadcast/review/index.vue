@@ -107,5 +107,9 @@ export default BroadcastReview
   .zike-table-list .el-table td {
     padding: 0;
   }
+
 }
+.el-dropdown-menu__item {
+    padding: 0 32px;
+  }
 </style>

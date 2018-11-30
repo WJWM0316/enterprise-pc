@@ -82,7 +82,7 @@
           prop="occupation"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.occupation" :maxlength="40" placeholder="请填写职位信息"/>
+            <el-input style="width: 224px;" v-model="form.occupation" :maxlength="40" placeholder="请填写职位信息"/>
         </el-form-item>
 
         <!-- 性别 -->
@@ -101,7 +101,7 @@
           prop="email"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.email" :maxlength="30" placeholder="请填写邮箱" />
+            <el-input style="width: 224px;" v-model="form.email" :maxlength="30" placeholder="请填写邮箱" />
         </el-form-item>
 
         <!-- 设置密码 -->
@@ -110,7 +110,7 @@
           prop="password"
           class="limit-width"
           v-if="pageStatus === 'add'">
-            <el-input style="width: 300px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
+            <el-input style="width: 224px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
 
             <el-button v-else size="small" type="primary" class="" @click="openModel2">点击修改</el-button>
         </el-form-item>
@@ -118,7 +118,7 @@
           label="设置密码"
           class="limit-width"
           v-else>
-            <el-input style="width: 300px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
+            <el-input style="width: 224px;" v-model="form.password" :maxlength="20"  placeholder="请填写密码" v-if="pageStatus==='add'"/>
 
             <el-button v-else  type="primary" class="btn_base" @click="openModel2">点击修改</el-button>
         </el-form-item>
@@ -129,7 +129,7 @@
           prop="mobile"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.mobile" :maxlength="30"  placeholder="请填写手机号码"/>
+            <el-input style="width: 224px;" v-model="form.mobile" :maxlength="30"  placeholder="请填写手机号码"/>
         </el-form-item>
 
 
@@ -139,7 +139,7 @@
           prop="wechat"
           class="limit-width"
           >
-            <el-input style="width: 300px;" v-model="form.wechat" :maxlength="30"  placeholder="请填写微信号"/>
+            <el-input style="width: 224px;" v-model="form.wechat" :maxlength="30"  placeholder="请填写微信号"/>
         </el-form-item>
 
         <!-- 权限管理 -->
