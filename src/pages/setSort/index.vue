@@ -27,14 +27,14 @@
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('edit', props.scope.row)"
             >
-              编辑
+              重命名
           </el-button>
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('delete', props.scope.row)"
             >
-              删除
+              删除类型
           </el-button>
         </div>
         <!-- 排序 -->

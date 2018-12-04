@@ -353,19 +353,6 @@ export const routes = [
         module: 'books'
       }
     },
-  // 书籍管理 end
-
-  // {
-  //   path: '/work-book',
-  //   name: 'work-book',
-  //   title: '职场书',
-  //   component: () => import(/* webpackChunkName: "work-book" */ '@/pages/work-book/index.vue'),
-  //   meta: {
-  //     useNav: true,
-  //     icon: 'el-icon-remove',
-  //     module: 'work-book'
-  //   }
-  // },
   //数据统计
   {
     path: '/statistics',
