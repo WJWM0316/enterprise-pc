@@ -124,7 +124,6 @@ export default class classifyList extends Vue {
    */
   getList({ page } = {}) {
     let data = {
-      globalLoading: true,
       page: page || this.form.page || 1,
       pageCount: this.zikeDefaultPageSize
     }
