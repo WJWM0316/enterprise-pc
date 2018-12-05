@@ -43,9 +43,9 @@ axios.interceptors.response.use(
   err => {
     // 登陆过期或者未登录
     if(err.response.data.httpStatus === 401) {
-      removeAccessToken()
-      Cookies.remove('Authorization-Sso', { path: '' })
-      window.location.href = process.env.VUE_APP__LOGIN_URL
+      // removeAccessToken()
+      // Cookies.remove('Authorization-Sso', { path: '' })
+      // window.location.href = process.env.VUE_APP__LOGIN_URL
       return
     }
     if (loadingInstance) loadingInstance.close()
