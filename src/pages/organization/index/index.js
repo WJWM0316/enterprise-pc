@@ -163,6 +163,9 @@ export default class pageOrganization extends Vue {
       }
       this.rolevalue = query.roleId
     }
+    if(this.form.name) {
+      this.memberData.name = this.form.name
+    }
     this.getMemberList()
     this.getMsgList()
     this.downloadMsg()
@@ -299,9 +302,9 @@ export default class pageOrganization extends Vue {
       page: 1,
       roleId: '4'
     }
-    if(item.groupId===0){
-        query = {}
-        this.selectGroupName = '全部成员'
+    if(item.groupId === 0){
+      query = {}
+      this.selectGroupName = '全部成员'
     }else {
       query.groupId = item.groupId
       this.groupList.map(data=>{

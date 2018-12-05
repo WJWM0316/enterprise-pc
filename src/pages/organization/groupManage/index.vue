@@ -37,7 +37,7 @@
         </div>
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'groupName'" class="sort">
-          <span style="padding-left: 40px;">{{props.scope.row.groupName}} ({{props.scope.row.count}})</span>
+          <span style="padding-left: 40px;">{{props.scope.row.groupName}} ({{props.scope.row.count}}人)</span>
           
         </div>
         <!-- 排序 -->

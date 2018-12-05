@@ -174,7 +174,16 @@ export default class groupList extends Vue {
         })
         break
       case 'delete':
-        this.deleteGroup(item)
+        if(item.count === 0) {
+          this.deleteGroup(item)
+          return
+        }
+        this.$confirm(`是否确认删除分组 ${item.groupName}，删除分组时将成员移到无分类组?`, `删除${item.groupName}`, {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.deleteGroup(item)
+        }).catch(() => {})
         break
       default:
         break
