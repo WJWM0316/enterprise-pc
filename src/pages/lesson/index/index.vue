@@ -36,7 +36,7 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('punch', props.scope.row)">
-              打卡管理
+              评论管理
             </el-button>
         </div>
         <!-- 排序 -->

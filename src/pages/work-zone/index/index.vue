@@ -1,18 +1,17 @@
 <template>
   <section class="page-work-zone-list">
     <div class="page-position">工作圈管理</div>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">共<strong>{{jobCircleLists.total}}</strong>个工作圈</div>
+      <div class="action-zone">
         <search-bar
           width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入工作圈名称" />
-      </el-col>
-      <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addWorkZone" class="btn-limit-width btn_add">新建工作圈</el-button>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <table-list
     :list="jobCircleLists.list"
     :fields="fields"
@@ -75,22 +74,42 @@ export default WorkzoneList
 @import "~COLORS/variables";
 .page-work-zone-list {
   background: white;
+  .action-zone {
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
+  }
   .btn_add {
     box-sizing: border-box;
     width: 124px;
     text-align: center;
   }
-  .input-with-select {
-    width: 400px;
-  }
-  .action-zone {
-    text-align: right;
-  }
   .deleted {
     background:rgba(248,250,251,1);
-  }
-  .header {
-    margin: 30px 0;
   }
   .limit-row-num-2{
     padding-right: 40px;

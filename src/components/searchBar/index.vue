@@ -32,6 +32,7 @@ export default SearchBar
   border-radius:4px;
   border:1px solid #DCDCDC;
   position: relative;
+  box-sizing: border-box;
   input{
     background: red;
     border: unset;

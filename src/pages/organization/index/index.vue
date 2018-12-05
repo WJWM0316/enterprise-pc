@@ -1,60 +1,58 @@
 <template>
   <div id="organization">
     <div class="page-position">组织管理</div>
-    <div class="group-type-list">
-        <el-row class="organization-base " style="margin-top: 14px">
-         <el-col :span="24" class="right-content">
-          <el-button type="primary" class="click-item button_base margin_0" @click="todoAction('set')">分组管理</el-button>
-          <el-button style="margin-left: 20px" type="primary" class="click-item button_base margin_0" @click="todoAction('addGroup')">新建分组</el-button>
-         </el-col>
-        </el-row>
-        <el-button 
-              class="group_btn"
-              size="large"
-              :class="{'btn-active-selected': groupItem.active}"
-              v-for="(groupItem, groupIndex) in groupList"
-              :key="groupIndex"
-              @click="selectGroup(groupItem)">
-            {{groupItem.groupName}}
-        </el-button>
-        <div class="border"></div>
+    <div class="organization-base " style="margin-top: 14px">
+     <div class="left-content">
+      <div class="header-label"><strong>分组</strong>（{{groupList.length}}组）</div>
+     </div>
+     <div class="right-content">
+      <el-button type="text" @click="todoAction('set')"><i class="icon iconfont icon-zuzhijiagou"></i> 组织架构</el-button>
+      <!-- <el-button style="margin-left: 20px" type="primary" class="click-item button_base margin_0" @click="todoAction('addGroup')">新建分组</el-button> -->
+      <el-button type="text" @click="todoAction('upload')"><i class="icon iconfont icon-piliangdaoru"></i> 批量导入成员</el-button>
+      <el-button type="primary" class="button_base" @click="todoAction('addMember')">添加新成员</el-button>
+     </div>
     </div>
-
-    <el-row class="organization-base">
-      <el-col :span="12" class="left-content">
-        <h2 class="">
-          {{selectGroupName}}<span class="number">({{courseList.total}}人)</span>
-        </h2>
-      </el-col>
-      <el-col :span="12" class="right-content">
-        
-        <el-button type="primary" class="click-item button_base" @click="todoAction('upload')">批量导入成员</el-button>
-
-        <el-button style="margin-left: 20px" type="primary" class="click-item button_base" @click="todoAction('addMember')">添加新成员</el-button>
-      </el-col>
-    </el-row>
-  
-
-  
-  <div class="dropdown-select">
-        
-    <el-select v-model="rolevalue" placeholder="选择权限" @change="changeRule">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-        >
-      </el-option>
-    </el-select>
-  </div>
+    <div class="group-type-list">
+      <el-button 
+        class="group_btn"
+        size="large"
+        :class="{'btn-active-selected': groupItem.active}"
+        v-for="(groupItem, groupIndex) in groupList"
+        :key="groupIndex"
+        @click="selectGroup(groupItem)">
+          {{groupItem.groupName}}
+      </el-button>
+      <div class="border"></div>
+    </div>
+    <div class="organization-base">
+      <div class="left-content">
+        <div class="header-label"><strong>{{selectGroupName}}</strong>（{{courseList.total}}人）</div>
+      </div>
+      <div class="right-content">
+        <search-bar
+          width="400px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="请输入搜索名称..." />
+        <div class="dropdown-select">
+          <el-select v-model="rolevalue" placeholder="选择权限" @change="changeRule">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              >
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+    </div>
     <table-list
       :list="courseList.list"
       :fields="fields"
       :total="courseList.total"
       >
       <template scope="props" slot="columns">
-
         <!-- 操作行数据 -->
         <div class="btn-container flex-box" v-if="props.scope.column.property === 'groupName'" >
           <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" style="cursor:pointer;">
@@ -72,17 +70,18 @@
           </div>
           <div class="content">
             <div>
-                <div class="limit-row-num-2" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
-                <div class="tutor-name limit-row-num-1" >
-                  <span v-if="props.scope.row.group[0]" >{{ props.scope.row.group[0].groupName}} </span>
-                </div>
+              <div class="limit-row-num-2" style="color:rgba(64,128,173,1);cursor:pointer;" @click="viewMenberInfo(props.scope.row.uid)"> {{ props.scope.row.realname}} </div>
+              <div class="tutor-name limit-row-num-1" >
+                <span v-if="props.scope.row.group[0]" >{{ props.scope.row.group[0].groupName}} </span>
+              </div>
             </div>
           </div>
         </div>
-
-        
-        <div class="btn-container" v-if="props.scope.column.property === 'roleName'" style="color: #354048">
+<!--         <div class="btn-container" v-if="props.scope.column.property === 'roleName'" style="color: #354048">
           {{ props.scope.row.roleName}}
+        </div> -->
+        <div class="btn-container" v-if="props.scope.column.property === 'wechat'">
+          <el-button type="text" @click="editUser(props.scope.row.uid)"> 编辑 </el-button>
         </div>
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{typeof props.scope.row[props.scope.column.property] === 'string'? (props.scope.row[props.scope.column.property].length>0?props.scope.row[props.scope.column.property]:'-' ): props.scope.row[props.scope.column.property]}}
@@ -103,40 +102,38 @@
       class="modal_organ"
       >
         <div slot="title">
-          <h3 class="dialog-title">
-            {{models.title}} 
-          </h3>
+          <h3 class="dialog-title"> {{models.title}} </h3>
         </div>
         <div slot="customize-html" style="margin-top: 20px;">
           <div class="customize-html-content">
-              <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" :href="downUrl" >下载</a></p>
-              <h4 class="pop_tit">第二步：上传填写好的表格文件</h4>
-              <div class="pop_cont">
-                <!--  -->
-                <el-upload
-                  class="upload-demo"
-                  ref="file"
-                  multiple
-                  name="file"
-                  :action="fileUpload.action"
-                  :on-remove="handleRemove"
-                  :on-error="handleFileError"
-                  :accept="fileUpload.accept"
-                  :data="fileUpload.params"
-                  :on-success="handleFileSuccess"
-                  :before-upload="beforeFileUpload"
-                  :on-progress="uploadFileProcess"
-                  :on-exceed="handleExceed"
-                  :limit="1">
-                  <el-button size="small" type="primary" :class="{
-                    'loading': fileUpload.btnTxt==='正在上传..',
-                    'err': fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
-                  <!-- <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div> -->
-                </el-upload>
-              </div>
+            <p class="pop_cont" style="font-size:  12px;">批量导入成员表格模版<a style="margin-left: 20px;" :href="downUrl" >下载</a></p>
+            <h4 class="pop_tit">第二步：上传填写好的表格文件</h4>
+            <div class="pop_cont">
+              <el-upload
+                class="upload-demo"
+                ref="file"
+                multiple
+                name="file"
+                :action="fileUpload.action"
+                :on-remove="handleRemove"
+                :on-error="handleFileError"
+                :accept="fileUpload.accept"
+                :data="fileUpload.params"
+                :on-success="handleFileSuccess"
+                :before-upload="beforeFileUpload"
+                :on-progress="uploadFileProcess"
+                :on-exceed="handleExceed"
+                :limit="1">
+                <el-button size="small" type="primary" :class="{
+                  'loading': fileUpload.btnTxt==='正在上传..',
+                  'err': fileUpload.btnTxt==='导入失败'}">{{fileUpload.btnTxt}}</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">只能上传文件，且不超过500kb</div> -->
+              </el-upload>
+            </div>
           </div>
         </div>
     </modal-dialog>
+    <!-- <add-member-box></add-member-box> -->
   </div>
 </template>
 
@@ -177,9 +174,29 @@
 
 #organization {
   background: #fff;
+  .right-content{
+    .el-button--text {
+      color: #666666;
+    }
+  }
+  .header-label {
+    display: inline-block;
+    float: left;
+    font-size:16px;
+    font-weight:400;
+    color:rgba(146,146,146,1);
+    line-height: 40px;
+    strong{
+      font-size:24px;
+      font-weight:500;
+      color:rgba(0,0,0,0.85);
+      line-height: 40px;
+    }
+  }
   .organization-base {
-    line-height: 35px;
     margin-bottom: 25px;
+    overflow: hidden;
+    margin-top: 56px;
     h1{
       margin: 0;
       padding: 0;
@@ -193,6 +210,7 @@
     h2 {
       margin: 0;
       line-height: 40px;
+      height: 40px;
     }
     .number {
       font-size:16px;
@@ -202,31 +220,35 @@
     }
     .left-content {
       text-align: left;
+      display: inline-block;
+      float: left;
     }
     .right-content {
       text-align: right;
+      display: inline-block;
+      float: right;
+      .zike-common-search-bar {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .dropdown-select {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 16px;
+      }
     }
-    .click-item {
-      color:rgba(53,64,72,1);
+    .el-button{
+      margin-left: 32px;
     }
   }
   .group-type-list {
+    /*border-bottom:1px dashed rgba(235,238,245,1);*/
     .el-button{
-      //width: 128px;
       padding: 10px 20px;
-      margin: 0px 16px 16px 0px;
       color: #666666;
-      &.margin_0 {
-        margin-right: 0;
-      }
-
-      
-    }
-    .border {
-      width:100%;
-      height:3px;
-      border-bottom:1px dashed rgba(235,238,245,1);
-      margin-bottom: 30px;
+      margin: 0;
+      margin-bottom: 16px;
+      margin-right: 16px;
     }
     .group_btn {
       width: auto;
@@ -237,9 +259,6 @@
         border: 1px solid #D7AB70;
       }
     }
-  }
-  .dropdown-select {
-    margin: 24px 0 16px 0;
   }
   .cell {
     overflow: inherit;

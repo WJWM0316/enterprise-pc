@@ -99,12 +99,8 @@ export default class classifyList extends Vue {
     }else if(type === 'down'){
       data.type = 2
     }
-
     updateCategoryApi(data).then(res=>{
-      this.$message({
-          message: '成功',
-          type: 'success'
-        })
+      this.$message({message: '成功', type: 'success'})
       this.getList()
     }).catch(err => {
       this.$message.error(err.data.msg);
@@ -148,7 +144,6 @@ export default class classifyList extends Vue {
   deleteClass() {
     deleteCategoryApi({id: this.model.itemSel.categoryId}).then(res=>{
       this.model.show = false
-
       this.$message({
         message: res.data.msg,
         type: 'success'
@@ -233,14 +228,12 @@ export default class classifyList extends Vue {
     this.model.show = true
     this.form.hintTXt = ''
     this.model.type = 'confirm'
-
     switch(type) {
       case 'add':
-          this.model.txt = ''
-          this.model.confirm = 'addClass'
-          this.model.confirmText = '提交'
-          this.model.title = '新建分类'
-        
+        this.model.txt = ''
+        this.model.confirm = 'addClass'
+        this.model.confirmText = '提交'
+        this.model.title = '新建分类'
         break
       case 'edit':
         this.model.txt = ''
@@ -254,7 +247,6 @@ export default class classifyList extends Vue {
         this.model.confirm = 'deleteClass'
         this.model.confirmText = '删除'
         this.model.title = '删除分类确认提醒'
-
         break
       default:
         break

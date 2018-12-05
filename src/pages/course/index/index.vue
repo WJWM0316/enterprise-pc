@@ -1,18 +1,19 @@
 <template>
   <section class="page-course-list">
     <div class="page-position">课程管理</div>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{courseList.total}}</strong>门课程
+      </div>
+      <div class="action-zone">
         <search-bar
           width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入课程名或导师..." />
-      </el-col>
-      <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addCourse" class="btn-limit-width">新建课程</el-button>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <table-list
     :list="courseList.list"
     :fields="fields"
@@ -93,13 +94,33 @@ export default CourseList
 .page-course-list {
   background: white;
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
   .header {
     margin: 36px 0 24px 0;
   }
-  .search-zone {
-    display: flex;
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .tutor-name {
     color: #929292;

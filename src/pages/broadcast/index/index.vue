@@ -1,19 +1,18 @@
 <template>
   <section class="broadcast-index-list">
     <div class="page-position">直播管理</div>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div :span="12" class="list-total">共<strong>{{liveLists.total}}</strong>场直播</div>
+      <div :span="12" class="action-zone">
         <search-bar
           class="search"
           width="400px"
           @search="handleSearch"
           v-model="form.liveName"
           placeholder="请输入直播名称或关键词" />
-      </el-col>
-      <el-col :span="12" class="action-zone">
         <el-button type="primary" @click="addBroadcast" class="btn-limit-width">新建直播</el-button>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <table-list
     :list="liveLists.list"
     :fields="fields"
@@ -110,11 +109,34 @@ export default BroadcastIndex
 @import "~COLORS/variables";
 .broadcast-index-list {
   background: white;
-  .input-with-select {
-    width: 400px;
-  }
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .deleted {
     background:rgba(248,250,251,1);
