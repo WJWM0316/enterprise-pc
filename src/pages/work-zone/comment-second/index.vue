@@ -12,7 +12,7 @@
     :page="jobCircleCommentSecondLists.page"
     :total="jobCircleCommentSecondLists.total"
     >
-      <template scope="props" slot="columns">
+      <template slot-scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button

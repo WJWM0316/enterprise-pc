@@ -20,7 +20,7 @@
     :page="bookList.page"
 
     >
-      <template scope="props" slot="columns">
+      <template slot-scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
           <el-button v-if="props.scope.row.localStatus ===1"

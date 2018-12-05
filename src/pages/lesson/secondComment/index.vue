@@ -22,7 +22,7 @@
     :page="commentData.page"
     :total="commentData.total"
     >
-      <template scope="props" slot="columns">
+      <template slot-scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
             <div v-if="props.scope.row.status==1">

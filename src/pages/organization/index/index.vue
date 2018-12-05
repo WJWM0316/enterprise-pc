@@ -52,7 +52,7 @@
       :fields="fields"
       :total="courseList.total"
       >
-      <template scope="props" slot="columns">
+      <template slot-scope="props" slot="columns">
         <!-- 操作行数据 -->
         <div class="btn-container flex-box" v-if="props.scope.column.property === 'groupName'" >
           <div class="img-box" @click="viewMenberInfo(props.scope.row.uid)" style="cursor:pointer;">

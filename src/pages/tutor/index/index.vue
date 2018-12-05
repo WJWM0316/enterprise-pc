@@ -26,7 +26,7 @@
     :total="form.total"
     :page="form.page"
     >
-      <template scope="props" slot="columns">
+      <template slot-scope="props" slot="columns">
         <!-- 操作行数据 -->
 
         <div class="btn-container" v-if="props.scope.column.property === 'actions'">
