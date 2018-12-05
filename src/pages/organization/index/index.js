@@ -178,7 +178,7 @@ export default class pageOrganization extends Vue {
       page: this.form.page
     }
     if(this.form.groupId) params.groupId = this.form.groupId
-    if(this.form.roleId) params.roleId = this.form.roleId
+    if(this.form.roleId && Number(this.form.roleId) === 4) params.roleId = this.form.roleId
     getMemberListApi(params).then( res => {
       this.courseList = {
         list : res.data.data,
@@ -305,7 +305,8 @@ export default class pageOrganization extends Vue {
     if(item.groupId === 0){
       query = {}
       this.selectGroupName = '全部成员'
-    }else {
+      this.form.groupId = null
+    } else {
       query.groupId = item.groupId
       this.groupList.map(data=>{
         if(data.groupId == item.groupId){
