@@ -7,6 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
+    <reset-psw-box></reset-psw-box>
   </section>
 </template>
 <script>
@@ -17,6 +18,7 @@ import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import { Loading } from 'element-ui'
 import Cookies from 'js-cookie'
+import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 
 @Component({
   name: 'App',
@@ -27,7 +29,8 @@ import Cookies from 'js-cookie'
   },
   components: {
     PageAside,
-    PageHeader
+    PageHeader,
+    resetPswBox
   },
   computed: {
     ...mapGetters([

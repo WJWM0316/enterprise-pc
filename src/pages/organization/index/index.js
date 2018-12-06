@@ -168,12 +168,15 @@ export default class pageOrganization extends Vue {
     }
     if(this.form.name) {
       this.memberData.name = this.form.name
+    } else {
+      delete this.memberData.name
     }
     this.getMemberList()
     this.getMsgList()
     this.downloadMsg()
   }
   handleSearch() {
+    this.setPathQuery({name: this.form.name})
     const params = {
       selectAll: 1,
       name: this.form.name,
@@ -181,13 +184,13 @@ export default class pageOrganization extends Vue {
       page: this.form.page
     }
     if(this.form.groupId) params.groupId = this.form.groupId
-    if(this.form.roleId && Number(this.form.roleId) === 4) params.roleId = this.form.roleId
+    if(this.form.roleId && Number(this.form.roleId) !== 4) params.roleId = this.form.roleId
     getMemberListApi(params).then( res => {
       this.courseList = {
         list : res.data.data,
         total: res.data.meta && res.data.meta.total ? res.data.meta.total: 0
       }
-      if(res.data.meta.total > 20) {
+      if(res.data.meta.total > Number(this.form.page) * 20) {
         this.form.page++
       }
     })
@@ -246,17 +249,17 @@ export default class pageOrganization extends Vue {
   }
 
   getMemberList(){
+    if(!this.$route.query.name) {
+      delete this.memberData.name
+    } else {
+      this.memberData.name = this.$route.query.name
+    }
     getMemberListApi(this.memberData).then( res => {
       this.courseList = {
         list : res.data.data,
         total: res.data.meta&&res.data.meta.total?res.data.meta.total:0
       }
     })
-  }
-
-  // 添加课程-跳转
-  addWorkZone() {
-    this.$router.push({ name: 'addMember'})
   }
 
   todoAction(type) {
@@ -311,10 +314,8 @@ export default class pageOrganization extends Vue {
       this.form.groupId = null
     } else {
       query.groupId = item.groupId
-      this.groupList.map(data=>{
-        if(data.groupId == item.groupId){
-          this.selectGroupName = data.groupName
-        }
+      this.groupList.map(data => {
+        if(data.groupId == item.groupId) this.selectGroupName = data.groupName
       })
     }
     this.$router.push({
@@ -325,7 +326,7 @@ export default class pageOrganization extends Vue {
 
   changeRule(id){
     this.form.roleId = id !== 4 ? id : null
-    let query = { page: 1 }
+    let query = { ...this.$route.query, page: 1 }
     if(id === 4){
       query = {}
     } else {
