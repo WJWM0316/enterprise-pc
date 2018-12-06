@@ -194,12 +194,10 @@ export default class BroadcastReview extends Vue {
                 this.getLiveReviewList()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       case 'recover':
-        this.$confirm('是否恢复该评论, 是否继续1?', '提示', {
+        this.$confirm('该内容恢复将重新在原直播回顾内显示，是否确定恢复？', '恢复内容', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })
@@ -209,9 +207,7 @@ export default class BroadcastReview extends Vue {
                 this.getLiveReviewList()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       default:
         break

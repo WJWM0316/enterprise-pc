@@ -38,6 +38,7 @@ const state = {
     total: 0,
     page: 1
   },
+  liveMenberList: {},
   liveMenberList: {}
 }
 
@@ -50,10 +51,7 @@ const mutations = {
     state.liveDetails = data
   },
   [GET_LIVE_INVISIBLE_LIST] (state, data) {
-    state.liveReviewList.list = data.data
-  },
-  [GET_LIVE_REVIEW_LIST] (state, data) {
-    state.liveReviewList.list = data.data
+    state.InvisibleMenberList.list = data.data
   },
   [GET_LIVE_MENBER_LIST] (state, data) {
     state.liveMenberList.list = data.data
@@ -172,7 +170,7 @@ const actions = {
   getLiveInvisibleMenberListApi (store, params) {
     return getLiveInvisibleMenberListApi(params)
       .then(res => {
-        store.commit(GET_LIVE_REVIEW_LIST, res.data)
+        store.commit(GET_LIVE_INVISIBLE_LIST, res.data)
         return res
       })
       .catch(error => {

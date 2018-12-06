@@ -138,7 +138,7 @@ export default class BroadcastReponse extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'delete':
-        this.$confirm('删除后该内容前台不可见', '提示', {
+        this.$confirm('当前改内容被隐藏后，员工端将不显示这条内容，可通过回复内容显示，是否确定隐藏？', '确定要隐藏这条内容么？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })
@@ -148,12 +148,10 @@ export default class BroadcastReponse extends Vue {
                 this.getLiveProblemList()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       case 'recover':
-        this.$confirm('恢复后该内容前台可见', '提示', {
+        this.$confirm('该内容恢复将重新在原问答区内显示，是否确定恢复？', '恢复内容', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })
@@ -163,9 +161,7 @@ export default class BroadcastReponse extends Vue {
                 this.getLiveProblemList()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       default:
         break

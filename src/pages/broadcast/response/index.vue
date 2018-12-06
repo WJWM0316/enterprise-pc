@@ -4,6 +4,9 @@
       <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
       <el-breadcrumb-item>问答区</el-breadcrumb-item>
     </el-breadcrumb>
+    <div class="header">
+      <div class="list-total">共<strong>{{liveProblemList.total}}</strong>条内容</div>
+    </div>
     <table-list
     :list="liveProblemList.list"
     :fields="fields"
@@ -18,7 +21,7 @@
             type="text"
             v-if="props.scope.row.status === '正常'"
             @click="todoAction('delete', props.scope.row)">
-              删除
+              隐藏
           </el-button>
           <el-button
             type="text"
@@ -56,6 +59,35 @@ export default BroadcastReview
 @import "~COLORS/variables";
 .broadcast-review-list {
   background: white;
+  .action-zone {
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
+  }
   .zike-breadcrumb {
     margin-bottom: 30px;
   }
