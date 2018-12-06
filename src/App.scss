@@ -328,6 +328,18 @@ ul {
   color: #666666
 }
 
+.limit-select-dropdown-height {
+  max-height:265px;
+}
 
-
-
+.limit-select-dropdown-height::-webkit-scrollbar {
+  width: 4px;
+}
+.limit-select-dropdown-height::-webkit-scrollbar-track {
+  background-color:#ffffff;
+  border-radius: 4px;
+}
+.limit-select-dropdown-height::-webkit-scrollbar-thumb {
+  background-color:#ffffff;
+  border-radius: 4px;
+}

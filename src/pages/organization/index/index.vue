@@ -9,7 +9,8 @@
       <el-button type="text" @click="todoAction('set')"><i class="icon iconfont icon-zuzhijiagou"></i> 组织架构</el-button>
       <!-- <el-button style="margin-left: 20px" type="primary" class="click-item button_base margin_0" @click="todoAction('addGroup')">新建分组</el-button> -->
       <el-button type="text" @click="todoAction('upload')"><i class="icon iconfont icon-piliangdaoru"></i> 批量导入成员</el-button>
-      <el-button type="primary" class="button_base" @click="todoAction('addMember')">添加新成员</el-button>
+      <el-button type="primary" class="button_base" @click="openConfirmModel">添加新成员</el-button>
+      <!-- <el-button type="primary" class="button_base" @click="todoAction('addMember')">添加新成员</el-button> -->
      </div>
     </div>
     <div class="group-type-list">
@@ -133,7 +134,7 @@
           </div>
         </div>
     </modal-dialog>
-    <!-- <add-member-box></add-member-box> -->
+    <add-member-box v-model="confirmModels.show" @confirm="openConfirmModel"></add-member-box>
   </div>
 </template>
 

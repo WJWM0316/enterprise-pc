@@ -21,3 +21,5 @@ export const getGroupListsApi = params => request('/group', 'get', params)
 export const getMemberDynamicsListApi = params => request('/member/dynamics', 'get', params)
 //获取是否有最新动态
 export const getMemberCheckNewDynamicsApi = params => request(`/member/checkNewDynamics/${params.timestamp}`, 'get')
+// 添加成员
+export const addMemberApi = params => request('/member/create', 'post', params)

@@ -45,7 +45,8 @@ import {
   getCompanyInfoApi,
   getGroupListsApi,
   getMemberDynamicsListApi,
-  getMemberCheckNewDynamicsApi
+  getMemberCheckNewDynamicsApi,
+  addMemberApi
 } from 'API/common'
 
 const state = {
@@ -665,6 +666,21 @@ const actions = {
         return Promise.reject(error.data || {})
       })
   },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-12-06
+   * @detail   添加成员
+   * @param    {[type]}   params [description]
+   */
+  addMemberApi(store, params) {
+    return addMemberApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  }
 }
 
 export default {

@@ -10,7 +10,7 @@
         <p style="color:rgba(188,188,188,1);font-size:12px;">* 这里的排序会影响员工端的分类排序。</p>
       </el-col>
       <el-col :span="12" class="right-content">
-        <el-button type="primary" @click="todoAction('add')" class="click-item " style="float: right;padding:12px 33px ">新建分类</el-button>
+        <el-button type="primary" @click="todoAction('add')" class="click-item btn-limit-width" style="float: right;">添加内容类型</el-button>
       </el-col>
     </el-row>
     <table-list
@@ -39,15 +39,18 @@
         </div>
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
-
           <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
           <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
           <span class="triangle_down disabled" v-if="pageNum == form.page && props.scope.row.index-0+1 === classifyList.list.length"></span>
           <span class="triangle_down" @click="setSort('down', props.scope.row)" v-else ></span>
         </div>
-
+         <div v-else-if="props.scope.column.property === 'categoryName'">
+          <div class="categoryName">{{props.scope.row.categoryName}} <span v-if="!props.scope.row.categoryId">系统</span></div>
+          <div class="categoryCount">
+            <span>{{props.scope.row.courseCount}}个课程</span>&nbsp;|&nbsp;<span>{{props.scope.row.liveCount}}个直播</span>
+          </div>
+        </div>
         <div v-else style="margin-left: 40px;">{{props.scope.row[props.scope.column.property]}}</div>
-
       </template>
     </table-list>
 
@@ -113,6 +116,32 @@ export default CourseList
     border-color:transparent transparent #FFE266;
     cursor:pointer;
   }
+}
+.categoryName {
+  padding-left: 40px;
+  color: #666;
+  font-weight: 400;
+  font-size: 14px;
+  span {
+    width:40px;
+    background:rgba(255,249,217,1);
+    border-radius:10px;
+    border:1px solid rgba(215,171,112,1);
+    font-size: 12px;
+    font-weight: 400;
+    display: inline-block;
+    text-align: center;
+    line-height: 18px;
+    color: #D7AB70;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+}
+.categoryCount {
+  padding-left: 40px;
+  color: #929292;
+  font-weight: 400;
+  font-size: 14px;
 }
 .sort {
   height: 30px;

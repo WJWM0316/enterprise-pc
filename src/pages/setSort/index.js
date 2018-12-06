@@ -121,7 +121,9 @@ export default class classifyList extends Vue {
   getList({ page } = {}) {
     let data = {
       page: page || this.form.page || 1,
-      pageCount: this.zikeDefaultPageSize
+      pageCount: this.zikeDefaultPageSize,
+      useCount: 1,
+      default: 1
     }
 
     this.form.page = data.page
@@ -225,17 +227,20 @@ export default class classifyList extends Vue {
     if(type!=='add'){
       this.model.itemSel = item 
     }
-    this.model.show = true
-    this.form.hintTXt = ''
-    this.model.type = 'confirm'
     switch(type) {
       case 'add':
+        this.model.show = true
+        this.form.hintTXt = ''
+        this.model.type = 'confirm'
         this.model.txt = ''
         this.model.confirm = 'addClass'
         this.model.confirmText = '提交'
         this.model.title = '新建分类'
         break
       case 'edit':
+        this.model.show = true
+        this.form.hintTXt = ''
+        this.model.type = 'confirm'
         this.model.txt = ''
         this.model.confirm = 'editClass'
         this.model.confirmText = '提交'
@@ -243,10 +248,21 @@ export default class classifyList extends Vue {
         this.form.name = item.categoryName
         break
       case 'delete':
-        this.model.txt = '删除此分类，分类下的内容会变成【未分类】'
-        this.model.confirm = 'deleteClass'
-        this.model.confirmText = '删除'
-        this.model.title = '删除分类确认提醒'
+        if(item.courseCount === 0 && item.liveCount === 0) {
+          this.$confirm('确定要删除当前内容类型吗？', '删除分类确认提醒', {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消'
+          }).then(() => {
+            this.deleteClass(item)
+          }).catch(() => {})
+          return
+        }
+        this.$confirm('删除此分类，分类下的内容会变成【未分类】', '删除分类确认提醒', {
+          confirmButtonText: '删除',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.deleteClass(item)
+        }).catch(() => {})
         break
       default:
         break

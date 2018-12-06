@@ -1,47 +1,70 @@
 <template>
-  <section id="add-member-box" transition="toast" keep-alive="keep-alive">
+  <section id="add-member-box" keep-alive="keep-alive">
     <div class="mask" :class="{'show-mask': visiable}"></div>
     <section class="box" :class="{'show-box': visiable}"  >
       <header class="dialog-hd">
-        <span class="default" v-if="headType==1"></span>
-        <slot name="title">
-          <h3 class="dialog-title" v-html="title"></h3>
-        </slot>
-        <span @click="handleCancel" v-if="showClose" class="dialog-close">
-          <i class="el-icon-close"></i>
-        </span>
+        <span class="default"></span>
+        <h3 class="dialog-title">添加新成员</h3>
+        <span @click="handleCancel" class="dialog-close"> <i class="el-icon-close"></i> </span>
       </header>
-      <main class="dialog-bd" :style="{ minHeight: dialogMinHeight }">
+      <main class="dialog-bd">
         <el-form :model="form" :rules="rules" ref="form" label-width="90px">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="form.name" class="limit-width" placehholder="限制10个字以内"></el-input>
           </el-form-item>
           <el-form-item label="选择性别" prop="gender">
-            <el-radio-group v-model="form.gender">
-              <el-radio label="男"></el-radio>
-              <el-radio label="女"></el-radio>
-            </el-radio-group>
+            <el-radio v-model="form.gender" label=1>男</el-radio>
+            <el-radio v-model="form.gender" label=2>女</el-radio>
           </el-form-item>
           <el-form-item label="职位" prop="occupation">
             <el-input v-model="form.occupation" class="limit-width" placeholder="请填写职位信息"></el-input>
           </el-form-item>
           <el-form-item label="所属分组" prop="groupId">
-            <el-select v-model="form.groupId" placeholder="请选择分组" class="limit-width">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select
+              class="limit-width"
+              popper-class="limit-select-dropdown-height"
+              v-model="form.groupId"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              placeholder="所属分组">
+              <el-option
+                v-for="groupItem in groupLists"
+                :key="groupItem.groupId"
+                :label="groupItem.groupName"
+                :value="groupItem.groupId">
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="form.email" placeholder="请填写邮箱"></el-input>
           </el-form-item>
-          <el-form-item label="权限" prop="region">
-            <el-select v-model="form.region" placeholder="选择权限" class="limit-width">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+          <el-form-item label="权限" prop="roleId">
+            <el-select v-model="form.roleId" placeholder="选择权限" class="limit-width">
+              <el-option :label="roleItem.label" :value="roleItem.value" v-for="roleItem in roleList" :key="roleItem.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="管理分组" prop="contentAdminGroup" v-if="form.roleId === 3">
+            <el-select
+              class="limit-width"
+              popper-class="limit-select-dropdown-height"
+              v-model="form.contentAdminGroup"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              placeholder="请选择分组">
+              <el-option
+                v-for="groupItem in groupLists"
+                :key="groupItem.groupId"
+                :label="groupItem.groupName"
+                :value="groupItem.groupId">
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="手机号码">
-            <el-input v-model="form.mobile" class="limit-width" placeholder="请填写手机号"></el-input>
+            <el-input v-model="form.mobile" class="limit-width" placeholder="请填写手机号" maxLength="11"></el-input>
           </el-form-item>
           <el-form-item label="微信号">
             <el-input v-model="form.wechat" class="limit-width" placeholder="请填写微信号"></el-input>
@@ -49,13 +72,13 @@
           <div>
             <div class="continute-button">
               <div
-                class="common-checkbox common-checkbox-active">
-                <i class="icon iconfont icon-check-circle" v-if="false"></i>
-                <i class="icon iconfont icon-radio_default"></i>
+                class="common-checkbox" @click="checked" :class="{'common-checkbox-active': form.isContinuted}">
+                <i class="icon iconfont icon-check-circle" v-if="form.isContinuted"></i>
+                <i class="icon iconfont icon-radio_default" v-if="!form.isContinuted"></i>
                 <span style="color: #354048">继续添加下一个</span>
               </div>
             </div>
-            <el-button type="primary" @click="submitForm('form')" class="submit-button">提交</el-button>
+            <el-button type="primary" @click="preSubmit" class="submit-button">提交</el-button>
           </div>
         </el-form>
       </main>
@@ -68,137 +91,80 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component({
-  name: 'modal-dialog',
+  name: 'modal-add-member-box',
+  methods: {
+    ...mapActions([
+      'getGroupListsApi',
+      'addMemberApi'
+    ])
+  },
   computed: {
-    ...mapGetters(['openModal'])
+    ...mapGetters([
+      'groupLists',
+      'openModal'
+    ])
   },
   model: {
     prop: 'show',
-    event: 'input'
+    event: 'close'
   },
   props: {
     // 是否显示
     show: {
       type: Boolean,
-      default: true
-    },
-
-    // 弹窗类型
-    type: {
-      type: String,
-      default: 'alert'
-    },
-
-    //头部类型 1黄条。2 空格。3错误。4 正确
-    headType: {
-      type: String,
-      default: '1'
-    },
-
-    //按钮类型 1默认固定宽度。2 padding
-    bottomType: {
-      type: String,
-      default: '1'
-    },
-
-    // 是否显示关闭按钮
-    showClose: {
-      type: Boolean,
-      default: true
-    },
-
-    // 弹窗标题
-    title: {
-      type: String,
-      default: '添加新成员'
-    },
-
-    // 弹窗内容
-    content: {
-      type: String,
-      default: ''
-    },
-
-    // 弹窗宽度
-    width: {
-      type: [Number, String],
-      default: 682
-    },
-
-    // 弹窗最小高度
-    minHeight: {
-      type: [Number, String],
-      default: 90
-    },
-
-    // 确定按钮文本
-    confirmText: {
-      type: String,
-      default: '确定'
-    },
-
-    // 取消按钮文本
-    cancelText: {
-      type: String,
-      default: '取消'
-    },
-
-    //是否隐藏 1是。2 否
-    isHideBtn: {
-      type: String,
-      default: '2'
+      default: false
     }
   },
   watch: {
     show: {
       handler(show) {
         this.visiable = show
-        this.$store.dispatch('switchOpenModal', show)
       },
       immediate: true
     },
     visiable: {
       handler(visiable) {
-        if (!visiable) {
-          this.$emit('close')
-        }
-      }
+        if(!visiable) this.$emit('close')
+      },
+      immediate: true
     }
   }
 })
-export default class ComponentDialog extends Vue {
-
-  visiable = false
-
+export default class ComponentAddMemberBox extends Vue {
   form = {
     name: '',
     occupation: '',
     email: '',
     wechat: '',
-    region: '',
     mobile: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    gender: '',
-    desc: ''
+    password: '123456',
+    gender: '1',
+    groupId: [],
+    roleId: '',
+    contentAdminGroup: [],
+    isContinuted: false
   }
   rules = {
     name: [
-      { required: true, message: '请输入名称', trigger: 'blur' },
-      { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+      { required: true, message: '姓名必须填写，最多10个字符', trigger: 'blur' },
+      { max: 5, message: '姓名最多10个字符', trigger: 'blur' }
     ],
     occupation: [
       { required: true, message: '请输入职位', trigger: 'blur' },
-      { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+      { max: 5, message: '职位最多10个字符', trigger: 'blur' }
     ],
     email: [
-      { required: true, message: '请输入邮箱', trigger: 'blur' },
+      { required: true, message: '邮箱必须填写，可作为成员登录邮箱', trigger: 'blur' },
       { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
     ],
-    region: [
+    roleId: [
       { required: true, message: '请选择权限', trigger: 'change' }
+    ],
+    groupId: [
+      { required: true, message: '请选择分组', trigger: 'change' }
+    ],
+    contentAdminGroup: [
+      { required: true, message: '请选择管理分组', trigger: 'change' }
     ],
     gender: [
       { required: true, message: '请选择性别', trigger: 'change' }
@@ -210,18 +176,30 @@ export default class ComponentDialog extends Vue {
       { required: true, message: '请输入手机号', trigger: 'blur' }
     ]
   }
-  // 弹窗宽度
-  get dialogWidth() {
-    const width = this.width
-    return width.toString().indexOf('px') >= 0 ? width : `${width}px`
-  }
+  roleList = [
+    {
+      value: 6,
+      label: '普通学员'
+    },
+    {
+      value: 3,
+      label: '课程、直播和工作圈管理'
+    },
+    {
+      value: 2,
+      label: '后台管理员'
+    },
+    {
+      value: 1,
+      label: '超级管理员'
+    }
+  ]
 
-  // 弹窗最小高度
-  get dialogMinHeight() {
-    const minHeight = this.minHeight
-    return minHeight.toString().indexOf('px') >= 0 ? minHeight : `${minHeight}px`
-  }
+  visiable = false
 
+  close() {
+    this.visiable = false
+  }
   /**
    * 关闭弹窗
    */
@@ -245,15 +223,45 @@ export default class ComponentDialog extends Vue {
     this.$emit('cancel')
   }
 
-  submitForm(formName) {
-    this.$refs[formName].validate((valid) => {
-      if (valid) {
-        alert('submit!')
-      } else {
-        console.log('error submit!!')
-        return false;
+  transformData() {
+    const formData = {...this.form}
+    delete formData.isContinuted
+    formData.groupId = formData.groupId.join(',')
+    formData.contentAdminGroup = formData.contentAdminGroup.join(',')
+    if(!formData.contentAdminGroup) delete formData.contentAdminGroup
+    return formData
+  }
+
+  preSubmit() {
+    this.$refs['form'].validate((valid) => {
+      if(valid) {
+        const params = this.transformData()
+        this.submit(params)
       }
     })
+  }
+
+  submit(params) {
+    this.addMemberApi(params)
+        .then((res) => {
+          this.$message({message: res.data.msg, type: 'success'})
+        })
+        .catch(err => {
+          this.$message.error(`${err.msg}~`)
+        })
+  }
+
+  checked() {
+    this.form.isContinuted = !this.form.isContinuted
+    if(this.form.isContinuted) {
+      this.$refs['form'].resetFields()
+      this.form.wechat = ''
+      this.form.mobile = ''
+      this.formData.contentAdminGroup = ''
+    }
+  }
+  created() {
+    this.getGroupListsApi()
   }
 }
 

@@ -32,6 +32,9 @@ methods: {
 },
 })
 export default class pageOrganization extends Vue {
+  confirmModels = {
+    show: false
+  }
   form = {
     name: '',
     groupId: null,
@@ -433,5 +436,9 @@ export default class pageOrganization extends Vue {
       this.models.isHideBtn = '1'
       this.$message.error(res.data.msg);
     })
+  }
+
+  openConfirmModel() {
+    this.confirmModels.show = !this.confirmModels.show
   }
 }
