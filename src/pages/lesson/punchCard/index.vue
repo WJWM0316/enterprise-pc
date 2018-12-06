@@ -3,20 +3,20 @@
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'lessonList' , query:{'course_id': course_id}}">课节管理</el-breadcrumb-item>
-
-
       <el-breadcrumb-item>打卡管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{cardList.total}}</strong>条内容
+      </div>
+      <div class="action-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入关键词" />
-      </el-col>
-    </el-row>
-    
+          placeholder="搜索内容、发布者" />
+      </div>
+    </div>
     <table-list
     :list="cardList.list"
     :fields="fields"
@@ -31,7 +31,7 @@
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
                 @click="todoAction('delete', props.scope.row)">
-                  删除
+                  隐藏
                 </el-button>
               <el-button
                 type="text"
@@ -39,12 +39,11 @@
                 @click="todoAction('comment', props.scope.row)">
                   评论
                 </el-button>
-
                <el-button
               type="text"
               v-if="props.scope.row.isExcellentCard==1"
               @click="todoAction('cancelExcellent', props.scope.row)">
-                取消优秀
+                取消优秀打卡
               </el-button>
                <el-button
               type="text" v-else

@@ -233,19 +233,19 @@ export default class CourseList extends Vue {
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
-        this.model.txt = '删除后的内容前台不可见'
+        this.model.txt = '当前该内容会被隐藏后，员工端将不可显示这条内容，可通过恢复内容重新显示，是否确定隐藏？'
         this.model.confirm = 'deleteComment'
         break
       case 'cancelExcellent':
-        this.model.txt = '把该打卡取消优秀打卡'
+        this.model.txt = '你确定该内容取消优秀打卡？'
         this.model.confirm = 'cancelExcellent'
         break
       case 'excellent':
-        this.model.txt = '把该打卡设为优秀打卡'
+        this.model.txt = '你确定该内容评为优秀打卡？'
         this.model.confirm = 'putLessonPunch'
         break
       case 'recover':
-        this.model.txt = '恢复后内容前台可见'
+        this.model.txt = '该内容恢复将重新在原课节内显示，是否确定恢复？'
         this.model.confirm = 'recover'
         break
       case 'comment':

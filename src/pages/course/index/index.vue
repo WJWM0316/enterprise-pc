@@ -10,8 +10,8 @@
           width="400px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入课程名或导师..." />
-        <el-button type="primary" @click="addCourse" class="btn-limit-width">新建课程</el-button>
+          placeholder="搜索课程名称或导师" />
+        <el-button type="primary" @click="addCourse" class="btn-limit-width">创建课程</el-button>
       </div>
     </div>
     <table-list

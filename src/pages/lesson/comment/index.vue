@@ -2,25 +2,25 @@
   <section class="page-lesseon-coment-list">
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
-
       <el-breadcrumb-item :to="{ name: 'lessonList' , query:{'course_id': pageData.course_id}}">课节管理</el-breadcrumb-item>
-
       <el-breadcrumb-item :to="{ name: 'punchCard' , query:{
         'course_id': pageData.course_id,
         'course_section_id': pageData.course_section_id
       }}">打卡管理</el-breadcrumb-item>
-
       <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{commentData.total}}</strong>条内容
+      </div>
+      <div class="action-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入关键词" />
-      </el-col>
-    </el-row>
+          placeholder="搜索内容、发布者" />
+      </div>
+    </div>
     <table-list
     :list="commentData.list"
     :fields="fields"

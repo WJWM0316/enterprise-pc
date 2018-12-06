@@ -147,11 +147,11 @@ export default class ComponentAddMemberBox extends Vue {
   rules = {
     name: [
       { required: true, message: '姓名必须填写，最多10个字符', trigger: 'blur' },
-      { max: 5, message: '姓名最多10个字符', trigger: 'blur' }
+      { max: 10, message: '姓名最多10个字符', trigger: 'blur' }
     ],
     occupation: [
       { required: true, message: '请输入职位', trigger: 'blur' },
-      { max: 5, message: '职位最多10个字符', trigger: 'blur' }
+      { max: 40, message: '职位最多40个字符', trigger: 'blur' }
     ],
     email: [
       { required: true, message: '邮箱必须填写，可作为成员登录邮箱', trigger: 'blur' },
@@ -229,6 +229,8 @@ export default class ComponentAddMemberBox extends Vue {
     formData.groupId = formData.groupId.join(',')
     formData.contentAdminGroup = formData.contentAdminGroup.join(',')
     if(!formData.contentAdminGroup) delete formData.contentAdminGroup
+    if(!formData.mobile) delete formData.mobile
+    if(!formData.wechat) delete formData.wechat
     return formData
   }
 
@@ -245,6 +247,14 @@ export default class ComponentAddMemberBox extends Vue {
     this.addMemberApi(params)
         .then((res) => {
           this.$message({message: res.data.msg, type: 'success'})
+          if(this.form.isContinuted) {
+            this.$refs['form'].resetFields()
+            this.form.wechat = ''
+            this.form.mobile = ''
+            this.form.contentAdminGroup = ''
+          } else {
+            this.close()
+          }
         })
         .catch(err => {
           this.$message.error(`${err.msg}~`)
@@ -253,12 +263,6 @@ export default class ComponentAddMemberBox extends Vue {
 
   checked() {
     this.form.isContinuted = !this.form.isContinuted
-    if(this.form.isContinuted) {
-      this.$refs['form'].resetFields()
-      this.form.wechat = ''
-      this.form.mobile = ''
-      this.formData.contentAdminGroup = ''
-    }
   }
   created() {
     this.getGroupListsApi()

@@ -4,18 +4,19 @@
       <el-breadcrumb-item :to="{ name: 'courseList' }">课程管理</el-breadcrumb-item>
       <el-breadcrumb-item>课节管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{lessonList.total}}</strong>堂课节
+      </div>
+      <div class="action-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入关键词" />
-      </el-col>
-      <el-col :span="12" class="action-zone">
-        <el-button type="primary" @click="todoAction('add')" class="click-item">新建课节</el-button>
-      </el-col>
-    </el-row>
+          placeholder="搜索课节名称" />
+        <el-button type="primary" @click="todoAction('add')" class="btn-limit-width">新建课节</el-button>
+      </div>
+    </div>
     <!-- :total="jobCircleLists.total" -->
     <table-list
     :list="lessonList.list"
@@ -36,7 +37,7 @@
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
             @click="todoAction('punch', props.scope.row)">
-              评论管理
+              打卡管理
             </el-button>
         </div>
         <!-- 排序 -->
@@ -66,5 +67,133 @@ export default CourseList
 </script>
 
 <style lang="scss">
-@import "./index.scss"
+@import "~COLORS/variables";
+.page-lesson-index-list {
+  background: white;
+  .action-zone {
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
+  }
+  .deleted {
+    background:rgba(248,250,251,1);
+  }
+  .click-item {
+    color: #354048;
+    padding: 12px 33px;
+    font-weight: 400;
+  }
+  .content {
+    .lalel{
+      font-size: 12px;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    .group-name{
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      background:rgba(53,64,72,1);
+      padding: 2px 5px;
+    }
+    .name {
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      line-height:1;
+      padding: 2px 5px;
+      background:rgba(255,249,217,1);
+      color:rgba(215,171,112,1);
+    }
+  }
+  .sort {
+    .sort_blo {
+      width:14px;
+      height:10px;
+      display: block;
+      cursor: pointer;
+      //background:rgba(188,188,188,1);
+      &.up {
+        margin-bottom: 8px;
+      }
+      &.forbid {
+        cursor:inherit;
+        //background:rgba(237,237,237,1);
+      }
+    }
+  }
+}
+
+.triangle_up {
+  margin-left: 20px;
+  width:0;
+  height:0;
+  border-width:0 7px 10px;
+  border-style:solid;
+  border-color:transparent transparent rgba(188,188,188,1);
+  margin:40px auto;
+  position:relative;
+  top: -20px;
+  &.disabled{
+    border-color:transparent transparent #DCDCDC;
+    &:hover{
+      border-color:transparent transparent #DCDCDC;
+      cursor: inherit;
+    }
+  }
+  &:hover{
+    border-color:transparent transparent #FFE266;
+    cursor:pointer;
+  }
+}
+.sort {
+  height: 30px;
+  position: relative;
+}
+.triangle_down{
+  display:block;
+  width:0;
+  height:0;
+  border-width:10px 7px 0;
+  border-style:solid;
+  border-color:rgba(188,188,188,1) transparent transparent;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+
+  &.disabled{
+    border-color:#DCDCDC transparent transparent;
+    &:hover{
+      border-color:#DCDCDC transparent transparent ;
+      cursor: inherit;
+    }
+  }
+  &:hover{
+    border-color: #FFE266 transparent transparent ;
+    cursor:pointer;
+  }
+}
 </style>

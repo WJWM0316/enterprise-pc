@@ -1,17 +1,37 @@
 @import "~COLORS/variables";
 .page-lesseon-coment-list {
   background: white;
-  .input-with-select {
-    width: 400px;
-  }
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .deleted {
     background:rgba(248,250,251,1);
-  }
-  .header {
-    margin: 30px 0;
   }
   .click-item {
     color: #354048;

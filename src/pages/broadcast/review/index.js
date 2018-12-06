@@ -184,7 +184,7 @@ export default class BroadcastReview extends Vue {
   todoAction(type, item) {
     switch(type) {
       case 'delete':
-        this.$confirm('是否删除该评论, 是否继续?', '提示', {
+        this.$confirm('当前该内容会被隐藏后，员工端将不可显示这条内容，可通过恢复内容重新显示，是否确定隐藏？', '确定要隐藏这条内容么？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })
@@ -199,7 +199,7 @@ export default class BroadcastReview extends Vue {
         })
         break
       case 'recover':
-        this.$confirm('是否恢复该评论, 是否继续?', '提示', {
+        this.$confirm('是否恢复该评论, 是否继续1?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })

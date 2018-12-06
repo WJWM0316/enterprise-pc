@@ -18,7 +18,7 @@
             type="text"
             v-if="props.scope.row.status"
             @click="todoAction('delete', props.scope.row)">
-              删除
+              隐藏
           </el-button>
           <el-button
             type="text"

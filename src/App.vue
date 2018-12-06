@@ -7,7 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
-    <reset-psw-box></reset-psw-box>
+    <!-- <reset-psw-box v-model="models.show" @confirm="confirm"></reset-psw-box> -->
   </section>
 </template>
 <script>
@@ -18,7 +18,7 @@ import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import { Loading } from 'element-ui'
 import Cookies from 'js-cookie'
-import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
+// import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 
 @Component({
   name: 'App',
@@ -29,8 +29,8 @@ import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
   },
   components: {
     PageAside,
-    PageHeader,
-    resetPswBox
+    PageHeader
+    // resetPswBox
   },
   computed: {
     ...mapGetters([
@@ -43,6 +43,10 @@ import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 export default class App extends Vue {
 
   loadingInstance = null
+  // 确认信息弹窗
+  models = {
+    show: true
+  }
   shouldFloatingBoxShown() {
     return [
       'login',
@@ -50,6 +54,7 @@ export default class App extends Vue {
     ].includes(this.pageName)
   }
 
+  confirm() {}
   created() {
     this.loadingInstance = Loading.service({})
     const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY

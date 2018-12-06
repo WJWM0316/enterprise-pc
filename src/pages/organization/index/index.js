@@ -47,15 +47,15 @@ export default class pageOrganization extends Vue {
   options = [
     {
       value: '1',
-        label: '超级管理员'
+      label: '超级管理员'
     },
     {
       value: '2',
-        label: '后台管理员'
+      label: '后台管理员'
     },
     {
       value: '3',
-        label: '内容管理员'
+      label: '内容管理员'
     },
     {
       value: '4',
