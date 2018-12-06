@@ -7,9 +7,9 @@ import Cookies from 'js-cookie'
 let company = Cookies.get('code')
 let loadingInstance = null
 
-// if(!company) {
-//   window.location.href = process.env.VUE_APP__LOGIN_URL
-// }
+if(!company) {
+  window.location.href = process.env.VUE_APP__LOGIN_URL
+}
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
@@ -45,10 +45,10 @@ axios.interceptors.response.use(
     if(err.response.data.httpStatus === 401) {
       removeAccessToken()
       Cookies.remove('Authorization-Sso', { path: '' })
-      // window.location.href = process.env.VUE_APP__LOGIN_URL
+      window.location.href = process.env.VUE_APP__LOGIN_URL
       return
     }
-    if (loadingInstance) loadingInstance.close()
+    if(loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
   }
 )
