@@ -45,7 +45,7 @@ axios.interceptors.response.use(
     if(err.response.data.httpStatus === 401) {
       removeAccessToken()
       Cookies.remove('Authorization-Sso', { path: '' })
-      window.location.href = process.env.VUE_APP__LOGIN_URL
+      // window.location.href = process.env.VUE_APP__LOGIN_URL
       return
     }
     if (loadingInstance) loadingInstance.close()
