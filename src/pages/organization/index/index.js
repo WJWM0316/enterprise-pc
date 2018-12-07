@@ -149,7 +149,7 @@ export default class pageOrganization extends Vue {
   }
   av_id = null
   downUrl = ''
-  selectGroupName = '超级管理员'
+  selectGroupName = '全部成员'
 
   init() {
     let query =  this.$route.query
@@ -311,14 +311,14 @@ export default class pageOrganization extends Vue {
       page: 1
     }
     if(item.groupId === 0){
-      // this.selectGroupName = '全部成员'
+      this.selectGroupName = '全部成员'
       this.memberData.groupId = null
     } else {
-      query.groupId = item.groupId
       this.groupList.map(data => {
         if(data.groupId == item.groupId) this.selectGroupName = data.groupName
       })
     }
+    query.groupId = item.groupId
     this.$router.push({
       name: 'organization',
       query: query
