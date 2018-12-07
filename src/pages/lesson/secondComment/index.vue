@@ -14,8 +14,9 @@
       }}">评论管理</el-breadcrumb-item>
       <el-breadcrumb-item>二级评论</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-    </el-row>
+    <div class="header">
+      <div class="list-total">共<strong>{{commentData.total}}</strong>条内容</div>
+    </div>
     <table-list
     :list="commentData.list"
     :fields="fields"
@@ -30,7 +31,7 @@
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
                 @click="todoAction('delete', props.scope.row)">
-                  删除
+                  隐藏
                 </el-button>
             </div>
             <div v-else>

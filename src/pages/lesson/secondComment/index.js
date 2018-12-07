@@ -200,16 +200,28 @@ export default class CourseList extends Vue {
   }
 
   todoAction(type, item) {
-    this.model.show = true
+    // this.model.show = true
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
-        this.model.txt = '删除后的内容前台不可见'
-        this.model.confirm = 'deleteComment'
+        // this.model.txt = '删除后的内容前台不可见'
+        // this.model.confirm = 'deleteComment'
+        this.$confirm('当前改内容被隐藏后，员工端将不显示这条内容，可通过回复内容显示，是否确定隐藏？', '确定要隐藏这条内容么？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.deleteComment()
+        }).catch(() => {})
         break
       case 'recover':
-        this.model.txt = '恢复后内容前台可见'
-        this.model.confirm = 'recover'
+        // this.model.txt = '恢复后内容前台可见'
+        // this.model.confirm = 'recover'
+        this.$confirm('该内容恢复将重新在原评论内显示，是否确定恢复？', '恢复内容',  {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.recover()
+        }).catch(() => {})
         break
         break
       default:
