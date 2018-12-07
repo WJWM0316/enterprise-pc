@@ -35,14 +35,6 @@ export default class pageOrganization extends Vue {
   confirmModels = {
     show: false
   }
-  form = {
-    searchContent: '',
-    groupId: null,
-    roleId: null,
-    page: 1,
-    lastPage: null,
-    page: 1
-  }
   groupList = [
   ]
   options = [
@@ -116,6 +108,12 @@ export default class pageOrganization extends Vue {
   memberData = {
     selectAll: 1,
     count: 20,
+    page: 1,
+    searchContent: '',
+    groupId: null,
+    roleId: null,
+    page: 1,
+    lastPage: null,
     page: 1
   }
 
@@ -138,6 +136,10 @@ export default class pageOrganization extends Vue {
     show: false
   }
 
+  created() {
+    this.getMsgList()
+    this.downloadMsg()
+  }
   // 确认信息弹窗
   models = {
     show: false,
@@ -155,7 +157,7 @@ export default class pageOrganization extends Vue {
 
   init() {
     let query =  this.$route.query
-    this.form = Object.assign(this.form, this.$route.query)
+    this.memberData = Object.assign(this.memberData, this.$route.query)
     this.memberData = {
       selectAll: 1,
       count: 20,
@@ -168,33 +170,30 @@ export default class pageOrganization extends Vue {
       }
       this.rolevalue = query.roleId
     }
-    if(this.form.searchContent) {
-      this.memberData.searchContent = this.form.searchContent
+    if(this.memberData.searchContent) {
+      this.memberData.searchContent = this.memberData.searchContent
     } else {
       delete this.memberData.searchContent
     }
     this.getMemberList()
-    this.getMsgList()
-    this.downloadMsg()
   }
   handleSearch() {
-    this.form.page = 1
-    this.setPathQuery({searchContent: this.form.searchContent})
+    this.setPathQuery({searchContent: this.memberData.searchContent, page: 1})
     const params = {
       selectAll: 1,
-      searchContent: this.form.searchContent,
+      searchContent: this.memberData.searchContent,
       count: 20,
-      page: this.form.page
+      page: this.memberData.page
     }
-    if(this.form.groupId) params.groupId = this.form.groupId
-    if(this.form.roleId && Number(this.form.roleId) !== 4) params.roleId = this.form.roleId
+    if(this.memberData.groupId) params.groupId = this.memberData.groupId
+    if(this.memberData.roleId && Number(this.memberData.roleId) !== 4) params.roleId = this.memberData.roleId
     getMemberListApi(params).then( res => {
       this.courseList = {
         list : res.data.data,
         total: res.data.meta && res.data.meta.total ? res.data.meta.total: 0
       }
-      if(res.data.meta.total > Number(this.form.page) * 20) {
-        this.form.page++
+      if(res.data.meta.total > Number(this.memberData.page) * 20) {
+        this.memberData.page++
       }
     })
   }
@@ -232,7 +231,7 @@ export default class pageOrganization extends Vue {
             item.active = true
             this.groupList[0].active = false
             this.selectGroupName = item.groupName
-            this.form.groupId = this.$route.query.groupId
+            this.memberData.groupId = this.$route.query.groupId
           }else {
             item.active = false
           }
@@ -314,7 +313,7 @@ export default class pageOrganization extends Vue {
     if(item.groupId === 0){
       query = {}
       this.selectGroupName = '全部成员'
-      this.form.groupId = null
+      this.memberData.groupId = null
     } else {
       query.groupId = item.groupId
       this.groupList.map(data => {
@@ -328,7 +327,7 @@ export default class pageOrganization extends Vue {
   }
 
   changeRule(id){
-    this.form.roleId = id !== 4 ? id : null
+    this.memberData.roleId = id !== 4 ? id : null
     let query = { ...this.$route.query, page: 1 }
     if(id === 4){
       query = {}

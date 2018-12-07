@@ -33,7 +33,7 @@
         <search-bar
           width="400px"
           @search="handleSearch"
-          v-model="form.searchContent"
+          v-model="memberData.searchContent"
           placeholder="搜索成员名称、手机号、邮箱" />
         <div class="dropdown-select">
           <el-select v-model="rolevalue" placeholder="选择权限" @change="changeRule">
