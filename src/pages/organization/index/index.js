@@ -136,10 +136,6 @@ export default class pageOrganization extends Vue {
     show: false
   }
 
-  created() {
-    this.getMsgList()
-    this.downloadMsg()
-  }
   // 确认信息弹窗
   models = {
     show: false,
@@ -176,6 +172,8 @@ export default class pageOrganization extends Vue {
       delete this.memberData.searchContent
     }
     this.getMemberList()
+    this.getMsgList()
+    this.downloadMsg()
   }
   handleSearch() {
     this.setPathQuery({searchContent: this.memberData.searchContent, page: 1})
@@ -307,6 +305,7 @@ export default class pageOrganization extends Vue {
 
   selectGroup(item){
     let query = {
+      ...this.$route.query,
       page: 1,
       roleId: '4'
     }
