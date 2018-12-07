@@ -24,13 +24,13 @@
       <div class="list-total">
         共<strong>{{form.total}}</strong>人
       </div>
-      <div class="action-zone">
+      <!-- <div class="action-zone">
         <search-bar
           width="400px"
           @search="handleSearch"
           v-model="form.name"
           placeholder="搜索内容、发布者" />
-      </div>
+      </div> -->
     </div>
     <table-list
     :list="form.list"
