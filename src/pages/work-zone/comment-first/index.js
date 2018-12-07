@@ -166,8 +166,7 @@ export default class CommentList extends Vue {
       case 'delete':
         this.$confirm('是否删除该评论, 是否继续?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         })
         .then(() => {
           this.deleteJobCircleCommentApi({id: item.id, globalLoading: true})
@@ -175,9 +174,7 @@ export default class CommentList extends Vue {
                 this.getJobCircleCommentFirstListsApi()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       case 'hot':
         this.setJobCircleHotCommentApi({id: item.id, globalLoading: true})

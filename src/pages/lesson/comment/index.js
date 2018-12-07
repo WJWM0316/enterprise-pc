@@ -236,6 +236,12 @@ export default class CourseList extends Vue {
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
+        // this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消'
+        // }).then(() => {
+        //   //
+        // }).catch(() => {})
         this.model.txt = '删除后的内容前台不可见'
         this.model.confirm = 'deleteComment'
         break

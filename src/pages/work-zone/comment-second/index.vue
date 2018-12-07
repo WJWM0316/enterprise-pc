@@ -6,6 +6,11 @@
       <el-breadcrumb-item :to="{ name: 'commentList',query: {noteId: this.$route.query.noteId, id: this.$route.query.firstId} }">评论管理</el-breadcrumb-item>
       <el-breadcrumb-item>二级评论</el-breadcrumb-item>
     </el-breadcrumb>
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{jobCircleCommentSecondLists.total}}</strong>条评论
+      </div>
+    </div>
     <table-list
     :list="jobCircleCommentSecondLists.list"
     :fields="fields"
@@ -43,6 +48,34 @@ export default CommentList
 @import "~COLORS/variables";
 .page-note-list {
   background: white;
+  .action-zone {
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
+  }
   .zike-breadcrumb {
     margin-bottom: 30px;
   }

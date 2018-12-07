@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import addMemberBox from 'COMPONENTS/addMemberBox/index.vue'
+
 import { getMemberListApi, getGroupListApi, addGroupApi, editGroupApi } from '@/store/api/organization.js'
 
 @Component({
@@ -24,10 +26,14 @@ import { getMemberListApi, getGroupListApi, addGroupApi, editGroupApi } from '@/
     }
   },
    components: {
-    SearchBar
+    SearchBar,
+    addMemberBox
   }
 })
 export default class MenberList extends Vue {
+  confirmModels = {
+    show: false
+  }
   // 搜索表单
   form = {
     id: '',
@@ -339,5 +345,7 @@ export default class MenberList extends Vue {
     return newObj;
   }
 
-
+  openConfirmModel() {
+    this.confirmModels.show = !this.confirmModels.show
+  }
 }

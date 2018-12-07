@@ -2,9 +2,13 @@
 @import "~COLORS/variables";
 #group-post {
   background: white;
-	.el-form {
+  .add-menber-button {
+    float: right;
+    color: #666666;
+  }
+/*	.el-form {
 		margin-bottom: 50px;
-	}
+	}*/
 	.quanzhong-row {
 		input{
 			text-align: left;

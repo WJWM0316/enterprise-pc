@@ -5,15 +5,18 @@
       <el-breadcrumb-item :to="{ name: 'notesList', query: {id: this.$route.query.noteId} }">帖子管理</el-breadcrumb-item>
       <el-breadcrumb-item>评论管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{jobCircleCommentFirstLists.total}}</strong>条评论
+      </div>
+      <div class="action-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.keyword"
           placeholder="输入内容或者发布者" />
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <table-list
     :list="jobCircleCommentFirstLists.list"
     :fields="fields"
@@ -75,17 +78,36 @@ export default CommentList
 @import "~COLORS/variables";
 .page-note-list {
   background: white;
-  .input-with-select {
-    width: 400px;
-  }
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .deleted {
     background:rgba(248,250,251,1);
-  }
-  .header {
-    margin: 30px 0;
   }
   .click-item {
     color: #354048;

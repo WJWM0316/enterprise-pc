@@ -63,10 +63,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="手机号码">
+          <el-form-item label="手机号码" prop="mobile">
             <el-input v-model="form.mobile" class="limit-width" placeholder="请填写手机号" maxLength="11"></el-input>
           </el-form-item>
-          <el-form-item label="微信号">
+          <el-form-item label="微信号" prop="wechat">
             <el-input v-model="form.wechat" class="limit-width" placeholder="请填写微信号"></el-input>
           </el-form-item>
           <div>
@@ -147,10 +147,12 @@ export default class ComponentAddMemberBox extends Vue {
   rules = {
     name: [
       { required: true, message: '姓名必须填写，最多10个字符', trigger: 'blur' },
+      { validator: this.validateBlankCharacterName, trigger: 'change' },
       { max: 10, message: '姓名最多10个字符', trigger: 'blur' }
     ],
     occupation: [
       { required: true, message: '请输入职位', trigger: 'blur' },
+      { validator: this.validateBlankCharacter, trigger: 'change' },
       { max: 40, message: '职位最多40个字符', trigger: 'blur' }
     ],
     email: [
@@ -170,10 +172,10 @@ export default class ComponentAddMemberBox extends Vue {
       { required: true, message: '请选择性别', trigger: 'change' }
     ],
     wechat: [
-      { required: true, message: '请输入微信号', trigger: 'blur' }
+      { validator: this.validatorWechat,  trigger: 'change' }
     ],
     mobile: [
-      { required: true, message: '请输入手机号', trigger: 'blur' }
+      { validator: this.validatorMobile,  trigger: 'change' }
     ]
   }
   roleList = [
@@ -196,6 +198,51 @@ export default class ComponentAddMemberBox extends Vue {
   ]
 
   visiable = false
+
+  // 不能输入空白符
+  validateBlankCharacterName(rule, value, callback) {
+    if(!value.slice(0, 1).trim()) {
+      this.form.name = value.trim()
+      callback()
+    } else {
+      callback()
+    }
+  }
+
+  // 不能输入空白符
+  validateBlankCharacter(rule, value, callback) {
+    if(!value.slice(0, 1).trim()) {
+      this.form.occupation = value.trim()
+      callback()
+    } else {
+      callback()
+    }
+  }
+
+  //手机
+  validatorMobile(rule, value, callback){
+    let val = value.replace(/(^\s*)|(\s*$)/g, '')
+    let re = new RegExp(/^[1][3,4,5,7,8,9][0-9]{9}$/)
+    if (val.length === 0) {
+      callback()
+    } else if(val.length > 0) {
+      if(!re.test(val)){
+        callback(new Error('手机格式不正确'))
+      } else {
+        callback()
+      }
+    }
+  }
+
+  //微信
+  validatorWechat(rule, value, callback){
+    if(!value.slice(0, 1).trim()) {
+      this.form.wechat = value.trim()
+      callback()
+    } else {
+      callback()
+    }
+  }
 
   close() {
     this.visiable = false
@@ -227,8 +274,12 @@ export default class ComponentAddMemberBox extends Vue {
     const formData = {...this.form}
     delete formData.isContinuted
     formData.groupId = formData.groupId.join(',')
-    formData.contentAdminGroup = formData.contentAdminGroup.join(',')
-    if(!formData.contentAdminGroup) delete formData.contentAdminGroup
+    console.log(formData.contentAdminGroup.length)
+    if(formData.contentAdminGroup.length) {
+      formData.contentAdminGroup = formData.contentAdminGroup.join(',')
+    } else {
+      delete formData.contentAdminGroup
+    }
     if(!formData.mobile) delete formData.mobile
     if(!formData.wechat) delete formData.wechat
     return formData
@@ -251,7 +302,7 @@ export default class ComponentAddMemberBox extends Vue {
             this.$refs['form'].resetFields()
             this.form.wechat = ''
             this.form.mobile = ''
-            this.form.contentAdminGroup = ''
+            this.form.contentAdminGroup = []
           } else {
             this.close()
           }

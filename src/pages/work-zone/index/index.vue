@@ -8,8 +8,8 @@
           width="400px"
           @search="handleSearch"
           v-model="form.name"
-          placeholder="请输入工作圈名称" />
-        <el-button type="primary" @click="addWorkZone" class="btn-limit-width btn_add">新建工作圈</el-button>
+          placeholder="搜索工作圈名称" />
+        <el-button type="primary" @click="addWorkZone" class="btn-limit-width btn_add">创建工作圈</el-button>
       </div>
     </div>
     <table-list

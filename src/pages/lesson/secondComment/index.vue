@@ -12,7 +12,7 @@
         'course_section_id': pageData.course_section_id,
         'postId': postId
       }}">评论管理</el-breadcrumb-item>
-      <el-breadcrumb-item>评论</el-breadcrumb-item>
+      <el-breadcrumb-item>二级评论</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="header">
     </el-row>

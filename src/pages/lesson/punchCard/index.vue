@@ -37,7 +37,7 @@
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
                 @click="todoAction('comment', props.scope.row)">
-                  评论
+                  评论管理
                 </el-button>
                <el-button
               type="text"
@@ -48,7 +48,7 @@
                <el-button
               type="text" v-else
               @click="todoAction('excellent', props.scope.row)">
-                优秀打卡
+                设置优秀打卡
               </el-button>
             </div>
             <div v-else>

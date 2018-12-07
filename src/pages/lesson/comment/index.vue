@@ -35,7 +35,7 @@
                 type="text"
                 :disabled="props.scope.row.isDeleted === 1 ? true : false"
                 @click="todoAction('delete', props.scope.row)">
-                  删除
+                  隐藏
                 </el-button>
               <el-button
                 type="text"
@@ -53,7 +53,7 @@
                <el-button
               type="text" v-else
               @click="todoAction('excellent', props.scope.row)">
-                热门评论
+                设为热门评论
               </el-button>
             </div>
             <div v-else>

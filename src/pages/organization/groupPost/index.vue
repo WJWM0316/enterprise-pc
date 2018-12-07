@@ -40,6 +40,9 @@
               v-model="searchName"
               placeholder="输入搜索名称" />
           </el-col>
+          <el-col :span="12">
+            <el-button type="text" class="add-menber-button" @click="openConfirmModel"><i class="icon iconfont icon-tianjiachengyuan"></i> 添加新成员</el-button>
+          </el-col>
         </el-row>
         <div class="groupList">
           <div
@@ -72,6 +75,7 @@
           <el-button type="primary" class="click-item " @click="checkSubmit" :loading="!submitBtnClick">{{ submitBtnTxt }}</el-button>
         </el-form-item>
     </el-form>
+    <add-member-box v-model="confirmModels.show" @confirm="openConfirmModel"></add-member-box>
   </div>
 </template>
 <script>

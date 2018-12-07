@@ -3,16 +3,27 @@
     <el-breadcrumb separator=">" class="zike-breadcrumb">
       <el-breadcrumb-item>书籍管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
+<!--     <el-row class="header">
       <el-col :span="12" class="search-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.title"
           placeholder="请填写书籍名称或关键词" />
       </el-col>
-    </el-row>
-    <!-- :total="jobCircleLists.total" -->
+    </el-row> -->
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{bookList.total}}</strong>本书
+      </div>
+      <div class="action-zone">
+        <search-bar
+          width="400px"
+          @search="handleSearch"
+          v-model="form.title"
+          placeholder="搜索书名" />
+      </div>
+    </div>
     <table-list
     :list="bookList.list"
     :fields="fields"
@@ -100,17 +111,37 @@ export default CourseList
 @import "~COLORS/variables";
 .page-book-list {
   background: white;
-  .input-with-select {
-    width: 400px;
-  }
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .header {
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .deleted {
     background:rgba(248,250,251,1);
-  }
-  .header {
-    margin: 30px 0;
   }
   .click-item {
     color: #354048;

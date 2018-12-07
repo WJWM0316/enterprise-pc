@@ -4,15 +4,18 @@
       <el-breadcrumb-item :to="{ name: 'workZoneList' }">工作圈管理</el-breadcrumb-item>
       <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="header">
-      <el-col :span="12" class="search-zone">
+    <div class="header">
+      <div class="list-total">
+        共<strong>{{jobCircleNoteLists.total}}</strong>条内容
+      </div>
+      <div class="action-zone">
         <search-bar
-          width="500px"
+          width="400px"
           @search="handleSearch"
           v-model="form.keyword"
-          placeholder="输入内容或者发布者" />
-      </el-col>
-    </el-row>
+          placeholder="搜索内容，发布者" />
+      </div>
+    </div>
     <table-list
     :list="jobCircleNoteLists.list"
     :fields="fields"
@@ -33,13 +36,13 @@
             type="text"
             v-if="props.scope.row.deletedAt !== '已删除'"
             @click="todoAction('delete', props.scope.row)">
-              删除
+              隐藏
           </el-button>
           <el-button
             type="text"
             v-if="props.scope.row.deletedAt !== '已删除'"
             @click="todoAction('hide', props.scope.row)">
-              {{props.scope.row.visible === '公开' ? '隐藏' : '公开'}}
+              {{props.scope.row.visible === '公开' ? '仅成员可见' : '公开'}}
           </el-button>
           <el-button
             type="text"
@@ -100,10 +103,32 @@ export default NoteList
 .page-note-list {
   background: white;
   .action-zone {
-    text-align: right;
+    float: right;
+    display: inline-block;
+    .zike-common-search-bar {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .el-button--primary{
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
   .header {
-    margin: 30px 0;
+    margin: 36px 0 24px 0;
+  }
+  .list-total {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(53,64,72,1);
+    line-height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    strong {
+      color: #D7AB70;
+      font-weight: 500;
+      margin: 0 2px;
+    }
   }
   .row-delete {
     background:rgba(248,250,251,1);

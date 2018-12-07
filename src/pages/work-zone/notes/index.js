@@ -220,7 +220,7 @@ export default class NoteList extends Vue {
         this.$router.push({name: 'commentList', query: {id: item.id, noteId: this.$route.query.id}})
         break
       case 'delete':
-        this.$confirm('删除后前台不可见, 是否继续?', '提示', {
+        this.$confirm('当前改内容被隐藏后，员工端将不显示这条内容，可通过回复内容显示，是否确定隐藏？', '确定要隐藏这条内容么？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         })
@@ -230,9 +230,7 @@ export default class NoteList extends Vue {
                 this.getJobCircleNoteLists()
               })
         })
-        .catch(action => {
-          this.$message({type: 'info', message: '取消操作~'})
-        })
+        .catch(action => {})
         break
       case 'hide':
         this.updateJobCircleNoteVisibleApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
@@ -241,10 +239,17 @@ export default class NoteList extends Vue {
             })
         break
       case 'recover':
-        this.recoverJobCircleNoteApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
-            .then(() => {
-              this.getJobCircleNoteLists()
-            })
+        this.$confirm('该内容恢复将重新在原工作圈内显示，是否确定恢复？', '恢复内容', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          })
+          .then(() => {
+            this.recoverJobCircleNoteApi({id: item.id, visible: item.visible === '公开' ? 1 : 0})
+                .then(() => {
+                  this.getJobCircleNoteLists()
+                })
+          })
+          .catch(action => {})
         break
       case 'top':
         if(this.jobCircleTopNum.topNum > 2) {
@@ -259,9 +264,7 @@ export default class NoteList extends Vue {
                   this.getJobCircleTopNumApi({id: this.form.id})
                 })
           })
-          .catch(action => {
-            this.$message({type: 'info', message: '用户取消~'})
-          })
+          .catch(action => {})
         } else {
           this.setJobCircleNotetoTopApi({id: item.id})
               .then(() => {

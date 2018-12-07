@@ -36,7 +36,7 @@ export default class pageOrganization extends Vue {
     show: false
   }
   form = {
-    name: '',
+    searchContent: '',
     groupId: null,
     roleId: null,
     page: 1,
@@ -123,7 +123,7 @@ export default class pageOrganization extends Vue {
     action: upload_api,
     list: [],
     limit: 2,
-    accept: '.xlsx',
+    accept: '.xlsx,.xls',
     progress: 0,
     tips: '格式支持xlsx',
     btnTxt: '上传成员表格',
@@ -166,20 +166,20 @@ export default class pageOrganization extends Vue {
       }
       this.rolevalue = query.roleId
     }
-    if(this.form.name) {
-      this.memberData.name = this.form.name
+    if(this.form.searchContent) {
+      this.memberData.searchContent = this.form.searchContent
     } else {
-      delete this.memberData.name
+      delete this.memberData.searchContent
     }
     this.getMemberList()
     this.getMsgList()
     this.downloadMsg()
   }
   handleSearch() {
-    this.setPathQuery({name: this.form.name})
+    this.setPathQuery({searchContent: this.form.searchContent})
     const params = {
       selectAll: 1,
-      name: this.form.name,
+      searchContent: this.form.searchContent,
       count: 20,
       page: this.form.page
     }
@@ -249,10 +249,10 @@ export default class pageOrganization extends Vue {
   }
 
   getMemberList(){
-    if(!this.$route.query.name) {
-      delete this.memberData.name
+    if(!this.$route.query.searchContent) {
+      delete this.memberData.searchContent
     } else {
-      this.memberData.name = this.$route.query.name
+      this.memberData.searchContent = this.$route.query.searchContent
     }
     getMemberListApi(this.memberData).then( res => {
       this.courseList = {

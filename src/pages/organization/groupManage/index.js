@@ -118,7 +118,8 @@ export default class groupList extends Vue {
       isHaveMember: 0,
       globalLoading: true,
       page: page || this.form.page || 1,
-      pageCount: this.zikeDefaultPageSize
+      pageCount: this.zikeDefaultPageSize,
+      default: 1
     }
 
     this.form.page = data.page
@@ -134,14 +135,49 @@ export default class groupList extends Vue {
       }
     })
   }
-
+  /**
+   * @Author   小书包
+   * @DateTime 2018-12-07
+   * @detail   删除分组
+   * @return   {[type]}        [description]
+   */
   deleteGroup(item) {
-    deleteGroupApi({id: item.groupId}).then(res=>{
-      this.$message({
-        message: res.data.msg,
-        type: 'success'
-      });
-      this.init()
+    const h = this.$createElement;
+    // 该组没有成员
+    if(item.count === 0) {
+      deleteGroupApi({id: item.groupId}).then(res=>{
+        this.$message({
+          message: res.data.msg,
+          type: 'success'
+        })
+        this.init()
+      })
+      return
+    }
+    this.$msgbox({
+      title: '删除确认提醒',
+      message: h('div', null, [
+        h('span', null, '删除 '),
+        h('span', { style: 'color: #FA6A30' }, item.groupName),
+        h('span', null, ' 该分组后，所属成员将全部转移到未分组?'),
+      ]),
+      showCancelButton: true,
+      confirmButtonText: '确定删除',
+      cancelButtonText: '取消',
+      beforeClose(action, instance, done) {
+        if(action === 'confirm') {
+          deleteGroupApi({id: item.groupId}).then(res=>{
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            })
+            this.init()
+            done()
+          })
+        } else {
+          done()
+        }
+      }
     })
   }
 
@@ -174,16 +210,7 @@ export default class groupList extends Vue {
         })
         break
       case 'delete':
-        if(item.count === 0) {
-          this.deleteGroup(item)
-          return
-        }
-        this.$confirm(`是否确认删除分组 ${item.groupName}，删除分组时将成员转移到无分类组?`, `删除${item.groupName}`, {
-          confirmButtonText: '确定删除',
-          cancelButtonText: '取消'
-        }).then(() => {
-          this.deleteGroup(item)
-        }).catch(() => {})
+        this.deleteGroup(item)
         break
       default:
         break

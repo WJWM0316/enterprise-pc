@@ -38,7 +38,7 @@ const state = {
     total: 0,
     page: 1
   },
-  // liveMenberList: {},
+  invisibleList: {},
   liveMenberList: {}
 }
 
@@ -51,7 +51,7 @@ const mutations = {
     state.liveDetails = data
   },
   [GET_LIVE_INVISIBLE_LIST] (state, data) {
-    state.InvisibleMenberList.list = data.data
+    state.invisibleList = data.data
   },
   [GET_LIVE_MENBER_LIST] (state, data) {
     state.liveMenberList.list = data.data
