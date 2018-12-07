@@ -149,7 +149,7 @@ export default class pageOrganization extends Vue {
   }
   av_id = null
   downUrl = ''
-  selectGroupName = '全部成员'
+  selectGroupName = '超级管理员'
 
   init() {
     let query =  this.$route.query
@@ -159,7 +159,7 @@ export default class pageOrganization extends Vue {
       count: 20,
       page: 1
     }
-    this.memberData = Object.assign(this.memberData,query || {})
+    this.memberData = Object.assign(this.memberData, query || {})
     if(query.roleId){
       if(query.roleId === '4'){
         delete this.memberData.roleId
@@ -172,6 +172,7 @@ export default class pageOrganization extends Vue {
       delete this.memberData.searchContent
     }
     if(!Object.keys(query).length) this.rolevalue = ''
+    // 初始化页面
     this.getMemberList()
     this.getMsgList()
     this.downloadMsg()
@@ -307,15 +308,10 @@ export default class pageOrganization extends Vue {
   selectGroup(item){
     let query = {
       ...this.$route.query,
-      page: 1,
-      roleId: '4'
+      page: 1
     }
     if(item.groupId === 0){
-      query = {
-        ...this.$route.query
-      }
-      delete query.groupId
-      this.selectGroupName = '全部成员'
+      // this.selectGroupName = '全部成员'
       this.memberData.groupId = null
     } else {
       query.groupId = item.groupId
