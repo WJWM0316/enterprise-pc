@@ -171,6 +171,7 @@ export default class pageOrganization extends Vue {
     } else {
       delete this.memberData.searchContent
     }
+    if(!Object.keys(query).length) this.rolevalue = ''
     this.getMemberList()
     this.getMsgList()
     this.downloadMsg()
@@ -310,7 +311,10 @@ export default class pageOrganization extends Vue {
       roleId: '4'
     }
     if(item.groupId === 0){
-      query = {}
+      query = {
+        ...this.$route.query
+      }
+      delete query.groupId
       this.selectGroupName = '全部成员'
       this.memberData.groupId = null
     } else {
