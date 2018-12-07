@@ -38,7 +38,7 @@ const state = {
     total: 0,
     page: 1
   },
-  liveMenberList: {},
+  // liveMenberList: {},
   liveMenberList: {}
 }
 
