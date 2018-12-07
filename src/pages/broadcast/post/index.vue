@@ -2,7 +2,7 @@
 <div id="broadcast-post">
   <el-breadcrumb separator=">" class="zike-breadcrumb">
     <el-breadcrumb-item :to="{ name: 'broadcast' }">直播管理</el-breadcrumb-item>
-    <el-breadcrumb-item>{{$route.name === 'broadcastPost' ? '新建直播' : '编辑直播'}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{$route.name === 'broadcastPost' ? '创建直播' : '编辑直播'}}</el-breadcrumb-item>
   </el-breadcrumb>
   <el-form
     :model="form"

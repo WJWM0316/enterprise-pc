@@ -40,7 +40,8 @@ export default class pageOrganization extends Vue {
     groupId: null,
     roleId: null,
     page: 1,
-    lastPage: null
+    lastPage: null,
+    page: 1
   }
   groupList = [
   ]
@@ -154,6 +155,7 @@ export default class pageOrganization extends Vue {
 
   init() {
     let query =  this.$route.query
+    this.form = Object.assign(this.form, this.$route.query)
     this.memberData = {
       selectAll: 1,
       count: 20,
@@ -176,6 +178,7 @@ export default class pageOrganization extends Vue {
     this.downloadMsg()
   }
   handleSearch() {
+    this.form.page = 1
     this.setPathQuery({searchContent: this.form.searchContent})
     const params = {
       selectAll: 1,

@@ -223,7 +223,7 @@ export default class classifyList extends Vue {
   }
 
   todoAction(type, item) {
-
+    const h = this.$createElement
     if(type!=='add'){
       this.model.itemSel = item 
     }
@@ -248,21 +248,47 @@ export default class classifyList extends Vue {
         this.form.name = item.categoryName
         break
       case 'delete':
+        // 没有课程或者直播
         if(item.courseCount === 0 && item.liveCount === 0) {
-          this.$confirm('确定要删除当前内容类型吗？', '删除分类确认提醒', {
-            confirmButtonText: '删除',
-            cancelButtonText: '取消'
-          }).then(() => {
-            this.deleteClass(item)
-          }).catch(() => {})
+          this.$msgbox({
+            title: '删除类型',
+            message: h('div', null, [
+              h('span', null, '确定要删除当前内容类型吗？ ')
+            ]),
+            showCancelButton: true,
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            beforeClose(action, instance, done) {
+              if(action === 'confirm') {
+                this.deleteClass(item)
+                done()
+              } else {
+                done()
+              }
+            }
+          })
           return
         }
-        this.$confirm('删除此分类，分类下的内容会变成【未分类】', '删除分类确认提醒', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消'
-        }).then(() => {
-          this.deleteClass(item)
-        }).catch(() => {})
+        this.$msgbox({
+          title: '删除类型',
+          message: h('p', null, [
+            h('span', { style: 'color: #FA6A30' }, item.categoryName),
+            h('span', null, ` 类型包含${item.courseCount}个课程和${item.liveCount}个直播，该操作将同时把内容划分为`),
+            h('span', { style: 'color: #FA6A30' }, ' 未分类 '),
+            h('span', null, '类型，建议修改内容类型再次删除类型，确定要删除当前内容类型么？')
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if(action === 'confirm') {
+              this.deleteClass(item)
+              done()
+            } else {
+              done()
+            }
+          }
+        })
         break
       default:
         break

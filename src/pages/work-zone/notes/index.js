@@ -206,6 +206,7 @@ export default class NoteList extends Vue {
 
   // 点击搜索时触发
   handleSearch() {
+    this.form.page = 1
     this.setPathQuery(this.form)
   }
 

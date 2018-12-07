@@ -23,6 +23,7 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            v-if="props.scope.row.groupId"
             @click="todoAction('edit', props.scope.row)"
             >
               编辑
@@ -30,6 +31,7 @@
           <el-button
             type="text"
             :disabled="props.scope.row.isDeleted === 1 ? true : false"
+            v-if="props.scope.row.groupId"
             @click="todoAction('delete', props.scope.row)"
             >
               删除
@@ -38,18 +40,17 @@
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'groupName'" class="sort">
           <span style="padding-left: 40px;">{{props.scope.row.groupName}} ({{props.scope.row.count}}人)</span>
-          
         </div>
         <!-- 排序 -->
         <div v-else-if="props.scope.column.property === 'sort'" class="sort">
-          <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
-          <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
-          <span class="triangle_down disabled" v-if="pageNum == form.page && props.scope.row.index-0+1 === groupList.list.length"></span>
-          <span class="triangle_down" @click="setSort('down', props.scope.row)" v-else ></span>
+          <template v-if="props.scope.row.groupId">
+            <span class="triangle_up disabled" v-if="form.page === 1 && props.scope.row.index==0"></span>
+            <span class="triangle_up"  @click="setSort('up', props.scope.row)" v-else></span>
+            <span class="triangle_down disabled" v-if="pageNum == form.page && props.scope.row.index-0+1 === groupList.list.length"></span>
+            <span class="triangle_down" @click="setSort('down', props.scope.row)" v-else ></span>
+          </template>
         </div>
-
         <div v-else style="margin-left: 40px;">{{props.scope.row[props.scope.column.property]}}</div>
-
       </template>
     </table-list>
   </section>

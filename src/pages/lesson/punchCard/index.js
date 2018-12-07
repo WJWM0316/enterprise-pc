@@ -228,25 +228,49 @@ export default class CourseList extends Vue {
 
   todoAction(type, item) {
     if(type!=='comment'){
-      this.model.show = true
+      // this.model.show = true
     }
     this.model.itemSel = item 
     switch(type) {
       case 'delete':
-        this.model.txt = '当前该内容会被隐藏后，员工端将不可显示这条内容，可通过恢复内容重新显示，是否确定隐藏？'
-        this.model.confirm = 'deleteComment'
+        this.$confirm('当前该内容会被隐藏后，员工端将不可显示这条内容，可通过恢复内容重新显示，是否确定隐藏？', '确定要隐藏这条内容么？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        })
+        .then(() => {
+          this.deleteComment()
+        })
+        .catch(action => {})
         break
       case 'cancelExcellent':
-        this.model.txt = '你确定该内容取消优秀打卡？'
-        this.model.confirm = 'cancelExcellent'
+        this.$confirm('你确定该内容取消优秀打卡？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        })
+        .then(() => {
+          this.cancelExcellent()
+        })
+        .catch(action => {})
         break
       case 'excellent':
-        this.model.txt = '你确定该内容评为优秀打卡？'
-        this.model.confirm = 'putLessonPunch'
+        this.$confirm('你确定该内容评为优秀打卡？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        })
+        .then(() => {
+          this.putLessonPunch()
+        })
+        .catch(action => {})
         break
       case 'recover':
-        this.model.txt = '该内容恢复将重新在原课节内显示，是否确定恢复？'
-        this.model.confirm = 'recover'
+        this.$confirm('该内容恢复将重新在原课节内显示，是否确定恢复？', '恢复内容', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        })
+        .then(() => {
+          this.recover()
+        })
+        .catch(action => {})
         break
       case 'comment':
         this.$router.push(
