@@ -7,7 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
-    <section id="reset-psw" keep-alive="keep-alive" v-show="visiable">
+    <!-- <section id="reset-psw" keep-alive="keep-alive" v-show="visiable">
       <div class="mask" :class="{'show-mask': visiable}"></div>
       <section class="box" :class="{'show-box': visiable}"  >
         <main class="dialog-bd">
@@ -24,7 +24,7 @@
           </el-form>
         </main>
       </section>
-    </section>
+    </section> -->
   </section>
 </template>
 <script>
@@ -53,15 +53,15 @@ import Cookies from 'js-cookie'
       'token',
       'pageName'
     ])
-  },
-  watch: {
-    '$route': {
-      handler() {
-        this.resetPswPage()
-      },
-      immediate: true
-    }
-  },
+  }
+  // watch: {
+  //   '$route': {
+  //     handler() {
+  //       this.resetPswPage()
+  //     },
+  //     immediate: true
+  //   }
+  // },
 })
 
 export default class App extends Vue {
@@ -121,11 +121,11 @@ export default class App extends Vue {
       image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
     }
   }
-  mounted() {
-    this.$nextTick(() => {
-      this.resetPswPage()
-    })
-  }
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     this.resetPswPage()
+  //   })
+  // }
 }
 </script>
 <style lang="scss">
