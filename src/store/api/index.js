@@ -6,9 +6,9 @@ import Cookies from 'js-cookie'
 let company = Cookies.get('code')
 let loadingInstance = null
 
-// if(!company) {
-//   window.location.href = process.env.VUE_APP__LOGIN_URL
-// }
+if(!company) {
+  window.location.href = process.env.VUE_APP__LOGIN_URL
+}
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
@@ -50,7 +50,6 @@ axios.interceptors.response.use(
     // 还没有修改密码
     if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
       window.localStorage.setItem('UFC', 1)
-      console.log(11111111111)
     }
     if(loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
