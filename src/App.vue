@@ -67,37 +67,37 @@ import Cookies from 'js-cookie'
 export default class App extends Vue {
 
   loadingInstance = null
-  form = {
-    newPwd: ''
-  }
-  rules = {
-    newPwd: [
-      { required: true, message: '密码必须填写', trigger: 'blur' },
-      { min: 6, max: 20, message: '密码必须填写，6-20个字符', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' }
-    ]
-  }
+  // form = {
+  //   newPwd: ''
+  // }
+  // rules = {
+  //   newPwd: [
+  //     { required: true, message: '密码必须填写', trigger: 'blur' },
+  //     { min: 6, max: 20, message: '密码必须填写，6-20个字符', trigger: 'blur' },
+  //     { validator: this.validateBlankCharacter, trigger: 'change' }
+  //   ]
+  // }
 
-  visiable = false
+  // visiable = false
 
-  // 不能输入空白符
-  validateBlankCharacter(rule, value, callback) {
-    callback()
-    this.form.newPwd = value.replace(/^ +| +$/g, '')
-  }
+  // // 不能输入空白符
+  // validateBlankCharacter(rule, value, callback) {
+  //   callback()
+  //   this.form.newPwd = value.replace(/^ +| +$/g, '')
+  // }
 
-  submit() {
-    this.$refs['form'].validate((valid) => {
-      if(valid) {
-        this.editPwdApi({newPwd: this.form.newPwd})
-            .then(() => {
-              this.$message({message: '修改密码成功~', type: 'success'})
-              window.localStorage.removeItem('UFC')
-              window.location.reload()
-            })
-      }
-    })
-  }
+  // submit() {
+  //   this.$refs['form'].validate((valid) => {
+  //     if(valid) {
+  //       this.editPwdApi({newPwd: this.form.newPwd})
+  //           .then(() => {
+  //             this.$message({message: '修改密码成功~', type: 'success'})
+  //             window.localStorage.removeItem('UFC')
+  //             window.location.reload()
+  //           })
+  //     }
+  //   })
+  // }
 
   shouldFloatingBoxShown() {
     return [
@@ -115,12 +115,12 @@ export default class App extends Vue {
         })
   }
 
-  resetPswPage() {
-    const image = document.querySelector('.image-lock')
-    if(image) {
-      image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
-    }
-  }
+  // resetPswPage() {
+  //   const image = document.querySelector('.image-lock')
+  //   if(image) {
+  //     image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
+  //   }
+  // }
   // mounted() {
   //   this.$nextTick(() => {
   //     this.resetPswPage()

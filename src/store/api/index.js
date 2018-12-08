@@ -5,12 +5,11 @@ import { removeAccessToken, getAccessToken } from '@/store/cacheService'
 import Cookies from 'js-cookie'
 let company = Cookies.get('code')
 let loadingInstance = null
-import * as store from '@/store'
-console.log(store)
+// import { store } from '@/store/index.js'
 
-// if(!company) {
-//   window.location.href = process.env.VUE_APP__LOGIN_URL
-// }
+if(!company) {
+  window.location.href = process.env.VUE_APP__LOGIN_URL
+}
 
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
@@ -38,7 +37,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   res => {
-    window.localStorage.removeItem('UFC')
+    // window.localStorage.removeItem('UFC')
     if (loadingInstance) loadingInstance.close()
     return res
   },
@@ -51,9 +50,9 @@ axios.interceptors.response.use(
       return
     }
     // 还没有修改密码
-    if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
-      window.localStorage.setItem('UFC', 1)
-    }
+    // if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
+    //   window.localStorage.setItem('UFC', 1)
+    // }
     if(loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
   }
