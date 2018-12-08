@@ -258,7 +258,7 @@ export default class classifyList extends Vue {
             showCancelButton: true,
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            beforeClose(action, instance, done) {
+            beforeClose: (action, instance, done) => {
               if(action === 'confirm') {
                 this.deleteClass(item)
                 done()
