@@ -109,13 +109,10 @@ export default class App extends Vue {
 
   mounted() {
     this.$nextTick(() => {
-      setTimeout(() => {
-        const image = document.querySelector('.image-lock')
-        if(image) {
-          console.log(111111)
-          image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
-        }
-      })
+      const image = document.querySelector('.image-lock')
+      if(image) {
+        image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
+      }
     })
   }
 }
