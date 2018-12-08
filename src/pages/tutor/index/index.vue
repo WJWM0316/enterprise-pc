@@ -30,6 +30,7 @@
           @search="handleSearch"
           v-model="form.name"
           placeholder="请输入导师名称或关键字" />
+          <el-button type="primary" class="click-item" @click="openMadal" v-if="tutorType === 'outer'">添加外部导师</el-button>
       </div>
     </div>
     <table-list
@@ -79,8 +80,11 @@
         <div class="toUser" v-else-if="props.scope.column.property === 'communityCount'" @click="viewMenberInfo(props.scope.row.id,'course')">
           {{props.scope.row.communityCount}}
         </div>     
-         <div class="toUser" v-else-if="props.scope.column.property === 'liveCount'" @click="viewMenberInfo(props.scope.row.id,'live')">
+        <div class="toUser" v-else-if="props.scope.column.property === 'liveCount'" @click="viewMenberInfo(props.scope.row.id,'live')">
           {{props.scope.row.liveCount}}
+        </div>
+        <div v-else-if="props.scope.column.property === 'createdAt'">
+          {{props.scope.row.createdAt.slice(0, 16)}}
         </div>    
         <!-- 其他列按后端给回的字段显示 -->
         <template v-else>{{props.scope.row[props.scope.column.property]}}</template>

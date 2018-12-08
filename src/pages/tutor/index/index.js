@@ -35,7 +35,7 @@ export default class tutorList extends Vue {
     {
       prop: 'realname',
       label: '导师资料',
-      width: '40%',
+      width: '30%',
       align: 'left'
     },
     {
@@ -80,6 +80,12 @@ export default class tutorList extends Vue {
       prop: 'liveCount',
       width: '10%',
       label: 'TA的直播',
+      align: 'left',
+    },
+    {
+      prop: 'createdAt',
+      width: '10%',
+      label: '创建时间',
       align: 'left',
     },
     {
