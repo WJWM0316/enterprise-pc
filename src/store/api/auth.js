@@ -8,3 +8,6 @@ import Qs from 'qs'
 export const loginApi = data => request('/auth/login', 'post', Qs.stringify(data))
 // 退出接口
 export const logoutApi = data => request('/auth/logout', 'get')
+
+// 重置密码
+export const editPwdApi = data => request('/member/editPwd', 'post', Qs.stringify(data))

@@ -6,6 +6,10 @@
 import axios from 'axios'
 
 import {
+  editPwdApi
+} from 'API/auth'
+
+import {
   saveAccessToken,
   removeAccessToken,
   getAccessToken,
@@ -77,23 +81,22 @@ const actions = {
                 .catch(error => {
                   return Promise.reject(error.data || {})
                 })
-    // return axios.get(`${process.env.VUE_APP__TOKEN_URL}/${params.code}/auth/logout`)
-    //             .then(res => {
-    //                 removeAccessToken()
-    //                 store.commit(LOGOUT)
-    //                 window.location.href = process.env.VUE_APP__LOGIN_URL
-    //                axios.post(`${process.env.VUE_APP__LOGIN_OUT_URL}`)
-    //                     .then(() => {
-    //                       removeAccessToken()
-    //                       store.commit(LOGOUT)
-    //                       window.location.href = process.env.VUE_APP__LOGIN_URL
-    //                       return res
-    //                     })
-    //             })
-    //             .catch(error => {
-    //               return Promise.reject(error.data || {})
-    //             })
-  }
+  },
+  /**
+   * @Author   小书包
+   * @DateTime 2018-11-19
+   * @detail   重置密码
+   * @return   {[type]}   [description]
+   */
+  editPwdApi(store, params) {
+    return editPwdApi(params)
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        return Promise.reject(error.data || {})
+      })
+  },
 }
 
 export default {

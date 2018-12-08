@@ -1,14 +1,14 @@
 <template>
-  <section id="reset-psw" keep-alive="keep-alive" v-if="visiable">
+  <section id="reset-psw" keep-alive="keep-alive" v-show="visiable">
     <div class="mask" :class="{'show-mask': visiable}"></div>
     <section class="box" :class="{'show-box': visiable}"  >
       <main class="dialog-bd">
-        <img src="~IMAGES/lock.png" alt="" class="lock">
+        <img src="~IMAGES/lock.png" alt="" class="lock image-lock">
         <el-form :model="form" :rules="rules" ref="form">
           <h2>设置登录新密码</h2>
           <p>为确保您在使用系统时账号安全，请设置您的新密码</p>
-          <el-form-item prop="password">
-            <el-input type="password" v-model="form.password" placeholder="请输入6-20个字符的新密码" maxLength="20"></el-input>
+          <el-form-item prop="newPwd">
+            <el-input type="password" v-model="form.newPwd" placeholder="请输入6-20个字符的新密码" maxLength="20"></el-input>
           </el-form-item>
           <div>
             <el-button type="primary" @click="submit" class="submit-button">重设密码</el-button>
@@ -26,86 +26,49 @@ import Component from 'vue-class-component'
 @Component({
   name: 'modal-reset-psw',
   methods: {
-    ...mapActions([])
-  },
-  computed: {
-    ...mapGetters([])
-  },
-  model: {
-    prop: 'show',
-    event: 'close'
-  },
-  props: {
-    // 是否显示
-    show: {
-      type: Boolean,
-      default: false
-    }
-  },
-  watch: {
-    show: {
-      handler(show) {
-        this.visiable = show
-      },
-      immediate: true
-    },
-    visiable: {
-      handler(visiable) {
-        if(!visiable) this.$emit('close')
-      },
-      immediate: true
-    }
+    ...mapActions(['editPwdApi'])
   }
 })
 export default class ComponentAddMemberBox extends Vue {
   form = {
-    password: ''
+    newPwd: ''
   }
   rules = {
-    password: [
-      { required: true, message: '密码必须填写，6-20个字符', trigger: 'blur' },
-      { validator: this.validateBlankCharacter, trigger: 'change' },
-      { max: 20, message: '密码最多20个字符', trigger: 'blur' }
+    newPwd: [
+      { required: true, message: '密码必须填写', trigger: 'blur' },
+      { min: 6, max: 20, message: '密码必须填写，6-20个字符', trigger: 'blur' },
+      { validator: this.validateBlankCharacter, trigger: 'change' }
     ]
   }
 
   visiable = false
 
-  close() {
-    this.visiable = false
-  }
   // 不能输入空白符
   validateBlankCharacter(rule, value, callback) {
-    this.form.password = value.trim()
-  }
-  /**
-   * 关闭弹窗
-   */
-  handleCloseDialog() {
-    this.visiable = false
-    this.$emit('input', this.visiable)
+    callback()
+    this.form.newPwd = value.replace(/^ +| +$/g, '')
   }
 
-  /**
-   * 点击确定
-   */
-  handleConfirm() {
-    this.$emit('confirm')
-  }
-
-  /**
-   * 点击取消
-   */
-  handleCancel() {
-    this.handleCloseDialog()
-    this.$emit('cancel')
-  }
-
-  submit(params) {
+  submit() {
     this.$refs['form'].validate((valid) => {
       if(valid) {
-        //
+        this.editPwdApi({newPwd: this.form.newPwd})
+            .then(() => {
+              window.localStorage.removeItem('UFC')
+              window.location.reload()
+            })
       }
+    })
+  }
+
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const image = document.querySelector('.image-lock')
+        if(image) {
+          image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
+        }
+      })
     })
   }
 }
@@ -158,25 +121,25 @@ export default class ComponentAddMemberBox extends Vue {
   .dialog-bd {
     flex: 1 1 auto;
     color: $color-level-two;
-    padding: 30px 46px;
+    padding: 24px 46px 30px 46px;
   }
   .submit-button {
     width: 100%;
   }
   h2{
-    font-size:16px;
+    font-size:20px;
     font-weight:500;
     color:rgba(53,64,72,1);
     line-height:1;
     text-align: center;
-    margin: 0;
-    margin-bottom: 5px;
+    margin: 5px 0;
+    font-weight: 500;
   }
   p {
     font-size:14px;
     font-weight:400;
     color:rgba(102,102,102,1);
-    line-height:1;
+    line-height:22px;
     margin: 0;
     margin-bottom: 30px;
   }
@@ -190,6 +153,11 @@ export default class ComponentAddMemberBox extends Vue {
   }
   .el-form-item {
     margin-bottom: 16px !important;
+  }
+  input::-webkit-input-placeholder {
+    color: #dcdcdc;
+    font-size: 14px;
+    font-weight: 400;
   }
 }
 </style>

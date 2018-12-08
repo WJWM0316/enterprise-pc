@@ -241,6 +241,9 @@
     .el-button{
       margin-left: 32px;
     }
+    i {
+      font-size: 20px;
+    }
   }
   .group-type-list {
     /*border-bottom:1px dashed rgba(235,238,245,1);*/

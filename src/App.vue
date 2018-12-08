@@ -7,7 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
-    <!-- <reset-psw-box v-model="models.show" @confirm="confirm"></reset-psw-box> -->
+    <reset-psw-box></reset-psw-box>
   </section>
 </template>
 <script>
@@ -43,10 +43,6 @@ import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 export default class App extends Vue {
 
   loadingInstance = null
-  // 确认信息弹窗
-  models = {
-    show: true
-  }
   shouldFloatingBoxShown() {
     return [
       'login',
@@ -54,7 +50,6 @@ export default class App extends Vue {
     ].includes(this.pageName)
   }
 
-  confirm() {}
   created() {
     this.loadingInstance = Loading.service({})
     const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY

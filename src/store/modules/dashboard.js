@@ -43,7 +43,18 @@ const state = {
       liveCount: 0,
       staffCount: 0,
       storageSpaceCount: '0G'
-    }
+    },
+    created: {
+      courseCount: 0,
+      jobCircleCount: 0,
+      liveCount: 0,
+      staffCount: 0,
+      storageSpaceCount: '0G'
+    },
+    isOfficial: true,
+    name: 'XPLUS试用版',
+    remainDay: 1,
+    tip: ''
   }
 }
 
