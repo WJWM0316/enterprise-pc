@@ -40,7 +40,8 @@ import Cookies from 'js-cookie'
   name: 'App',
   methods: {
     ...mapActions([
-      'loginApi'
+      'loginApi',
+      'editPwdApi'
     ])
   },
   components: {
@@ -82,6 +83,7 @@ export default class App extends Vue {
       if(valid) {
         this.editPwdApi({newPwd: this.form.newPwd})
             .then(() => {
+              this.$message({message: '修改密码成功~', type: 'success'})
               window.localStorage.removeItem('UFC')
               window.location.reload()
             })
