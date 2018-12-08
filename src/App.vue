@@ -53,7 +53,15 @@ import Cookies from 'js-cookie'
       'token',
       'pageName'
     ])
-  }
+  },
+  watch: {
+    '$route': {
+      handler() {
+        this.resetPswPage()
+      },
+      immediate: true
+    }
+  },
 })
 
 export default class App extends Vue {
@@ -107,12 +115,15 @@ export default class App extends Vue {
         })
   }
 
+  resetPswPage() {
+    const image = document.querySelector('.image-lock')
+    if(image) {
+      image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
+    }
+  }
   mounted() {
     this.$nextTick(() => {
-      const image = document.querySelector('.image-lock')
-      if(image) {
-        image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
-      }
+      this.resetPswPage()
     })
   }
 }
