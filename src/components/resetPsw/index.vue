@@ -66,6 +66,7 @@ export default class ComponentAddMemberBox extends Vue {
       setTimeout(() => {
         const image = document.querySelector('.image-lock')
         if(image) {
+          console.log(111111)
           image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
         }
       })
