@@ -154,8 +154,7 @@ export default class tutorList extends Vue {
     this.hintTxt = ''
     this.pagination = {
       count: this.zikeDefaultPageSize,
-      type: 1,
-      name: ''
+      type: 1
     }
 
     this.searchData = {
@@ -167,7 +166,7 @@ export default class tutorList extends Vue {
 
     if(query.tutorType){
       this.tutorType = query.tutorType
-      this.pagination.type = query.tutorType === 'inner'?1:2
+      this.pagination.type = query.tutorType === 'inner' ? 1 :2
     }else {
       this.tutorType = 'inner'
     }
@@ -200,11 +199,16 @@ export default class tutorList extends Vue {
   async getTutorList({ page } = {}) {
     let params = this.pagination
     params.page = page || this.form.page || 1
+    if(this.$route.query.name) {
+      params.name = this.$route.query.name
+    } else {
+      delete params.name
+    }
     getTutorListApi(params).then(res=>{
       this.form = {
         list : res.data.data,
         total: res.data.meta.total,
-        page: params.page
+        page: res.data.meta.currentPage
       }
     })
   }
@@ -212,6 +216,7 @@ export default class tutorList extends Vue {
   // 点击搜索时触发
   handleSearch () {
     this.form.page = 1
+    this.setPathQuery({name: this.form.name, page: 1})
     this.getTutorList()
   }
 

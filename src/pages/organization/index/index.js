@@ -108,11 +108,9 @@ export default class pageOrganization extends Vue {
   memberData = {
     selectAll: 1,
     count: 20,
-    page: 1,
     searchContent: '',
     groupId: null,
     roleId: null,
-    page: 1,
     lastPage: null,
     page: 1
   }
