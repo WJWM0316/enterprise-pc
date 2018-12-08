@@ -36,6 +36,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   res => {
+    window.localStorage.removeItem('UFC')
     if (loadingInstance) loadingInstance.close()
     return res
   },
@@ -50,10 +51,6 @@ axios.interceptors.response.use(
     // 还没有修改密码
     if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
       window.localStorage.setItem('UFC', 1)
-      console.log('no')
-    } else {
-      console.log('has')
-      window.localStorage.removeItem('UFC')
     }
     if(loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
