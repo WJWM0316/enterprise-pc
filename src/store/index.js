@@ -31,7 +31,6 @@ import workZone from './modules/workZone'
 import auth from './modules/auth'
 
 Vue.use(Vuex)
-
 const store = new Vuex.Store({
   modules: {
     common,

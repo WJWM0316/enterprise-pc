@@ -7,24 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
-    <!-- <section id="reset-psw" keep-alive="keep-alive" v-show="visiable">
-      <div class="mask" :class="{'show-mask': visiable}"></div>
-      <section class="box" :class="{'show-box': visiable}"  >
-        <main class="dialog-bd">
-          <img src="~IMAGES/lock.png" alt="" class="lock image-lock">
-          <el-form :model="form" :rules="rules" ref="form">
-            <h2>设置登录新密码</h2>
-            <p>为确保您在使用系统时账号安全，请设置您的新密码</p>
-            <el-form-item prop="newPwd">
-              <el-input type="password" v-model="form.newPwd" placeholder="请输入6-20个字符的新密码" maxLength="20"></el-input>
-            </el-form-item>
-            <div>
-              <el-button type="primary" @click="submit" class="submit-button">重设密码</el-button>
-            </div>
-          </el-form>
-        </main>
-      </section>
-    </section> -->
+    <reset-psw-box></reset-psw-box>
   </section>
 </template>
 <script>
@@ -35,6 +18,7 @@ import PageAside from 'COMPONENTS/pageAside/index.vue'
 import PageHeader from 'COMPONENTS/pageHeader/index.vue'
 import { Loading } from 'element-ui'
 import Cookies from 'js-cookie'
+import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 
 @Component({
   name: 'App',
@@ -46,7 +30,8 @@ import Cookies from 'js-cookie'
   },
   components: {
     PageAside,
-    PageHeader
+    PageHeader,
+    resetPswBox
   },
   computed: {
     ...mapGetters([
@@ -54,57 +39,11 @@ import Cookies from 'js-cookie'
       'pageName'
     ])
   }
-  // watch: {
-  //   '$route': {
-  //     handler() {
-  //       this.resetPswPage()
-  //     },
-  //     immediate: true
-  //   }
-  // },
 })
 
 export default class App extends Vue {
 
   loadingInstance = null
-  // form = {
-  //   newPwd: ''
-  // }
-  // rules = {
-  //   newPwd: [
-  //     { required: true, message: '密码必须填写', trigger: 'blur' },
-  //     { min: 6, max: 20, message: '密码必须填写，6-20个字符', trigger: 'blur' },
-  //     { validator: this.validateBlankCharacter, trigger: 'change' }
-  //   ]
-  // }
-
-  // visiable = false
-
-  // // 不能输入空白符
-  // validateBlankCharacter(rule, value, callback) {
-  //   callback()
-  //   this.form.newPwd = value.replace(/^ +| +$/g, '')
-  // }
-
-  // submit() {
-  //   this.$refs['form'].validate((valid) => {
-  //     if(valid) {
-  //       this.editPwdApi({newPwd: this.form.newPwd})
-  //           .then(() => {
-  //             this.$message({message: '修改密码成功~', type: 'success'})
-  //             window.localStorage.removeItem('UFC')
-  //             window.location.reload()
-  //           })
-  //     }
-  //   })
-  // }
-
-  shouldFloatingBoxShown() {
-    return [
-      'login',
-      'help'
-    ].includes(this.pageName)
-  }
 
   created() {
     this.loadingInstance = Loading.service({})
@@ -115,17 +54,6 @@ export default class App extends Vue {
         })
   }
 
-  // resetPswPage() {
-  //   const image = document.querySelector('.image-lock')
-  //   if(image) {
-  //     image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
-  //   }
-  // }
-  // mounted() {
-  //   this.$nextTick(() => {
-  //     this.resetPswPage()
-  //   })
-  // }
 }
 </script>
 <style lang="scss">

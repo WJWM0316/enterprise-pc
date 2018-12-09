@@ -114,6 +114,7 @@ export default class BroadcastReponse extends Vue {
    * 获取课程列表
    */
   getLiveProblemList({ page, pageSize } = {}) {
+    console.log(this.form)
     const params = {
       live_id: this.form.id,
       page: page || this.form.page || 1,
@@ -121,13 +122,20 @@ export default class BroadcastReponse extends Vue {
     }
     if(this.form.del) {
       params.del = Number(this.form.del) === 3 ? '' : this.form.del
+    } else {
+      delete params.del
+    }
+    if(this.form.name) {
+      params.name = this.form.name
+    } else {
+      delete params.name
     }
     this.getLiveProblemListApi(params)
   }
 
   // 点击搜索时触发
   handleSearch() {
-    this.setPathQuery(this.form)
+    this.setPathQuery({name: this.form.name, page: 1})
   }
 
   /**

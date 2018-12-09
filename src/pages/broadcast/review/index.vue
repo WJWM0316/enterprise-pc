@@ -6,6 +6,14 @@
     </el-breadcrumb>
     <div class="header">
       <div class="list-total">共<strong>{{liveReviewList.total}}</strong>条内容</div>
+      <div class="action-zone">
+        <search-bar
+          class="search"
+          width="400px"
+          @search="handleSearch"
+          v-model="form.name"
+          placeholder="搜索提问内容或提问者姓名" />
+      </div>
     </div>
     <table-list
     :list="liveReviewList.list"

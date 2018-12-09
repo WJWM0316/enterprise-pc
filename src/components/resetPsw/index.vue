@@ -1,5 +1,5 @@
 <template>
-  <section id="reset-psw" keep-alive="keep-alive" v-show="visiable">
+  <section id="reset-psw" keep-alive="keep-alive" v-if="visiable">
     <div class="mask" :class="{'show-mask': visiable}"></div>
     <section class="box" :class="{'show-box': visiable}"  >
       <main class="dialog-bd">
@@ -27,6 +27,14 @@ import Component from 'vue-class-component'
   name: 'modal-reset-psw',
   methods: {
     ...mapActions(['editPwdApi'])
+  },
+  watch: {
+    '$route': {
+      handler() {
+        this.showResetPsw()
+      },
+      immediate: true
+    }
   }
 })
 export default class ComponentAddMemberBox extends Vue {
@@ -61,15 +69,16 @@ export default class ComponentAddMemberBox extends Vue {
     })
   }
 
+  showResetPsw() {
+    const image = document.querySelector('.image-lock')
+    if(image) {
+      image.onload = () => this.visiable = true
+    }
+  }
+
   mounted() {
     this.$nextTick(() => {
-      setTimeout(() => {
-        const image = document.querySelector('.image-lock')
-        if(image) {
-          console.log(111111)
-          image.onload = () => this.visiable = window.localStorage.getItem('UFC') ? true : false
-        }
-      })
+      this.showResetPsw()
     })
   }
 }
