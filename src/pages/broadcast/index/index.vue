@@ -9,7 +9,7 @@
           width="400px"
           @search="handleSearch"
           v-model="form.liveName"
-          placeholder="请输入直播名称或导师" />
+          placeholder="搜索直播名称或关键字" />
         <el-button type="primary" @click="addBroadcast" class="btn-limit-width">创建直播</el-button>
       </div>
     </div>
