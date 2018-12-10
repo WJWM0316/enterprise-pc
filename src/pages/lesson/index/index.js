@@ -138,8 +138,8 @@ export default class CourseList extends Vue {
     //排序判断用
     this.form.page = param.page
     getLessonListsApi(param).then(res=>{
-      res.data.data.map(function(value,index){
-          value.sort="1"
+      res.data.data.map((value,index) => {
+          value.sort = '1'
           value.index = index
       })
       this.lessonList = {
@@ -157,14 +157,14 @@ export default class CourseList extends Vue {
   //设置排序
   setSort(type,item){
     let data = {
-      course_section_id: item.courseSectionId,
-      isUp: ''
+      course_section_id: item.courseSectionId
     }
-    if(type==='up'){
-      data.isUp=1
-    }else if(type==='down'){
-      data.isUp=0
-    }
+    data.isUp = type === 'up' ? 1 : 0
+    // if(type==='up'){
+    //   data.isUp=1
+    // }else if(type==='down'){
+    //   data.isUp=0
+    // }
 
     sortUpdateApi(data).then(res=>{
       this.$message({

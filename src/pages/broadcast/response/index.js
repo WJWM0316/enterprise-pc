@@ -116,10 +116,10 @@ export default class BroadcastReponse extends Vue {
   getLiveProblemList({ page, pageSize } = {}) {
     const params = {
       live_id: this.form.id,
-      page: page || this.form.page || 1,
+      page: page || this.form.page,
       count: this.zikeDefaultPageSize
     }
-    if(this.form.del) {
+    if(Number(this.form.del) || Number(this.form.del) === 0) {
       params.del = Number(this.form.del) === 3 ? '' : this.form.del
     } else {
       delete params.del
@@ -130,6 +130,9 @@ export default class BroadcastReponse extends Vue {
       delete params.name
     }
     this.getLiveProblemListApi(params)
+        .then(() => {
+          console.log(this.liveProblemList)
+        })
   }
 
   // 点击搜索时触发

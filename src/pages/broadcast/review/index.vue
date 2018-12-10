@@ -12,7 +12,7 @@
           width="400px"
           @search="handleSearch"
           v-model="form.searchContent"
-          placeholder="搜索提问内容或提问者姓名" />
+          placeholder="搜索内容、发布者" />
       </div>
     </div>
     <table-list

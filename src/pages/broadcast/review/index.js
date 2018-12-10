@@ -87,11 +87,11 @@ export default class BroadcastReview extends Vue {
       [
         {
           label: '全部',
-          value: 'status-1'
+          value: 'status-3'
         },
         {
           label: '正常',
-          value: 'status-0'
+          value: 'status-1'
         },
         {
           label: '已删除',
@@ -163,8 +163,11 @@ export default class BroadcastReview extends Vue {
       count: this.zikeDefaultPageSize,
       globalLoading: true
     }
-    if(this.form.status) {
+    if(Number(this.form.status) || Number(this.form.status) === 0) {
       params.status = this.form.status
+      if(Number(params.status) === 3) delete params.status
+    } else {
+      delete params.status
     }
     if(this.form.type) {
       params.type = this.form.type === 'all' ? '' : this.form.type

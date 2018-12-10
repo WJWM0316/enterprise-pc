@@ -46,6 +46,7 @@ const mutations = {
   [GET_LIVE_REVIEW_LIST] (state, data) {
     state.liveReviewList.list = data.data
     state.liveReviewList.total = data.meta.total
+    state.liveReviewList.page = data.meta.currentPage
   },
   [GET_LIVE_DETAILS] (state, data) {
     state.liveDetails = data
@@ -71,6 +72,7 @@ const mutations = {
     })
     state.liveProblemList.list = data.data
     state.liveProblemList.total = data.meta.total
+    state.liveProblemList.page = data.meta.currentPage
   }
 }
 

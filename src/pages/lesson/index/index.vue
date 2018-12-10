@@ -21,6 +21,7 @@
     <table-list
     :list="lessonList.list"
     :fields="fields"
+    :page="Number(form.page)"
     :total="lessonList.total"
 
     >
