@@ -3,6 +3,7 @@
  */
 
 import Cache from 'web-storage-cache';
+import Cookies from 'js-cookie'
 
 const lsCache = new Cache;
 const ssCache = new Cache({ storage: 'sessionStorage' });
@@ -80,6 +81,7 @@ export function getAccessToken() {
 }
 
 export function removeAccessToken() {
+  Cookies.remove('Authorization-Sso', { path: '' })
   lsCache.delete(KEYS.token)
   ssCache.delete(KEYS.userInfo)
 }
