@@ -85,7 +85,7 @@ export default class CourseList extends Vue {
   // 搜索表单
   form = {
     name: '',
-    status: 2
+    status: ''
   }
 
   // 初始化的搜索表单
@@ -112,14 +112,19 @@ export default class CourseList extends Vue {
    */
   getLists({ page, pageSize } = {}) {
     let data = {
-      like: {
-        title:this.form.name
-      },
-      order: {
-        update_time: 'DESC'
-      },
-      status: this.form.status || 2,
       course_id: this.course_id
+    }
+    if(this.form.status && Number(this.form.status) !== 2) {
+      data.status = this.form.status
+    } else {
+      delete data.status
+    }
+    if(this.form.name) {
+      // 初始化like对象
+      data.like = {}
+      data.like.title = this.form.name
+    } else {
+      delete data.like
     }
     let jsonDataString = JSON.stringify({search: data})
     let UrlString = encodeURIComponent(jsonDataString)
@@ -127,7 +132,7 @@ export default class CourseList extends Vue {
       jsonData: UrlString,
       page: page || this.form.page || 1,
       globalLoading: true,
-      pageCount: this.zikeDefaultPageSize
+      count: this.zikeDefaultPageSize
     }
 
     //排序判断用
@@ -146,7 +151,7 @@ export default class CourseList extends Vue {
 
   // 点击搜索时触发
   handleSearch() {
-    this.setPathQuery(this.form)
+    this.setPathQuery({page: 1, name: this.form.name})
   }
 
   //设置排序

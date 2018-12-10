@@ -271,7 +271,6 @@ export default class WorkZonePost extends Vue {
    */
   handleContentEditorInput(html) {
     this.form.editContent = html
-    console.log(this.form.editContent)
     this.$refs.form.validateField('editContent')
   }
   /**

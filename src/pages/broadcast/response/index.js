@@ -114,7 +114,6 @@ export default class BroadcastReponse extends Vue {
    * 获取课程列表
    */
   getLiveProblemList({ page, pageSize } = {}) {
-    console.log(this.form)
     const params = {
       live_id: this.form.id,
       page: page || this.form.page || 1,

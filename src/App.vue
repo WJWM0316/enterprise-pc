@@ -7,7 +7,7 @@
         <router-view class="pages" />
       </main>
     </template>
-    <reset-psw-box></reset-psw-box>
+    <reset-psw-box :show="showResetPsw"></reset-psw-box>
   </section>
 </template>
 <script>
@@ -44,8 +44,9 @@ import resetPswBox from 'COMPONENTS/resetPsw/index.vue'
 export default class App extends Vue {
 
   loadingInstance = null
+  showResetPsw = false
 
-  created() {
+  mounted() {
     this.loadingInstance = Loading.service({})
     const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
     this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
@@ -53,7 +54,6 @@ export default class App extends Vue {
           this.loadingInstance.close()
         })
   }
-
 }
 </script>
 <style lang="scss">

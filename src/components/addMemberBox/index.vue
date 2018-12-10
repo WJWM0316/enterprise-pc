@@ -274,7 +274,6 @@ export default class ComponentAddMemberBox extends Vue {
     const formData = {...this.form}
     delete formData.isContinuted
     formData.groupId = formData.groupId.join(',')
-    console.log(formData.contentAdminGroup.length)
     if(formData.contentAdminGroup.length) {
       formData.contentAdminGroup = formData.contentAdminGroup.join(',')
     } else {

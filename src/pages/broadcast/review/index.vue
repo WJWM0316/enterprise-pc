@@ -11,7 +11,7 @@
           class="search"
           width="400px"
           @search="handleSearch"
-          v-model="form.name"
+          v-model="form.searchContent"
           placeholder="搜索提问内容或提问者姓名" />
       </div>
     </div>

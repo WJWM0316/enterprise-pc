@@ -118,7 +118,8 @@ export default class BroadcastReview extends Vue {
 
   // 搜索表单
   form = {
-    status: ''
+    status: '',
+    searchContent: ''
   }
 
   // 查看视屏
@@ -167,13 +168,20 @@ export default class BroadcastReview extends Vue {
     }
     if(this.form.type) {
       params.type = this.form.type === 'all' ? '' : this.form.type
+    } else {
+      delete params.type
+    }
+    if(this.form.searchContent) {
+      params.searchContent = this.form.searchContent
+    } else {
+      delete params.searchContent
     }
     this.getLiveReviewListApi(params)
   }
 
   // 点击搜索时触发
   handleSearch() {
-    this.setPathQuery(this.form)
+    this.setPathQuery({searchContent: this.form.searchContent, page: 1})
   }
 
   /**

@@ -1,5 +1,5 @@
 <template>
-  <section id="reset-psw" keep-alive="keep-alive" v-if="visiable">
+  <section id="reset-psw" v-show="visiable">
     <div class="mask" :class="{'show-mask': visiable}"></div>
     <section class="box" :class="{'show-box': visiable}"  >
       <main class="dialog-bd">
@@ -28,19 +28,27 @@ import Component from 'vue-class-component'
   methods: {
     ...mapActions(['editPwdApi'])
   },
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    }
+  },
   watch: {
-    '$route': {
-      handler() {
-        this.showResetPsw()
+    show: {
+      handler(show) {
+        this.visiable = show
       },
       immediate: true
     }
   }
 })
 export default class ComponentAddMemberBox extends Vue {
+  
   form = {
     newPwd: ''
   }
+
   rules = {
     newPwd: [
       { required: true, message: '密码必须填写', trigger: 'blur' },
@@ -74,12 +82,6 @@ export default class ComponentAddMemberBox extends Vue {
     if(image) {
       image.onload = () => this.visiable = true
     }
-  }
-
-  mounted() {
-    this.$nextTick(() => {
-      this.showResetPsw()
-    })
   }
 }
 

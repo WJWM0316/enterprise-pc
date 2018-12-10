@@ -36,7 +36,8 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   res => {
-    // window.localStorage.removeItem('UFC')
+    let model = document.querySelector('#reset-psw')
+    model.style.display = 'none'
     if (loadingInstance) loadingInstance.close()
     return res
   },
@@ -49,9 +50,14 @@ axios.interceptors.response.use(
       return
     }
     // 还没有修改密码
-    // if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
-    //   window.localStorage.setItem('UFC', 1)
-    // }
+    if(err.response.data.httpStatus === 400 && err.response.data.code === 801) {
+      let model = document.querySelector('#reset-psw')
+      let mask = model.querySelector('.mask')
+      let box = model.querySelector('.box')
+      model.style.display = 'block'
+      mask.className = 'mask show-mask'
+      box.className = 'box show-box'
+    }
     if(loadingInstance) loadingInstance.close()
     return Promise.reject(err.response)
   }
