@@ -30,7 +30,6 @@ const state = {
 
 const mutations = {
   [LOGIN] (state, data) {
-    removeAccessToken()
     saveAccessToken(data.token, state.loginValidTime)
     saveUserInfo(data, state.loginValidTime)
     state.userInfos = data
