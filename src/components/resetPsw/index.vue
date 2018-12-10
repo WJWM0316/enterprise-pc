@@ -70,6 +70,7 @@ export default class ComponentAddMemberBox extends Vue {
       if(valid) {
         this.editPwdApi({newPwd: this.form.newPwd})
             .then(() => {
+              this.$message({message: '修改成功~', type: 'success'})
               window.localStorage.removeItem('UFC')
               window.location.reload()
             })
