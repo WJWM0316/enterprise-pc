@@ -6,13 +6,13 @@ import Cookies from 'js-cookie'
 let company = Cookies.get('code')
 let loadingInstance = null
 
-if(!company) {
-  window.location.href = process.env.VUE_APP__LOGIN_URL
-}
-
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
   Cookies.set('Authorization-Sso', process.env.VUE_APP__TEST_SSO_TOKEN)
+}
+
+if(!company) {
+  window.location.href = process.env.VUE_APP__LOGIN_URL
 }
 
 export const API_ROOT = `${process.env.VUE_APP_API}/${company}`
