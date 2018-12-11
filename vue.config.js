@@ -15,6 +15,17 @@ module.exports = {
 	    ],
 	    eleui: [ resolve('src/eleui/index.js') ]
   	},
+  	// 确保一下库不会打包到bundle中，并使用cdn 减小第三方库的打包体积,可快速打开网页  测试有效
+    // externals: {
+    //   'axios':'axios',
+    //   'vue': 'Vue',
+    //   'vue-router': 'VueRouter',
+    //   'vuex': 'Vuex',
+    //   'jquery': 'jquery',
+    //   'swiper': 'swiper',
+    //   'clipboard': 'clipboard',
+    //   'echarts': 'echarts',
+    // },
   	resolve: {
 	    alias: {
 	      '@': resolve('src'),
