@@ -81,7 +81,8 @@ export function getAccessToken() {
 }
 
 export function removeAccessToken() {
-  Cookies.remove('Authorization-Sso', { path: '' })
+  Cookies.remove('Authorization-Sso', { domain: process.env.VUE_APP__COOKIE_DOMAIN })
+  Cookies.remove('code', { domain: process.env.VUE_APP__COOKIE_DOMAIN })
   lsCache.delete(KEYS.token)
   ssCache.delete(KEYS.userInfo)
 }

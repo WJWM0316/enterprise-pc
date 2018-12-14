@@ -74,7 +74,7 @@ const actions = {
                 .then(res => {
                   removeAccessToken()
                   store.commit(LOGOUT)
-                  window.location.href = process.env.VUE_APP__LOGIN_URL
+                  setTimeout(() => {window.location.href = process.env.VUE_APP__LOGIN_URL}, 16.7)
                   return res
                 })
                 .catch(error => {
