@@ -4,14 +4,14 @@
     <section class="box" :class="{'show-box': visiable}"  >
       <main class="dialog-bd">
         <img src="~IMAGES/lock.png" alt="" class="lock image-lock">
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form" @submit.native.prevent>
           <h2>设置登录新密码</h2>
           <p>为确保您在使用系统时账号安全，请设置您的新密码</p>
           <el-form-item prop="newPwd">
             <el-input type="password" v-model="form.newPwd" placeholder="请输入6-20个字符的新密码" maxLength="20"></el-input>
           </el-form-item>
           <div>
-            <el-button type="primary" @click="submit" class="submit-button">重设密码</el-button>
+            <a @click="submit" class="submit-button">重设密码</a>
           </div>
         </el-form>
       </main>
@@ -72,7 +72,7 @@ export default class ComponentAddMemberBox extends Vue {
             .then(() => {
               this.$message({message: '修改成功~', type: 'success'})
               window.localStorage.removeItem('UFC')
-              window.location.reload()
+              // window.location.reload()
             })
       }
     })
@@ -83,6 +83,23 @@ export default class ComponentAddMemberBox extends Vue {
     if(image) {
       image.onload = () => this.visiable = true
     }
+  }
+
+  /**
+   * @Author   小书包
+   * @DateTime 2018-09-19
+   * @detail   回车键登录
+   * @return   {[type]}          [description]
+   */
+  onEnterLogin(e) {
+    document.onkeydown = (e) => {
+     const code = window.event ? e.keyCode : e.which
+     if(code === 13) this.submit()
+    }
+  }
+
+  mounted() {
+    this.onEnterLogin()
   }
 }
 
@@ -138,6 +155,25 @@ export default class ComponentAddMemberBox extends Vue {
   }
   .submit-button {
     width: 100%;
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #FFE266;
+    border: 1px solid #FFE266;
+    color: #606266;
+    -webkit-appearance: none;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
   }
   h2{
     font-size:20px;
