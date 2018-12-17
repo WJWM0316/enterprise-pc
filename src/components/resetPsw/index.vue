@@ -72,7 +72,7 @@ export default class ComponentAddMemberBox extends Vue {
             .then(() => {
               this.$message({message: '修改成功~', type: 'success'})
               window.localStorage.removeItem('UFC')
-              // window.location.reload()
+              window.location.reload()
             })
       }
     })
