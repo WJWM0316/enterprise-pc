@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import TableList from 'COMPONENTS/list/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
+import Cookies from 'js-cookie'
 
 @Component({
   name: 'course-list',
@@ -21,7 +22,8 @@ import SearchBar from 'COMPONENTS/searchBar/index.vue'
     ...mapActions([
       'getCourseListsApi',
       'getCategoryListsApi',
-      'getVersionInfoApi'
+      'getVersionInfoApi',
+      'loginApi'
     ])
   },
   computed: {
@@ -101,7 +103,7 @@ export default class CourseList extends Vue {
     this.getCourseList()
   }
 
-  created() {
+  getInitData() {
     this.getVersionInfoApi()
     this.getCategoryListsApi({default: 1})
         .then(() => {
@@ -112,6 +114,13 @@ export default class CourseList extends Vue {
             })
           })
           this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
+        })
+  }
+  created() {
+    const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
+    this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
+        .then(() => {
+          this.getInitData()
         })
   }
   /**

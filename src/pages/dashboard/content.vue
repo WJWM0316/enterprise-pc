@@ -332,9 +332,13 @@ export default class pageDashboard extends Vue {
   }
 
 	created() {
-		this.init()
-		this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
-		// websocket.create(`${WEBSOKET_API}`)
+    const code  = Cookies.get('code') ? Cookies.get('code') : process.env.VUE_APP__TEST_COMPANY
+		this.loginApi({code, 'Authorization-Sso': Cookies.get('Authorization-Sso')})
+        .then(() => {
+          this.init()
+					this.$once('hook:beforeDestroy', () => { clearInterval(this.timer) })
+					// websocket.create(`${WEBSOKET_API}`)
+        })
 	}
 }
 </script>
