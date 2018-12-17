@@ -315,8 +315,8 @@ export default class pageDashboard extends Vue {
   	this.getDesktopInfosApi()
   			.then(() => {
   				if(this.desktopVerInfo.remainDay <= 0) {
-  					Cookies.remove('code', { path: '' }) // removed!
-  					Cookies.remove('Authorization-Sso', { path: '' }) // removed!
+  					Cookies.remove('Authorization-Sso', { domain: process.env.VUE_APP__COOKIE_DOMAIN })
+          	Cookies.remove('code', { domain: process.env.VUE_APP__COOKIE_DOMAIN })
   					window.location.href = process.env.VUE_APP__LOGIN_URL
   				}
   			})
