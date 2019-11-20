@@ -46,23 +46,20 @@ export default class CommentList extends Vue {
       prop: 'content',
       label: '评论内容',
       align: 'left',
-      showTips: 'no',
       width: '34%'
     },
     {
       prop: 'userName',
       label: '发布者',
       align: 'left',
-      showTips: 'no',
       width: '13%'
     },
     {
       prop: 'status',
       label: '状态',
       align: 'left',
-      showTips: 'yes',
       width: '13%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -77,22 +74,20 @@ export default class CommentList extends Vue {
           value: 'status-1'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'createdAt',
       label: '建立时间',
       align: 'left',
-      showTips: 'no',
       width: '15%'
     },
     {
       prop: 'actions',
       label: '操作',
-      showTips: 'yes',
       align: 'left',
       width: '20%',
-      filterPlacement: '吊炸天的操作~'
+      tooltip: '吊炸天的操作~'
     }
   ]
 

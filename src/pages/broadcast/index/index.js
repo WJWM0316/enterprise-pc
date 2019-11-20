@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 
 @Component({
@@ -40,16 +40,14 @@ export default class BroadcastIndex extends Vue {
       prop: 'liveName',
       label: '直播',
       align: 'left',
-      showTips: 'no',
       width: '28%'
     },
     {
       prop: 'statusName',
       label: '状态',
       align: 'left',
-      showTips: 'no',
       width: '8%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '未开始',
@@ -64,15 +62,14 @@ export default class BroadcastIndex extends Vue {
           value: 'status-3'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'onlineStatusName',
       label: '是否上线',
       align: 'left',
-      showTips: 'yes',
       width: '12%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '上线',
@@ -83,39 +80,34 @@ export default class BroadcastIndex extends Vue {
           value: 'isOnline-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'categoryName',
       label: '分类',
       align: 'left',
-      showTips: 'no',
       width: '8%',
-      filteredValue: [],
-      filterPlacement: '测试啦'
+      dropdown: []
     },
     {
       prop: 'sort',
       label: '权 重',
       align: 'left',
-      showTips: 'yes',
       width: '8%',
-      filterPlacement: '排序的序号数字越小，在员工端排在越前面；反之，在员工端排在越后面'
+      tooltip: '排序的序号数字越小，在员工端排在越前面；反之，在员工端排在越后面'
     },
     {
       prop: 'expectedStartTime',
       label: '开始时间',
       align: 'left',
-      showTips: 'no',
       width: '16%'
     },
     {
       prop: 'actions',
       label: '操作',
-      showTips: 'yes',
       align: 'left',
       width: '20%',
-      filterPlacement: '编辑：编辑相关详细内容 <br/> 问答区：管理直播中的相关问答 <br/> 直播回顾：管理直播内容'
+      tooltip: '编辑：编辑相关详细内容 <br/> 问答区：管理直播中的相关问答 <br/> 直播回顾：管理直播内容'
     }
   ]
 
@@ -135,12 +127,12 @@ export default class BroadcastIndex extends Vue {
     this.getCategoryListsApi({default: 1})
         .then(() => {
           this.categoryList.map(field => {
-            this.fields[3].filteredValue.push({
+            this.fields[3].dropdown.push({
               label: field.categoryName,
               value: `categoryId-${field.categoryId}`
             })
           })
-          this.fields[3].filteredValue.unshift({label: '全部', value: 'categoryId-all'})
+          this.fields[3].dropdown.unshift({label: '全部', value: 'categoryId-all'})
         })
   }
 

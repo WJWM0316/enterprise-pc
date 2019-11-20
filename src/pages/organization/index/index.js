@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import { getMemberListApi, getGroupListApi, importMemberByExcelApi, downloadMsgApi } from '@/store/api/organization.js'
 import { upload_api } from '@/store/api/index.js'
 import { getAccessToken } from '@/store/cacheService'
@@ -74,7 +74,6 @@ export default class pageOrganization extends Vue {
       width: '10%',
       label: '职位',
       align: 'left',
-      showTips: 'no'
     },
     {
       prop: 'roleName',
@@ -87,21 +86,18 @@ export default class pageOrganization extends Vue {
       width: '10%',
       label: '手机号码',
       align: 'left',
-      showTips: 'no'
     },
     {
       prop: 'email',
       width: '10%',
       label: '邮箱',
       align: 'left',
-      showTips: 'no'
     },
     {
       prop: 'wechat',
       width: '10%',
       align: 'left',
       label: '操作',
-      showTips: 'no'
     }
   ]
 

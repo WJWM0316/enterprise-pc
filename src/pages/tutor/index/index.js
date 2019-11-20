@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import { getTutorListApi, addSearchTutorApi, deletetTutorApi, searchTutorApi} from 'STORE/api/tutor.js'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
@@ -92,8 +92,7 @@ export default class tutorList extends Vue {
       prop: 'actions',
       width: '10%',
       label: '操作',
-      showTips: 'yes',
-      filterPlacement: '移除导师：把对应外部导师移除出企业'
+      tooltip: '移除导师：把对应外部导师移除出企业'
     }
   ]
   

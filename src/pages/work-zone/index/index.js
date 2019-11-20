@@ -38,16 +38,14 @@ export default class WorkzoneList extends Vue {
       prop: 'name',
       label: '工作圈',
       align: 'left',
-      showTips: 'no',
       width: '40%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -62,23 +60,21 @@ export default class WorkzoneList extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示；下线：在员工端不显示'
+      tooltip: '上线：在员工端显示；下线：在员工端不显示'
     },
     {
       prop: 'sort',
       label: '权重',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。'
+      tooltip: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面。'
     },
     {
       prop: 'actions',
       label: '操作',
       align: 'left',
-      showTips: 'yes',
       width: '20%',
-      filterPlacement: '编辑相关详细内容'
+      tooltip: '编辑相关详细内容'
     }
   ]
 

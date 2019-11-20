@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyAudio from 'COMPONENTS/myAudio/index.vue'
 import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
@@ -47,9 +47,8 @@ export default class BroadcastReview extends Vue {
       prop: 'content',
       label: '查看内容',
       align: 'left',
-      showTips: 'no',
       width: '35%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -68,22 +67,20 @@ export default class BroadcastReview extends Vue {
           value: 'type-audio'
         }
       ],
-      filterPlacement: '测试啦'
+      tooltip: '测试啦'
     },
     {
       prop: 'realname',
       label: '发布人',
       align: 'left',
-      showTips: 'no',
       width: '20%'
     },
     {
       prop: 'statusName',
       label: '状态',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -98,21 +95,19 @@ export default class BroadcastReview extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '正常：在前台正常露出的内容会显示该状态,已删除：被删除的内容会显示该状态，在前台将被隐藏 '
+      tooltip: '正常：在前台正常露出的内容会显示该状态,已删除：被删除的内容会显示该状态，在前台将被隐藏 '
     },
     {
       prop: 'createdAt',
       label: '发布时间',
       align: 'left',
-      showTips: 'no',
       width: '15%'
     },
     {
       prop: 'actions',
       label: '操作',
-      showTips: 'yes',
       width: '15%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
+      tooltip: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]
 

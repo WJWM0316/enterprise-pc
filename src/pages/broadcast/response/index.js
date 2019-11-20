@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyAudio from 'COMPONENTS/myAudio/index.vue'
 
@@ -40,37 +40,32 @@ export default class BroadcastReponse extends Vue {
       prop: 'askContent',
       label: '提问内容',
       align: 'left',
-      showTips: 'no',
       width: '25%'
     },
     {
       prop: 'askMan',
       label: '提问人',
       align: 'left',
-      showTips: 'no',
       width: '16%'
     },
     {
       prop: 'replyContent',
       label: '回答内容',
       align: 'left',
-      showTips: 'no',
       width: '25%'
     },
     {
       prop: 'replyMan',
       label: '回答者',
       align: 'left',
-      showTips: 'no',
       width: '16%'
     },
     {
       prop: 'status',
       label: '状态',
       align: 'left',
-      showTips: 'yes',
       width: '10%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -85,15 +80,14 @@ export default class BroadcastReponse extends Vue {
           value: 'del-0'
         }
       ],
-      filterPlacement: '在前台正常露出的内容会显示该状态 <br/> 已删除：被删除的内容会显示该状态，在前台将被隐藏'
+      tooltip: '在前台正常露出的内容会显示该状态 <br/> 已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
       prop: 'actions',
       label: '操作',
       align: 'left',
-      showTips: 'yes',
       width: '8%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
+      tooltip: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     }
   ]
 

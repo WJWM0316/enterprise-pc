@@ -40,46 +40,40 @@ export default class booksList extends Vue {
       prop: 'middleUrl',
       label: '封面',
       align: 'left',
-      showTips: 'no',
       width: '13%'
     },
     {
       prop: 'title',
       label: '书名',
       align: 'left',
-      showTips: 'no',
       width: '10%'
     },
     {
       prop: 'wordIntro',
       label: '摘要',
       align: 'left',
-      showTips: 'no',
       width: '25%'
     },
     {
       prop: 'readCount',
       label: '阅读人数',
       align: 'left',
-      showTips: 'no',
       width: '8%'
     },
     {
       prop: 'tags',
       label: '分类',
       align: 'left',
-      showTips: 'no',
       width: '12%',
-      filteredValue:[],
-      filterPlacement: '类型的提示文案'
+      dropdown:[],
+      tooltip: '类型的提示文案'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
-      showTips: 'no',
       width: '10%',
-      filteredValue:
+      dropdown:
       [ 
         {
           label: '全部',
@@ -94,15 +88,14 @@ export default class booksList extends Vue {
           value: 'status-1'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'actions',
       label: '操作',
       align: 'left',
-      showTips: 'yes',
       width: '10%',
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     }
   ]
 
@@ -151,13 +144,13 @@ export default class booksList extends Vue {
   }
 
   getTagsLists() {
-    this.fields[4].filteredValue = [{
+    this.fields[4].dropdown = [{
       label: '全部',
       value: 'tag_id-all'
     }]
     getBooksFirstListApi().then(res=>{
       res.data.data.map(item=>{
-        this.fields[4].filteredValue.push({
+        this.fields[4].dropdown.push({
           label: item.tagName,
           value:`tag_id-${item.id}`
         })

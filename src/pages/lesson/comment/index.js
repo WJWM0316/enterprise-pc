@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
@@ -34,23 +34,20 @@ export default class CourseList extends Vue {
       prop: 'content',
       label: '评论内容',
       align: 'left',
-      showTips: 'no',
       width: '30%'
     },
     {
       prop: 'userName',
       label: '发布者',
       align: 'left',
-      showTips: 'no',
       width: '15%'
     },
     {
       prop: 'status',
       label: '状态',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -65,22 +62,20 @@ export default class CourseList extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
+      tooltip: '正常：在前台正常露出的内容会显示该状态<br/>已删除：被删除的内容会显示该状态，在前台将被隐藏'
     },
     {
       prop: 'updatedAt',
       label: '建立时间',
       align: 'left',
-      showTips: 'no',
       width: '15%'
     },
     {
       prop: 'actions',
       label: '操作',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filterPlacement: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>热门评论/取消热门：把打卡内容设置为热门评论或者取消热门评论<br/>评论：进入评论内容管理页面'
+      tooltip: '删除/恢复：删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示<br/>热门评论/取消热门：把打卡内容设置为热门评论或者取消热门评论<br/>评论：进入评论内容管理页面'
     }
   ]
 

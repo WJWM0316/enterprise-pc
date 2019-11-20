@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import Cookies from 'js-cookie'
 
@@ -48,10 +48,9 @@ export default class CourseList extends Vue {
       prop: 'status',
       label: '是否上线',
       align: 'left',
-      showTips: 'yes',
       width: '15%',
-      filteredValue:
-      [
+      tooltip: '上线：在员工端显示；下线：在员工端不显示',
+      dropdown: [
         {
           label: '全部',
           value: 'status-3'
@@ -64,33 +63,29 @@ export default class CourseList extends Vue {
           label: '下线',
           value: 'status-0'
         }
-      ],
-      filterPlacement: '上线：在员工端显示；下线：在员工端不显示'
+      ]
     },
     {
       prop: 'category',
       label: '类 型',
       align: 'left',
-      showTips: 'no',
       width: '10%',
-      filteredValue: [],
-      filterPlacement: '类型的提示文案'
+      dropdown: [],
+      tooltip: '类型的提示文案'
     },
     {
       prop: 'sort',
       label: '权 重',
       align: 'left',
-      showTips: 'yes',
       width: '10%',
-      filterPlacement: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面'
+      tooltip: '权重数越大，排序越靠前。权重数一样的情况下，按创建时间晚的排前面'
     },
     {
       prop: 'actions',
       label: '操作',
-      showTips: 'yes',
       align: 'left',
       width: '15%',
-      filterPlacement: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
+      tooltip: '编辑：编辑相关详细内容<br/>课节：进入课节管理页面'
     }
   ]
 
@@ -108,12 +103,12 @@ export default class CourseList extends Vue {
     this.getCategoryListsApi({default: 1})
         .then(() => {
           this.categoryList.map(field => {
-            this.fields[2].filteredValue.push({
+            this.fields[2].dropdown.push({
               label: field.categoryName,
               value: `category_id-${field.categoryId}`
             })
           })
-          this.fields[2].filteredValue.unshift({label: '全部', value: 'category_id-abc'})
+          this.fields[2].dropdown.unshift({label: '全部', value: 'category_id-abc'})
         })
   }
   created() {

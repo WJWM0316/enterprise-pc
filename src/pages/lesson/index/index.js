@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import { getLessonListsApi, sortUpdateApi } from 'API/lesson'
 
@@ -40,16 +40,14 @@ export default class CourseList extends Vue {
       prop: 'title',
       label: '课节',
       align: 'left',
-      showTips: 'no',
       width: '40%'
     },
     {
       prop: 'status',
       label: '是否上线',
       align: 'left',
-      showTips: 'yes',
       width: '10%',
-      filteredValue:
+      dropdown:
       [ 
         {
           label: '全部',
@@ -64,7 +62,7 @@ export default class CourseList extends Vue {
           value: 'status-0'
         }
       ],
-      filterPlacement: '上线：在员工端显示<br/>下线：在员工端不显示'
+      tooltip: '上线：在员工端显示<br/>下线：在员工端不显示'
     },
     {
       prop: 'sort',
@@ -76,9 +74,8 @@ export default class CourseList extends Vue {
       prop: 'actions',
       label: '操作',
       align: 'left',
-      showTips: 'yes',
       width: '20%',
-      filterPlacement: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
+      tooltip: '编辑：编辑相关详细内容<br/>打卡：进入打卡内容管理页面'
     }
   ]
 

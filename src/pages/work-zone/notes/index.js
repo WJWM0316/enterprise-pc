@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import MyPrompt from 'COMPONENTS/prompt/index.vue'
 import LinkViewer from 'COMPONENTS/linkViewer/index.vue'
@@ -55,30 +55,26 @@ export default class NoteList extends Vue {
       prop: 'content',
       label: '帖子内容',
       align: 'left',
-      showTips: 'no',
       width: '37%'
     },
     {
       prop: 'realname',
       label: '发布者',
       align: 'left',
-      showTips: 'no',
       width: '12%'
     },
     {
       prop: 'type',
       label: '文件类型',
       align: 'left',
-      showTips: 'no',
       width: '12%'
     },
     // {
     //   prop: 'visible',
     //   label: '是否公开',
     //   align: 'left',
-    //   showTips: 'yes',
     //   width: '15%',
-    //   filteredValue:
+    //   dropdown:
     //   [
     //     {
     //       label: '全部',
@@ -93,15 +89,14 @@ export default class NoteList extends Vue {
     //       value: 'visible-1'
     //     }
     //   ],
-    //   filterPlacement: '隐藏该内容，除了已加入工作圈的成员和选定的成员以外的成员都不可见；隐藏后可重新公开，公开则所有成员都可见'
+    //   tooltip: '隐藏该内容，除了已加入工作圈的成员和选定的成员以外的成员都不可见；隐藏后可重新公开，公开则所有成员都可见'
     // },
     {
       prop: 'deletedAt',
       label: '状态',
       align: 'left',
-      showTips: 'yes',
       width: '12%',
-      filteredValue:
+      dropdown:
       [
         {
           label: '全部',
@@ -116,22 +111,20 @@ export default class NoteList extends Vue {
           value: 'delete-1'
         }
       ],
-      filterPlacement: '删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
+      tooltip: '删除该内容，会导致内容不在员工端显示；删除后可以使用恢复来让内容重新在员工端显示'
     },
     {
       prop: 'createdAt',
       label: '建立时间',
       align: 'left',
-      showTips: 'no',
       width: '17%'
     },
     {
       prop: 'actions',
       label: '操作',
-      showTips: 'yes',
       align: 'left',
       width: '30%',
-      filterPlacement: '帖子的相关操作~'
+      tooltip: '帖子的相关操作~'
     }
   ]
 
