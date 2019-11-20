@@ -3,7 +3,7 @@
  */
 import { request } from './index.js'
 import Qs from 'qs'
-
+/* eslint-disable */
 // 登陆接口
 export const loginApi = data => request('/auth/login', 'post', Qs.stringify(data))
 // 退出接口

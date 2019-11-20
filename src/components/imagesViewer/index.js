@@ -55,7 +55,6 @@ export default class ComponentImagesViewer extends Vue {
   init() {
     const galleryThumbs = new Swiper('.gallery-thumbs', {
       lazy: true,
-      spaceBetween: 10,
       slidesPerView: 6,
       touchRatio: 0.2,
       // loop:true,

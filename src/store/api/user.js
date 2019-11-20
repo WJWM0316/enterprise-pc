@@ -1,6 +1,7 @@
 /**
  * 个人中心模块api
  */
+/* eslint-disable */
 import { request } from './index.js'
 import Qs from 'qs'
 

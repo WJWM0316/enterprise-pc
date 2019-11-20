@@ -1,6 +1,7 @@
 /**
  * 所有工作圈对应的接口请求
  */
+/* eslint-disable */
 import { request } from './index.js'
 import Qs from 'qs'
 
@@ -39,15 +40,15 @@ export const recoverJobCircleCommentApi = params => request(`/jobcircle/comment/
 // 【工作圈】删除帖子
 export const deleteJobCircleNoteApi = params => request(`/jobcircle/post/${params.id}`, 'delete')
 // 【工作圈】设置置顶帖子
-export const setJobCircleNotetoTopApi = params => request(`/jobcircle/post/stick`, 'put', params)
+export const setJobCircleNotetoTopApi = params => request('/jobcircle/post/stick', 'put', params)
 // 【工作圈】取消置顶帖子
-export const cancleJobCircleNotetoTopApi = params => request(`/jobcircle/post/nostick`, 'put', params)
+export const cancleJobCircleNotetoTopApi = params => request('/jobcircle/post/nostick', 'put', params)
 // 获取工作圈帖子详情
 export const getJobCircleNoteDetailApi = params => request(`/jobcircle/post/${params.id}`, 'get')
 // 添加工作圈帖子
-export const postJobCircleNoteApi = params => request(`/jobcircle/post`, 'post', params)
+export const postJobCircleNoteApi = params => request('/jobcircle/post', 'post', params)
 // 圈主设置工作圈帖子隐藏/公开
-export const updateJobCircleNoteVisibleApi = params => request(`/jobcircle/post/visible`, 'put', params)
+export const updateJobCircleNoteVisibleApi = params => request('/jobcircle/post/visible', 'put', params)
 // 获取工作圈分月相册
 export const getJobCircleAlbumApi = params => request(`/jobcircle/picture/${params.id}`, 'get', params)
 // 获取工作圈所有帖子
@@ -55,7 +56,7 @@ export const getJobCircleAlbumApi = params => request(`/jobcircle/picture/${para
 // 获取工作圈所有帖子链接分页
 export const getJobCircleUrlsApi = params => request(`/jobcircle/urls/${params.id}`, 'get', params)
 // 工作圈帖子删除恢复
-export const recoverJobCircleNoteApi = params => request(`/jobcircle/post/recover`, 'put', params)
+export const recoverJobCircleNoteApi = params => request('/jobcircle/post/recover', 'put', params)
 // 获取工作圈帖子的置顶数
 export const getJobCircleTopNumApi = params => request(`/jobcircle/toppost/${params.id}`, 'get')
 // 取工作圈帖子图片/视频/文件/链接

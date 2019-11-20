@@ -4,6 +4,7 @@
 /**
  * 权限模块api
  */
+/* eslint-disable */
 import { request } from './index.js'
 
 // 获取首页成员列表

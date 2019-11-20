@@ -4,7 +4,11 @@ import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'
 
-import { getCommentSecondListsApi, putLessonPunchApi, cancelLessonPunchApi, deleteLessonPunchCommentApi, postLessonPunchCommentApi } from 'API/lesson'
+import { 
+  getCommentSecondListsApi,
+  deleteLessonPunchCommentApi,
+  postLessonPunchCommentApi
+} from 'API/lesson'
 
 @Component({
   name: 'lighthouse-list',
@@ -218,7 +222,6 @@ export default class CourseList extends Vue {
         }).then(() => {
           this.recover()
         }).catch(() => {})
-        break
         break
       default:
         break

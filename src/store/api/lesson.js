@@ -1,6 +1,7 @@
 /**
  * 所有课节对应的接口请求
  */
+/* eslint-disable */
 import { request } from './index.js'
 // import Qs from 'qs'
 
@@ -35,7 +36,7 @@ export const distoryAndRegaihnLessonPunchApi = params => request(`/CourseSection
 export const setExcellentCourseCardApi = params => request(`/CourseSection/CourseSectionCard/setExcellentCourseCard`, 'post',params)
 
 // 获取课程课节列表
-export const getLessonListsApi = params => request(`/CourseSection`, 'get', params)
+export const getLessonListsApi = params => request('/CourseSection', 'get', params)
 
 // 新增课程课节
 export const putLessonApi = params => request(`CourseSection/${params.id}`, 'put', params)
@@ -43,7 +44,7 @@ export const putLessonApi = params => request(`CourseSection/${params.id}`, 'put
 
 
 // 新增课程课节
-export const postLessonApi = params => request(`/CourseSection`, 'post', params)
+export const postLessonApi = params => request('/CourseSection', 'post', params)
 
 //获取课程课节详情
 export const getLessonEditApi = params => request(`/CourseSection/${params.id}/edit`, 'get')
@@ -52,7 +53,7 @@ export const getLessonEditApi = params => request(`/CourseSection/${params.id}/e
 export const lessonEditApi = params => request(`/CourseSection/${params.lessonId}`, 'put', params)
 
 //课程课节列表-修改排序
-export const sortUpdateApi = params => request(`/CourseSection/sortUpdate`, 'post', params)
+export const sortUpdateApi = params => request('/CourseSection/sortUpdate', 'post', params)
 
 
 

@@ -1,19 +1,20 @@
 /**
  * 所有设置对应的接口请求
  */
+/* eslint-disable */
 import { request } from './index.js'
 
 
 // 获取分类列表
 export const getCategoryListsApi = params => request(
-	`/category`, 
+	'/category', 
 	'get', 
 	params
 )
 
 // 添加分类
 export const createCategoryApi = params => request(
-	`/category/create`, 
+	'/category/create', 
 	'get', 
 	params
 )

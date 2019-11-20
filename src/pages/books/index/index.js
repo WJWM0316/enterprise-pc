@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import TableList from 'COMPONENTS/list/index.vue'
+import TableList from 'COMPONENTS/list_copy/index.vue'
 import SearchBar from 'COMPONENTS/searchBar/index.vue'
 import { getBooksListApi, setBooksStatusApi, getBooksFirstListApi } from 'API/workBook'
 import ModalDialog from 'COMPONENTS/dialog/index.vue'

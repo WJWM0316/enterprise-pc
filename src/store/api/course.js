@@ -4,6 +4,7 @@
 import { request } from './index.js'
 export const getListCourse = params => request('/course/listCourse', 'post', params)
 import Qs from 'qs'
+/* eslint-disable */
 
 // 添加课程
 export const postCourseApi = data => request('/course/addCourse', 'post', Qs.stringify(data))

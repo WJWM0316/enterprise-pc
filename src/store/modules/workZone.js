@@ -24,7 +24,7 @@ import {
   setJobCircleNotetoTopApi,
   updateJobCircleNoteVisibleApi,
   recoverJobCircleNoteApi,
-  getJobCircleCommentFirstListsApi,
+  // getJobCircleCommentFirstListsApi,
   getJobCircleCommentSearchListsApi,
   deleteJobCircleCommentApi,
   recoverJobCircleCommentApi,

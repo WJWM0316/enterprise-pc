@@ -1,6 +1,7 @@
 /**
  * 所有组织对应的接口请求
  */
+/* eslint-disable */
 import { request } from './index.js'
 
 //获取成员列表

@@ -3,6 +3,7 @@
  */
 import { request } from './index.js'
 import Qs from 'qs'
+/* eslint-disable */
 
 // 添加直播
 export const postLiveApi = data => request('/live/create', 'post', Qs.stringify(data))

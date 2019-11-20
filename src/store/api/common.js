@@ -2,6 +2,7 @@
  * 权限模块api
  */
 import { request } from './index.js'
+/* eslint-disable */
 
 // 上传问价文件
 export const uploadApi = data => request('/attaches', 'post', data)
