@@ -5,7 +5,7 @@
      <div class="left-content">
       <div class="header-label"><strong>分组</strong>（{{groupList.length}}组）</div>
      </div>
-     <div class="right-content">
+     <div class="right-content" v-if="false">
       <el-button type="text" @click="todoAction('set')"><i class="icon iconfont icon-zuzhijiagou"></i> 组织架构</el-button>
       <!-- <el-button style="margin-left: 20px" type="primary" class="click-item button_base margin_0" @click="todoAction('addGroup')">新建分组</el-button> -->
       <el-button type="text" @click="todoAction('upload')"><i class="icon iconfont icon-piliangdaoru"></i> 批量导入成员</el-button>
