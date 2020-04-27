@@ -77,6 +77,8 @@ export default class WorkZonePost extends Vue {
     email: '',
     // 微信号
     wechat: '',
+    //  身份证
+    idCard: '',
     //手机号
     mobile: '',
     // 密码
@@ -237,6 +239,7 @@ export default class WorkZonePost extends Vue {
       this.form.occupation = data.occupation
       this.form.email = data.email
       this.form.wechat = data.wechat
+      this.form.idCard = data.idCard
       this.form.mobile = data.mobile
 
       this.form.roleId = data.roleId
@@ -342,7 +345,7 @@ export default class WorkZonePost extends Vue {
           this.form.contentAdminGroup = this.form.organization_management.value
         }
         this.form.groupId = this.form.group_management.value
-        const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
+        const need = ['name', 'avatarId', 'groupId', 'gender', 'occupation', 'email', 'wechat', 'idCard', 'mobile', 'password', 'roleId', 'contentAdminGroup', 'id']
         const params = this.transformData(this.form, need)
         this.submit(params)
       }

@@ -142,6 +142,15 @@
             <el-input style="width: 224px;" v-model="form.wechat" :maxlength="30"  placeholder="请填写微信号"/>
         </el-form-item>
 
+        <!-- 身份证 -->
+        <el-form-item
+          label="身份证号码"
+          prop="wechat"
+          class="limit-width"
+          >
+            <el-input style="width: 224px;" v-model="form.idCard" placeholder="请填写身份证号码"/>
+        </el-form-item>
+
         <!-- 权限管理 -->
         <el-form-item
           label="权限管理"
