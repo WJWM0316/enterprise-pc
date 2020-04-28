@@ -1,11 +1,10 @@
 // http://web.xplus.ziwork.com/laohu/api/docs#
 import axios from 'axios'
 import { Loading } from 'element-ui'
-import { removeAccessToken, getAccessToken } from '@/store/cacheService'
+import { removeAccessToken, getAccessToken, saveAccessToken } from '@/store/cacheService'
 import Cookies from 'js-cookie'
 let company = Cookies.get('code')
 let loadingInstance = null
-
 if(process.env.NODE_ENV === 'development') {
   company = process.env.VUE_APP__TEST_COMPANY
   Cookies.set('Authorization-Sso', process.env.VUE_APP__TEST_SSO_TOKEN)
