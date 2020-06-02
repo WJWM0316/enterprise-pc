@@ -5,6 +5,7 @@
 		<router-link :to="{name: 'statisticsMember'}" tag="li">成员</router-link>
 		<router-link :to="{name: 'statisticsTutor'}" tag="li">导师</router-link>
 		<router-link :to="{name: 'statisticsZone'}" tag="li">工作圈</router-link>
+		<router-link :to="{name: 'statisticsClock'}" tag="li">打卡</router-link>
 	</ul>
 </template>
 <script>

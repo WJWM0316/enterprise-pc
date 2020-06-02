@@ -417,6 +417,16 @@ export const routes = [
       module: 'statistics'
     }
   },
+  {
+    path: '/statistics-clock',
+    name: 'statisticsClock',
+    title: '统计-课程',
+    component: () => import(/* webpackChunkName: "statisticsCourse" */ '@/pages/statistics/clock/index.vue'),
+    meta: {
+      useNav: false,
+      module: 'statistics'
+    }
+  },
   // 设置路由
   {
     path: '/setting',

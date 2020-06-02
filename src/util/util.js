@@ -212,21 +212,52 @@ class Util {
     }
     return parseInt(num * Math.pow(10, fractionDigits) + offsets[type]) / Math.pow(10, fractionDigits)
   }
-
+  downFile(content, filename) {
+    if(window.navigator.msSaveBlob){
+      // for ie 10 and later
+      try{
+        var blobObject = new Blob([content]); 
+        window.navigator.msSaveBlob(blobObject, filename); 
+      }
+      catch(e){
+        alert('当前浏览器不支持下载功能')
+      }
+    }else {
+      var eleLink = document.createElement('a')
+      eleLink.download = filename
+      eleLink.style.display = 'none'
+      var blob = new Blob([content]);
+      eleLink.href = URL.createObjectURL(blob)
+      document.body.appendChild(eleLink)
+      eleLink.click()
+      document.body.removeChild(eleLink)
+    }
+  }
   /**
    * 下载文件
    * @param {Blob} fileBlob 文件Blob对象
    * @param {String} suffix 文件后缀名
    */
   downloadFile (fileBlob, filename, suffix = 'xlsx') {
-    const url = URL.createObjectURL(fileBlob)
-    const downloadLink = document.createElement('a')
-    downloadLink.download = `${filename || moment(new Date()).format('YYYY-MM-DD')}.${suffix}`
-    downloadLink.href = url
-    downloadLink.style.display = 'none'
-    document.body.appendChild(downloadLink)
-    downloadLink.click()
-    document.body.removeChild(downloadLink)
+    if(window.navigator.msSaveBlob){
+      // for ie 10 and later
+      try{
+        var blobObject = new Blob([content]); 
+        window.navigator.msSaveBlob(blobObject, filename); 
+      }
+      catch(e){
+        alert('当前浏览器不支持下载功能')
+      }
+    } else {
+      const url = URL.createObjectURL(fileBlob)
+      const downloadLink = document.createElement('a')
+      downloadLink.download = `${filename || moment(new Date()).format('YYYY-MM-DD')}.${suffix}`
+      downloadLink.href = url
+      downloadLink.style.display = 'none'
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
+    }
   }
 }
 

@@ -37,3 +37,6 @@ export const getDepartmentSourseStatisticsListApi = params => request('/sta/grou
 
 // 获取内外部导师比例
 export const getTutorTypeStatisticsListApi = params => request('/sta/tutor', 'get', params)
+
+// 打卡统计
+export const getTutorTypeStatistiClockApi = params => request('/sta/card/export/today', 'get', params)
