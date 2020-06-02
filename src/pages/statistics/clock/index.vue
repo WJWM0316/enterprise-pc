@@ -23,14 +23,14 @@ export default class pageStatisticsClock extends Vue {
  created () {
  }
  exportData () {
-  const url = `${API_ROOT}/sta/card/export/today`
+  const url = `${API_ROOT}/sta/card/export/today?token=${getAccessToken()}`
   const newBlank = window.open(url, '_blank')
  }
 }
 </script>
 <style scoped>
  .btn {
-  display: inline-block;
+    display: inline-block;
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
@@ -42,7 +42,7 @@ export default class pageStatisticsClock extends Vue {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     outline: 0;
-    margin: 0;
+    margin: 20px 0;
     -webkit-transition: 0.1s;
     transition: 0.1s;
     font-weight: 500;
