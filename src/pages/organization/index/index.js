@@ -72,7 +72,7 @@ export default class pageOrganization extends Vue {
     {
       prop: 'examScore',
       width: '5%',
-      label: '分数',
+      label: '培训成绩',
       align: 'left'
     },
     {
