@@ -70,7 +70,7 @@ export default class pageOrganization extends Vue {
       align: 'left'
     },
     {
-      prop: 'score',
+      prop: 'examScore',
       width: '5%',
       label: '分数',
       align: 'left'
@@ -192,9 +192,6 @@ export default class pageOrganization extends Vue {
     if(this.memberData.groupId) params.groupId = this.memberData.groupId
     if(this.memberData.roleId && Number(this.memberData.roleId) !== 4) params.roleId = this.memberData.roleId
     getMemberListApi(params).then( res => {
-      res.data.data.forEach(item => {
-        item.score = Math.floor(Math.random()*20 + 81) + '分'
-      })
       this.courseList = {
         list : res.data.data,
         total: res.data.meta && res.data.meta.total ? res.data.meta.total: 0
@@ -264,9 +261,6 @@ export default class pageOrganization extends Vue {
       this.memberData.searchContent = this.$route.query.searchContent
     }
     getMemberListApi(this.memberData).then( res => {
-      res.data.data.forEach(item => {
-        item.score = Math.floor(Math.random()*20 + 81) + '分'
-      })
       this.courseList = {
         list : res.data.data,
         total: res.data.meta&&res.data.meta.total?res.data.meta.total:0
