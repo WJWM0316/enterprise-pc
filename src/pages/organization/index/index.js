@@ -70,6 +70,12 @@ export default class pageOrganization extends Vue {
       align: 'left'
     },
     {
+      prop: 'studyTimeCount',
+      width: '5%',
+      label: '学习时长（分钟）',
+      align: 'left'
+    },
+    {
       prop: 'examScore',
       width: '5%',
       label: '培训成绩',
