@@ -39,6 +39,7 @@
 								<div class="doing" :style="`width: ${courseItem.progress}%`"></div>
 							</div>
 						</div>
+						<div class="score">考试得分：{{courseItem.socre}}分</div>
 					</div>
 				</li>
 			</template>
@@ -302,6 +303,14 @@ export default class ComponentRight extends Vue {
 				background:rgba(255,226,102,1);
 				border-radius:8px;
 			}
+		}
+		.score {
+			font-size: 12px;
+			font-weight: 400;
+			color: #929292;
+			margin-top: 10px;
+			text-decoration: underline;
+			cursor: pointer;
 		}
 		.u-info{
 			overflow: hidden;
