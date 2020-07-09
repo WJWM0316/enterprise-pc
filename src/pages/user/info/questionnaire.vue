@@ -2,7 +2,7 @@
   <div class="questionNaire" v-if="JSON.stringify(all) !== '{}'">
     <div class="title">{{ all.examInfo.title }}</div>
     <div class="line"></div>
-    <p class="score">{{ '用户姓名：' + personalInfoBase.realname + '&nbsp;&nbsp;&nbsp;&nbsp;' }}用户分数：{{ all.examUserScore }}</p>
+    <p class="score">{{ '用户姓名：' + personalInfoBase.realname + '&nbsp;&nbsp;&nbsp;&nbsp;' + '用户分数：' + all.examUserScore }}</p>
     <div class="questionNaire-main">
       <div class="questionNaire-main-list" v-for="(item, index) in all.examQuestionUserAnswer" :key="index">
         <div class="question">{{index+1 + '、' + item.title}}</div>
