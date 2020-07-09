@@ -474,6 +474,15 @@ export const routes = [
       useNav: false
     }
   },
+  {
+    path: '/question-naire',
+    name: 'questionnaire',
+    component: () => import(/* webpackChunkName: "userInfos" */ '@/pages/user/info/questionnaire.vue'),
+    meta: {
+      module: 'user',
+      useNav: false
+    }
+  },
   // 课节模块
   {
     path: '/lesson',

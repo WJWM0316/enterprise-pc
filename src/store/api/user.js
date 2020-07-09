@@ -20,3 +20,5 @@ export const getMemberInfosApi = params => request(`/member/info/${params.id}`, 
 export const updateMemberInfosApi = params => request(`/member/${params.id}/edit`, 'post', Qs.stringify(params))
 // 删除成员
 export const deleteMemberApi = params => request(`/member/${params.id}`, 'delete')
+// 获取试卷信息
+export const getQuestionInfosApi = params => request('/exam/info/', 'get', params)
