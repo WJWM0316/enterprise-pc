@@ -39,7 +39,7 @@
 								<div class="doing" :style="`width: ${courseItem.progress}%`"></div>
 							</div>
 						</div>
-						<!-- <div class="score" @click="questionJump(courseItem.id)">考试得分：{{courseItem.socre}}分</div> -->
+						<div class="score" @click="questionJump(courseItem.id)">考试得分：{{courseItem.socre}}分</div>
 					</div>
 				</li>
 			</template>
