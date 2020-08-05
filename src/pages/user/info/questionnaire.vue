@@ -5,7 +5,7 @@
     <p class="score">{{ '用户姓名：' + personalInfoBase.realname + '&nbsp;&nbsp;&nbsp;&nbsp;' + '用户分数：' + all.examUserScore }}</p>
     <div class="questionNaire-main">
       <div class="questionNaire-main-list" v-for="(item, index) in all.examQuestionUserAnswer" :key="index">
-        <div class="question">{{index+1 + '、' + item.title}}</div>
+        <div class="question">{{index+1 + '、' + item.title}} ( {{'分值: ' + item.score + ', 正确答案：' + item.itemCorrect}} )</div>
         <el-checkbox-group v-model="userAnswer[index]">
           <el-checkbox v-for="(item1, index1) in item.item" :label="item1.option" :key="index1" :class="!isAnswer[index] && item1.option === item.userAnswer.itemSelect ? 'questionNaire-activitie' : null">{{ item1.option + '、' + item1.text }}</el-checkbox>
         </el-checkbox-group>
@@ -35,11 +35,13 @@ export default {
     getQuestionInfosApi({ 'course_id': course_id, 'userid': userid }).then(res => {
       this.all = res.data.data
       res.data.data.examQuestionUserAnswer.forEach((item, index) => {
-        this.userAnswer.push([ item.userAnswer.itemSelect, item.itemCorrect ])
+        
         if (item.userAnswer.itemSelect === item.itemCorrect) {
           this.isAnswer.push(true)
+          this.userAnswer.push([ item.userAnswer.itemSelect, item.itemCorrect ])
         } else {
           this.isAnswer.push(false)
+          this.userAnswer.push([ item.userAnswer.itemSelect ])
         }
       })
     })
