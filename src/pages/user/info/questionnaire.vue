@@ -84,6 +84,10 @@ export default {
   }
 }
 
+.el-checkbox{
+  margin: 10px 30px 10px 0 !important;
+}
+
 .is-checked{
   .el-checkbox__inner{
     background-color: green !important;
