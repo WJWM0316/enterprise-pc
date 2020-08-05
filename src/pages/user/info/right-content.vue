@@ -39,7 +39,7 @@
 								<div class="doing" :style="`width: ${courseItem.progress}%`"></div>
 							</div>
 						</div>
-						<div class="score" @click="questionJump(courseItem.id)">考试得分：{{courseItem.socre}}分</div>
+						<div class="score" @click="questionJump(courseItem.id)">考试得分：{{courseItem.score}}分</div>
 					</div>
 				</li>
 			</template>
@@ -130,7 +130,7 @@ export default class ComponentRight extends Vue {
 
 	// 跳转考试
 	questionJump (id) {
-		this.$router.push({ name: 'questionnaire', query: { id: id } })
+		this.$router.push({ name: 'questionnaire', query: { id: id, uid: this.personalInfoBase.uid } })
 	}
 }
 </script>

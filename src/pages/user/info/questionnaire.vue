@@ -6,9 +6,9 @@
     <div class="questionNaire-main">
       <div class="questionNaire-main-list" v-for="(item, index) in all.examQuestionUserAnswer" :key="index">
         <div class="question">{{index+1 + '、' + item.title}}</div>
-        <el-radio-group :disabled="disabled" v-model="userAnswer[index]">
-          <el-radio v-for="(item1, index1) in item.item" :key="index1" :label="item1.option">{{ item1.option + '、' + item1.text }}</el-radio>
-        </el-radio-group>
+        <el-checkbox-group v-model="userAnswer[index]">
+          <el-checkbox v-for="(item1, index1) in item.item" :label="item1.option" :key="index1" :class="!isAnswer[index] && item1.option === item.userAnswer.itemSelect ? 'questionNaire-activitie' : null">{{ item1.option + '、' + item1.text }}</el-checkbox>
+        </el-checkbox-group>
       </div>
     </div>
   </div>
@@ -26,18 +26,21 @@ export default {
     return {
       all: {},
       userAnswer: [],
-      disabled: false // 第一次进问卷是否禁用
+      isAnswer: [] // 答案是否正确
     }
   },
   created () {
     const course_id = this.$route.query.id
-    getQuestionInfosApi({ 'course_id': course_id }).then(res => {
+    const userid = this.$route.query.uid
+    getQuestionInfosApi({ 'course_id': course_id, 'userid': userid }).then(res => {
       this.all = res.data.data
       res.data.data.examQuestionUserAnswer.forEach((item, index) => {
-        if (item.userAnswer.itemSelect !== '') {
-          this.disabled = true
+        this.userAnswer.push([ item.userAnswer.itemSelect, item.itemCorrect ])
+        if (item.userAnswer.itemSelect === item.itemCorrect) {
+          this.isAnswer.push(true)
+        } else {
+          this.isAnswer.push(false)
         }
-        this.userAnswer.push(item.userAnswer.itemSelect)
       })
     })
   },
@@ -45,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .questionNaire{
   background: white;
   .title{
@@ -76,6 +79,25 @@ export default {
     font-size: 18px;
     color: #333;
     margin: 15px 0;
+  }
+}
+
+.is-checked{
+  .el-checkbox__inner{
+    background-color: green !important;
+    border: green !important;
+  }
+  .el-checkbox__label{
+    color: green !important;
+  }
+}
+.questionNaire-activitie{
+  .el-checkbox__inner{
+    background-color: red !important;
+    border: red !important;
+  }
+  .el-checkbox__label{
+    color: red !important;
   }
 }
 </style>
