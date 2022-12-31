@@ -27,14 +27,14 @@
     "web-storage-cache": "^1.0.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.7",
-    "@vue/cli-plugin-eslint": "^3.0.0-rc.7",
-    "@vue/cli-service": "^3.0.0-rc.7",
+    "@vue/cli-plugin-babel": "^3.12.1",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "less": "^3.8.1",
-    "less-loader": "^4.1.0",
+    "less-loader": "^11.1.0",
     "node-sass": "^4.9.3",
     "sass": "^1.13.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^13.2.0",
     "vue-template-compiler": "^2.5.16",
     "webpack-merge": "^4.1.4"
   },
